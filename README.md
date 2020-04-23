@@ -1,5 +1,5 @@
 ### 项目简介
-专为推广"***橙单平台生成器***"而开源的代码演示项目，该项目的前后端代码完全由生成器配置后动态生成。我们相信在您耐心阅读五分钟后，一定会发现更多的与众不同。
+专为推广"***橙单平台生成器***"而开源的代码演示项目，该项目的前后端代码完全由生成器配置后动态生成。相信在您耐心阅读五分钟后，一定会发现更多与众不同。
 >友情提示，一定要放大看每一张截图，直到最后。
 <table>
 <tr>
@@ -22,7 +22,7 @@
 - 主流框架任意组合，可生成相对复杂的平台业务代码。
 - 图文并茂，手把手教您的配置操作指南。
 - 专业、详尽、完善、完全免费、以及暗黑护眼的开发文档。
-- 合理、低价的商业授权。
+- 合理、超低价的商业授权。
 
 #### 主要功能
 - 提供前后端主流技术栈组件，可按需选择生成您的工程基础架构。
@@ -115,16 +115,16 @@
 #### 开发文档
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162239_1dc0698b_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162325_3f5e4e7a_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0423/203644_b838ebc6_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204047_26496989_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/162403_9a2500d2_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/162502_3bc30a46_7431510.png"/></td>
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/181337_8e7322e5_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/181456_978cbad8_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162655_54329e9b_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162614_e06a2c53_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204233_619b47b9_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204335_51273157_7431510.png"/></td>
 </tr>
 </table>
 
@@ -154,5 +154,6 @@
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/192424_04baa0a6_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204529_06fb1cd3_7431510.png"/></td>
 </tr>
 </table>

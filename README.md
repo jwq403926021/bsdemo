@@ -54,7 +54,7 @@
   <td><img src="https://images.gitee.com/uploads/images/2020/0504/133407_651b2a4d_7431510.png"/></td>
 </tr>
 </table>
-2. Alibaba Code Guide扫描
+2. Alibaba Code Guide扫描   
 - 下载最新版本IDEA插件，同时打开所有审查条件。
 - 全部代码扫描通过。
 <table>
@@ -63,8 +63,8 @@
   <td><img src="https://images.gitee.com/uploads/images/2020/0504/133514_32d8faad_7431510.png"/></td>
 </tr>
 </table>
-3. Statistics代码统计
-- 生成代码总量约为73000行，包括Java、XML、YAML和SQL。
+3. Statistics代码统计</br>   
+- 生成代码总量约为73000行，包括Java、XML、YAML和SQL。   
 - Java代码注释覆盖率37%。
 <table>
 <tr>

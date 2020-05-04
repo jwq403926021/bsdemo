@@ -65,10 +65,9 @@
 </tr>
 </table>
 
-3. SonarQube扫描
-- 为SonarQube8.2缺省最严格的扫描规则，其中代码复杂度要求为15。
-- 有气味代码90处，其中85处为DTO、Model、常量字典、RPC接口等定义出现重复名称所致，均与实际业务有关。
-- 其余气味代码，是在权衡性能、可读性和易修改性等因素后保留下来的，见下图4。
+3. Statistics代码统计
+- 生成代码总量约为73000行，包括Java、XML、YAML和SQL。
+- Java代码注释覆盖率37%。
 <table>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0504/133554_8df8ff51_7431510.png"/></td>

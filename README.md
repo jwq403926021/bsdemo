@@ -40,6 +40,39 @@
 ### 生成后工程
 >可无限制的用于学习、培训、接私活、公司自用和开发商业项目等场景，其中基础框架代码将永久免费，并持续更新。
 
+#### 代码质量
+>此为在线演示工程的代码审查报告，而非当前开源示例工程。前者为微服务架构，代码量更大，结构更复杂。
+1. SonarQube扫描
+- 为SonarQube8.2缺省最严格的扫描规则，其中代码复杂度要求为15。
+- 有气味代码90处，其中85处为DTO、Model、常量字典、RPC接口等定义出现重复名称所致，均与实际业务有关。
+- 其余气味代码，是在权衡性能、可读性和易修改性等因素后保留下来的，见下图4。
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/132431_a28ba412_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133330_6a7564a1_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133348_81d783c2_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133407_651b2a4d_7431510.png"/></td>
+</tr>
+</table>
+2. Alibaba Code Guide扫描
+- 下载最新版本IDEA插件，同时打开所有审查条件。
+- 全部代码扫描通过。
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133458_a262cd1b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133514_32d8faad_7431510.png"/></td>
+</tr>
+</table>
+3. Statistics代码统计
+- 生成代码总量约为73000行，包括Java、XML、YAML和SQL。
+- Java代码注释覆盖率37%。
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133554_8df8ff51_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133613_68dd5482_7431510.png"/></td>
+</tr>
+</table>
+
 #### 开箱即用
 项目信息如您所愿，工程名称、目录结构、基础包名、common模块、代码注释中的@author信息等，在创建工程时即已配置，不会留有橙单的任何信息。因此无需二次修改，前后端直接编译运行即可。如编译期和运行时出现问题，那一定是我们的bug，在得到您反馈后，我们将及时修复。
 

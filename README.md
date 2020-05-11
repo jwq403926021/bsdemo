@@ -3,7 +3,7 @@
 >友情提示，一定要放大看每一张截图，直到最后。
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0511/215755_28f1804f_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0511/220058_07f40cb9_7431510.png"/></td>
 </tr>
 </table>
 

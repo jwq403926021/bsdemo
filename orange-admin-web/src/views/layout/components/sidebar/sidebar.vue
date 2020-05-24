@@ -66,7 +66,7 @@ export default {
     },
     selectMenu (index, path) {
       if (this.getCurrentMenuId === index) return;
-      // 单页面清空所有tags和cachePage
+      // 鍗曢〉闈㈡竻绌烘墍鏈塼ags鍜宑achePage
       if (!this.multiTag) {
         this.clearAllTags();
       }

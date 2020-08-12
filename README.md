@@ -11,12 +11,12 @@
 > 如果基础框架是技术轮子，那么我们提供的就是一条生产线，不仅可以造轮子，还能生产您的更多业务所需。与此同时，也希望我们前沿的系统设计理念，能为您的企业中台化改造提供些许的技术思路。
 
 #### 橙单网站
-- 网站首页。[http://101.200.178.51](http://101.200.178.51)
+- 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
 - 教学视频。[https://www.bilibili.com/video/bv1Wg4y1i7vP](https://www.bilibili.com/video/bv1Wg4y1i7vP)
-- 生成器操作指南。[http://101.200.178.51/orange-doc/](http://101.200.178.51/orange-doc/)
-- 后端代码文档。[http://101.200.178.51/development-doc/](http://101.200.178.51/development-doc/)
-- 前端代码文档。[http://101.200.178.51/development-vue/](http://101.200.178.51/development-vue/)
-- 基于在线教育后台业务生成的，更完整的演示项目。[http://101.200.178.51:8000](http://101.200.178.51:8000)
+- 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
+- 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
+- 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
+- 基于在线教育后台业务生成的，更完整的演示项目。[http://demo.orangeforms.com](http://demo.orangeforms.com)
 
 #### 竞争优势
 - 真正的代码生成器，而非脚手架。
@@ -125,13 +125,13 @@
 2. 后台工程。
 - 以Maven的形式导入IDE，直接编译运行即可。
 - 配置文件为resources/application.yml，配置项在此修改。
-- 如遇问题，可参考我们的开发文档[系统启动章节](http://101.200.178.51/development-doc/system-start/#单体服务启动)。
+- 如遇问题，可参考我们的开发文档[系统启动章节](http://www.orangeforms.com/development-doc/system-start/#单体服务启动)。
 3. 前端工程。
 - 将前端工程导入vscode。
 - 修改 src -> core -> config 下的配置文件，将baseUrl修改为您服务器地址。
 - 安装依赖，执行 npm install。
 - 启动前端服务，执行 npm run dev。
-- 如遇问题，可参考我们的前端开发文档[工程启动章节](http://101.200.178.51/development-vue/deployment/#工程启动)。
+- 如遇问题，可参考我们的前端开发文档[工程启动章节](http://www.orangeforms.com/development-vue/deployment/#工程启动)。
 
 ### 主要截图
 

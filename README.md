@@ -156,6 +156,7 @@ docker-compose stop
 - 安装依赖，执行 npm install。
 - 启动前端服务，执行 npm run dev。
 - 具体可参考我们的开发文档[教学版前端工程启动段落](http://www.orangeforms.com/development-doc/edu-multi/#前端工程-2)。
+
 ### 主要截图
 
 #### 橙单生成器

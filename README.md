@@ -120,7 +120,7 @@
 
 #### 系统运行
 1. 数据初始化。
-- 通过常用的数据库访问工具(如：navicat)，执行工程目录下的zzdemo-multi.sql文件。
+- 通过常用的数据库访问工具(如：navicat)，执行工程目录下的zz-orange-demo.sql文件。
 - 导入脚本主要负责，数据库创建、数据表创建和测试数据的插入。
 
 2. 环境准备。    
@@ -142,6 +142,7 @@ docker-compose stop
 
 4. 后台服务配置。
 - 进入工程目录下的 zz-resource/config-data/ 子目录，修改和数据库相关的配置，具体操作详见下图及文字注释。
+![](https://images.gitee.com/uploads/images/2020/0812/203758_0f3fd28e_7431510.png")
 - 将该目录下的所有配置文件导入nacos。nacos控制台访问地址 localhost:8848/nacos，用户名和密码 nacos/nacos。
 - 具体导入方式可参考我们的开发文档[服务配置章节](http://www.orangeforms.com/development-doc/service-config/#微服务-nacos)。
 

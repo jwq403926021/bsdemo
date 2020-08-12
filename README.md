@@ -34,8 +34,8 @@
 - 微服务和单体服务的接口命名规则和参数定义完全一致，便于您今后的平滑升级。
 
 #### 关于我们
-- 刘老师，20年开发经验，后台全栈架构师，代码强迫症、性能洁癖、能看出一像素偏差。精通C++/Java/Scala/Web高并发/大数据/C++服务器/视频直播网络技术，略懂容器。
-- 田老师，15年开发经验，前端全栈架构师，思维极缜密、号边界王。精通C++/Java/Javascript/Vue & React/C++客户端/Android原生/小程序/视频直播编解码技术。
+- S.L 老师，20年开发经验，后台全栈架构师，代码强迫症、性能洁癖、能看出一像素偏差。精通C++/Java/Scala/Web高并发/大数据/C++服务器/视频直播网络技术，略懂容器。
+- J.T 老师，15年开发经验，前端全栈架构师，思维极缜密、号边界王。精通C++/Java/Javascript/Vue & React/C++客户端/Android原生/小程序/视频直播编解码技术。
 - 欢迎加入我们的技术交流QQ群 788581363。
 
 ### 生成后工程
@@ -122,6 +122,7 @@
 1. 数据初始化。
 - 通过常用的数据库访问工具(如：navicat)，执行工程目录下的zzdemo-multi.sql文件。
 - 导入脚本主要负责，数据库创建、数据表创建和测试数据的插入。
+
 2. 环境准备。    
 docker是必选组件。通过docker-compose命令，可快速启停服务所依赖的服务中间件，如nacos、redis、zookeeper、kafka和sentinel dashboard等。中间件的控制台访问方式，可参考工程目录下的README文件。
 ```shell
@@ -135,14 +136,18 @@ docker-compose down
 docker-compose start
 docker-compose stop
 ```
+
 3. 后台工程导入。    
 以Maven的形式导入IDE，直接编译运行即可。具体可参考我们的开发文档[教学版微服务工程导入章节](http://www.orangeforms.com/development-doc/edu-multi/#工程导入)。
+
 4. 后台服务配置。
 - 进入工程目录下的 zz-resource/config-data/ 子目录，修改和数据库相关的配置，具体操作详见下图及文字注释。
 - 将该目录下的所有配置文件导入nacos。nacos控制台访问地址 localhost:8848/nacos，用户名和密码 nacos/nacos。
 - 具体导入方式可参考我们的开发文档[服务配置章节](http://www.orangeforms.com/development-doc/service-config/#微服务-nacos)。
+
 5. 后台服务启动。    
 这里仅以upms服务为例。在开发环境中，为每个微服务启动项配置main class，下图为IntelliJ IDEA中的配置截图，配置后点击Debug/Run按钮即可启动。
+
 6. 前端工程导入和启动。
 - 将前端工程导入vscode。
 - 修改 src -> core -> config 下的配置文件，将baseUrl修改为您服务器地址。

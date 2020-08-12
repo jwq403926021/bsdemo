@@ -119,20 +119,36 @@
 - 未来将支持更多开发的语言，并逐步演化为云原生架构。
 
 #### 系统运行
-1. 初始化数据库。
-- 缺省用户名和密码为: root/123456。如果与本地不一致，可修改工程的application.yml文件。
-- 执行工程目录下的zz-orange-admin.sql，创建数据库、表结构，同时插入初始化数据。
-2. 后台工程。
-- 以Maven的形式导入IDE，直接编译运行即可。
-- 配置文件为resources/application.yml，配置项在此修改。
-- 如遇问题，可参考我们的开发文档[系统启动章节](http://www.orangeforms.com/development-doc/system-start/#单体服务启动)。
-3. 前端工程。
+1. 数据初始化。
+- 通过常用的数据库访问工具(如：navicat)，执行工程目录下的zzdemo-multi.sql文件。
+- 导入脚本主要负责，数据库创建、数据表创建和测试数据的插入。
+2. 环境准备。    
+docker是必选组件。通过docker-compose命令，可快速启停服务所依赖的服务中间件，如nacos、redis、zookeeper、kafka和sentinel dashboard等。中间件的控制台访问方式，可参考工程目录下的README文件。
+```shell
+# 假定当前目录为工程根目录。
+cd zz-resource/docker-files
+# 启动和停止带有基础服务中间件的docker-compose.yml文件
+docker-compose up -d
+# 彻底终止容器
+docker-compose down
+# 在第一次启动之后，可以考虑每次执行下面的命令启动和停止容器。
+docker-compose start
+docker-compose stop
+```
+3. 后台工程导入。    
+以Maven的形式导入IDE，直接编译运行即可。具体可参考我们的开发文档[教学版微服务工程导入章节](http://www.orangeforms.com/development-doc/edu-multi/#工程导入)。
+4. 后台服务配置。
+- 进入工程目录下的 zz-resource/config-data/ 子目录，修改和数据库相关的配置，具体操作详见下图及文字注释。
+- 将该目录下的所有配置文件导入nacos。nacos控制台访问地址 localhost:8848/nacos，用户名和密码 nacos/nacos。
+- 具体导入方式可参考我们的开发文档[服务配置章节](http://www.orangeforms.com/development-doc/service-config/#微服务-nacos)。
+5. 后台服务启动。    
+这里仅以upms服务为例。在开发环境中，为每个微服务启动项配置main class，下图为IntelliJ IDEA中的配置截图，配置后点击Debug/Run按钮即可启动。
+6. 前端工程导入和启动。
 - 将前端工程导入vscode。
 - 修改 src -> core -> config 下的配置文件，将baseUrl修改为您服务器地址。
 - 安装依赖，执行 npm install。
 - 启动前端服务，执行 npm run dev。
-- 如遇问题，可参考我们的前端开发文档[工程启动章节](http://www.orangeforms.com/development-vue/deployment/#工程启动)。
-
+- 具体可参考我们的开发文档[教学版前端工程启动段落](http://www.orangeforms.com/development-doc/edu-multi/#前端工程-2)。
 ### 主要截图
 
 #### 橙单生成器

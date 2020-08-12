@@ -148,6 +148,7 @@ docker-compose stop
 
 5. 后台服务启动。    
 这里仅以upms服务为例。在开发环境中，为每个微服务启动项配置main class，下图为IntelliJ IDEA中的配置截图，配置后点击Debug/Run按钮即可启动。
+![](https://images.gitee.com/uploads/images/2020/0812/205946_da5bf311_7431510.png)
 
 6. 前端工程导入和启动。
 - 将前端工程导入vscode。

@@ -903,7 +903,7 @@ public abstract class BaseService<M, D, K> {
                 MyQueryParam queryParam = new MyQueryParam(false);
                 MyWhereCriteria whereCriteria = new MyWhereCriteria();
                 whereCriteria.setCriteria(
-                        relationStruct.relationOneToOne.slaveIdField(), MyWhereCriteria.OPERATOR_EQUAL, id);
+                        relationStruct.relationDict.slaveIdField(), MyWhereCriteria.OPERATOR_EQUAL, id);
                 queryParam.addCriteriaList(whereCriteria);
                 ResponseResult<Object> result = relationStruct.remoteClient.getBy(queryParam);
                 if (result.isSuccess()) {

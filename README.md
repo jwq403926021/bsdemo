@@ -97,17 +97,17 @@
 <table>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0504/134052_c3196376_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133514_32d8faad_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0904/092352_3fa8f2e7_7431510.png"/></td>
 </tr>
 </table>
 
 3. Statistic 代码统计
-- 生成代码总量约为73000行，主要包括Java、XML、YAML和SQL初始化脚本等。
+- 生成代码总量约为86000多行，主要包括Java、XML、YAML和SQL初始化脚本等。
 - Java代码覆盖率为37%。
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133554_8df8ff51_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0504/133613_68dd5482_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0904/092417_b280457b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/0904/092434_f718c982_7431510.png"/></td>
 </tr>
 </table>
 

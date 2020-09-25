@@ -1,5 +1,5 @@
-CREATE DATABASE `zzdemo-multi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-USE `zzdemo-multi`;
+CREATE DATABASE `zzdemo-single` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+USE `zzdemo-single`;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;

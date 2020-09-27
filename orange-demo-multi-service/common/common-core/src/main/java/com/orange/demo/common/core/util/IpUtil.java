@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * Ip工具类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class IpUtil {

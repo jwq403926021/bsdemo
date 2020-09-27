@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * 登录用户Token验证、生成和权限验证的拦截器。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {

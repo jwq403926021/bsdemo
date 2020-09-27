@@ -36,9 +36,9 @@
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.StudentClass.impl.getTableIndex" />
           <el-table-column label="班级名称" prop="className">
           </el-table-column>
-          <el-table-column label="班级级别" prop="classLevelDictMap.name">
-          </el-table-column>
           <el-table-column label="所属校区" prop="schoolIdDictMap.name">
+          </el-table-column>
+          <el-table-column label="班级级别" prop="classLevelDictMap.name">
           </el-table-column>
           <el-table-column label="已完成课时" prop="finishClassHour">
           </el-table-column>

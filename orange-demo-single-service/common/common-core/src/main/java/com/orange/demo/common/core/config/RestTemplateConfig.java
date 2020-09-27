@@ -24,7 +24,7 @@ import java.util.List;
  * RestTemplate连接池配置对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Configuration
 public class RestTemplateConfig {

@@ -24,7 +24,7 @@ import java.util.Objects;
  * 上传或下载附件文件的工具类。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Slf4j
 public class UpDownloadUtil {

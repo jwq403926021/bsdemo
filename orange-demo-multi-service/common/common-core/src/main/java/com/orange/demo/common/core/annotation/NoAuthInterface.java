@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 /**
  * 主要用于标记无需Token验证的接口
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

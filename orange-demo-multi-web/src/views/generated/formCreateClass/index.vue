@@ -64,6 +64,8 @@
 
 <script>
 /* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
+/* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
 import { uploadMixin, statsDateRangeMixin } from '@/core/mixins';
@@ -89,35 +91,13 @@ export default {
           createTime: undefined,
           status: undefined,
           course: {
-            courseId: undefined,
-            courseName: undefined,
-            price: undefined,
-            description: undefined,
-            difficulty: undefined,
-            gradeId: undefined,
-            subjectId: undefined,
-            classHour: undefined,
-            pictureUrl: undefined,
-            createUserId: undefined,
-            createTime: undefined,
-            updateTime: undefined
+            classCourse: {
+              classId: undefined,
+              courseId: undefined,
+              courseOrder: undefined
+            }
           },
           student: {
-            studentId: undefined,
-            loginMobile: undefined,
-            studentName: undefined,
-            provinceId: undefined,
-            cityId: undefined,
-            districtId: undefined,
-            gender: undefined,
-            birthday: undefined,
-            experienceLevel: undefined,
-            totalCoin: undefined,
-            leftCoin: undefined,
-            gradeId: undefined,
-            schoolId: undefined,
-            registerTime: undefined,
-            status: undefined
           },
           isDatasourceInit: false
         }

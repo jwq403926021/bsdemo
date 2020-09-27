@@ -2,6 +2,7 @@ package com.orange.demo.common.core.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.orange.demo.common.core.annotation.RelationConstDict;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.annotation.RelationOneToOne;
 import com.orange.demo.common.core.exception.MyRuntimeException;
@@ -24,8 +25,8 @@ import java.util.stream.Collectors;
 /**
  * 负责Model数据操作、类型转换和关系关联等行为的工具类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class MyModelUtil {
@@ -184,13 +185,49 @@ public class MyModelUtil {
     }
 
     /**
-     * 在当前Service的主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象thatModel中的数据，
+     * 主Model类型中，遍历所有包含RelationConstDict注解的字段，并将关联的静态字典中的数据，
+     * 填充到thisModel对象的被注解字段中。
+     *
+     * @param thisClazz 主对象的Class对象。
+     * @param thisModel 主对象。
+     * @param <T>       主表对象类型。
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> void makeConstDictRelation(Class<T> thisClazz, T thisModel) {
+        if (thisModel == null) {
+            return;
+        }
+        Field[] fields = ReflectUtil.getFields(thisClazz);
+        for (Field field : fields) {
+            // 这里不做任何空值判断，从而让配置错误在调试期间即可抛出
+            Field thisTargetField = ReflectUtil.getField(thisClazz, field.getName());
+            RelationConstDict r = thisTargetField.getAnnotation(RelationConstDict.class);
+            if (r == null) {
+                continue;
+            }
+            Field dictMapField = ReflectUtil.getField(r.constantDictClass(), "DICT_MAP");
+            Map<Object, String> dictMap = (Map<Object, String>) ReflectUtil.getFieldValue(thisClazz, dictMapField);
+            Object id = ReflectUtil.getFieldValue(thisModel, r.masterIdField());
+            if (id != null) {
+                String name = dictMap.get(id);
+                if (name != null) {
+                    Map<String, Object> m = new HashMap<>(2);
+                    m.put("id", id);
+                    m.put("name", name);
+                    ReflectUtil.setFieldValue(thisModel, thisTargetField, m);
+                }
+            }
+        }
+    }
+
+    /**
+     * 在主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象thatModel中的数据，
      * 关联到thisModel对象的thisRelationField字段中。
      *
      * @param thisClazz         主对象的Class对象。
      * @param thisModel         主对象。
      * @param thatModel         字典关联对象。
-     * @param thisRelationField 关联对象中保存被关联对象的字段名称。
+     * @param thisRelationField 主表对象中保存被关联对象的字段名称。
      * @param <T>               主表对象类型。
      * @param <R>               从表对象类型。
      */
@@ -212,13 +249,13 @@ public class MyModelUtil {
     }
 
     /**
-     * 在当前Service的主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象集合thatModelList中的数据，
+     * 在主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象集合thatModelList中的数据，
      * 逐个关联到thisModelList每一个元素的thisRelationField字段中。
      *
      * @param thisClazz         主对象的Class对象。
      * @param thisModelList     主对象列表。
      * @param thatModelList     字典关联对象列表集合。
-     * @param thisRelationField 关联对象中保存被关联对象的字段名称。
+     * @param thisRelationField 主表对象中保存被关联对象的字段名称。
      * @param <T>               主表对象类型。
      * @param <R>               从表对象类型。
      */
@@ -255,14 +292,14 @@ public class MyModelUtil {
     }
 
     /**
-     * 在当前Service的主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象集合thatModelMap中的数据，
+     * 在主Model类型中，根据thisRelationField字段的RelationDict注解参数，将被关联对象集合thatModelMap中的数据，
      * 逐个关联到thisModelList每一个元素的thisRelationField字段中。
      * 该函数之所以使用Map，主要出于性能优化考虑，在连续使用thatModelMap进行关联时，有效的避免了从多次从List转换到Map的过程。
      *
      * @param thisClazz         主对象的Class对象。
      * @param thisModelList     主对象列表。
      * @param thatMadelMap      字典关联对象映射集合。
-     * @param thisRelationField 关联对象中保存被关联对象的字段名称。
+     * @param thisRelationField 主表对象中保存被关联对象的字段名称。
      * @param <T>               主表对象类型。
      * @param <R>               从表对象类型。
      */
@@ -293,13 +330,13 @@ public class MyModelUtil {
     }
 
     /**
-     * 在当前Service的主Model类型中，根据thisRelationField字段的RelationOneToOne注解参数，将被关联对象列表thatModelList中的数据，
+     * 在主Model类型中，根据thisRelationField字段的RelationOneToOne注解参数，将被关联对象列表thatModelList中的数据，
      * 逐个关联到thisModelList每一个元素的thisRelationField字段中。
      *
      * @param thisClazz         主对象的Class对象。
      * @param thisModelList     主对象列表。
      * @param thatModelList     一对一关联对象列表。
-     * @param thisRelationField 关联对象中保存被关联对象的字段名称。
+     * @param thisRelationField 主表对象中保存被关联对象的字段名称。
      * @param <T>               主表对象类型。
      * @param <R>               从表对象类型。
      */

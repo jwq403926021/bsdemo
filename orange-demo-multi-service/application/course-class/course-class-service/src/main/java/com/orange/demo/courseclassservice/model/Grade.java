@@ -1,5 +1,7 @@
 package com.orange.demo.courseclassservice.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -7,8 +9,8 @@ import javax.validation.constraints.*;
 /**
  * Grade实体对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_grade")
@@ -31,8 +33,9 @@ public class Grade {
     private String gradeName;
 
     /**
-     * 是否正在使用（0：不是，1：是）。
+     * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @NotNull(message = "数据验证失败，是否正在使用（0：不是，1：是）不能为空！")
+    @JSONField(serialize = false)
+    @DeletedFlagColumn
     private Integer status;
 }

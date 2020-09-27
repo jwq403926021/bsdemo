@@ -19,7 +19,7 @@
           </el-table-column>
           <el-table-column label="所属校区" prop="schoolIdDictMap.name">
           </el-table-column>
-          <el-table-column label="年级" prop="gradeIdDictMap.name">
+          <el-table-column label="所属年级" prop="gradeIdDictMap.name">
           </el-table-column>
           <el-table-column label="经验等级" prop="experienceLevelDictMap.name">
           </el-table-column>
@@ -57,6 +57,8 @@
 </template>
 
 <script>
+/* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
 /* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */

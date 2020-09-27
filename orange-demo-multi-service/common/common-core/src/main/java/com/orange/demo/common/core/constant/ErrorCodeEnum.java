@@ -3,8 +3,8 @@ package com.orange.demo.common.core.constant;
 /**
  * 返回应答中的错误代码和错误信息。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public enum ErrorCodeEnum {
 

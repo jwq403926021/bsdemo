@@ -94,35 +94,13 @@ export default {
           createTime: undefined,
           status: undefined,
           course: {
-            courseId: undefined,
-            courseName: undefined,
-            price: undefined,
-            description: undefined,
-            difficulty: undefined,
-            gradeId: undefined,
-            subjectId: undefined,
-            classHour: undefined,
-            pictureUrl: undefined,
-            createUserId: undefined,
-            createTime: undefined,
-            updateTime: undefined
+            classCourse: {
+              classId: undefined,
+              courseId: undefined,
+              courseOrder: undefined
+            }
           },
           student: {
-            studentId: undefined,
-            loginMobile: undefined,
-            studentName: undefined,
-            provinceId: undefined,
-            cityId: undefined,
-            districtId: undefined,
-            gender: undefined,
-            birthday: undefined,
-            experienceLevel: undefined,
-            totalCoin: undefined,
-            leftCoin: undefined,
-            gradeId: undefined,
-            schoolId: undefined,
-            registerTime: undefined,
-            status: undefined
           },
           isDatasourceInit: false
         }
@@ -237,10 +215,12 @@ export default {
      * 更新编辑班级
      */
     refreshFormEditClass (reloadData = false) {
-      if (!this.formEditClass.isInit) {
-        // 初始化下拉数据
-      }
-      this.formEditClass.isInit = true;
+      this.loadStudentClassData().then(res => {
+        if (!this.formEditClass.isInit) {
+          // 初始化下拉数据
+        }
+        this.formEditClass.isInit = true;
+      }).catch(e => {});
     },
     /**
      * 保存
@@ -263,6 +243,29 @@ export default {
           this.$message.success('保存成功');
           this.onCancel(true);
         }).catch(e => {});
+      });
+    },
+    /**
+     * 获取班级数据详细信息
+     */
+    loadStudentClassData () {
+      return new Promise((resolve, reject) => {
+        if (!this.formData.StudentClass.isDatasourceInit) {
+          let params = {
+            classId: this.classId
+          };
+          StudentClassController.view(this, params).then(res => {
+            this.formData.StudentClass = {...res.data, isDatasourceInit: true};
+            if (this.formData.StudentClass.classLevelDictMap) this.formEditClass.classLevel.impl.dropdownList = [this.formData.StudentClass.classLevelDictMap];
+            if (this.formData.StudentClass.schoolIdDictMap) this.formEditClass.schoolId.impl.dropdownList = [this.formData.StudentClass.schoolIdDictMap];
+            if (this.formData.StudentClass.leaderIdDictMap) this.formEditClass.leaderId.impl.dropdownList = [this.formData.StudentClass.leaderIdDictMap];
+            resolve();
+          }).catch(e => {
+            reject();
+          });
+        } else {
+          resolve();
+        }
       });
     },
     initFormData () {

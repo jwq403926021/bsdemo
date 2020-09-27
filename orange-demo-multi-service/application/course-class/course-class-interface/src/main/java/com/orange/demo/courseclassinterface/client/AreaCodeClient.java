@@ -16,8 +16,8 @@ import java.util.*;
 /**
  * 行政区划远程访问接口类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @FeignClient(name = "system-service", fallbackFactory = AreaCodeClient.AreaCodeClientFallbackFactory.class)
 public interface AreaCodeClient extends BaseClient<AreaCodeDto, Long> {

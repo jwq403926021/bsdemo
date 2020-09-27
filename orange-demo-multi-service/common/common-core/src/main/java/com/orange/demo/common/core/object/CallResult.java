@@ -7,8 +7,8 @@ import lombok.Data;
  * 接口数据验证结果对象。主要是Service类使用。
  * 同时为了提升效率，减少查询次数，可以根据具体的需求，将部分验证关联对象存入data字段，以供Controller使用。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class CallResult {

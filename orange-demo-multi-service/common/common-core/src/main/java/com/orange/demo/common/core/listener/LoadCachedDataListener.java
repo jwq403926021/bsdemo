@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  * 应用程序启动后的事件监听对象。主要负责加载Model之间的字典关联和一对一关联所对应的Service结构关系。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Component
 public class LoadCachedDataListener implements ApplicationListener<ApplicationReadyEvent> {

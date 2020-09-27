@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  * 基于Jwt，用于前后端传递的令牌对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @ToString

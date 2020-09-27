@@ -1,5 +1,6 @@
 package com.orange.demo.upmsinterface.dto;
 
+import com.orange.demo.common.core.validator.AddGroup;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.common.core.validator.ConstDictRef;
 import com.orange.demo.upmsinterface.constant.SysUserType;
@@ -16,8 +17,8 @@ import java.util.List;
 /**
  * SysUserDto对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class SysUserDto {
@@ -37,7 +38,7 @@ public class SysUserDto {
     /**
      * 用户密码。
      */
-    @NotBlank(message = "数据验证失败，用户密码不能为空！")
+    @NotBlank(message = "数据验证失败，用户密码不能为空！", groups = {AddGroup.class})
     private String password;
 
     /**

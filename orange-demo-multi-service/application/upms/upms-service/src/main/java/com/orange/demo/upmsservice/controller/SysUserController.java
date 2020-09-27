@@ -12,6 +12,7 @@ import com.orange.demo.common.core.constant.ErrorCodeEnum;
 import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.annotation.MyRequestBody;
+import com.orange.demo.common.core.validator.AddGroup;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.upmsservice.config.ApplicationConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,8 @@ import java.util.*;
 /**
  * 用户管理操作控制器类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 @RestController
@@ -53,7 +54,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
     @PostMapping("/add")
     public ResponseResult<JSONObject> add(
             @MyRequestBody("sysUser") SysUserDto sysUserDto, @MyRequestBody String roleIdListString) {
-        String errorMessage = MyCommonUtil.getModelValidationError(sysUserDto);
+        String errorMessage = MyCommonUtil.getModelValidationError(sysUserDto, Default.class, AddGroup.class);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }

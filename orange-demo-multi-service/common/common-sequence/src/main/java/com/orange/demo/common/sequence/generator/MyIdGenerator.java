@@ -3,8 +3,8 @@ package com.orange.demo.common.sequence.generator;
 /**
  * 分布式Id生成器的统一接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface MyIdGenerator {
 

@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * 菜单数据访问操作接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface SysMenuMapper extends BaseDaoMapper<SysMenu> {
 

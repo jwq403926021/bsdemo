@@ -3,6 +3,7 @@ package com.orange.demo.courseclassservice.service;
 import com.orange.demo.common.redis.cache.RedisDictionaryCache;
 import com.orange.demo.common.core.base.service.BaseDictService;
 import com.orange.demo.common.core.base.dao.BaseDaoMapper;
+import com.orange.demo.common.core.constant.GlobalDeletedFlag;
 import com.orange.demo.courseclassservice.dao.GradeMapper;
 import com.orange.demo.courseclassservice.model.Grade;
 import com.orange.demo.courseclassinterface.dto.GradeDto;
@@ -16,8 +17,8 @@ import javax.annotation.PostConstruct;
 /**
  * 年级数据操作服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class GradeService extends BaseDictService<Grade, GradeDto, Integer> {
@@ -55,6 +56,7 @@ public class GradeService extends BaseDictService<Grade, GradeDto, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public Grade saveNew(Grade grade) {
+        grade.setStatus(GlobalDeletedFlag.NORMAL);
         gradeMapper.insert(grade);
         dictionaryCache.put(grade.getGradeId(), grade);
         return grade;
@@ -69,6 +71,7 @@ public class GradeService extends BaseDictService<Grade, GradeDto, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean update(Grade grade, Grade originalGrade) {
+        grade.setStatus(GlobalDeletedFlag.NORMAL);
         if (gradeMapper.updateByPrimaryKey(grade) != 1) {
             return false;
         }
@@ -84,7 +87,10 @@ public class GradeService extends BaseDictService<Grade, GradeDto, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean remove(Integer gradeId) {
-        if (gradeMapper.deleteByPrimaryKey(gradeId) != 1) {
+        Grade deletedObject = new Grade();
+        deletedObject.setGradeId(gradeId);
+        deletedObject.setStatus(GlobalDeletedFlag.DELETED);
+        if (gradeMapper.updateByPrimaryKeySelective(deletedObject) != 1) {
             return false;
         }
         dictionaryCache.invalidate(gradeId);

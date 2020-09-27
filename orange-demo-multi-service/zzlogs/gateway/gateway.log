@@ -1,0 +1,108 @@
+[INFO ] [2020-09-27 20:46:34] 请求Id[] [main] ==> [TxId: , SpanId: ] The following profiles are active: dev
+[INFO ] [2020-09-27 20:46:39] 请求Id[] [main] ==> [TxId: , SpanId: ] Started GatewayApplication in 6.543 seconds (JVM running for 8.309)
+[INFO ] [2020-09-27 20:46:51] 请求Id[b5c6133a9297495d84b972e9c683b7db] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/list
+[WARN ] [2020-09-27 20:46:51] 请求Id[b5c6133a9297495d84b972e9c683b7db] [reactor-http-nio-3] ==> [TxId: , SpanId: ] UNAUTHORIZED request [/admin/CourseClass/studentClass/list] from REMOTE-IP [10.24.85.32] because userId is empty in redis.
+[INFO ] [2020-09-27 20:46:52] 请求Id[db2a7ba29cc94061be68a9a3921ec872] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/login/doLogin
+[INFO ] [2020-09-27 20:46:52] 请求Id[db2a7ba29cc94061be68a9a3921ec872] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/login/doLogin，elapse=1
+[INFO ] [2020-09-27 20:46:56] 请求Id[dc955359b2b4444098fb7433f6e151e8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/list
+[INFO ] [2020-09-27 20:46:56] 请求Id[dc955359b2b4444098fb7433f6e151e8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/list，elapse=52
+[INFO ] [2020-09-27 20:47:08] 请求Id[f8317800db124dc0999946feee3eba02] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/grade/listDictGrade
+[INFO ] [2020-09-27 20:47:08] 请求Id[f8317800db124dc0999946feee3eba02] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/grade/listDictGrade，elapse=4
+[INFO ] [2020-09-27 20:47:11] 请求Id[9bf9018da2944cf48388241b14836db9] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId
+[INFO ] [2020-09-27 20:47:11] 请求Id[9bf9018da2944cf48388241b14836db9] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId，elapse=4
+[INFO ] [2020-09-27 20:47:13] 请求Id[70022f272a284d7c85fee4ee18ba9fd4] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId
+[INFO ] [2020-09-27 20:47:13] 请求Id[70022f272a284d7c85fee4ee18ba9fd4] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId，elapse=3
+[INFO ] [2020-09-27 20:47:14] 请求Id[f638e48c59a445ae85c7bb9d4cbe03ac] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId
+[INFO ] [2020-09-27 20:47:14] 请求Id[f638e48c59a445ae85c7bb9d4cbe03ac] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/areaCode/listDictAreaCodeByParentId，elapse=5
+[INFO ] [2020-09-27 20:47:16] 请求Id[28ff388ffe974dc6980d969c9ccb5d44] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/schoolInfo/listDictSchoolInfo
+[INFO ] [2020-09-27 20:47:16] 请求Id[28ff388ffe974dc6980d969c9ccb5d44] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/schoolInfo/listDictSchoolInfo，elapse=3
+[INFO ] [2020-09-27 20:47:18] 请求Id[aff4f25bf183454abf87f99175a47992] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/add
+[INFO ] [2020-09-27 20:47:18] 请求Id[aff4f25bf183454abf87f99175a47992] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/add，elapse=4
+[INFO ] [2020-09-27 20:47:18] 请求Id[f8cdde56ee9d468dbb64b6fc0eb5e588] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/list
+[INFO ] [2020-09-27 20:47:18] 请求Id[f8cdde56ee9d468dbb64b6fc0eb5e588] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/list，elapse=3
+[INFO ] [2020-09-27 20:47:20] 请求Id[152fa5471a0a41e28b5544c18075b796] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/view
+[INFO ] [2020-09-27 20:47:20] 请求Id[152fa5471a0a41e28b5544c18075b796] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/view，elapse=4
+[INFO ] [2020-09-27 20:47:22] 请求Id[754db36c01f24f89a966dbbbede28fcd] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/update
+[INFO ] [2020-09-27 20:47:22] 请求Id[754db36c01f24f89a966dbbbede28fcd] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/update，elapse=4
+[INFO ] [2020-09-27 20:47:22] 请求Id[595b9a3f6e754ed58b2d7b50bdef3a04] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/list
+[INFO ] [2020-09-27 20:47:22] 请求Id[595b9a3f6e754ed58b2d7b50bdef3a04] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/list，elapse=3
+[INFO ] [2020-09-27 20:47:25] 请求Id[8937c7de3535464994ee5e6e39ac7598] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/delete
+[INFO ] [2020-09-27 20:47:25] 请求Id[8937c7de3535464994ee5e6e39ac7598] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/delete，elapse=5
+[INFO ] [2020-09-27 20:47:25] 请求Id[322815eb8ed641c09c8ec1b8a66e4636] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/student/list
+[INFO ] [2020-09-27 20:47:25] 请求Id[322815eb8ed641c09c8ec1b8a66e4636] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/student/list，elapse=4
+[INFO ] [2020-09-27 20:47:27] 请求Id[b5500f945d034a4580a8e7818d0d5f16] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/list
+[INFO ] [2020-09-27 20:47:27] 请求Id[b5500f945d034a4580a8e7818d0d5f16] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/list，elapse=3
+[INFO ] [2020-09-27 20:47:29] 请求Id[94a21e6da790470b8d94751df09d019d] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent
+[INFO ] [2020-09-27 20:47:29] 请求Id[94a21e6da790470b8d94751df09d019d] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent，elapse=4
+[INFO ] [2020-09-27 20:47:31] 请求Id[f10c3e6765a24ab799944e8053d1e763] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassStudent
+[INFO ] [2020-09-27 20:47:31] 请求Id[f10c3e6765a24ab799944e8053d1e763] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassStudent，elapse=4
+[INFO ] [2020-09-27 20:47:33] 请求Id[9eb86ede264c480aaa003bf8838e3e8a] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassStudent
+[INFO ] [2020-09-27 20:47:33] 请求Id[9eb86ede264c480aaa003bf8838e3e8a] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassStudent，elapse=4
+[INFO ] [2020-09-27 20:47:33] 请求Id[cbd2268781b245399b7b7371af6f893c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassStudent
+[INFO ] [2020-09-27 20:47:33] 请求Id[cbd2268781b245399b7b7371af6f893c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassStudent，elapse=2
+[INFO ] [2020-09-27 20:47:35] 请求Id[f56e8dd535d943d8842e9094c0d33f49] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent
+[INFO ] [2020-09-27 20:47:35] 请求Id[f56e8dd535d943d8842e9094c0d33f49] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent，elapse=4
+[INFO ] [2020-09-27 20:47:37] 请求Id[a901f51c155e4230954b91382ca0fab8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/deleteClassStudent
+[INFO ] [2020-09-27 20:47:37] 请求Id[a901f51c155e4230954b91382ca0fab8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/deleteClassStudent，elapse=4
+[INFO ] [2020-09-27 20:47:37] 请求Id[4f9e887130c143b881552c90c2cf933a] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent
+[INFO ] [2020-09-27 20:47:37] 请求Id[4f9e887130c143b881552c90c2cf933a] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassStudent，elapse=3
+[INFO ] [2020-09-27 20:47:39] 请求Id[4f1d9908c5f04e94bd4c1376c9b5ca2b] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/list
+[INFO ] [2020-09-27 20:47:39] 请求Id[4f1d9908c5f04e94bd4c1376c9b5ca2b] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/list，elapse=4
+[INFO ] [2020-09-27 20:47:42] 请求Id[d2e7a85fe6814b8eb125ac729c4d1ae8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:47:42] 请求Id[d2e7a85fe6814b8eb125ac729c4d1ae8] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=4
+[INFO ] [2020-09-27 20:47:43] 请求Id[42d7098510944c1f84aa5739c2596947] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse
+[INFO ] [2020-09-27 20:47:43] 请求Id[42d7098510944c1f84aa5739c2596947] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse，elapse=3
+[INFO ] [2020-09-27 20:47:45] 请求Id[2b7c9e6779354513b58d3f6598441236] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse
+[INFO ] [2020-09-27 20:47:45] 请求Id[2b7c9e6779354513b58d3f6598441236] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse，elapse=3
+[INFO ] [2020-09-27 20:47:45] 请求Id[dd1924123271496c811557963f46d4a6] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:47:45] 请求Id[dd1924123271496c811557963f46d4a6] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=4
+[INFO ] [2020-09-27 20:47:46] 请求Id[3522fe56037e4f92adadfe5f9c01c6bb] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse
+[INFO ] [2020-09-27 20:47:46] 请求Id[3522fe56037e4f92adadfe5f9c01c6bb] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse，elapse=4
+[INFO ] [2020-09-27 20:47:48] 请求Id[4618b7ca593b4bdca14e9c2c17544b8c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse
+[INFO ] [2020-09-27 20:47:48] 请求Id[4618b7ca593b4bdca14e9c2c17544b8c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse，elapse=3
+[INFO ] [2020-09-27 20:47:48] 请求Id[249592723e3e4e90a75621d67793692f] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:47:48] 请求Id[249592723e3e4e90a75621d67793692f] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=3
+[INFO ] [2020-09-27 20:47:50] 请求Id[b3d24908483b40f2966d1fe517b124b2] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse
+[INFO ] [2020-09-27 20:47:50] 请求Id[b3d24908483b40f2966d1fe517b124b2] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse，elapse=7
+[INFO ] [2020-09-27 20:47:53] 请求Id[6d86d7694b784e3794a2a8902ec35407] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:47:53] 请求Id[6d86d7694b784e3794a2a8902ec35407] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=3
+[INFO ] [2020-09-27 20:48:05] 请求Id[c80e35356a974829ae9b72079a3802ff] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:48:05] 请求Id[c80e35356a974829ae9b72079a3802ff] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=3
+[INFO ] [2020-09-27 20:48:16] 请求Id[cae64ee9db034f0fa9c4128d8585f047] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/upms/sysMenu/list
+[INFO ] [2020-09-27 20:48:16] 请求Id[cae64ee9db034f0fa9c4128d8585f047] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/upms/sysMenu/list，elapse=3
+[INFO ] [2020-09-27 20:48:27] 请求Id[97258d1c293f4227883c2f5bc14b952c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/list
+[INFO ] [2020-09-27 20:48:27] 请求Id[97258d1c293f4227883c2f5bc14b952c] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/list，elapse=3
+[INFO ] [2020-09-27 20:48:28] 请求Id[a67b41601c574d378f8f321e46414077] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:48:28] 请求Id[a67b41601c574d378f8f321e46414077] [reactor-http-nio-3] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=4
+[INFO ] [2020-09-27 20:48:30] 请求Id[2865ff823d8e4cf1be948509cbf86bee] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse
+[INFO ] [2020-09-27 20:48:30] 请求Id[2865ff823d8e4cf1be948509cbf86bee] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse，elapse=4
+[INFO ] [2020-09-27 20:48:33] 请求Id[22c9a1a7158a48dfab518c7ea06109e6] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:48:33] 请求Id[22c9a1a7158a48dfab518c7ea06109e6] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=3
+[INFO ] [2020-09-27 20:49:09] 请求Id[862b918112294fbbb9cd702fc52474fe] [reactor-http-nio-2] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:49:09] 请求Id[862b918112294fbbb9cd702fc52474fe] [reactor-http-nio-2] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=4
+[INFO ] [2020-09-27 20:57:24] 请求Id[ba25de33bf84438e9e019870061ee2ac] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:57:24] 请求Id[ba25de33bf84438e9e019870061ee2ac] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=10
+[INFO ] [2020-09-27 20:57:29] 请求Id[3bf8f684f01146f782f8e83beeb4569b] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:57:29] 请求Id[3bf8f684f01146f782f8e83beeb4569b] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=5
+[INFO ] [2020-09-27 20:57:30] 请求Id[79a68fb7084b4b4b9243d898e613d6a3] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse
+[INFO ] [2020-09-27 20:57:30] 请求Id[79a68fb7084b4b4b9243d898e613d6a3] [reactor-http-nio-6] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse，elapse=4
+[INFO ] [2020-09-27 20:57:32] 请求Id[9bb6a2ffd6eb4cb8af0b699b7618e9c1] [reactor-http-nio-2] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:57:32] 请求Id[9bb6a2ffd6eb4cb8af0b699b7618e9c1] [reactor-http-nio-2] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:39] 请求Id[2afbd5f076e3405980f8ccfe2b8565ad] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/deleteClassCourse
+[INFO ] [2020-09-27 20:57:39] 请求Id[2afbd5f076e3405980f8ccfe2b8565ad] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/deleteClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:39] 请求Id[9dbdfe4aa6cf4f99a88c17909627a834] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:57:39] 请求Id[9dbdfe4aa6cf4f99a88c17909627a834] [reactor-http-nio-4] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:41] 请求Id[c6aa5b57a77c4f329fd5fee2310b0ef9] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse
+[INFO ] [2020-09-27 20:57:41] 请求Id[c6aa5b57a77c4f329fd5fee2310b0ef9] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:44] 请求Id[c99dad15534c4b56b4b0fc5d2c8a72e8] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse
+[INFO ] [2020-09-27 20:57:44] 请求Id[c99dad15534c4b56b4b0fc5d2c8a72e8] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/addClassCourse，elapse=4
+[INFO ] [2020-09-27 20:57:44] 请求Id[1f61624648624deaa081fbc11077803b] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse
+[INFO ] [2020-09-27 20:57:44] 请求Id[1f61624648624deaa081fbc11077803b] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listNotInClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:46] 请求Id[f310a125ca994acb92e89dbedbf757c3] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:57:46] 请求Id[f310a125ca994acb92e89dbedbf757c3] [reactor-http-nio-5] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=4
+[INFO ] [2020-09-27 20:57:51] 请求Id[e88660764f8049988dceaecf5744413e] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse
+[INFO ] [2020-09-27 20:57:51] 请求Id[e88660764f8049988dceaecf5744413e] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/viewClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:54] 请求Id[d6fcd775ed074cbd8ddf5b1c4a80b897] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse
+[INFO ] [2020-09-27 20:57:54] 请求Id[d6fcd775ed074cbd8ddf5b1c4a80b897] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/updateClassCourse，elapse=3
+[INFO ] [2020-09-27 20:57:54] 请求Id[f234a2cb62ab433b83d3901b55f1af6f] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 开始请求，app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse
+[INFO ] [2020-09-27 20:57:54] 请求Id[f234a2cb62ab433b83d3901b55f1af6f] [reactor-http-nio-8] ==> [TxId: , SpanId: ] 请求完成, app={gateway}, url=/admin/CourseClass/studentClass/listClassCourse，elapse=4

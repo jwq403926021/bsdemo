@@ -35,12 +35,16 @@ export default class StudentClassController {
     return sender.doUrl('/admin/CourseClass/studentClass/addClassCourse', 'post', params, axiosOption, httpOption);
   }
 
+  static deleteClassCourse (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/CourseClass/studentClass/deleteClassCourse', 'post', params, axiosOption, httpOption);
+  }
+
   static updateClassCourse (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/studentClass/updateClassCourse', 'post', params, axiosOption, httpOption);
   }
 
-  static deleteClassCourse (sender, params, axiosOption, httpOption) {
-    return sender.doUrl('/admin/CourseClass/studentClass/deleteClassCourse', 'post', params, axiosOption, httpOption);
+  static viewClassCourse (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/CourseClass/studentClass/viewClassCourse', 'get', params, axiosOption, httpOption);
   }
 
   static listClassStudent (sender, params, axiosOption, httpOption) {
@@ -53,10 +57,6 @@ export default class StudentClassController {
 
   static addClassStudent (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/studentClass/addClassStudent', 'post', params, axiosOption, httpOption);
-  }
-
-  static updateClassStudent (sender, params, axiosOption, httpOption) {
-    return sender.doUrl('/admin/CourseClass/studentClass/updateClassStudent', 'post', params, axiosOption, httpOption);
   }
 
   static deleteClassStudent (sender, params, axiosOption, httpOption) {

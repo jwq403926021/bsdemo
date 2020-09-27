@@ -15,8 +15,8 @@ import reactor.core.publisher.Mono;
  * 链路日志后置过虑器。
  * 将整个链路的traceId存储在Response Head中，并返回给前端，便于问题定位。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class ResponseLogFilter implements GlobalFilter, Ordered {

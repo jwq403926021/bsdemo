@@ -17,8 +17,8 @@ import java.util.*;
 /**
  * Controller参数中的排序请求对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @EqualsAndHashCode(callSuper = true)
 @Slf4j

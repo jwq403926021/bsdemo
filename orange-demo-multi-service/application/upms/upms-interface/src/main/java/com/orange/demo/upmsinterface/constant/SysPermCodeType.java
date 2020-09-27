@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * 权限字类型常量对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class SysPermCodeType {
 

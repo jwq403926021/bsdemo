@@ -31,9 +31,9 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formClass.Class.impl.dataList" size="mini" @sort-change="formClass.Class.impl.onSortChange"
+        <el-table :data="formClass.StudentClass.impl.dataList" size="mini" @sort-change="formClass.StudentClass.impl.onSortChange"
           header-cell-class-name="table-header-gray">
-          <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.Class.impl.getTableIndex" />
+          <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.StudentClass.impl.getTableIndex" />
           <el-table-column label="班级名称" prop="className">
           </el-table-column>
           <el-table-column label="所属校区" prop="schoolIdDictMap.name">
@@ -42,16 +42,20 @@
           </el-table-column>
           <el-table-column label="已完成课时" prop="finishClassHour">
           </el-table-column>
-          <el-table-column label="班级创建时间" prop="createTime">
+          <el-table-column label="创建时间" prop="createTime">
             <template slot-scope="scope">
               <span>{{formatDateByStatsType(scope.row.createTime, 'day')}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" fixed="right" min-width="150px">
+          <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button @click="onFormEditClassClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formClass:formClass:formEditClass')">
                 编辑
+              </el-button>
+              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+                :disabled="!checkPermCodeExist('formClass:formClass:delete')">
+                删除
               </el-button>
               <el-button @click="onFormClassStudentClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formClass:formClass:formClassStudent')">
@@ -61,22 +65,18 @@
                 :disabled="!checkPermCodeExist('formClass:formClass:formClassCourse')">
                 课程
               </el-button>
-              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
-                :disabled="!checkPermCodeExist('formClass:formClass:delete')">
-                删除
-              </el-button>
             </template>
           </el-table-column>
         </el-table>
         <el-row type="flex" justify="end" style="margin-top: 10px;">
           <el-pagination
-            :total="formClass.Class.impl.totalCount"
-            :current-page="formClass.Class.impl.currentPage"
-            :page-size="formClass.Class.impl.pageSize"
+            :total="formClass.StudentClass.impl.totalCount"
+            :current-page="formClass.StudentClass.impl.currentPage"
+            :page-size="formClass.StudentClass.impl.pageSize"
             :page-sizes="[10, 20, 50, 100]"
             layout="total, prev, pager, next, sizes"
-            @current-change="formClass.Class.impl.onCurrentPageChange"
-            @size-change="formClass.Class.impl.onPageSizeChange">
+            @current-change="formClass.StudentClass.impl.onCurrentPageChange"
+            @size-change="formClass.StudentClass.impl.onPageSizeChange">
           </el-pagination>
         </el-row>
       </el-col>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+/* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
 /* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
@@ -118,8 +120,8 @@ export default {
         classLevel: {
           impl: new DropdownWidget(this.loadClassLevelDropdownList)
         },
-        Class: {
-          impl: new TableWidget(this.loadClassData, this.loadClassVerify, true, 'createTime', 1)
+        StudentClass: {
+          impl: new TableWidget(this.loadStudentClassData, this.loadStudentClassVerify, true, 'createTime', 1)
         },
         isInit: false
       }
@@ -129,7 +131,7 @@ export default {
     /**
      * 班级数据数据获取函数，返回Primise
      */
-    loadClassData (params) {
+    loadStudentClassData (params) {
       if (params == null) params = {};
       params = {
         ...params,
@@ -153,7 +155,7 @@ export default {
     /**
      * 班级数据数据获取检测函数，返回true正常获取数据，返回false停止获取数据
      */
-    loadClassVerify () {
+    loadStudentClassVerify () {
       this.formClass.formFilterCopy.className = this.formClass.formFilter.className;
       this.formClass.formFilterCopy.schoolId = this.formClass.formFilter.schoolId;
       this.formClass.formFilterCopy.classLevel = this.formClass.formFilter.classLevel;
@@ -200,9 +202,9 @@ export default {
      */
     refreshFormClass (reloadData = false) {
       if (reloadData) {
-        this.formClass.Class.impl.refreshTable(true, 1);
+        this.formClass.StudentClass.impl.refreshTable(true, 1);
       } else {
-        this.formClass.Class.impl.refreshTable();
+        this.formClass.StudentClass.impl.refreshTable();
       }
       if (!this.formClass.isInit) {
         // 初始化下拉数据
@@ -232,7 +234,22 @@ export default {
       this.$dialog.show('编辑', formEditClass, {
         area: ['800px']
       }, params).then(res => {
-        this.formClass.Class.impl.refreshTable();
+        this.formClass.StudentClass.impl.refreshTable();
+      }).catch(e => {});
+    },
+    /**
+     * 删除
+     */
+    onDeleteClick (row) {
+      let params = {
+        classId: row.classId
+      };
+
+      this.$confirm('是否删除此班级？').then(res => {
+        StudentClassController.delete(this, params).then(res => {
+          this.$message.success('删除成功');
+          this.formClass.StudentClass.impl.refreshTable();
+        }).catch(e => {});
       }).catch(e => {});
     },
     /**
@@ -256,21 +273,6 @@ export default {
 
       params.closeVisible = 1;
       this.$router.push({name: 'formClassCourse', query: params});
-    },
-    /**
-     * 删除
-     */
-    onDeleteClick (row) {
-      let params = {
-        classId: row.classId
-      };
-
-      this.$confirm('是否删除此班级？').then(res => {
-        StudentClassController.delete(this, params).then(res => {
-          this.$message.success('删除成功');
-          this.formClass.Class.impl.refreshTable();
-        }).catch(e => {});
-      }).catch(e => {});
     },
     onResume () {
       this.refreshFormClass();

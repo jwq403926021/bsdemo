@@ -36,6 +36,10 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
+              <el-button @click="onFormEditClassCourseOrderClick(scope.row)" type="text" size="mini"
+                :disabled="!checkPermCodeExist('formClassCourse:formClassCourse:formEditClassCourseOrder')">
+                课程顺序
+              </el-button>
               <el-button @click="onDeleteClassCourseClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formClassCourse:formClassCourse:deleteClassCourse')">
                 移除
@@ -64,11 +68,14 @@
 
 <script>
 /* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
+/* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
 import { uploadMixin, statsDateRangeMixin, cachePageMixin, cachedPageChildMixin } from '@/core/mixins';
 /* eslint-disable-next-line */
 import { StudentClassController, DictionaryController } from '@/api';
+import formEditClassCourseOrder from '@/views/generated/formEditClassCourseOrder';
 
 export default {
   name: 'formClassCourse',
@@ -152,6 +159,21 @@ export default {
 
       params.closeVisible = 1;
       this.$router.push({name: 'formSetClassCourse', query: params});
+    },
+    /**
+     * 课程顺序
+     */
+    onFormEditClassCourseOrderClick (row) {
+      let params = {
+        classId: this.classId,
+        courseId: row.courseId
+      };
+
+      this.$dialog.show('课程顺序', formEditClassCourseOrder, {
+        area: ['400px']
+      }, params).then(res => {
+        this.formClassCourse.Course.impl.refreshTable();
+      }).catch(e => {});
     },
     /**
      * 移除

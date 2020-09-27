@@ -37,7 +37,7 @@
     </el-row>
     <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer">
-      <el-button size="mini" type="primary" @click="onCancel(false)" >取消</el-button>
+      <el-button size="mini" type="primary" :plain="true" @click="onCancel(false)" >取消</el-button>
       <el-button type="primary" size="mini" @click="onSubmit"
         :disabled="!(checkPermCodeExist('formSysUser:fragmentSysUser:update') || checkPermCodeExist('formSysUser:fragmentSysUser:add'))">
         确定

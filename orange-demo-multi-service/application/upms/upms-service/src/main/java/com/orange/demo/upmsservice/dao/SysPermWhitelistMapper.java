@@ -6,8 +6,8 @@ import com.orange.demo.upmsservice.model.SysPermWhitelist;
 /**
  * 权限资源白名单数据访问操作接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface SysPermWhitelistMapper extends BaseDaoMapper<SysPermWhitelist> {
 }

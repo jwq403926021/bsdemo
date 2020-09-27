@@ -37,8 +37,8 @@ import java.util.Map;
 /**
  * 全局前处理过滤器。主要用于用户操作权限验证。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class AuthenticationPreFilter implements GlobalFilter, Ordered {
@@ -60,7 +60,6 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
         String url = request.getURI().getPath();
         // 登录请求，直接转发给login验证服务器。
-        // NOTE: 所有不需要登录验证的url，都可以添加在下面。
         if (url.equals(GatewayConstant.ADMIN_LOGIN_URL)) {
             return chain.filter(exchange);
         }
@@ -70,9 +69,8 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
             log.warn("EXPIRED request [{}] from REMOTE-IP [{}].", url, IpUtil.getRemoteIpAddress(request));
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            byte[] responseBody = JSON.toJSONString(
-                    ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
-                            "用户登录已过期，请重新登录！")).getBytes(StandardCharsets.UTF_8);
+            byte[] responseBody = JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
+                    "用户登录已过期，请重新登录！")).getBytes(StandardCharsets.UTF_8);
             return response.writeWith(Flux.just(response.bufferFactory().wrap(responseBody)));
         }
         // 这里判断是否需要定时刷新token
@@ -85,25 +83,22 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
             String sessionId = (String) c.get(GatewayConstant.SESSION_ID_KEY_NAME);
             Map<String, String> userMap = jedis.hgetAll(RedisKeyUtil.makeSessionIdKeyForRedis(sessionId));
             if (userMap == null) {
-                log.warn("UNAUTHORIZED request [{}] from REMOTE-IP [{}] because no sessionId exists in redis."
-                        , url, IpUtil.getRemoteIpAddress(request));
+                log.warn("UNAUTHORIZED request [{}] from REMOTE-IP [{}] because no sessionId exists in redis.",
+                        url, IpUtil.getRemoteIpAddress(request));
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] responseBody = JSON.toJSONString(
-                        ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
-                                "用户会话已失效，请重新登录！")).getBytes(StandardCharsets.UTF_8);
+                byte[] responseBody = JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
+                        "用户会话已失效，请重新登录！")).getBytes(StandardCharsets.UTF_8);
                 return response.writeWith(Flux.just(response.bufferFactory().wrap(responseBody)));
             }
-
             String userId = userMap.get("userId");
             if (StringUtils.isBlank(userId)) {
-                log.warn("UNAUTHORIZED request [{}] from REMOTE-IP [{}] because userId is empty in redis."
-                        , url, IpUtil.getRemoteIpAddress(request));
+                log.warn("UNAUTHORIZED request [{}] from REMOTE-IP [{}] because userId is empty in redis.",
+                        url, IpUtil.getRemoteIpAddress(request));
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] responseBody = JSON.toJSONString(
-                        ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
-                                "用户登录验证信息已过期，请重新登录！")).getBytes(StandardCharsets.UTF_8);
+                byte[] responseBody = JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
+                        "用户登录验证信息已过期，请重新登录！")).getBytes(StandardCharsets.UTF_8);
                 return response.writeWith(Flux.just(response.bufferFactory().wrap(responseBody)));
             }
             boolean isAdmin = false;
@@ -119,16 +114,13 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
             } catch (UnsupportedEncodingException e) {
                 log.error("Failed to call AuthenticationPreFilter.filter.", e);
             }
-            // 对于isAdmin == false的用户，继续查找权限资源信息是否存在
-            if (Boolean.FALSE.equals(isAdmin)
-                    && !this.hasPermission(jedis, sessionId, url)) {
-                log.warn("FORBIDDEN request [{}] from REMOTE-IP [{}] for USER [{} -- {}] no perm!"
-                        , url, IpUtil.getRemoteIpAddress(request), userId, showName);
+            if (Boolean.FALSE.equals(isAdmin) && !this.hasPermission(jedis, sessionId, url)) {
+                log.warn("FORBIDDEN request [{}] from REMOTE-IP [{}] for USER [{} -- {}] no perm!",
+                        url, IpUtil.getRemoteIpAddress(request), userId, showName);
                 response.setStatusCode(HttpStatus.FORBIDDEN);
                 response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] responseBody = JSON.toJSONString(
-                        ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION,
-                                "用户对该URL没有访问权限，请核对！")).getBytes(StandardCharsets.UTF_8);
+                byte[] responseBody = JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION,
+                        "用户对该URL没有访问权限，请核对！")).getBytes(StandardCharsets.UTF_8);
                 return response.writeWith(Flux.just(response.bufferFactory().wrap(responseBody)));
             }
             // 将session中关联的用户信息，添加到当前的Request中。转发后，业务服务可以根据需要自定读取。

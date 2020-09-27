@@ -10,10 +10,6 @@
             <el-option v-for="item in formSetClassStudent.schoolId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="学生姓名">
-          <el-input class="filter-item" v-model="formSetClassStudent.formFilter.searchString"
-            :clearable="true" placeholder="输入学生姓名 / 手机号码模糊查询" />
-        </el-form-item>
         <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSetClassStudent(true)">查询</el-button>
         <el-button slot="operator" type="primary" size="mini" :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSetClassStudent:formSetClassStudent:addClassStudent')"
           @click="onAddClassStudentClick()">
@@ -66,6 +62,8 @@
 
 <script>
 /* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
+/* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
 import { uploadMixin, statsDateRangeMixin, cachePageMixin, cachedPageChildMixin } from '@/core/mixins';
@@ -89,12 +87,10 @@ export default {
       tableSelectRowList: [],
       formSetClassStudent: {
         formFilter: {
-          schoolId: undefined,
-          searchString: undefined
+          schoolId: undefined
         },
         formFilterCopy: {
-          schoolId: undefined,
-          searchString: undefined
+          schoolId: undefined
         },
         schoolId: {
           impl: new DropdownWidget(this.loadSchoolIdDropdownList)
@@ -123,8 +119,7 @@ export default {
       params = {
         ...params,
         studentFilter: {
-          schoolId: this.formSetClassStudent.formFilterCopy.schoolId,
-          searchString: this.formSetClassStudent.formFilterCopy.searchString
+          schoolId: this.formSetClassStudent.formFilterCopy.schoolId
         },
         classId: this.classId
       }
@@ -144,7 +139,6 @@ export default {
      */
     loadStudentVerify () {
       this.formSetClassStudent.formFilterCopy.schoolId = this.formSetClassStudent.formFilter.schoolId;
-      this.formSetClassStudent.formFilterCopy.searchString = this.formSetClassStudent.formFilter.searchString;
       return true;
     },
     /**

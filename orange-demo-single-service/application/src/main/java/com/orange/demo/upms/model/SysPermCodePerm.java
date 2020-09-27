@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 权限字与权限资源关联实体对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_sys_perm_code_perm")

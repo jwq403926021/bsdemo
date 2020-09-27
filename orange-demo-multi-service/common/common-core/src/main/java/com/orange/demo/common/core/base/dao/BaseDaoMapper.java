@@ -13,8 +13,8 @@ import java.util.Map;
  * 数据访问对象的基类。
  *
  * @param <M> 主Model实体对象。
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @RegisterMapper
 public interface BaseDaoMapper<M> extends Mapper<M>, InsertListMapper<M> {

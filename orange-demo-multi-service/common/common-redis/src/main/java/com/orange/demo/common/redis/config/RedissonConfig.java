@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
  * Redisson配置类。和Jedis一样都是Redis客户端，但是Redisson提供了更多的数据结构抽象。
  * 这里我们只是使用了Redisson的分布式锁，以及map等数据结构作为字典缓存使用。更多用法请参考其文档。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Configuration
 @ConditionalOnProperty(name = "redis.redisson.enabled", havingValue = "true")

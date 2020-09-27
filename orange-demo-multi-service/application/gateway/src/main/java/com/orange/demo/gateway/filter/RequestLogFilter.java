@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
  * 链路日志前置过虑器。
  * 为整个链路生成唯一的traceId，并存储在Request Head中。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class RequestLogFilter implements GlobalFilter, Ordered {

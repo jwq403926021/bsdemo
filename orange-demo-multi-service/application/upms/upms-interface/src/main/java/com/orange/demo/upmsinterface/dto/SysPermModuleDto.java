@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * 权限资源模块Dto。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class SysPermModuleDto {

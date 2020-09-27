@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 /**
  * 主要用于标记逻辑删除字段。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -16,8 +16,8 @@ import java.util.Map;
 /**
  * StudentDto对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class StudentDto {
@@ -81,13 +81,13 @@ public class StudentDto {
     /**
      * 总共充值学币数量。
      */
-    @NotNull(message = "数据验证失败，充值学币不能为空！")
+    @NotNull(message = "数据验证失败，充值学币不能为空！", groups = {UpdateGroup.class})
     private Integer totalCoin;
 
     /**
      * 可用学币数量。
      */
-    @NotNull(message = "数据验证失败，剩余学币不能为空！")
+    @NotNull(message = "数据验证失败，剩余学币不能为空！", groups = {UpdateGroup.class})
     private Integer leftCoin;
 
     /**
@@ -110,7 +110,7 @@ public class StudentDto {
     /**
      * 学生状态 (0: 正常 1: 锁定 2: 注销)。
      */
-    @NotNull(message = "数据验证失败，状态 不能为空！")
+    @NotNull(message = "数据验证失败，状态 不能为空！", groups = {UpdateGroup.class})
     @ConstDictRef(constDictClass = StudentStatus.class, message = "数据验证失败，状态 为无效值！")
     private Integer status;
 

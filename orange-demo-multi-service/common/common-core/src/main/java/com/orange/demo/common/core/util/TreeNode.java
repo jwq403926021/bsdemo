@@ -14,8 +14,8 @@ import java.util.function.Function;
  * @param <T> 对象类型。
  * @param <K> 节点之间关联键的类型。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class TreeNode<T, K> {

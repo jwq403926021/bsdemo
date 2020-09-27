@@ -22,8 +22,8 @@ import java.util.*;
 /**
  * 班级数据数据操作服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class StudentClassService extends BaseService<StudentClass, StudentClassDto, Long> {
@@ -80,6 +80,7 @@ public class StudentClassService extends BaseService<StudentClass, StudentClassD
         studentClass.setCreateUserId(originalStudentClass.getCreateUserId());
         studentClass.setCreateTime(originalStudentClass.getCreateTime());
         studentClass.setStatus(GlobalDeletedFlag.NORMAL);
+        // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         return studentClassMapper.updateByPrimaryKey(studentClass) == 1;
     }
 
@@ -179,10 +180,47 @@ public class StudentClassService extends BaseService<StudentClass, StudentClassD
      * 批量添加多对多关联关系。
      *
      * @param classCourseList 多对多关联表对象集合。
+     * @param classId 主表Id。
      */
     @Transactional(rollbackFor = Exception.class)
-    public void addClassCourseList(List<ClassCourse> classCourseList) {
-        studentClassMapper.addClassCourseList(classCourseList);
+    public void addClassCourseList(List<ClassCourse> classCourseList, Long classId) {
+        for (ClassCourse classCourse : classCourseList) {
+            classCourse.setClassId(classId);
+            if (classCourse.getCourseOrder() == null) {
+                classCourse.setCourseOrder(0);
+            }
+        }
+        classCourseMapper.insertList(classCourseList);
+    }
+
+    /**
+     * 更新中间表数据。
+     *
+     * @param classCourse 中间表对象。
+     * @return 更新成功与否。
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateClassCourse(ClassCourse classCourse) {
+        Example e = new Example(ClassCourse.class);
+        e.createCriteria()
+                .andEqualTo("classId", classCourse.getClassId())
+                .andEqualTo("courseId", classCourse.getCourseId());
+        return classCourseMapper.updateByExample(classCourse, e) > 0;
+    }
+
+    /**
+     * 获取中间表数据。
+     *
+     * @param classId 主表Id。
+     * @param courseId 从表Id。
+     * @return 中间表对象。
+     */
+    public ClassCourse getClassCourse(Long classId, Long courseId) {
+        Example e = new Example(ClassCourse.class);
+        e.createCriteria()
+                .andEqualTo("classId", classId)
+                .andEqualTo("courseId", courseId);
+        return classCourseMapper.selectOneByExample(e);
     }
 
     /**
@@ -204,10 +242,14 @@ public class StudentClassService extends BaseService<StudentClass, StudentClassD
      * 批量添加多对多关联关系。
      *
      * @param classStudentList 多对多关联表对象集合。
+     * @param classId 主表Id。
      */
     @Transactional(rollbackFor = Exception.class)
-    public void addClassStudentList(List<ClassStudent> classStudentList) {
-        studentClassMapper.addClassStudentList(classStudentList);
+    public void addClassStudentList(List<ClassStudent> classStudentList, Long classId) {
+        for (ClassStudent classStudent : classStudentList) {
+            classStudent.setClassId(classId);
+        }
+        classStudentMapper.insertList(classStudentList);
     }
 
     /**

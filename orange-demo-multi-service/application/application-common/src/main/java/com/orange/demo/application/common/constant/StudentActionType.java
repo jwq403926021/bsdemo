@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * 学生行为常量字典对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class StudentActionType {
 

@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  * @param <M> 主Model实体对象类型。
  * @param <D> 主DomainDto域对象类型。
  * @param <K> 主键类型。
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public abstract class BaseController<M, D, K> {

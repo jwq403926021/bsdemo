@@ -19,7 +19,7 @@
           </el-table-column>
           <el-table-column label="所属校区" prop="schoolIdDictMap.name">
           </el-table-column>
-          <el-table-column label="年级" prop="gradeIdDictMap.name">
+          <el-table-column label="所属年级" prop="gradeIdDictMap.name">
           </el-table-column>
           <el-table-column label="经验等级" prop="experienceLevelDictMap.name">
           </el-table-column>
@@ -50,6 +50,9 @@
         </el-row>
       </el-col>
     </el-row>
+    <label v-if="closeVisible == '1'" class="page-close-box">
+      <el-button type="text" @click="onCancel(true)" icon="el-icon-close" />
+    </label>
   </div>
 </template>
 
@@ -59,7 +62,7 @@ import rules from '@/utils/validate.js';
 /* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
-import { uploadMixin, statsDateRangeMixin, cachePageMixin } from '@/core/mixins';
+import { uploadMixin, statsDateRangeMixin, cachePageMixin, cachedPageChildMixin } from '@/core/mixins';
 /* eslint-disable-next-line */
 import { StudentClassController, DictionaryController } from '@/api';
 
@@ -68,9 +71,13 @@ export default {
   props: {
     classId: {
       default: undefined
+    },
+    closeVisible: {
+      type: [Number, String],
+      default: 0
     }
   },
-  mixins: [uploadMixin, statsDateRangeMixin, cachePageMixin],
+  mixins: [uploadMixin, statsDateRangeMixin, cachePageMixin, cachedPageChildMixin],
   data () {
     return {
       formClassStudent: {
@@ -86,6 +93,11 @@ export default {
     }
   },
   methods: {
+    onCancel (isSuccess) {
+      this.removeCachePage(this.$options.name);
+      this.refreshParentCachedPage = isSuccess;
+      this.$router.go(-1);
+    },
     /**
      * 班级学生数据获取函数，返回Primise
      */
@@ -146,7 +158,7 @@ export default {
         studentId: row.studentId
       };
 
-      this.$confirm('是否从班级中移除此学生？').then(res => {
+      this.$confirm('是否从课程中移除此学生？').then(res => {
         StudentClassController.deleteClassStudent(this, params).then(res => {
           this.$message.success('移除成功');
           this.formClassStudent.Student.impl.refreshTable();

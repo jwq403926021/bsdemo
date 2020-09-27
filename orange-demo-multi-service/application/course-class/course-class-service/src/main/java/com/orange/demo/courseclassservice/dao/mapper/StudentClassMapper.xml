@@ -56,18 +56,4 @@
             <include refid="filterRef"/>
         </where>
     </select>
-
-    <insert id="addClassCourseList">
-        REPLACE INTO zz_class_course(class_id, course_id) VALUES
-        <foreach collection="list" index="index" item="item" separator=",">
-            (#{item.classId}, #{item.courseId})
-        </foreach>
-    </insert>
-
-    <insert id="addClassStudentList">
-        REPLACE INTO zz_class_student(class_id, student_id) VALUES
-        <foreach collection="list" index="index" item="item" separator=",">
-            (#{item.classId}, #{item.studentId})
-        </foreach>
-    </insert>
 </mapper>

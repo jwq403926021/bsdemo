@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 /**
  * 班级数据操作控制器类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 @RestController
@@ -245,35 +245,73 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * 批量添加班级数据和 [课程数据] 对象的多对多关联关系数据。
      *
      * @param classId 主表主键Id。
-     * @param classCourseList 关联对象列表。
+     * @param classCourseDtoList 关联对象列表。
      * @return 应答结果对象。
      */
     @PostMapping("/addClassCourse")
     public ResponseResult<Void> addClassCourse(
             @MyRequestBody Long classId,
-            @MyRequestBody(elementType = ClassCourse.class) List<ClassCourse> classCourseList) {
-        if (MyCommonUtil.existBlankArgument(classId, classCourseList)) {
+            @MyRequestBody(value = "classCourseList", elementType = ClassCourseDto.class) List<ClassCourseDto> classCourseDtoList) {
+        if (MyCommonUtil.existBlankArgument(classId, classCourseDtoList)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        for (ClassCourse classCourse : classCourseList) {
-            // NOTE: 如果中间表 [ClassCourse] 除了两个关联主键之外还包括其他NotNull或NotBlank字段，
-            // 请在执行下面验证之前手动赋值缺省值。如果没有此种情况，请忽略并删除该TODO注释。
-            // 如：classCourse.setCourseOrder(0) 或 classCourse.setStarCourse(false)等。
-            classCourse.setClassId(classId);
-            classCourse.setCourseOrder(0);
+        for (ClassCourseDto classCourse : classCourseDtoList) {
             String errorMessage = MyCommonUtil.getModelValidationError(classCourse);
             if (errorMessage != null) {
                 return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
             }
         }
         Set<Long> courseIdSet =
-                classCourseList.stream().map(ClassCourse::getCourseId).collect(Collectors.toSet());
+                classCourseDtoList.stream().map(ClassCourseDto::getCourseId).collect(Collectors.toSet());
         if (!studentClassService.existId(classId)
                 || !courseService.existUniqueKeyList("courseId", courseIdSet)) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_RELATED_RECORD_ID);
         }
-        studentClassService.addClassCourseList(classCourseList);
+        List<ClassCourse> classCourseList =
+                MyModelUtil.copyCollectionTo(classCourseDtoList, ClassCourse.class);
+        studentClassService.addClassCourseList(classCourseList, classId);
         return ResponseResult.success();
+    }
+
+    /**
+     * 更新指定班级数据和指定 [课程数据] 的多对多关联数据。
+     *
+     * @param classCourseDto 对多对中间表对象。
+     * @return 应答结果对象。
+     */
+    @PostMapping("/updateClassCourse")
+    public ResponseResult<Void> updateClassCourse(
+            @MyRequestBody("classCourse") ClassCourseDto classCourseDto) {
+        String errorMessage = MyCommonUtil.getModelValidationError(classCourseDto);
+        if (errorMessage != null) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
+        }
+        ClassCourse classCourse = MyModelUtil.copyTo(classCourseDto, ClassCourse.class);
+        if (!studentClassService.updateClassCourse(classCourse)) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+        }
+        return ResponseResult.success();
+    }
+
+    /**
+     * 显示班级数据和指定 [课程数据] 的多对多关联详情数据。
+     *
+     * @param classId 主表主键Id。
+     * @param courseId 从表主键Id。
+     * @return 应答结果对象，包括中间表详情。
+     */
+    @GetMapping("/viewClassCourse")
+    public ResponseResult<ClassCourseDto> viewClassCourse(
+            @RequestParam Long classId, @RequestParam Long courseId) {
+        if (MyCommonUtil.existBlankArgument(classId, courseId)) {
+            return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
+        }
+        ClassCourse classCourse = studentClassService.getClassCourse(classId, courseId);
+        if (classCourse == null) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+        }
+        ClassCourseDto classCourseDto = MyModelUtil.copyTo(classCourse, ClassCourseDto.class);
+        return ResponseResult.success(classCourseDto);
     }
 
     /**
@@ -364,33 +402,31 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * 批量添加班级数据和 [学生数据] 对象的多对多关联关系数据。
      *
      * @param classId 主表主键Id。
-     * @param classStudentList 关联对象列表。
+     * @param classStudentDtoList 关联对象列表。
      * @return 应答结果对象。
      */
     @PostMapping("/addClassStudent")
     public ResponseResult<Void> addClassStudent(
             @MyRequestBody Long classId,
-            @MyRequestBody(elementType = ClassStudent.class) List<ClassStudent> classStudentList) {
-        if (MyCommonUtil.existBlankArgument(classId, classStudentList)) {
+            @MyRequestBody(value = "classStudentList", elementType = ClassStudentDto.class) List<ClassStudentDto> classStudentDtoList) {
+        if (MyCommonUtil.existBlankArgument(classId, classStudentDtoList)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        for (ClassStudent classStudent : classStudentList) {
-            // NOTE: 如果中间表 [ClassCourse] 除了两个关联主键之外还包括其他NotNull或NotBlank字段，
-            // 请在执行下面验证之前手动赋值缺省值。如果没有此种情况，请忽略并删除该TODO注释。
-            // 如：classCourse.setCourseOrder(0) 或 classCourse.setStarCourse(false)等。
-            classStudent.setClassId(classId);
+        for (ClassStudentDto classStudent : classStudentDtoList) {
             String errorMessage = MyCommonUtil.getModelValidationError(classStudent);
             if (errorMessage != null) {
                 return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
             }
         }
         Set<Long> studentIdSet =
-                classStudentList.stream().map(ClassStudent::getStudentId).collect(Collectors.toSet());
+                classStudentDtoList.stream().map(ClassStudentDto::getStudentId).collect(Collectors.toSet());
         if (!studentClassService.existId(classId)
                 || !studentService.existUniqueKeyList("studentId", studentIdSet)) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_RELATED_RECORD_ID);
         }
-        studentClassService.addClassStudentList(classStudentList);
+        List<ClassStudent> classStudentList =
+                MyModelUtil.copyCollectionTo(classStudentDtoList, ClassStudent.class);
+        studentClassService.addClassStudentList(classStudentList, classId);
         return ResponseResult.success();
     }
 

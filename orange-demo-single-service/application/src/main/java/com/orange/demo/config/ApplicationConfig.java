@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * 应用程序自定义的程序属性配置文件。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @Configuration

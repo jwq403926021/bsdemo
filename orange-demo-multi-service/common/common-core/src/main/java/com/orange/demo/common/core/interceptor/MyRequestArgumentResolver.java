@@ -28,8 +28,8 @@ import java.util.*;
  * 1、单个字符串等包装类型都要写一个对象才可以用@RequestBody接收；
  * 2、多个对象需要封装到一个对象里才可以用@RequestBody接收。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public class MyRequestArgumentResolver implements HandlerMethodArgumentResolver {
 

@@ -7,8 +7,8 @@ import lombok.Data;
  * 实体对象数据组装参数构建器。
  * BaseService中的实体对象数据组装函数，会根据该参数对象进行数据组装。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @Builder

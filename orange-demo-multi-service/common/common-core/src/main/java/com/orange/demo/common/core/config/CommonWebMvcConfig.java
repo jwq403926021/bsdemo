@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * 所有的项目拦截器、参数解析器、消息对象转换器都在这里集中配置。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Configuration
 public class CommonWebMvcConfig implements WebMvcConfigurer {

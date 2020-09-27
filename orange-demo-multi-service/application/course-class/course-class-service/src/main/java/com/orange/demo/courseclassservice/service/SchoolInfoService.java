@@ -19,8 +19,8 @@ import java.util.*;
 /**
  * 校区数据数据操作服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class SchoolInfoService extends BaseService<SchoolInfo, SchoolInfoDto, Long> {
@@ -64,6 +64,7 @@ public class SchoolInfoService extends BaseService<SchoolInfo, SchoolInfoDto, Lo
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean update(SchoolInfo schoolInfo, SchoolInfo originalSchoolInfo) {
+        // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         return schoolInfoMapper.updateByPrimaryKey(schoolInfo) == 1;
     }
 

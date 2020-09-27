@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * 菜单实体对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_sys_menu")

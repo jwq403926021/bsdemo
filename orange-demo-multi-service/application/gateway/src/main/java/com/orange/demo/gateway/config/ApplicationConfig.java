@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 网关业务配置类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @RefreshScope

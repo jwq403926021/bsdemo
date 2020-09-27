@@ -3,8 +3,8 @@ package com.orange.demo.common.core.object;
 /**
  * 哑元对象，主要用于注解中的缺省对象占位符。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class DummyClass {
 

@@ -9,8 +9,8 @@ import java.util.*;
 /**
  * 学生数据数据操作访问接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface StudentMapper extends BaseDaoMapper<Student> {
 

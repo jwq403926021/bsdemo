@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Spring 系统启动应用感知对象，主要用于获取Spring Bean的上下文对象，后续的代码中可以直接查找系统中加载的Bean对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Component
 public class ApplicationContextHolder implements ApplicationContextAware {

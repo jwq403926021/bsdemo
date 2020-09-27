@@ -5,8 +5,8 @@ package com.orange.demo.common.core.util;
  * 主要目标是，尽量保证日志输出的统一性，同时也可以有效减少与日志信息相关的常量字符串，
  * 提高代码的规范度和可维护性。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public class LogMessageUtil {
 

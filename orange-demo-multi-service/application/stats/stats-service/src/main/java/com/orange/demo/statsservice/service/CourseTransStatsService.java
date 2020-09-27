@@ -16,8 +16,8 @@ import java.util.*;
 /**
  * 课程统计数据操作服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class CourseTransStatsService extends BaseService<CourseTransStats, CourseTransStatsDto, Long> {

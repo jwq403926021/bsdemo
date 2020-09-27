@@ -7,8 +7,8 @@ import java.util.List;
  * 由于没有实际的数据转换，因此同时保证了代码统一和执行效率。
  *
  * @param <M> 数据类型。
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public class DummyModelMapper<M> implements BaseModelMapper<M, M> {
 

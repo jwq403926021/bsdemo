@@ -29,7 +29,7 @@ import java.util.*;
  * 2、多个对象需要封装到一个对象里才可以用@RequestBody接收。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 public class MyRequestArgumentResolver implements HandlerMethodArgumentResolver {
 

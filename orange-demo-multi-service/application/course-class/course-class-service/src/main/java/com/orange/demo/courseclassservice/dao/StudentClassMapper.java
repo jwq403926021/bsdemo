@@ -2,8 +2,6 @@ package com.orange.demo.courseclassservice.dao;
 
 import com.orange.demo.common.core.base.dao.BaseDaoMapper;
 import com.orange.demo.courseclassservice.model.StudentClass;
-import com.orange.demo.courseclassservice.model.ClassCourse;
-import com.orange.demo.courseclassservice.model.ClassStudent;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.*;
@@ -11,8 +9,8 @@ import java.util.*;
 /**
  * 班级数据数据操作访问接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface StudentClassMapper extends BaseDaoMapper<StudentClass> {
 
@@ -43,18 +41,4 @@ public interface StudentClassMapper extends BaseDaoMapper<StudentClass> {
             @Param("inFilterColumn") String inFilterColumn,
             @Param("inFilterValues") Set<M> inFilterValues,
             @Param("studentClassFilter") StudentClass studentClassFilter);
-
-    /**
-     * 插入一组关联关系数据。
-     *
-     * @param classCourseList 关联关系数据项列表。
-     */
-    void addClassCourseList(List<ClassCourse> classCourseList);
-
-    /**
-     * 插入一组关联关系数据。
-     *
-     * @param classStudentList 关联关系数据项列表。
-     */
-    void addClassStudentList(List<ClassStudent> classStudentList);
 }

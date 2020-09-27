@@ -3,7 +3,7 @@ server:
 
 application:
   # Jwt令牌加密的签名值。
-  tokenSigningKey: OrangeDemo
+  tokenSigningKey: OrangeMultiDemo
   # Jwt令牌在Http Header中的键名称。
   tokenHeaderKey: Authorization
   # Jwt令牌刷新后在Http Header中的键名称。

@@ -27,7 +27,7 @@
           </el-table-column>
           <el-table-column label="手机号码" prop="loginMobile">
           </el-table-column>
-          <el-table-column label="年级" prop="gradeIdDictMap.name">
+          <el-table-column label="所属年级" prop="gradeIdDictMap.name">
           </el-table-column>
           <el-table-column label="所属校区" prop="schoolIdDictMap.name">
           </el-table-column>

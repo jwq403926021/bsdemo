@@ -98,9 +98,9 @@
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini" :disabled="!checkPermCodeExist('formCreateStudent:formCreateStudent:update')"
-              @click="onUpdateClick()">
-              保存
+            <el-button type="primary" size="mini" :disabled="!checkPermCodeExist('formCreateStudent:formCreateStudent:add')"
+              @click="onAddClick()">
+              新增
             </el-button>
           </el-row>
         </el-col>
@@ -137,8 +137,8 @@ export default {
           gender: undefined,
           birthday: undefined,
           experienceLevel: undefined,
-          totalCoin: 0,
-          leftCoin: 0,
+          totalCoin: undefined,
+          leftCoin: undefined,
           gradeId: undefined,
           schoolId: undefined,
           registerTime: undefined,
@@ -385,9 +385,9 @@ export default {
       this.formCreateStudent.isInit = true;
     },
     /**
-     * 保存
+     * 新增
      */
-    onUpdateClick () {
+    onAddClick () {
       this.$refs.formCreateStudent.validate((valid) => {
         if (!valid) return;
         let params = {
@@ -404,12 +404,12 @@ export default {
             leftCoin: this.formData.Student.leftCoin,
             gradeId: this.formData.Student.gradeId,
             schoolId: this.formData.Student.schoolId,
-            status: this.StudentStatus.NORMAL
+            status: this.formData.Student.status
           }
         };
 
         StudentController.add(this, params).then(res => {
-          this.$message.success('保存成功');
+          this.$message.success('新增成功');
           this.onCancel(true);
         }).catch(e => {});
       });

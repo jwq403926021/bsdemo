@@ -24,7 +24,7 @@ import java.util.Map;
  * StudentActionTrans实体对象。
  *
  * @author Jerry
- * @date 2020-08-13
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_student_action_trans")

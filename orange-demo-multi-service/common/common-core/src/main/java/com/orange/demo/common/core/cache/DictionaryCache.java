@@ -8,8 +8,8 @@ import java.util.Set;
  *
  * @param <K> 字典表主键类型。
  * @param <V> 字典表对象类型。
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface DictionaryCache<K, V> {
 

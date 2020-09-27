@@ -7,7 +7,7 @@ import com.orange.demo.app.model.AreaCode;
  * 行政区划数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 public interface AreaCodeMapper extends BaseDaoMapper<AreaCode> {
 }

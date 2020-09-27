@@ -138,7 +138,7 @@ export default {
           birthday: undefined,
           experienceLevel: undefined,
           totalCoin: undefined,
-          leftCoin: 0,
+          leftCoin: undefined,
           gradeId: undefined,
           schoolId: undefined,
           registerTime: undefined,

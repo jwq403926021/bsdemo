@@ -43,6 +43,10 @@ export default class StudentClassController {
     return sender.doUrl('/admin/app/studentClass/updateClassCourse', 'post', params, axiosOption, httpOption);
   }
 
+  static viewClassCourse (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/app/studentClass/viewClassCourse', 'get', params, axiosOption, httpOption);
+  }
+
   static listClassStudent (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/app/studentClass/listClassStudent', 'post', params, axiosOption, httpOption);
   }
@@ -57,9 +61,5 @@ export default class StudentClassController {
 
   static deleteClassStudent (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/app/studentClass/deleteClassStudent', 'post', params, axiosOption, httpOption);
-  }
-
-  static updateClassStudent (sender, params, axiosOption, httpOption) {
-    return sender.doUrl('/admin/app/studentClass/updateClassStudent', 'post', params, axiosOption, httpOption);
   }
 }

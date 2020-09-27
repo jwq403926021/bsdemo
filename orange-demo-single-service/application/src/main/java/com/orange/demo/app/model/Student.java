@@ -18,7 +18,7 @@ import java.util.Map;
  * Student实体对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_student")
@@ -98,7 +98,7 @@ public class Student {
     /**
      * 可用学币数量。
      */
-    @NotNull(message = "数据验证失败，剩余学币不能为空！")
+    @NotNull(message = "数据验证失败，剩余学币不能为空！", groups = {UpdateGroup.class})
     @Column(name = "left_coin")
     private Integer leftCoin;
 

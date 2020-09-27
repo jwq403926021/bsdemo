@@ -10,7 +10,7 @@ import java.util.*;
  * 校区数据数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 public interface SchoolInfoMapper extends BaseDaoMapper<SchoolInfo> {
 

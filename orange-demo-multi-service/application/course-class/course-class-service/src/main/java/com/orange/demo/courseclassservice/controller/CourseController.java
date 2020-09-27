@@ -15,6 +15,7 @@ import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.orange.demo.common.redis.cache.SessionCacheHelper;
 import com.orange.demo.courseclassservice.config.ApplicationConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ import java.util.*;
 /**
  * 课程数据操作控制器类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 @RestController
@@ -41,6 +42,8 @@ public class CourseController extends BaseController<Course, CourseDto, Long> {
     private CourseService courseService;
     @Autowired
     private ApplicationConfig appConfig;
+    @Autowired
+    private SessionCacheHelper cacheHelper;
 
     @Override
     protected BaseService<Course, CourseDto, Long> service() {
@@ -191,31 +194,39 @@ public class CourseController extends BaseController<Course, CourseDto, Long> {
      */
     @GetMapping("/download")
     public void download(
-            @RequestParam Long courseId,
+            @RequestParam(required = false) Long courseId,
             @RequestParam String fieldName,
             @RequestParam String filename,
             @RequestParam Boolean asImage,
             HttpServletResponse response) {
-        if (MyCommonUtil.existBlankArgument(courseId, fieldName, filename, asImage)) {
+        if (MyCommonUtil.existBlankArgument(fieldName, filename, asImage)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         // 使用try来捕获异常，是为了保证一旦出现异常可以返回500的错误状态，便于调试。
         // 否则有可能给前端返回的是200的错误码。
         try {
-            Course course = courseService.getById(courseId);
-            if (course == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-            String fieldJsonData = (String) ReflectUtil.getFieldValue(course, fieldName);
-            if (fieldJsonData == null) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
-            if (!UpDownloadUtil.containFile(fieldJsonData, filename)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                return;
+            // 如果请求参数中没有包含主键Id，就判断该文件是否为当前session上传的。
+            if (courseId == null) {
+                if (!cacheHelper.existSessionUploadFile(filename)) {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+            } else {
+                Course course = courseService.getById(courseId);
+                if (course == null) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    return;
+                }
+                String fieldJsonData = (String) ReflectUtil.getFieldValue(course, fieldName);
+                if (fieldJsonData == null) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
+                if (!UpDownloadUtil.containFile(fieldJsonData, filename)) {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
             }
             UpDownloadUtil.doDownload(appConfig.getUploadFileBaseDir(),
                     Course.class.getSimpleName(), fieldName, filename, asImage, response);
@@ -240,8 +251,11 @@ public class CourseController extends BaseController<Course, CourseDto, Long> {
             @RequestParam Boolean asImage,
             @RequestParam("uploadFile") MultipartFile uploadFile,
             HttpServletResponse response) throws IOException {
-        UpDownloadUtil.doUpload(appConfig.getUploadFileBaseDir(), appConfig.getServiceContextPath(),
+        String filename = UpDownloadUtil.doUpload(appConfig.getUploadFileBaseDir(), appConfig.getServiceContextPath(),
                 Course.class.getSimpleName(), fieldName, asImage, uploadFile, response);
+        if (filename != null) {
+            cacheHelper.putSessionUploadFile(filename);
+        }
     }
 
     /**

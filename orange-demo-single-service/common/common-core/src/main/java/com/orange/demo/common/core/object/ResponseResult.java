@@ -7,7 +7,7 @@ import lombok.Data;
  * 接口返回对象
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 public class ResponseResult<T> {

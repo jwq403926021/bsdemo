@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  * 这里主要配置Web的各种过滤器和监听器等Servlet容器组件。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Configuration
 public class FilterConfig {

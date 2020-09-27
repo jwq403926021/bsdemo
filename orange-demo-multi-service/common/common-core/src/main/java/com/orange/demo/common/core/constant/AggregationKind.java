@@ -3,8 +3,8 @@ package com.orange.demo.common.core.constant;
 /**
  * 在跨服务调用时，需要传递的聚合分类常量对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class AggregationKind {
 

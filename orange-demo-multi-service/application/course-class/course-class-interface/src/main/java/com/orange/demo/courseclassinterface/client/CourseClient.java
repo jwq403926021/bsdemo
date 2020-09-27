@@ -16,8 +16,8 @@ import java.util.*;
 /**
  * 课程数据服务远程数据操作访问接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @FeignClient(
         name = "course-class",

@@ -23,8 +23,8 @@ import java.util.Objects;
 /**
  * 上传或下载附件文件的工具类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 public class UpDownloadUtil {
@@ -87,9 +87,10 @@ public class UpDownloadUtil {
      * @param uploadFile         Http请求中上传的文件对象。
      * @param asImage            是否为图片对象。图片是无需权限验证的，因此和附件存放在不同的子目录。
      * @param response           Http 应答对象。
+     * @return 存储在本地上传文件名。
      * @throws IOException 文件操作错误。
      */
-    public static void doUpload(
+    public static String doUpload(
             String rootBaseDir,
             String serviceContextPath,
             String modelName,
@@ -102,7 +103,7 @@ public class UpDownloadUtil {
         if (Objects.isNull(uploadFile) || uploadFile.isEmpty() || MyCommonUtil.isBlankOrNull(fieldName)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             out.print(JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FILE_ARGUMENT)));
-            return;
+            return null;
         }
         StringBuilder uploadPathBuilder = new StringBuilder(128);
         uploadPathBuilder.append(rootBaseDir).append("/");
@@ -137,11 +138,12 @@ public class UpDownloadUtil {
             log.error("Failed to write uploaded file [" + uploadFile.getOriginalFilename() + " ].", e);
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             out.print(JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FILE_IOERROR)));
-            return;
+            return null;
         }
         out.print(JSON.toJSONString(ResponseResult.success(fileInfo)));
         out.flush();
         out.close();
+        return fileInfo.filename;
     }
 
     /**

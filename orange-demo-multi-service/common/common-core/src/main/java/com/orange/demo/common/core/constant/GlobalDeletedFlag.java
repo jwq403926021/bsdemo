@@ -3,8 +3,8 @@ package com.orange.demo.common.core.constant;
 /**
  * 数据记录逻辑删除标记常量。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class GlobalDeletedFlag {
 

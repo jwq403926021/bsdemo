@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 /**
  * 无效的类对象字段的自定义异常。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

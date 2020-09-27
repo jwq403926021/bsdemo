@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * 权限资源模块管理接口控制器类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 @RestController

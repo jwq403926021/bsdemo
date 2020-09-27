@@ -13,8 +13,8 @@ import javax.sql.DataSource;
 /**
  * 数据源配置Bean对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Configuration
 @EnableTransactionManagement

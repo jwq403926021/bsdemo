@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * 聚合计算的常量类型对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public final class AggregationType {
 

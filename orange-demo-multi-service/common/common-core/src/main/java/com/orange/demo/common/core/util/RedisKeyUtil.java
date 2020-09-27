@@ -3,8 +3,8 @@ package com.orange.demo.common.core.util;
 /**
  * Redis 键生成工具类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public class RedisKeyUtil {
 

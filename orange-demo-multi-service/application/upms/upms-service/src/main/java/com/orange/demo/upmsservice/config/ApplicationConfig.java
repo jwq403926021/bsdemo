@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
  * 应用程序自定义的程序属性配置文件。
  * NOTE: 和multiDataSource相关的配置没有包含进来，因为涉及到条件属性，所以由其相关的配置对象自己处理。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 @RefreshScope

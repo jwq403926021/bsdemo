@@ -7,7 +7,7 @@ import java.util.Map;
  * 班级级别常量字典对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 public final class ClassLevel {
 

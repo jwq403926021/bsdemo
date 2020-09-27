@@ -17,7 +17,7 @@ import java.util.List;
  * 菜单实体对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_sys_menu")

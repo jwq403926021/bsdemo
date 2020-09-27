@@ -9,8 +9,8 @@ import javax.validation.constraints.*;
 /**
  * GradeDto对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Data
 public class GradeDto {
@@ -26,10 +26,4 @@ public class GradeDto {
      */
     @NotBlank(message = "数据验证失败，年级名称不能为空！")
     private String gradeName;
-
-    /**
-     * 是否正在使用（0：不是，1：是）。
-     */
-    @NotNull(message = "数据验证失败，是否正在使用（0：不是，1：是）不能为空！")
-    private Integer status;
 }

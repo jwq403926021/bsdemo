@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
  *
  * @param <D> Domain域对象类型。
  * @param <M> Model实体对象类型。
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface BaseModelMapper<D, M> {
 

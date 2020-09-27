@@ -10,9 +10,9 @@
             <el-option v-for="item in formSetClassCourse.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属科目">
+        <el-form-item label="所属学科">
           <el-select class="filter-item" v-model="formSetClassCourse.formFilter.subjectId" :clearable="true" filterable
-            placeholder="所属科目" :loading="formSetClassCourse.subjectId.impl.loading"
+            placeholder="所属学科" :loading="formSetClassCourse.subjectId.impl.loading"
             @visible-change="formSetClassCourse.subjectId.impl.onVisibleChange"
             @change="onSubjectIdValueChange">
             <el-option v-for="item in formSetClassCourse.subjectId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+/* eslint-disable-next-line */
+import rules from '@/utils/validate.js';
 /* eslint-disable-next-line */
 import { DropdownWidget, TableWidget, UploadWidget, ChartWidget } from '@/utils/widget.js';
 /* eslint-disable-next-line */
@@ -196,7 +198,7 @@ export default {
     onGradeIdValueChange (value) {
     },
     /**
-     * 所属科目下拉数据获取函数
+     * 所属学科下拉数据获取函数
      */
     loadSubjectIdDropdownList () {
       return new Promise((resolve, reject) => {
@@ -209,7 +211,7 @@ export default {
       });
     },
     /**
-     * 所属科目选中值改变
+     * 所属学科选中值改变
      */
     onSubjectIdValueChange (value) {
     },

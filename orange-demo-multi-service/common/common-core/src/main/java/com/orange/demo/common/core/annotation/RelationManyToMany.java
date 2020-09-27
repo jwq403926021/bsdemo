@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 /**
  * 标注多对多的Model关系。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * 角色数据访问操作接口。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public interface SysRoleMapper extends BaseDaoMapper<SysRole> {
 

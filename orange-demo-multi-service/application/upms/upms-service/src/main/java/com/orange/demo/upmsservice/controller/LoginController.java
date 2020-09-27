@@ -9,6 +9,7 @@ import com.orange.demo.common.core.object.ResponseResult;
 import com.orange.demo.common.core.object.TokenData;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.util.RsaUtil;
+import com.orange.demo.common.redis.cache.SessionCacheHelper;
 import com.orange.demo.upmsinterface.constant.SysUserStatus;
 import com.orange.demo.upmsinterface.constant.SysUserType;
 import com.orange.demo.upmsservice.config.ApplicationConfig;
@@ -27,8 +28,8 @@ import java.util.*;
 /**
  * 登录接口控制器类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Slf4j
 @RestController
@@ -45,6 +46,8 @@ public class LoginController {
     private SysPermWhitelistService sysPermWhitelistService;
     @Autowired
     private ApplicationConfig appConfig;
+    @Autowired
+    private SessionCacheHelper cacheHelper;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -85,6 +88,7 @@ public class LoginController {
      */
     @PostMapping("/doLogout")
     public ResponseResult<Void> doLogout() {
+        cacheHelper.removeAllSessionCache();
         return ResponseResult.success();
     }
 

@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 行政区划实体对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Data
 @Table(name = "zz_area_code")

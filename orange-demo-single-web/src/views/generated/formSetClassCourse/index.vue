@@ -51,7 +51,7 @@
           </el-table-column>
           <el-table-column label="所属学科" prop="subjectIdDictMap.name">
           </el-table-column>
-          <el-table-column label="课时数量" prop="classHour" sortable="custom">
+          <el-table-column label="课时数量" prop="classHour">
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime">
             <template slot-scope="scope">

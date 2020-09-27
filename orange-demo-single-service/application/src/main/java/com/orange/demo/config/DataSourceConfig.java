@@ -14,7 +14,7 @@ import javax.sql.DataSource;
  * 数据源配置Bean对象。
  *
  * @author Jerry
- * @date 2020-09-25
+ * @date 2020-09-27
  */
 @Configuration
 @EnableTransactionManagement

@@ -8,8 +8,8 @@ import cn.hutool.core.util.IdUtil;
  * 和SnowflakeIdGenerator相比，相同点是均为基于Snowflake算法的生成器。不同点在于当前类的
  * WorkNodeId是通过配置文件静态指定的。而SnowflakeIdGenerator的WorkNodeId是由zk生成的。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 public class BasicIdGenerator implements MyIdGenerator {
 

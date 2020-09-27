@@ -20,8 +20,8 @@ import java.util.*;
 /**
  * 课程数据数据操作服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class CourseService extends BaseService<Course, CourseDto, Long> {
@@ -75,6 +75,7 @@ public class CourseService extends BaseService<Course, CourseDto, Long> {
         course.setCreateUserId(originalCourse.getCreateUserId());
         course.setCreateTime(originalCourse.getCreateTime());
         course.setUpdateTime(new Date());
+        // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         return courseMapper.updateByPrimaryKey(course) == 1;
     }
 

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * FeignClient的配置对象。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Configuration
 public class FeignConfig implements RequestInterceptor {

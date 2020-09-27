@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 /**
  * 角色数据服务类。
  *
- * @author Orange Team
- * @date 2020-08-08
+ * @author Jerry
+ * @date 2020-09-27
  */
 @Service
 public class SysRoleService extends BaseService<SysRole, SysRoleDto, Long> {

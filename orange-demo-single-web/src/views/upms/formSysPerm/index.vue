@@ -10,7 +10,7 @@
               icon="el-icon-circle-plus-outline" @click="onCreatePermModuleClick()" />
           </div>
         </div>
-        <el-scrollbar :style="{height: (getClientHeight - 184) + 'px'}" class="custom-scroll">
+        <el-scrollbar :style="{height: (getMainContextHeight - 94) + 'px'}" class="custom-scroll">
           <el-tree ref="moduleTree" :data="getModuleTreeData" :props="{label: 'moduleName'}"
             node-key="moduleId" @node-click="onModuleNodeClick" :default-expanded-keys="formPerm.expandedModule"
             :highlight-current="true" @node-expand="onModuleNodeExpand" @node-collapse="onModuleNodeCollapse">
@@ -49,7 +49,7 @@
       <el-row>
         <el-col :span="24">
           <el-table :data="formPerm.SysPerm.impl.dataList" size="mini" @sort-change="formPerm.SysPerm.impl.onSortChange"
-            header-cell-class-name="table-header-gray" :height="(getClientHeight - 222) + 'px'">
+            header-cell-class-name="table-header-gray" :height="(getMainContextHeight - 132) + 'px'">
             <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="formPerm.SysPerm.impl.getTableIndex" />
             <el-table-column label="权限名称" prop="permName" width="150px">
             </el-table-column>
@@ -344,7 +344,7 @@ export default {
       }];
       return tempList.concat(this.formPerm.permModuleId.impl.dropdownList);
     },
-    ...mapGetters(['getClientHeight'])
+    ...mapGetters(['getMainContextHeight'])
   },
   created () {
     this.formInit();

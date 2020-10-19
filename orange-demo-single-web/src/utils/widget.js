@@ -82,11 +82,13 @@ export class TableWidget {
    * @param {function (params: Object) : Promise} loadTableData 表数据获取函数
    * @param {function () : Boolean} verifyTableParameter 表数据获取检验函数
    * @param {Boolean} paged 是否支持分页
+   * @param {Boolean} rowSelection 是否支持行选择
    * @param {String} orderFieldName 默认排序字段
    * @param {Boolean} ascending 默认排序方式（true为正序，false为倒序）
    * @param {String} dateAggregateBy 默认排序字段的日期统计类型
    */
-  constructor (loadTableData, verifyTableParameter, paged, orderFieldName, ascending, dateAggregateBy) {
+  constructor (loadTableData, verifyTableParameter, paged, rowSelection, orderFieldName, ascending, dateAggregateBy) {
+    this.currentRow = null;
     this.oldPage = 0;
     this.currentPage = 1;
     this.oldPageSize = DEFAULT_PAGE_SIZE;
@@ -99,12 +101,14 @@ export class TableWidget {
       dateAggregateBy: dateAggregateBy
     };
     this.paged = paged;
+    this.rowSelection = rowSelection;
     this.searchVerify = verifyTableParameter || function () { return true; };
     this.loadTableData = loadTableData || function () { return Promise.resolve(); };
     this.onCurrentPageChange = this.onCurrentPageChange.bind(this);
     this.onPageSizeChange = this.onPageSizeChange.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.getTableIndex = this.getTableIndex.bind(this);
+    this.currentRowChange = this.currentRowChange.bind(this);
   }
   /**
    * 表格分页变化
@@ -146,6 +150,22 @@ export class TableWidget {
    */
   getTableIndex (index) {
     return this.paged ? ((this.currentPage - 1) * this.pageSize + (index + 1)) : (index + 1);
+  }
+  /**
+   * 当前选中行改变
+   * @param {Object} currentRow 当前选中行
+   * @param {Object} oldRow 老的选中行
+   */
+  currentRowChange (currentRow, oldRow) {
+    console.log(currentRow, oldRow);
+    this.currentRow = currentRow;
+  }
+  clearTable () {
+    this.currentRow = null;
+    this.oldPage = 0;
+    this.currentPage = 1;
+    this.totalCount = 0;
+    this.dataList = [];
   }
   /**
    * 获取表格数据

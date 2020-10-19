@@ -2,6 +2,8 @@ package com.orange.demo.courseclassservice.model;
 
 import com.orange.demo.courseclassinterface.constant.CourseDifficult;
 import com.orange.demo.application.common.constant.Subject;
+import com.orange.demo.common.core.upload.UploadStoreTypeEnum;
+import com.orange.demo.common.core.annotation.UploadFlagColumn;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.annotation.RelationConstDict;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
@@ -21,7 +23,7 @@ import java.util.Map;
  * Course实体对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @Table(name = "zz_course")
@@ -85,6 +87,7 @@ public class Course {
     /**
      * 多张课程图片地址。
      */
+    @UploadFlagColumn(storeType = UploadStoreTypeEnum.MINIO_SYSTEM)
     @NotBlank(message = "数据验证失败，课程图片不能为空！")
     @Column(name = "picture_url")
     private String pictureUrl;
@@ -143,6 +146,12 @@ public class Course {
     @Transient
     private String updateTimeEnd;
 
+    /**
+     * courseId 的多对多关联表数据对象。
+     */
+    @Transient
+    private ClassCourse classCourse;
+
     @RelationDict(
             masterIdField = "gradeId",
             slaveServiceName = "gradeService",
@@ -172,6 +181,7 @@ public class Course {
          * @param courseDto 域对象。
          * @return 实体对象。
          */
+        @Mapping(target = "classCourse", expression = "java(mapToBean(courseDto.getClassCourse(), com.orange.demo.courseclassservice.model.ClassCourse.class))")
         @Override
         Course toModel(CourseDto courseDto);
         /**
@@ -180,6 +190,7 @@ public class Course {
          * @param course 实体对象。
          * @return 域对象。
          */
+        @Mapping(target = "classCourse", expression = "java(beanToMap(course.getClassCourse(), false))")
         @Override
         CourseDto fromModel(Course course);
     }

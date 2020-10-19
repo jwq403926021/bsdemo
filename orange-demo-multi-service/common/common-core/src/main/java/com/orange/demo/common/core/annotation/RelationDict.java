@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 标识Model之间的字典关联关系。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

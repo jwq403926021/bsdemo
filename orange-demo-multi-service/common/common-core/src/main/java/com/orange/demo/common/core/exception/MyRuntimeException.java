@@ -5,7 +5,7 @@ package com.orange.demo.common.core.exception;
  * NOTE：主要是为了避免SonarQube进行代码质量扫描时，给出警告。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class MyRuntimeException extends RuntimeException {
 

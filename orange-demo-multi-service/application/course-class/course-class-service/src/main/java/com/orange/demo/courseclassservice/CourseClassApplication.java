@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * course-class服务启动类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @SpringCloudApplication
 @EnableFeignClients(basePackages = "com.orange.demo")

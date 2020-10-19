@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * Redis配置类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Configuration
 @ConditionalOnProperty(name = "redis.jedis.enabled", havingValue = "true")

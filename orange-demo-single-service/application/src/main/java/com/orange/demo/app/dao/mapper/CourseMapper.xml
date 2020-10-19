@@ -16,6 +16,11 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
+    <resultMap id="BaseResultMapWithClassCourse" type="com.orange.demo.app.model.Course" extends="BaseResultMap">
+        <association property="classCourse" column="course_id" foreignColumn="course_id"
+                     notNullColumn="course_id" resultMap="com.orange.demo.app.dao.ClassCourseMapper.BaseResultMap" />
+    </resultMap>
+
     <sql id="filterRef">
         <if test="courseFilter != null">
             <if test="courseFilter.courseName != null and courseFilter.courseName != ''">
@@ -62,9 +67,10 @@
         </if>
     </select>
 
-    <select id="getCourseListByClassId" resultMap="BaseResultMap">
+    <select id="getCourseListByClassId" resultMap="BaseResultMapWithClassCourse">
         SELECT
-            zz_course.*
+            zz_course.*,
+            zz_class_course.*
         FROM
             zz_course,
             zz_class_course

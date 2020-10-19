@@ -6,7 +6,7 @@ package com.orange.demo.common.core.util;
  * 提高代码的规范度和可维护性。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class LogMessageUtil {
 

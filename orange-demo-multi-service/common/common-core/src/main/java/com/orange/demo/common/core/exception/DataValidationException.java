@@ -4,7 +4,7 @@ package com.orange.demo.common.core.exception;
  * 数据验证失败的自定义异常。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class DataValidationException extends RuntimeException {
 

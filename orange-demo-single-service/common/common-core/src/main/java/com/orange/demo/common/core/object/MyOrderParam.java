@@ -18,7 +18,7 @@ import java.util.*;
  * Controller参数中的排序请求对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
@@ -83,6 +83,9 @@ public class MyOrderParam extends ArrayList<MyOrderParam.OrderInfo> {
 
     private static OrderBaseData parseOrderBaseData(OrderInfo orderInfo, Class<?> modelClazz) {
         OrderBaseData orderBaseData = new OrderBaseData();
+        if (StringUtils.isBlank(orderInfo.getFieldName())) {
+            return orderBaseData;
+        }
         orderBaseData.fieldName = StringUtils.substringBefore(orderInfo.fieldName, DICT_MAP);
         String[] stringArray = StringUtils.split(orderBaseData.fieldName, '.');
         if (stringArray.length == 1) {

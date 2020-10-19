@@ -1,42 +1,56 @@
 <template>
-  <div>
-    <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
-      <filter-box :item-width="350">
-        <el-form-item label="字典列表">
-          <el-select class="filter-item" v-model="currentDictId" placeholder="请选择字典" @change="onDictChange">
-            <el-option v-for="item in dictList" :key="item.variableName" :label="item.name" :value="item.variableName"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-button slot="operator" type="primary" size="mini" :plain="true"
-          :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:reloadCache') || currentDict == null"
-          @click="onRefreshCacheData">
-          同步缓存
-        </el-button>
-        <el-button slot="operator" type="primary" size="mini"
-          :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:add') || currentDict == null"
-          @click="onAddDictData">
-          添加数据
-        </el-button>
-      </filter-box>
-    </el-form>
-    <el-row>
-      <el-col :span="24">
-        <el-table :data="getCurrentDictData" size="mini" header-cell-class-name="table-header-gray">
-          <el-table-column label="ID" prop="id" />
-          <el-table-column label="字典名称" prop="name" />
-          <el-table-column label="操作" width="150px">
-            <template slot-scope="scope">
-              <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:update')" @click="onUpdateDictDataClick(scope.row)">编辑</el-button>
-              <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:delete')" @click="onDeleteDictDataClick(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
-  </div>
+  <el-container>
+    <el-aside width="300px">
+      <el-card class="base-card" shadow="never" title="字典列表" :body-style="{ padding: '0px' }">
+        <div slot="header" class="base-card-header">
+          <span>字典列表</span>
+        </div>
+        <el-scrollbar :style="{height: (getClientHeight - 184) + 'px'}" class="custom-scroll">
+          <el-tree :data="dictList" :props="{label: 'name'}" node-key="variableName" :highlight-current="true"
+            :current-node-key="dictList[0].variableName" @node-click="onDictChange">
+            <div class="module-node-item" slot-scope="{ data }">
+              <span style="padding-left: 24px;">{{data.name}}</span>
+            </div>
+          </el-tree>
+        </el-scrollbar>
+      </el-card>
+    </el-aside>
+    <el-main style="padding-left: 15px;">
+      <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+        <filter-box :item-width="350">
+          <el-button slot="operator" type="primary" size="mini" :plain="true"
+            :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:reloadCache') || currentDict == null"
+            @click="onRefreshCacheData">
+            同步缓存
+          </el-button>
+          <el-button slot="operator" type="primary" size="mini"
+            :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:add') || currentDict == null"
+            @click="onAddDictData">
+            添加数据
+          </el-button>
+        </filter-box>
+      </el-form>
+      <el-row>
+        <el-col :span="24">
+          <el-table :data="getCurrentDictData" size="mini" header-cell-class-name="table-header-gray"
+            :height="(getClientHeight - 178) + 'px'">
+            <el-table-column label="ID" prop="id" />
+            <el-table-column label="字典名称" prop="name" />
+            <el-table-column label="操作" width="150px">
+              <template slot-scope="scope">
+                <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:update')" @click="onUpdateDictDataClick(scope.row)">编辑</el-button>
+                <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:delete')" @click="onDeleteDictDataClick(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { findItemFromList } from '@/utils';
 /* eslint-disable-next-line */
 import { DictionaryController } from '@/api';
@@ -61,7 +75,6 @@ export default {
           reloadCachedDataApi: DictionaryController.dictReloadGradeCachedData
         }
       ],
-      currentDictId: undefined,
       currentDict: undefined,
       currentDictDataList: []
     }
@@ -73,8 +86,9 @@ export default {
         this.currentDictDataList = res.getList();
       }).catch(e => {});
     },
-    onDictChange (value) {
-      this.currentDict = findItemFromList(this.dictList, value, 'variableName');
+    onDictChange (data) {
+      if (this.currentDict === data) return;
+      this.currentDict = findItemFromList(this.dictList, (data || {}).variableName, 'variableName');
       this.currentDictDataList = [];
       if (this.currentDict == null) {
         this.$message.error('没有找到相关字典');
@@ -122,7 +136,27 @@ export default {
   computed: {
     getCurrentDictData () {
       return this.currentDictDataList;
-    }
+    },
+    ...mapGetters(['getClientHeight'])
+  },
+  mounted () {
+    this.onDictChange(this.dictList[0]);
   }
 }
 </script>
+
+<style scoped>
+  >>> .el-tree-node__content {
+    height: 35px;
+  }
+
+  >>> .el-tree-node__content .is-leaf {
+    display: none;
+  }
+
+  .module-node-item {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+  }
+</style>

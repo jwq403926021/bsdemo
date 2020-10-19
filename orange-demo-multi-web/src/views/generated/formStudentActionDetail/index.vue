@@ -28,7 +28,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formStudentActionDetail.StudentActionTrans.impl.dataList" size="mini" @sort-change="formStudentActionDetail.StudentActionTrans.impl.onSortChange"
+        <el-table ref="StudentActionTrans" :data="formStudentActionDetail.StudentActionTrans.impl.dataList" size="mini" @sort-change="formStudentActionDetail.StudentActionTrans.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudentActionDetail.StudentActionTrans.impl.getTableIndex" />
           <el-table-column label="学生名称" prop="studentName">
@@ -126,7 +126,7 @@ export default {
           impl: new DropdownWidget(this.loadActionTypeDropdownList)
         },
         StudentActionTrans: {
-          impl: new TableWidget(this.loadStudentActionTransData, this.loadStudentActionTransVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadStudentActionTransData, this.loadStudentActionTransVerify, true, false, 'createTime', 1)
         },
         isInit: false
       }
@@ -139,7 +139,7 @@ export default {
       this.$router.go(-1);
     },
     /**
-     * 学生行为流水数据获取函数，返回Primise
+     * 学生行为流水数据获取函数，返回Promise
      */
     loadStudentActionTransData (params) {
       if (params == null) params = {};
@@ -235,6 +235,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

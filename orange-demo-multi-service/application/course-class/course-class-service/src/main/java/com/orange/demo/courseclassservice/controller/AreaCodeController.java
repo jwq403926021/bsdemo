@@ -19,7 +19,7 @@ import java.util.*;
  * 行政区划数据访问接口类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @RestController
 @RequestMapping("/areaCode")

@@ -17,7 +17,7 @@ import java.util.List;
  * @param <D> Model对应的DomainDto域对象类型。
  * @param <K> Model对象主键的类型。
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public abstract class BaseDictService<M, D, K> extends BaseService<M, D, K> {

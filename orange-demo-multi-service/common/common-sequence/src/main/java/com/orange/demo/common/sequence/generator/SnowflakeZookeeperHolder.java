@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * Snowflake Id生成器所依赖的zk工具类。该实现完全copy美团的leaf。
  *
  * @author MeiTuan.Team
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 @Data

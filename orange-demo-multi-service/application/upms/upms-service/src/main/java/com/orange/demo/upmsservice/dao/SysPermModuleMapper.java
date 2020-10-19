@@ -9,7 +9,7 @@ import java.util.List;
  * 权限资源模块数据访问操作接口。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public interface SysPermModuleMapper extends BaseDaoMapper<SysPermModule> {
 

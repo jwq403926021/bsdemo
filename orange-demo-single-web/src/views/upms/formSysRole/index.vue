@@ -167,7 +167,7 @@ export default {
           sysRoleName: undefined
         },
         SysRole: {
-          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, false, 'createTime', 1)
         },
         isInit: false
       },
@@ -180,7 +180,7 @@ export default {
           impl: new DropdownWidget(this.loadSysRoleDropdownList)
         },
         SysUser: {
-          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, false, 'createTime', 1)
         },
         isInit: false
       }

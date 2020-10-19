@@ -4,7 +4,7 @@ package com.orange.demo.common.core.constant;
  * 返回应答中的错误代码和错误信息。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public enum ErrorCodeEnum {
 
@@ -21,6 +21,9 @@ public enum ErrorCodeEnum {
     ARGUMENT_PK_ID_NULL("数据验证失败，接口调用主键Id参数为空，请核对！"),
     INVALID_ARGUMENT_FORMAT("数据验证失败，不合法的参数格式，请核对！"),
     INVALID_STATUS_ARGUMENT("数据验证失败，无效的状态参数值，请核对！"),
+    UPLOAD_FAILED("数据验证失败，数据上传失败！"),
+    INVALID_UPLOAD_FIELD("数据验证失败，该字段不支持数据上传！"),
+    INVALID_UPLOAD_STORE_TYPE("数据验证失败，并不支持上传存储类型！"),
     INVALID_UPLOAD_FILE_ARGUMENT("数据验证失败，上传文件参数错误，请核对！"),
     INVALID_UPLOAD_FILE_IOERROR("上传文件写入失败，请联系管理员！"),
     UNAUTHORIZED_LOGIN("当前用户尚未登录或登录已超时，请重新登录！"),

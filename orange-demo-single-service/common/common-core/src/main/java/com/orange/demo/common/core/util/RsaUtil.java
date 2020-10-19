@@ -15,7 +15,7 @@ import java.util.Map;
  * Java RSA 加密工具类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class RsaUtil {
 
@@ -64,7 +64,8 @@ public class RsaUtil {
         //base64编码的公钥
         byte[] decoded = Base64.getDecoder().decode(publicKey);
         RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
-        //RSA加密
+        //RSA加密。后面这个更安全，但是SonarQube始终report安全漏洞。"RSA/ECB/PKCS1Padding"
+        //而浏览器自带的Javascript加密功能，目前safari不支持，而且用的人也不太多。所以暂时都不考虑了。
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
         return Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes(StandardCharsets.UTF_8)));

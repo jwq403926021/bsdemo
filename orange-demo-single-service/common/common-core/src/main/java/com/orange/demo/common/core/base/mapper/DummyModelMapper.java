@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @param <M> 数据类型。
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class DummyModelMapper<M> implements BaseModelMapper<M, M> {
 

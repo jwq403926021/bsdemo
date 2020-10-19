@@ -20,7 +20,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formStudentActionStats.StudentActionStats.impl.dataList" size="mini" @sort-change="formStudentActionStats.StudentActionStats.impl.onSortChange"
+        <el-table ref="StudentActionStats" :data="formStudentActionStats.StudentActionStats.impl.dataList" size="mini" @sort-change="formStudentActionStats.StudentActionStats.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudentActionStats.StudentActionStats.impl.getTableIndex" />
           <el-table-column label="统计日期">
@@ -116,7 +116,7 @@ export default {
           impl: new DropdownWidget(this.loadGradeIdDropdownList)
         },
         StudentActionStats: {
-          impl: new TableWidget(this.loadStudentActionStatsData, this.loadStudentActionStatsVerify, true, 'statsDate', 1)
+          impl: new TableWidget(this.loadStudentActionStatsData, this.loadStudentActionStatsVerify, true, false, 'statsDate', 1)
         },
         isInit: false
       }
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     /**
-     * 学生行为统计数据获取函数，返回Primise
+     * 学生行为统计数据获取函数，返回Promise
      */
     loadStudentActionStatsData (params) {
       if (params == null) params = {};
@@ -310,6 +310,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

@@ -7,7 +7,7 @@ import java.util.Map;
  * 权限字类型常量对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public final class SysPermCodeType {
 

@@ -1,13 +1,17 @@
 package com.orange.demo.app.controller;
 
-import cn.hutool.core.util.ReflectUtil;
 import cn.jimmyshi.beanquery.BeanQuery;
+import cn.hutool.core.util.ReflectUtil;
+import com.orange.demo.common.core.upload.BaseUpDownloader;
+import com.orange.demo.common.core.upload.UpDownloaderFactory;
+import com.orange.demo.common.core.upload.UploadResponseInfo;
+import com.orange.demo.common.core.upload.UploadStoreInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.orange.demo.app.model.*;
 import com.orange.demo.app.service.*;
 import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.*;
-import com.orange.demo.common.core.constant.ErrorCodeEnum;
+import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.common.core.cache.SessionCacheHelper;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import javax.validation.groups.Default;
 
@@ -27,7 +30,7 @@ import javax.validation.groups.Default;
  * 课程数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 @RestController
@@ -40,6 +43,8 @@ public class CourseController {
     private ApplicationConfig appConfig;
     @Autowired
     private SessionCacheHelper cacheHelper;
+    @Autowired
+    private UpDownloaderFactory upDownloaderFactory;
 
     /**
      * 新增课程数据数据。
@@ -160,7 +165,7 @@ public class CourseController {
         }
         return ResponseResult.success(course);
     }
-
+    
     /**
      * 附件文件下载。
      * 这里将图片和其他类型的附件文件放到不同的父目录下，主要为了便于今后图片文件的迁移。
@@ -188,26 +193,33 @@ public class CourseController {
             // 如果请求参数中没有包含主键Id，就判断该文件是否为当前session上传的。
             if (courseId == null) {
                 if (!cacheHelper.existSessionUploadFile(filename)) {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
             } else {
                 Course course = courseService.getById(courseId);
                 if (course == null) {
-                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    ResponseResult.output(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 }
                 String fieldJsonData = (String) ReflectUtil.getFieldValue(course, fieldName);
                 if (fieldJsonData == null) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
-                if (!UpDownloadUtil.containFile(fieldJsonData, filename)) {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                if (!BaseUpDownloader.containFile(fieldJsonData, filename)) {
+                    ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
             }
-            UpDownloadUtil.doDownload(appConfig.getUploadFileBaseDir(),
+            UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(Course.class, fieldName);
+            if (!storeInfo.isSupportUpload()) {
+                ResponseResult.output(HttpServletResponse.SC_NOT_IMPLEMENTED,
+                        ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FIELD));
+                return;
+            }
+            BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+            upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
                     Course.class.getSimpleName(), fieldName, filename, asImage, response);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -221,20 +233,30 @@ public class CourseController {
      * @param fieldName  上传文件名。
      * @param asImage    是否作为图片上传。如果是图片，今后下载的时候无需权限验证。否则就是附件上传，下载时需要权限验证。
      * @param uploadFile 上传文件对象。
-     * @param response   Http 应答对象。
-     * @throws IOException 文件读写错误。
      */
     @PostMapping("/upload")
     public void upload(
             @RequestParam String fieldName,
             @RequestParam Boolean asImage,
-            @RequestParam("uploadFile") MultipartFile uploadFile,
-            HttpServletResponse response) throws IOException {
-        String filename = UpDownloadUtil.doUpload(appConfig.getUploadFileBaseDir(),
-                Course.class.getSimpleName(), fieldName, asImage, uploadFile, response);
-        if (filename != null) {
-            cacheHelper.putSessionUploadFile(filename);
+            @RequestParam("uploadFile") MultipartFile uploadFile) throws Exception {
+        UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(Course.class, fieldName);
+        // 这里就会判断参数中指定的字段，是否支持上传操作。
+        if (!storeInfo.isSupportUpload()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FIELD));
+            return;
         }
+        // 根据字段注解中的存储类型，通过工厂方法获取匹配的上传下载实现类，从而解耦。
+        BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+        UploadResponseInfo responseInfo = upDownloader.doUpload(null,
+                appConfig.getUploadFileBaseDir(), Course.class.getSimpleName(), fieldName, asImage, uploadFile);
+        if (responseInfo.getUploadFailed()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.UPLOAD_FAILED, responseInfo.getErrorMessage()));
+            return;
+        }
+        cacheHelper.putSessionUploadFile(responseInfo.getFilename());
+        ResponseResult.output(ResponseResult.success(responseInfo));
     }
 
     /**

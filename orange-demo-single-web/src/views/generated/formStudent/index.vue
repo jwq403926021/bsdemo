@@ -43,7 +43,7 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="formStudent.Student.impl.dataList" size="mini" @sort-change="formStudent.Student.impl.onSortChange"
+            <el-table ref="Student" :data="formStudent.Student.impl.dataList" size="mini" @sort-change="formStudent.Student.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudent.Student.impl.getTableIndex" />
               <el-table-column label="学生姓名" prop="studentName">
@@ -64,11 +64,11 @@
               </el-table-column>
               <el-table-column label="操作" fixed="right">
                 <template slot-scope="scope">
-                  <el-button @click="onFormEditStudentClick(scope.row)" type="text" size="mini"
+                  <el-button @click.stop="onFormEditStudentClick(scope.row)" type="text" size="mini"
                     :disabled="!checkPermCodeExist('formStudent:formStudent:formEditStudent')">
                     编辑
                   </el-button>
-                  <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+                  <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
                     :disabled="!checkPermCodeExist('formStudent:formStudent:delete')">
                     删除
                   </el-button>
@@ -133,7 +133,7 @@ export default {
           impl: new DropdownWidget(this.loadGradeIdDropdownList)
         },
         Student: {
-          impl: new TableWidget(this.loadStudentData, this.loadStudentVerify, true, 'registerTime', 1)
+          impl: new TableWidget(this.loadStudentData, this.loadStudentVerify, true, false, 'registerTime', 1)
         },
         isInit: false
       }
@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     /**
-     * 学生数据数据获取函数，返回Primise
+     * 学生数据数据获取函数，返回Promise
      */
     loadStudentData (params) {
       if (params == null) params = {};
@@ -291,6 +291,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

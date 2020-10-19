@@ -18,7 +18,7 @@ import java.util.*;
  * 校区数据数据操作服务类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Service
 public class SchoolInfoService extends BaseService<SchoolInfo, Long> {

@@ -40,11 +40,9 @@ const routers = [
       {path: 'formCourseStats', component: _import('generated/formCourseStats/index'), name: 'formCourseStats', props: getProps, meta: {title: '课程统计'}},
       {path: 'formStudentActionStats', component: _import('generated/formStudentActionStats/index'), name: 'formStudentActionStats', props: getProps, meta: {title: '学生行为统计'}},
       {path: 'formStudentActionDetail', component: _import('generated/formStudentActionDetail/index'), name: 'formStudentActionDetail', props: getProps, meta: {title: '学生行为详情'}},
-      {path: 'formClass', component: _import('generated/formClass/index'), name: 'formClass', props: getProps, meta: {title: '班级管理'}},
-      {path: 'formClassStudent', component: _import('generated/formClassStudent/index'), name: 'formClassStudent', props: getProps, meta: {title: '班级学生'}},
-      {path: 'formClassCourse', component: _import('generated/formClassCourse/index'), name: 'formClassCourse', props: getProps, meta: {title: '班级课程'}},
       {path: 'formSetClassStudent', component: _import('generated/formSetClassStudent/index'), name: 'formSetClassStudent', props: getProps, meta: {title: '设置班级学生'}},
-      {path: 'formSetClassCourse', component: _import('generated/formSetClassCourse/index'), name: 'formSetClassCourse', props: getProps, meta: {title: '设置班级课程'}}
+      {path: 'formSetClassCourse', component: _import('generated/formSetClassCourse/index'), name: 'formSetClassCourse', props: getProps, meta: {title: '设置班级课程'}},
+      {path: 'formClass', component: _import('generated/formClass/index'), name: 'formClass', props: getProps, meta: {title: '班级管理'}}
     ]
   }
 ];

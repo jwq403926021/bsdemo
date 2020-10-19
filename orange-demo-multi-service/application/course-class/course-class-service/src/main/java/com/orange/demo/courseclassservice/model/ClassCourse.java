@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
  * ClassCourse实体对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @Table(name = "zz_class_course")
@@ -33,6 +33,7 @@ public class ClassCourse {
     /**
      * 课程顺序(数值越小越靠前)。
      */
+    @NotNull(message = "数据验证失败，课程顺序(数值越小越靠前)不能为空！")
     @Column(name = "course_order")
     private Integer courseOrder;
 }

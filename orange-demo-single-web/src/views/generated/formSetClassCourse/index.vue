@@ -128,7 +128,7 @@ export default {
           impl: new DropdownWidget(this.loadDifficultyDropdownList)
         },
         Course: {
-          impl: new TableWidget(this.loadCourseData, this.loadCourseVerify, true)
+          impl: new TableWidget(this.loadCourseData, this.loadCourseVerify, true, false)
         },
         isInit: false
       }
@@ -144,7 +144,7 @@ export default {
       this.tableSelectRowList = values;
     },
     /**
-     * 班级课程数据获取函数，返回Primise
+     * 班级课程数据获取函数，返回Promise
      */
     loadCourseData (params) {
       if (params == null) params = {};
@@ -276,6 +276,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

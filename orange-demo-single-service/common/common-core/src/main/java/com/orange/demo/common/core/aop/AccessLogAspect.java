@@ -8,7 +8,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ import java.util.List;
  * 记录接口的链路traceId、请求参数、应答数据、错误信息和调用时长。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Aspect
 @Component
@@ -54,7 +53,6 @@ public class AccessLogAspect {
         long start = System.currentTimeMillis();
         // 获取方法参数
         List<Object> httpReqArgs = new ArrayList<>();
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Object[] args = joinPoint.getArgs();
         for (Object object : args) {
             if (!(object instanceof HttpServletRequest)

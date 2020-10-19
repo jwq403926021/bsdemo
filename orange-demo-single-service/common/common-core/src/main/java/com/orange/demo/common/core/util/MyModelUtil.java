@@ -5,8 +5,10 @@ import cn.hutool.core.util.ReflectUtil;
 import com.orange.demo.common.core.annotation.RelationConstDict;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.annotation.RelationOneToOne;
+import com.orange.demo.common.core.annotation.UploadFlagColumn;
 import com.orange.demo.common.core.exception.MyRuntimeException;
 import com.orange.demo.common.core.object.Tuple2;
+import com.orange.demo.common.core.upload.UploadStoreInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
  * 负责Model数据操作、类型转换和关系关联等行为的工具类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class MyModelUtil {
@@ -427,6 +429,30 @@ public class MyModelUtil {
             }
         }
         return e;
+    }
+
+    /**
+     * 获取上传字段的存储信息。
+     *
+     * @param modelClass      model的class对象。
+     * @param uploadFieldName 上传字段名。
+     * @param <T>             model的类型。
+     * @return 字段的上传存储信息对象。该值始终不会返回null。
+     */
+    public static <T> UploadStoreInfo getUploadStoreInfo(Class<T> modelClass, String uploadFieldName) {
+        UploadStoreInfo uploadStoreInfo = new UploadStoreInfo();
+        Field uploadField = ReflectUtil.getField(modelClass, uploadFieldName);
+        if (uploadField == null) {
+            throw new UnsupportedOperationException("The Field ["
+                    + uploadFieldName + "] doesn't exist in Model [" + modelClass.getSimpleName() + "].");
+        }
+        uploadStoreInfo.setSupportUpload(false);
+        UploadFlagColumn anno = uploadField.getAnnotation(UploadFlagColumn.class);
+        if (anno != null) {
+            uploadStoreInfo.setSupportUpload(true);
+            uploadStoreInfo.setStoreType(anno.storeType());
+        }
+        return uploadStoreInfo;
     }
 
     /**

@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 主要用于多对多的Model关系。标注通过从表关联字段或者关联表关联字段计算主表聚合计算字段的规则。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -10,7 +10,7 @@ import java.util.List;
  * 角色数据访问操作接口。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public interface SysRoleMapper extends BaseDaoMapper<SysRole> {
 

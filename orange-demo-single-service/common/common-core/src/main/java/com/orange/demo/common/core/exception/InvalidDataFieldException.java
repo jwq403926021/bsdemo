@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
  * 无效的实体对象字段的自定义异常。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

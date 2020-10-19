@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * 获取JDK动态代理/CGLIB代理对象代理的目标对象的工具类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class AopTargetUtil {
@@ -36,6 +36,12 @@ public class AopTargetUtil {
             log.error("Failed to call getJdkDynamicProxyTargetObject or getCglibProxyTargetObject", e);
             return null;
         }
+    }
+
+    /**
+     * 私有构造函数，明确标识该常量类的作用。
+     */
+    private AopTargetUtil() {
     }
 
     private static Object getCglibProxyTargetObject(Object proxy) throws Exception {

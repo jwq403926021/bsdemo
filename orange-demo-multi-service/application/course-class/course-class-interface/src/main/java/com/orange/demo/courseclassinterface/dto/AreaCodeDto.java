@@ -6,7 +6,7 @@ import lombok.Data;
  * 行政区划Dto。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class AreaCodeDto {

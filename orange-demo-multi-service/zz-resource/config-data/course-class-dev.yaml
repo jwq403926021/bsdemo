@@ -15,6 +15,13 @@ application:
   # 通常在调试和测试阶段设置为false，以便及时发现问题。
   ignoreRpcError: false
 
+minio:
+  enabled: true
+  endpoint: http://localhost:19000
+  accessKey: admin
+  secretKey: admin123456
+  bucketName: course-class
+
 sequence:
   # 是否使用基于美团Leaf的分布式Id生成器。
   advanceIdGenerator: true
@@ -45,7 +52,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://localhost:3306/zzdemo-multi?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/zzdemo-single?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver

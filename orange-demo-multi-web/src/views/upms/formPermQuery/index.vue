@@ -191,7 +191,7 @@ export default {
           value: []
         },
         SysRole: {
-          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, false, 'createTime', 1)
         },
         isInit: false
       },

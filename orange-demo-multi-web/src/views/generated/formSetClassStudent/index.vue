@@ -96,7 +96,7 @@ export default {
           impl: new DropdownWidget(this.loadSchoolIdDropdownList)
         },
         Student: {
-          impl: new TableWidget(this.loadStudentData, this.loadStudentVerify, true)
+          impl: new TableWidget(this.loadStudentData, this.loadStudentVerify, true, false)
         },
         isInit: false
       }
@@ -112,7 +112,7 @@ export default {
       this.tableSelectRowList = values;
     },
     /**
-     * 班级学生数据获取函数，返回Primise
+     * 班级学生数据获取函数，返回Promise
      */
     loadStudentData (params) {
       if (params == null) params = {};
@@ -202,6 +202,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

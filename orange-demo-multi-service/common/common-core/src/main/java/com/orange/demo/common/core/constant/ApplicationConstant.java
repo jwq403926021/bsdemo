@@ -4,7 +4,7 @@ package com.orange.demo.common.core.constant;
  * 应用程序的常量声明对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public final class ApplicationConstant {
 

@@ -1,5 +1,6 @@
 package com.orange.demo.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.orange.demo.config.ApplicationConfig;
 import com.orange.demo.upms.model.SysPermWhitelist;
 import com.orange.demo.upms.service.SysPermWhitelistService;
@@ -11,7 +12,6 @@ import com.orange.demo.common.core.object.TokenData;
 import com.orange.demo.common.core.util.ApplicationContextHolder;
 import com.orange.demo.common.core.util.JwtUtil;
 import com.orange.demo.common.core.cache.SessionCacheHelper;
-import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * 登录用户Token验证、生成和权限验证的拦截器。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -76,7 +76,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (JwtUtil.isNullOrExpired(c)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             this.outputResponseMessage(response,
-                    ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN, "用户会话已过期，请重新登录！"));
+                    ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN, "用户会话已过期或尚未登录，请重新登录！"));
             return false;
         }
         String sessionId = (String) c.get("sessionId");
@@ -89,7 +89,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         TokenData.addToRequest(tokenData);
         // 如果url在权限资源白名单中，则不需要进行鉴权操作
-        if (!tokenData.getIsAdmin() && !whitelistPermSet.contains(url)) {
+        if (Boolean.FALSE.equals(tokenData.getIsAdmin()) && !whitelistPermSet.contains(url)) {
             Set<String> urlSet = sysPermService.getCacheableSysPermSetByUserId(
                     tokenData.getSessionId(), tokenData.getUserId());
             if (!urlSet.contains(url)) {
@@ -127,7 +127,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return;
         }
         response.setContentType("application/json; charset=utf-8");
-        out.print(JSONObject.toJSONString(respObj));
+        out.print(JSON.toJSONString(respObj));
         out.flush();
         out.close();
     }

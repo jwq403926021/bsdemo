@@ -46,7 +46,7 @@ import java.util.Map;
  * 全局后处理过滤器。主要用于将用户的会话信息存到缓存服务器，以及在登出时清除缓存中的会话数据。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class AuthenticationPostFilter implements GlobalFilter, Ordered {

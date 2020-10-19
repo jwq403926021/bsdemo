@@ -12,7 +12,7 @@ import java.util.Map;
  * 权限资源Dto。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class SysPermDto {

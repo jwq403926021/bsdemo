@@ -8,7 +8,7 @@ import lombok.Data;
  * BaseService中的实体对象数据组装函数，会根据该参数对象进行数据组装。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @Builder

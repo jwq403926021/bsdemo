@@ -39,7 +39,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formCourse.Course.impl.dataList" size="mini" @sort-change="formCourse.Course.impl.onSortChange"
+        <el-table ref="Course" :data="formCourse.Course.impl.dataList" size="mini" @sort-change="formCourse.Course.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formCourse.Course.impl.getTableIndex" />
           <el-table-column label="课程名称" prop="courseName">
@@ -72,11 +72,11 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
-              <el-button @click="onFormEditCourseClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onFormEditCourseClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formCourse:formCourse:formEditCourse')">
                 编辑
               </el-button>
-              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formCourse:formCourse:delete')">
                 删除
               </el-button>
@@ -141,7 +141,7 @@ export default {
           impl: new DropdownWidget(this.loadDifficultyDropdownList)
         },
         Course: {
-          impl: new TableWidget(this.loadCourseData, this.loadCourseVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadCourseData, this.loadCourseVerify, true, false, 'createTime', 1)
         },
         isInit: false
       }
@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     /**
-     * 课程数据数据获取函数，返回Primise
+     * 课程数据数据获取函数，返回Promise
      */
     loadCourseData (params) {
       if (params == null) params = {};
@@ -303,6 +303,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

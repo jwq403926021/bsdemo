@@ -1,13 +1,19 @@
 package com.orange.demo.common.core.object;
 
+import com.alibaba.fastjson.JSON;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
+import com.orange.demo.common.core.util.ContextUtil;
 import lombok.Data;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 接口返回对象
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class ResponseResult<T> {
@@ -143,6 +149,47 @@ public class ResponseResult<T> {
      */
     public boolean isSuccess() {
         return success;
+    }
+    
+    /**
+     * 通过HttpServletResponse直接输出应该信息的工具方法。
+     *
+     * @param httpStatus     http状态码。
+     * @param responseResult 应答内容。
+     * @param <T>            数据对象类型。
+     * @throws IOException 异常错误。
+     */
+    public static <T> void output(int httpStatus, ResponseResult<T> responseResult) throws IOException {
+        HttpServletResponse response = ContextUtil.getHttpResponse();
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json; charset=utf-8");
+        response.setStatus(httpStatus);
+        if (responseResult != null) {
+            out.print(JSON.toJSONString(responseResult));
+        }
+        out.flush();
+    }
+
+    /**
+     * 通过HttpServletResponse直接输出应该信息的工具方法。
+     *
+     * @param httpStatus     http状态码。
+     * @param <T>            数据对象类型。
+     * @throws IOException 异常错误。
+     */
+    public static <T> void output(int httpStatus) throws IOException {
+        output(httpStatus, null);
+    }
+
+    /**
+     * 通过HttpServletResponse直接输出应该信息的工具方法。Http状态码为200。
+     *
+     * @param responseResult 应答内容。
+     * @param <T>            数据对象类型。
+     * @throws IOException 异常错误。
+     */
+    public static <T> void output(ResponseResult<T> responseResult) throws IOException {
+        output(HttpServletResponse.SC_OK, responseResult);
     }
 
     private ResponseResult() {

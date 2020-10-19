@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @param <K> 字典表主键类型。
  * @param <V> 字典表对象类型。
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class RedisDictionaryCache<K, V> implements DictionaryCache<K, V> {

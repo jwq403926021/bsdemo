@@ -9,7 +9,7 @@ import java.util.*;
  * 查询参数。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class MyQueryParam {

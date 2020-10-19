@@ -17,7 +17,7 @@ import java.util.*;
  * 班级数据服务远程数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @FeignClient(
         name = "course-class",

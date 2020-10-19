@@ -14,7 +14,7 @@
       label-width="100px" size="mini" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col class="table-box" :span="12">
-          <el-card class="base-card mb20" style="height: 350px" shadow="never" :body-style="{padding: '0px'}">
+          <el-card class="base-card gutter-bottom" style="height: 350px" shadow="never" :body-style="{padding: '0px'}">
             <div slot="header" class="base-card-header">
               <span>课程统计（年级）</span>
               <div class="base-card-operation">
@@ -32,7 +32,7 @@
           </el-card>
         </el-col>
         <el-col class="table-box" :span="12">
-          <el-card class="base-card mb20" style="height: 350px" shadow="never" :body-style="{padding: '0px'}">
+          <el-card class="base-card gutter-bottom" style="height: 350px" shadow="never" :body-style="{padding: '0px'}">
             <div slot="header" class="base-card-header">
               <span>课程统计（学科）</span>
               <div class="base-card-operation">
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     /**
-     * 课程统计（年级）数据获取函数，返回Primise
+     * 课程统计（年级）数据获取函数，返回Promise
      */
     loadCourseStatsByGradeIdData () {
       let params = {
@@ -201,7 +201,7 @@ export default {
       this.formCourseStats.courseStatsByGradeId.impl.chartObject = echarts;
     },
     /**
-     * 课程统计（学科）数据获取函数，返回Primise
+     * 课程统计（学科）数据获取函数，返回Promise
      */
     loadCourseStatsBySubjectData () {
       let params = {
@@ -243,7 +243,7 @@ export default {
       this.formCourseStats.courseStatsBySubject.impl.chartObject = echarts;
     },
     /**
-     * 课程流水统计数据获取函数，返回Primise
+     * 课程流水统计数据获取函数，返回Promise
      */
     loadCourseTransStatsData () {
       let params = {
@@ -309,6 +309,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

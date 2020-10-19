@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
  * 为整个链路生成唯一的traceId，并存储在Request Head中。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class RequestLogFilter implements GlobalFilter, Ordered {

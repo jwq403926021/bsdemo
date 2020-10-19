@@ -21,7 +21,7 @@ import java.util.List;
  * 权限字实体对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @Table(name = "zz_sys_perm_code")

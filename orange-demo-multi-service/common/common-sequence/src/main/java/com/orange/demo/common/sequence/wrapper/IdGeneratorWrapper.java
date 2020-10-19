@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
  * 分布式Id生成器的封装类。该对象可根据配置选择不同的生成器实现类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Component
 public class IdGeneratorWrapper {

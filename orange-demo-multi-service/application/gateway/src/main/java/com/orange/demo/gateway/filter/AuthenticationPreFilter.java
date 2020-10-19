@@ -38,7 +38,7 @@ import java.util.Map;
  * 全局前处理过滤器。主要用于用户操作权限验证。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 public class AuthenticationPreFilter implements GlobalFilter, Ordered {
@@ -70,7 +70,7 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             byte[] responseBody = JSON.toJSONString(ResponseResult.error(ErrorCodeEnum.UNAUTHORIZED_LOGIN,
-                    "用户登录已过期，请重新登录！")).getBytes(StandardCharsets.UTF_8);
+                    "用户登录已过期或尚未登录，请重新登录！")).getBytes(StandardCharsets.UTF_8);
             return response.writeWith(Flux.just(response.bufferFactory().wrap(responseBody)));
         }
         // 这里判断是否需要定时刷新token

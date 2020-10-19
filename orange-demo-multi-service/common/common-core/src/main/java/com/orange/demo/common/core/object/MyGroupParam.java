@@ -20,7 +20,7 @@ import java.util.List;
  * 查询分组参数请求对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
@@ -31,7 +31,6 @@ public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
      * SQL语句的SELECT LIST中，分组字段的返回字段名称列表。
      */
     private List<String> selectGroupFieldList;
-
     /**
      * 分组参数解析后构建的SQL语句中所需的分组数据，如GROUP BY的字段列表和SELECT LIST中的分组字段显示列表。
      */

@@ -27,7 +27,7 @@ import java.util.Map;
  * 权限资源数据服务类。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Service
 public class SysPermService extends BaseService<SysPerm, SysPermDto, Long> {

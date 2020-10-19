@@ -14,7 +14,7 @@ import java.util.Set;
  * @param <D> 主DomainDto域数据对象类型。
  * @param <K> 主键类型。
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public interface BaseClient<D, K> {
 

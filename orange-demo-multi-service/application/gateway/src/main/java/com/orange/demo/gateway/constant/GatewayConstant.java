@@ -4,7 +4,7 @@ package com.orange.demo.gateway.constant;
  * 网关业务相关的常量对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public final class GatewayConstant {
 
@@ -16,12 +16,12 @@ public final class GatewayConstant {
     /**
      * 登录URL。
      */
-    public static final String ADMIN_LOGIN_URL = "/admin/login/doLogin";
+    public static final String ADMIN_LOGIN_URL = "/admin/upms/login/doLogin";
 
     /**
      * 登出URL。
      */
-    public static final String ADMIN_LOGOUT_URL = "/admin/login/doLogout";
+    public static final String ADMIN_LOGOUT_URL = "/admin/upms/login/doLogout";
 
     /**
      * sessionId的键名称。

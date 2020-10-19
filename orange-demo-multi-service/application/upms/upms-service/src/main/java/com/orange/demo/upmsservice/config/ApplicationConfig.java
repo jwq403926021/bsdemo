@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * NOTE: 和multiDataSource相关的配置没有包含进来，因为涉及到条件属性，所以由其相关的配置对象自己处理。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 @RefreshScope

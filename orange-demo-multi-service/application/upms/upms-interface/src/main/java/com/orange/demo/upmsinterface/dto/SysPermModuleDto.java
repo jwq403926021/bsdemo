@@ -14,7 +14,7 @@ import java.util.List;
  * 权限资源模块Dto。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class SysPermModuleDto {

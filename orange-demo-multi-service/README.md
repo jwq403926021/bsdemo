@@ -36,6 +36,10 @@
   - 控制台URL: localhost:8858
   - 用户名密码：sentinel/sentinel
   - 注意：该服务缺省端口为8080，容易冲突，所以改为8858。我们在所有的配置中均使用了8858，而非8080。
+- Minio
+  - 版本：7.0.2
+  - 控制台URL：需要配置Nginx，将请求导入到我们缺省设置的19000端口，之后可通过浏览器操作minio。
+  - 缺省用户名密码：admin/admin123456
 - ELK (可选，docker-compose-elk)
   - 版本：7.5.x
   - Kibana控制台URL：localhost:5601
@@ -44,7 +48,6 @@
   - 控制台URL：localhost:8079
 - admin-monitor服务模块 (可选)
   - 控制台URL：localhost:8769
-
 - 启动upms服务 (保证登录和用户权限服务可用)
 - 启动其他业务应用微服务<br>
   推荐在gateway服务之前启动，以便gateway服务启动后可以即刻发现服务。由于gateway是从注册中心定时拉取微服务信息，所以在gateway之后启动的微服务，通常会延迟一小段时间之后才会被发现。

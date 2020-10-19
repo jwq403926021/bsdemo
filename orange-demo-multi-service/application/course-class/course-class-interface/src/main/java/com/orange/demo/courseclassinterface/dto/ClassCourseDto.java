@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
  * ClassCourseDto对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class ClassCourseDto {
@@ -30,5 +30,6 @@ public class ClassCourseDto {
     /**
      * 课程顺序(数值越小越靠前)。
      */
+    @NotNull(message = "数据验证失败，课程顺序(数值越小越靠前)不能为空！", groups = {UpdateGroup.class})
     private Integer courseOrder;
 }

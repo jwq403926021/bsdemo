@@ -6,6 +6,7 @@ import com.orange.demo.common.core.exception.InvalidDataModelException;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
 import com.orange.demo.common.core.exception.RedisCacheAccessException;
 import com.orange.demo.common.core.object.ResponseResult;
+import com.orange.demo.common.core.util.ContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  * 用不同的函数，处理不同类型的异常。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Slf4j
 @RestControllerAdvice("com.orange.demo")
@@ -38,7 +40,8 @@ public class MyExceptionHandler {
     @ExceptionHandler(value = Exception.class)
 	public ResponseResult<Void> exceptionHandle(Exception ex, HttpServletRequest request) {
 		log.error("Unhandled exception from URL [" + request.getRequestURI() + "]", ex);
-		return ResponseResult.error(ErrorCodeEnum.UNHANDLED_EXCEPTION);
+		ContextUtil.getHttpResponse().setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		return ResponseResult.error(ErrorCodeEnum.UNHANDLED_EXCEPTION, ex.getMessage());
 	}
 
 	/**

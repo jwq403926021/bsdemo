@@ -4,7 +4,7 @@ package com.orange.demo.common.core.exception;
  * Redis缓存访问失败。比如：获取分布式数据锁超时、等待线程中断等。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 public class RedisCacheAccessException  extends RuntimeException {
 

@@ -77,7 +77,7 @@ export default {
           showName: undefined
         },
         SysPermCode: {
-          impl: new TableWidget(this.loadSysPermCodeData, this.loadSysPermCodeVerify, false, 'showOrder', 1),
+          impl: new TableWidget(this.loadSysPermCodeData, this.loadSysPermCodeVerify, false, false, 'showOrder', 1),
           totalCount: 0,
           sortInfo: {
             orderField: 'showOrder',

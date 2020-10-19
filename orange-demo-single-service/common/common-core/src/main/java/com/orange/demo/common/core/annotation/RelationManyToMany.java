@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 标注多对多的Model关系。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

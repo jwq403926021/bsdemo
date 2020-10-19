@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 标识Model和常量字典之间的关联关系。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

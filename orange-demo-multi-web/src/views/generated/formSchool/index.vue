@@ -31,7 +31,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSchool.SchoolInfo.impl.dataList" size="mini" @sort-change="formSchool.SchoolInfo.impl.onSortChange"
+        <el-table ref="SchoolInfo" :data="formSchool.SchoolInfo.impl.dataList" size="mini" @sort-change="formSchool.SchoolInfo.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formSchool.SchoolInfo.impl.getTableIndex" />
           <el-table-column label="学校名称" prop="schoolName">
@@ -42,11 +42,11 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
-              <el-button @click="onFormEditSchoolClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onFormEditSchoolClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formSchool:formSchool:formEditSchool')">
                 编辑
               </el-button>
-              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
                 :disabled="!checkPermCodeExist('formSchool:formSchool:delete')">
                 删除
               </el-button>
@@ -106,7 +106,7 @@ export default {
           impl: new DropdownWidget(this.loadCityIdDropdownList)
         },
         SchoolInfo: {
-          impl: new TableWidget(this.loadSchoolInfoData, this.loadSchoolInfoVerify, true)
+          impl: new TableWidget(this.loadSchoolInfoData, this.loadSchoolInfoVerify, true, false)
         },
         isInit: false
       }
@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     /**
-     * 校区数据数据获取函数，返回Primise
+     * 校区数据数据获取函数，返回Promise
      */
     loadSchoolInfoData (params) {
       if (params == null) params = {};
@@ -258,6 +258,8 @@ export default {
   },
   created () {
     this.formInit();
+  },
+  watch: {
   }
 }
 </script>

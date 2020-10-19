@@ -94,7 +94,7 @@ export default {
           impl: new DropdownWidget(this.loadSysUserStatusDropdownList)
         },
         SysUser: {
-          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, 'createTime', 1)
+          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, false, 'createTime', 1)
         },
         isInit: false
       },

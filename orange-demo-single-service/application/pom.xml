@@ -22,12 +22,12 @@
 		</dependency>
         <dependency>
             <groupId>com.orange.demo</groupId>
-            <artifactId>application-common</artifactId>
+            <artifactId>common-sequence</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.orange.demo</groupId>
-            <artifactId>common-sequence</artifactId>
+            <artifactId>application-common</artifactId>
             <version>1.0.0</version>
         </dependency>
 	</dependencies>

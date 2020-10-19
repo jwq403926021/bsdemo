@@ -17,7 +17,7 @@ import java.util.Map;
  * CourseDto对象。
  *
  * @author Jerry
- * @date 2020-09-27
+ * @date 2020-10-19
  */
 @Data
 public class CourseDto {
@@ -121,6 +121,11 @@ public class CourseDto {
      * updateTime 范围过滤结束值(<=)。
      */
     private String updateTimeEnd;
+
+    /**
+     * courseId 的多对多关联表数据对象，数据对应类型为ClassCourseDto。
+     */
+    private Map<String, Object> classCourse;
 
     /**
      * gradeId 字典关联数据。

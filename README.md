@@ -184,34 +184,19 @@ docker-compose stop
 ### 主要截图
 
 #### 橙单生成器
+
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165025_1a5dab88_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165127_aa86f874_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165235_333782ce_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165330_3b22761a_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/193003_4d88919b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/193215_90eac360_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/193354_a02b1181_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/193619_e2673c0b_7431510.png"/></td>
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/165440_faecc3ab_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/165518_e381e2f7_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/181606_265790ac_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/165837_de1fef48_7431510.png"/></td>
-</tr>
-</table>
-
-#### 开发文档
-<table>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0423/203644_b838ebc6_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204047_26496989_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162403_9a2500d2_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162502_3bc30a46_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/181337_8e7322e5_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/181456_978cbad8_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204233_619b47b9_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0423/204335_51273157_7431510.png"/></td>
 </tr>
 </table>
 
@@ -224,10 +209,10 @@ docker-compose stop
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/163912_4c1b3007_7431510.png"/></td>
 </tr>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/162844_d7731374_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/163012_78374da1_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/163124_92373034_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/163222_c95aae03_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/194043_9ea4b42f_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/194246_0f29d8ae_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/194503_000901d9_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/194620_4c1047ea_7431510.png"/></td>
 </tr>
 </table>
 

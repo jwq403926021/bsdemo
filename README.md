@@ -151,6 +151,7 @@
   <td><img src="https://images.gitee.com/uploads/images/2020/1029/200000_3698dcbd_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/1029/200230_2ffe4390_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/1029/200533_cd13b534_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/214437_e40639e5_7431510.png"/></td>
 </tr>
 </table>
 
@@ -256,4 +257,4 @@ docker-compose stop
 </table>
 
 #### 价值理念
-都看到这里了，如果看的仔细，至少要花20分钟，非常感谢您的坚持和耐心，希望能再花1秒钟的时间在下面 star 一下。
+都看到这里了，如果看的仔细，至少要花 20 分钟，非常感谢您的坚持和耐心，希望能再花 1 秒钟的时间在下面 star 一下。

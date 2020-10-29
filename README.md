@@ -254,3 +254,6 @@ docker-compose stop
   <td><img src="https://images.gitee.com/uploads/images/2020/0423/204335_51273157_7431510.png"/></td>
 </tr>
 </table>
+
+#### 价值理念
+都看到这里了，如果看的仔细，至少要花20分钟，非常感谢您的坚持和耐心，希望能再花1秒钟的时间在下面 star 一下。

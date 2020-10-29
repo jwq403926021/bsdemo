@@ -13,7 +13,7 @@ import java.io.PrintWriter;
  * 接口返回对象
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 public class ResponseResult<T> {

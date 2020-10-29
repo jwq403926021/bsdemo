@@ -12,7 +12,7 @@ import java.util.Map;
  * 基于JWT的Token生成工具类
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class JwtUtil {

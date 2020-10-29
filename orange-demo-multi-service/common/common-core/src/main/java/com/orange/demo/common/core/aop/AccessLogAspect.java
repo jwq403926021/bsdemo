@@ -26,7 +26,7 @@ import java.util.List;
  * 记录接口的链路traceId、请求参数、应答数据、错误信息和调用时长。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Aspect
 @Component

@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
  * MaterialEdition实体对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 @Table(name = "zz_material_edition")

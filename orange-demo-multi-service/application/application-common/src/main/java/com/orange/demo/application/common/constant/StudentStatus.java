@@ -7,7 +7,7 @@ import java.util.Map;
  * 学生状态常量字典对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public final class StudentStatus {
 

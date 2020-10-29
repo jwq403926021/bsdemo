@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 主要用于标记Service所依赖的数据源类型。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * common-sequence模块的配置类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 @ConfigurationProperties(prefix = "sequence")

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * upms服务启动类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @SpringCloudApplication
 @EnableFeignClients(basePackages = "com.orange.demo")

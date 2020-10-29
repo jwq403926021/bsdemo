@@ -1,6 +1,5 @@
 package com.orange.demo.statsservice.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
 import com.orange.demo.statsservice.model.*;
@@ -12,6 +11,8 @@ import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.annotation.MyRequestBody;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,9 @@ import java.util.*;
  * 学生行为统计操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "学生行为统计管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/studentActionStats")
@@ -46,7 +48,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<StudentActionStatsDto>> list(
             @MyRequestBody("studentActionStatsFilter") StudentActionStatsDto studentActionStatsDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -77,7 +79,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/listWithGroup")
-    public ResponseResult<JSONObject> listWithGroup(
+    public ResponseResult<MyPageData<StudentActionStatsDto>> listWithGroup(
             @MyRequestBody("studentActionStatsFilter") StudentActionStatsDto studentActionStatsDtoFilter,
             @MyRequestBody MyGroupParam groupParam,
             @MyRequestBody MyOrderParam orderParam,
@@ -96,8 +98,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
         List<StudentActionStats> resultList = studentActionStatsService.getGroupedStudentActionStatsListWithRelation(
                 filter, criteria.getGroupSelect(), criteria.getGroupBy(), orderBy);
         // 分页连同对象数据转换copy工作，下面的方法一并完成。
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList, StudentActionStats.INSTANCE);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList, StudentActionStats.INSTANCE));
     }
 
     /**
@@ -127,6 +128,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象集合。
      */
+    @ApiOperation(hidden = true, value = "listByIds")
     @PostMapping("/listByIds")
     public ResponseResult<List<StudentActionStatsDto>> listByIds(
             @RequestParam Set<Long> statsIds, @RequestParam Boolean withDict) {
@@ -140,6 +142,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象数据。
      */
+    @ApiOperation(hidden = true, value = "getById")
     @PostMapping("/getById")
     public ResponseResult<StudentActionStatsDto> getById(
             @RequestParam Long statsId, @RequestParam Boolean withDict) {
@@ -152,6 +155,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param statsIds 主键Id集合。
      * @return 应答结果对象，包含true全部存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existIds")
     @PostMapping("/existIds")
     public ResponseResult<Boolean> existIds(@RequestParam Set<Long> statsIds) {
         return super.baseExistIds(statsIds);
@@ -163,6 +167,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param statsId 主键Id。
      * @return 应答结果对象，包含true表示存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existId")
     @PostMapping("/existId")
     public ResponseResult<Boolean> existId(@RequestParam Long statsId) {
         return super.baseExistId(statsId);
@@ -174,6 +179,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listBy")
     @PostMapping("/listBy")
     public ResponseResult<List<StudentActionStatsDto>> listBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListBy(queryParam, StudentActionStats.INSTANCE);
@@ -185,6 +191,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listMapBy")
     @PostMapping("/listMapBy")
     public ResponseResult<List<Map<String, Object>>> listMapBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListMapBy(queryParam, StudentActionStats.INSTANCE);
@@ -196,6 +203,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "getBy")
     @PostMapping("/getBy")
     public ResponseResult<StudentActionStatsDto> getBy(@RequestBody MyQueryParam queryParam) {
         return super.baseGetBy(queryParam, StudentActionStats.INSTANCE);
@@ -207,6 +215,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含结果数量。
      */
+    @ApiOperation(hidden = true, value = "countBy")
     @PostMapping("/countBy")
     public ResponseResult<Integer> countBy(@RequestBody MyQueryParam queryParam) {
         return super.baseCountBy(queryParam);
@@ -218,6 +227,7 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
      * @param aggregationParam 聚合参数。
      * @return 应该结果对象，包含聚合计算后的分组Map列表。
      */
+    @ApiOperation(hidden = true, value = "aggregateBy")
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);

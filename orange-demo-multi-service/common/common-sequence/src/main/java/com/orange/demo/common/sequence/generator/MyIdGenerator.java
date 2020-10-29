@@ -4,7 +4,7 @@ package com.orange.demo.common.sequence.generator;
  * 分布式Id生成器的统一接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public interface MyIdGenerator {
 

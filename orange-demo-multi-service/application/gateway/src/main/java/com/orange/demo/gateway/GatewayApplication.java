@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 网关服务启动类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @SpringCloudApplication

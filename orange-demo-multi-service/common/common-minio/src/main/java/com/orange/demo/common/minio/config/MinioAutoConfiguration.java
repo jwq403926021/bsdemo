@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * common-minio模块的自动配置引导类。仅当配置项minio.enabled为true的时候加载。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @EnableConfigurationProperties(MinioProperties.class)
 @ConditionalOnProperty(prefix = "minio", name = "enabled")

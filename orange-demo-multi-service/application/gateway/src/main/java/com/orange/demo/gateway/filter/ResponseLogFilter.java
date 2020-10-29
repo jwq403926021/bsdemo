@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
  * 将整个链路的traceId存储在Response Head中，并返回给前端，便于问题定位。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class ResponseLogFilter implements GlobalFilter, Ordered {

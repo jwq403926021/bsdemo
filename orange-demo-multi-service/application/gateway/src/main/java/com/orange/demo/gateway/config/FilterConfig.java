@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
  * Web通用过滤器配置类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Configuration
 public class FilterConfig {

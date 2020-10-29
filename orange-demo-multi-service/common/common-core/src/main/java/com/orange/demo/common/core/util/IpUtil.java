@@ -17,7 +17,7 @@ import java.util.List;
  * Ip工具类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class IpUtil {

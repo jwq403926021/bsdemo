@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 角色菜单实体对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 @Table(name = "zz_sys_role_menu")

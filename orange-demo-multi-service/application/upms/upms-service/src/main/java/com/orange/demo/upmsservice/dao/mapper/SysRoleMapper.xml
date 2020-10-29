@@ -22,7 +22,7 @@
             </if>
             AND deleted_flag = ${@com.orange.demo.common.core.constant.GlobalDeletedFlag@NORMAL}
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>

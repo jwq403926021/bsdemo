@@ -1,5 +1,6 @@
 package com.orange.demo.courseclassservice.controller;
 
+import io.swagger.annotations.Api;
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
@@ -19,8 +20,9 @@ import java.util.*;
  * 行政区划数据访问接口类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "行政区划数据访问接口")
 @RestController
 @RequestMapping("/areaCode")
 public class AreaCodeController extends BaseController<AreaCode, AreaCodeDto, Long> {

@@ -18,7 +18,7 @@ import java.util.*;
  * Controller参数中的排序请求对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
@@ -44,6 +44,9 @@ public class MyOrderParam extends ArrayList<MyOrderParam.OrderInfo> {
         int i = 0;
         StringBuilder orderBy = new StringBuilder(128);
         for (OrderInfo orderInfo : orderParam) {
+            if (StringUtils.isBlank(orderInfo.getFieldName())) {
+                continue;
+            }
             OrderBaseData orderBaseData = parseOrderBaseData(orderInfo, modelClazz);
             if (StringUtils.isBlank(orderBaseData.tableName)) {
                 throw new InvalidDataModelException(orderBaseData.modelName);
@@ -83,9 +86,6 @@ public class MyOrderParam extends ArrayList<MyOrderParam.OrderInfo> {
 
     private static OrderBaseData parseOrderBaseData(OrderInfo orderInfo, Class<?> modelClazz) {
         OrderBaseData orderBaseData = new OrderBaseData();
-        if (StringUtils.isBlank(orderInfo.getFieldName())) {
-            return orderBaseData;
-        }
         orderBaseData.fieldName = StringUtils.substringBefore(orderInfo.fieldName, DICT_MAP);
         String[] stringArray = StringUtils.split(orderBaseData.fieldName, '.');
         if (stringArray.length == 1) {
@@ -230,7 +230,7 @@ public class MyOrderParam extends ArrayList<MyOrderParam.OrderInfo> {
     @Data
     public static class OrderInfo {
         /**
-         * Java对象的字段名。目前主要包含三种格式：
+         * Java对象的字段名。如果fieldName为空，则忽略跳过。目前主要包含三种格式：
          * 1. 简单的属性名称，如userId，将会直接映射到与其关联的数据库字段。表名为当前ModelClazz所对应的表名。
          *    映射结果或为 my_main_table.user_id
          * 2. 字典属性名称，如userIdDictMap.id，由于仅仅支持字典中Id数据的排序，所以直接截取DictMap之前的字符串userId作为排序属性。

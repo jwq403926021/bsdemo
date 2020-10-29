@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  * 基于Jwt，用于前后端传递的令牌对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 @ToString

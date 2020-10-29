@@ -22,7 +22,7 @@ import java.util.Objects;
  * 基于Minio上传和下载文件操作的工具类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 @Component

@@ -9,7 +9,7 @@ import cn.hutool.core.util.IdUtil;
  * WorkNodeId是通过配置文件静态指定的。而SnowflakeIdGenerator的WorkNodeId是由zk生成的。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public class BasicIdGenerator implements MyIdGenerator {
 

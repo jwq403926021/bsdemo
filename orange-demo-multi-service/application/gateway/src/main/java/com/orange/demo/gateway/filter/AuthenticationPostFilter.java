@@ -12,7 +12,6 @@ import com.orange.demo.common.core.util.RedisKeyUtil;
 import com.orange.demo.gateway.config.ApplicationConfig;
 import com.orange.demo.gateway.constant.GatewayConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ import java.util.Map;
  * 全局后处理过滤器。主要用于将用户的会话信息存到缓存服务器，以及在登出时清除缓存中的会话数据。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class AuthenticationPostFilter implements GlobalFilter, Ordered {
@@ -235,21 +234,12 @@ public class AuthenticationPostFilter implements GlobalFilter, Ordered {
             }
             t.exec();
         }
-        // 4. 构造返回给用户的应答
-        JSONObject resultJsonData = new JSONObject();
-        resultJsonData.put(TokenData.REQUEST_ATTRIBUTE_NAME, token);
-        resultJsonData.put("isAdmin", isAdmin);
-        resultJsonData.put("showName", showName);
-        JSONArray menuList = loginData.getJSONArray("menuList");
-        if (CollectionUtils.isNotEmpty(menuList)) {
-            resultJsonData.put("menuList", menuList);
+        // 4. 构造返回给用户的应答，将加密后的令牌返回给前端。
+        loginData.put(TokenData.REQUEST_ATTRIBUTE_NAME, token);
+        // 如果是管理员，不用返回权限字列表。
+        if (Boolean.TRUE.equals(isAdmin)) {
+            loginData.remove("permCodeList");
         }
-        if (Boolean.FALSE.equals(isAdmin)) {
-            JSONArray permCodeList = loginData.getJSONArray("permCodeList");
-            if (CollectionUtils.isNotEmpty(permCodeList)) {
-                resultJsonData.put("permCodeList", permCodeList);
-            }
-        }
-        return ResponseResult.success(resultJsonData);
+        return ResponseResult.success(loginData);
     }
 }

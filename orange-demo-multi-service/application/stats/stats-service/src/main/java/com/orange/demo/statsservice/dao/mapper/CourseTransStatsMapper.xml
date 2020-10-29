@@ -43,7 +43,7 @@
                 <include refid="filterRef"/>
             </where>
             GROUP BY ${groupBy}) zz_course_trans_stats
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>
@@ -59,7 +59,7 @@
             </if>
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>

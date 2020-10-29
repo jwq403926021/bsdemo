@@ -17,7 +17,7 @@ import java.util.*;
  * 学生行为流水服务远程数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @FeignClient(
         name = "stats",

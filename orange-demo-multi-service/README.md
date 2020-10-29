@@ -10,6 +10,12 @@
 4. ELK、Prometheus、Grafana和PinPoint，由于不会影响正常的开发和调试，我们目前仅提供了docker-compose的启动方式。
 
 最后，我们真诚的希望能够得到您的反馈，并持续改进我们的产品、文档、服务和操作流程。
+### 服务接口文档
+---
+- Knife4j
+  - 服务启动后，Knife4j的文档入口地址 [http://localhost:8082/doc.html#/plus](http://localhost:8082/doc.html#/plus)
+- Postman
+  - 无需启动服务，即可将当前工程的接口导出成Postman格式。在工程的common/common-tools/模块下，找到ExportApiApp文件，并执行main函数。
 
 ### 系统依赖服务组件
 ---
@@ -77,6 +83,6 @@
 
 ### 本地命令行启动方式
 ---
-1. Nacos、Consul、Sentinel、Seata、Apollo、XXL-Job、Redis、Kafka、Zookeeper、Skywalking的本地启动方式，请参考开发文档中[环境准备章节](http://www.orangeforms.com/development-doc/environment/)。
+1. Nacos、Consul、Sentinel、Apollo、XXL-Job、Redis、Kafka、Zookeeper、Skywalking的本地启动方式，请参考开发文档中[环境准备章节](http://www.orangeforms.com/development-doc/environment/)。
 2. ELK、Grafana、Prometheus、Pinpoint目前仅提供docker-compose方式。
 3. 再次强调，通过本地命令行启动所有系统服务组件时，启动顺序一定要和上面"系统依赖服务组件"部分列出的服务顺序保持一致，因为服务组件之间是有依赖的。

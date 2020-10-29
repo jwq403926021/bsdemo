@@ -12,6 +12,7 @@ import com.orange.demo.gateway.config.ApplicationConfig;
 import com.orange.demo.gateway.constant.GatewayConstant;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,15 +32,13 @@ import redis.clients.jedis.JedisPool;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
  * 全局前处理过滤器。主要用于用户操作权限验证。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class AuthenticationPreFilter implements GlobalFilter, Ordered {
@@ -47,20 +47,18 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
     private ApplicationConfig appConfig;
     @Autowired
     private JedisPool jedisPool;
-
-    private static List<String> whitelistUrlPattern = new LinkedList<>();
-    static {
-        // 这里可以添加URL部分匹配的白名单列表
-        // 另外解释一下，数据库中配置的白名单列表，在doLogin中，直接合并到当前用户的权限列表中了。
-    }
+    /**
+     * Ant Pattern模式的白名单地址匹配器。
+     */
+    private AntPathMatcher antMatcher = new AntPathMatcher();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         String url = request.getURI().getPath();
-        // 登录请求，直接转发给login验证服务器。
-        if (url.equals(GatewayConstant.ADMIN_LOGIN_URL)) {
+        // 判断是否为白名单请求，以及一些内置不需要验证的请求。(登录请求也包含其中)。
+        if (this.shouldNotFilter(url)) {
             return chain.filter(exchange);
         }
         String token = this.getTokenFromRequest(request);
@@ -155,13 +153,35 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
 
     private boolean hasPermission(Jedis jedis, String sessionId, String url) {
         // 对于退出登录操作，不需要进行权限验证，仅仅确认是已经登录的合法用户即可。
-        if (url.equals(GatewayConstant.ADMIN_LOGOUT_URL)
-                || Boolean.TRUE.equals(jedis.sismember(RedisKeyUtil.makeSessionPermIdKeyForRedis(sessionId), url))) {
+        return url.equals(GatewayConstant.ADMIN_LOGOUT_URL)
+                || Boolean.TRUE.equals(jedis.sismember(RedisKeyUtil.makeSessionPermIdKeyForRedis(sessionId), url));
+    }
+
+    /**
+     * 判断当前请求的url是否为配置中的白名单地址。以及一些内置的不需要登录即可访问的url。
+     * @param url 请求的url。
+     * @return 是返回true，否则false。
+     */
+    private boolean shouldNotFilter(String url) {
+        // 这里过滤和swagger相关的url
+        if (url.endsWith("/v2/api-docs") || url.endsWith("/v2/api-docs-ext")) {
             return true;
         }
-        for (String urlPattern : whitelistUrlPattern) {
-            if (url.startsWith(urlPattern)) {
+        if (url.equals(GatewayConstant.ADMIN_LOGIN_URL)) {
+            return true;
+        }
+        // 先过滤直接匹配的白名单url。
+        if (CollectionUtils.isNotEmpty(appConfig.getWhitelistUrl())) {
+            if (appConfig.getWhitelistUrl().contains(url)) {
                 return true;
+            }
+        }
+        // 过滤ant pattern模式的白名单url。
+        if (CollectionUtils.isNotEmpty(appConfig.getWhitelistUrlPattern())) {
+            for (String urlPattern : appConfig.getWhitelistUrlPattern()) {
+                if (antMatcher.match(urlPattern, url)) {
+                    return true;
+                }
             }
         }
         return false;

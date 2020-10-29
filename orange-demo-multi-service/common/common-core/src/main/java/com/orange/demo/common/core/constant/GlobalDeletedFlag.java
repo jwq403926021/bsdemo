@@ -4,7 +4,7 @@ package com.orange.demo.common.core.constant;
  * 数据记录逻辑删除标记常量。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public final class GlobalDeletedFlag {
 

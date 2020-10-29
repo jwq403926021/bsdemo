@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * 这里我们只是使用了Redisson的分布式锁，以及map等数据结构作为字典缓存使用。更多用法请参考其文档。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Configuration
 @ConditionalOnProperty(name = "redis.redisson.enabled", havingValue = "true")

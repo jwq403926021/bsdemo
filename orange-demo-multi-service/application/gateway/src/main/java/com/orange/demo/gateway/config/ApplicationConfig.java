@@ -5,11 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Set;
+
 /**
  * 网关业务配置类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Data
 @RefreshScope
@@ -18,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     /**
-     * token加密时的盐
+     * token加密用的密钥，该值的长度最少10个字符(过短会报错)。
      */
     private String tokenSigningKey;
     /**
@@ -47,4 +49,12 @@ public class ApplicationConfig {
      * 缺省值是 one day
      */
     private int permRedisExpiredSeconds = 86400;
+    /**
+     * 基于完全等于(equals)判定规则的白名单地址集合，过滤效率高于whitelistUrlPattern。
+     */
+    private Set<String> whitelistUrl;
+    /**
+     * 基于Ant Pattern模式判定规则的白名单地址集合。如：/aa/**。
+     */
+    private Set<String> whitelistUrlPattern;
 }

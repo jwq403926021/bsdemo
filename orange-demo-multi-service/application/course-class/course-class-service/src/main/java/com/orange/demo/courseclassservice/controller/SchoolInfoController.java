@@ -1,7 +1,6 @@
 package com.orange.demo.courseclassservice.controller;
 
 import cn.jimmyshi.beanquery.BeanQuery;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
 import com.orange.demo.courseclassservice.model.*;
@@ -14,6 +13,9 @@ import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,9 @@ import java.util.*;
  * 校区数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "校区数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/schoolInfo")
@@ -46,8 +49,9 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param schoolInfoDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"schoolInfo.userId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody("schoolInfo") SchoolInfoDto schoolInfoDto) {
+    public ResponseResult<Long> add(@MyRequestBody("schoolInfo") SchoolInfoDto schoolInfoDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(schoolInfoDto);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -60,9 +64,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         schoolInfo = schoolInfoService.saveNew(schoolInfo);
-        JSONObject responseData = new JSONObject();
-        responseData.put("schoolId", schoolInfo.getSchoolId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(schoolInfo.getSchoolId());
     }
 
     /**
@@ -131,7 +133,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SchoolInfoDto>> list(
             @MyRequestBody("schoolInfoFilter") SchoolInfoDto schoolInfoDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -193,6 +195,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象集合。
      */
+    @ApiOperation(hidden = true, value = "listByIds")
     @PostMapping("/listByIds")
     public ResponseResult<List<SchoolInfoDto>> listByIds(
             @RequestParam Set<Long> schoolIds, @RequestParam Boolean withDict) {
@@ -206,6 +209,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象数据。
      */
+    @ApiOperation(hidden = true, value = "getById")
     @PostMapping("/getById")
     public ResponseResult<SchoolInfoDto> getById(
             @RequestParam Long schoolId, @RequestParam Boolean withDict) {
@@ -218,6 +222,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param schoolIds 主键Id集合。
      * @return 应答结果对象，包含true全部存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existIds")
     @PostMapping("/existIds")
     public ResponseResult<Boolean> existIds(@RequestParam Set<Long> schoolIds) {
         return super.baseExistIds(schoolIds);
@@ -229,6 +234,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param schoolId 主键Id。
      * @return 应答结果对象，包含true表示存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existId")
     @PostMapping("/existId")
     public ResponseResult<Boolean> existId(@RequestParam Long schoolId) {
         return super.baseExistId(schoolId);
@@ -240,6 +246,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listBy")
     @PostMapping("/listBy")
     public ResponseResult<List<SchoolInfoDto>> listBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListBy(queryParam, SchoolInfo.INSTANCE);
@@ -251,6 +258,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listMapBy")
     @PostMapping("/listMapBy")
     public ResponseResult<List<Map<String, Object>>> listMapBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListMapBy(queryParam, SchoolInfo.INSTANCE);
@@ -262,6 +270,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "getBy")
     @PostMapping("/getBy")
     public ResponseResult<SchoolInfoDto> getBy(@RequestBody MyQueryParam queryParam) {
         return super.baseGetBy(queryParam, SchoolInfo.INSTANCE);
@@ -273,6 +282,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含结果数量。
      */
+    @ApiOperation(hidden = true, value = "countBy")
     @PostMapping("/countBy")
     public ResponseResult<Integer> countBy(@RequestBody MyQueryParam queryParam) {
         return super.baseCountBy(queryParam);
@@ -284,6 +294,7 @@ public class SchoolInfoController extends BaseController<SchoolInfo, SchoolInfoD
      * @param aggregationParam 聚合参数。
      * @return 应该结果对象，包含聚合计算后的分组Map列表。
      */
+    @ApiOperation(hidden = true, value = "aggregateBy")
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);

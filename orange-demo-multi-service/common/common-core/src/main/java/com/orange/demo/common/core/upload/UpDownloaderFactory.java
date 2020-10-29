@@ -9,7 +9,7 @@ import java.util.Map;
  * 业务对象根据上传下载存储类型，获取上传下载对象的工厂类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Component
 public class UpDownloaderFactory {

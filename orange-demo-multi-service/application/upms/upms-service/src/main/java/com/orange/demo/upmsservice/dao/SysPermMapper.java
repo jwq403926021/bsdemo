@@ -11,7 +11,7 @@ import java.util.Map;
  * 权限资源数据访问操作接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public interface SysPermMapper extends BaseDaoMapper<SysPerm> {
 

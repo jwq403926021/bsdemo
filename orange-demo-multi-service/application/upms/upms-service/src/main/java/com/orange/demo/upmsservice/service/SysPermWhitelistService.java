@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * 白名单数据服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Service
 public class SysPermWhitelistService extends BaseService<SysPermWhitelist, SysPermWhitelist, String> {

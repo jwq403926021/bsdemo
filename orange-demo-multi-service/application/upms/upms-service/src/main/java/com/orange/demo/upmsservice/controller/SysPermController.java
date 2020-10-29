@@ -1,13 +1,13 @@
 package com.orange.demo.upmsservice.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
-import com.orange.demo.common.core.object.CallResult;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import com.orange.demo.common.core.object.CallResult;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
-import com.orange.demo.common.core.object.ResponseResult;
-import com.orange.demo.common.core.object.MyPageParam;
+import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.MyModelUtil;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.util.MyPageUtil;
@@ -28,8 +28,9 @@ import java.util.Map;
  * 权限资源管理接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "权限资源管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/sysPerm")
@@ -44,8 +45,9 @@ public class SysPermController {
      * @param sysPermDto 新增权限资源对象。
      * @return 应答结果对象，包含新增权限资源的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysPerm.permId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody("sysPerm") SysPermDto sysPermDto) {
+    public ResponseResult<Long> add(@MyRequestBody("sysPerm") SysPermDto sysPermDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysPermDto);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -56,9 +58,7 @@ public class SysPermController {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, result.getErrorMessage());
         }
         sysPerm = sysPermService.saveNew(sysPerm);
-        JSONObject responseData = new JSONObject();
-        responseData.put("permId", sysPerm.getPermId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysPerm.getPermId());
     }
 
     /**
@@ -136,7 +136,7 @@ public class SysPermController {
      * @return 应答结果对象，包含权限资源列表。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SysPermDto>> list(
             @MyRequestBody("sysPermFilter") SysPermDto sysPermDtoFiltter, @MyRequestBody MyPageParam pageParam) {
         if (pageParam != null) {
             PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize());
@@ -161,7 +161,7 @@ public class SysPermController {
      * @return 应答结果对象，包含该用户的全部权限资源列表。
      */
     @PostMapping("/listAllPermsByUserFilter")
-    public ResponseResult<JSONObject> listAllPermsByUserFilter(
+    public ResponseResult<MyPageData<Map<String, Object>>> listAllPermsByUserFilter(
             @MyRequestBody String loginName,
             @MyRequestBody Long moduleId,
             @MyRequestBody String url,
@@ -174,8 +174,7 @@ public class SysPermController {
         }
         List<Map<String, Object>> userPermMapList =
                 sysPermService.getUserPermListByFilter(loginName, moduleId, url);
-        JSONObject responseData = MyPageUtil.makeResponseData(userPermMapList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(userPermMapList));
     }
 
     /**

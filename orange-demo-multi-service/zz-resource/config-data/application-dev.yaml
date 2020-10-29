@@ -4,6 +4,9 @@ server:
     max-threads: 100
     min-spare-threads: 10
 
+logging:
+  config: classpath:log4j2.xml
+
 spring:
   servlet:
     multipart:
@@ -77,6 +80,15 @@ ribbon:
   ConnectTimeout: 3000
   MaxAutoRetries: 1
   MaxAutoRetriesNextServer: 1
+
+swagger:
+  # 当enabled为false的时候，则可禁用swagger。
+  enabled: true
+  # 工程的基础包名。
+  basePackage: com.orange.demo
+  title: 橙单微服务开源版
+  description: 橙单微服务开源版详情
+  version: 1.0
 
 # 暴露监控端点
 management:

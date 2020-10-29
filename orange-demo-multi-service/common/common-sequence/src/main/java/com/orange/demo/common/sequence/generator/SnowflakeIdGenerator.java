@@ -12,7 +12,7 @@ import java.util.Random;
  * Snowflake Id生成器。该实现完全copy美团的leaf。
  *
  * @author MeiTuan.Team
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class SnowflakeIdGenerator implements MyIdGenerator {

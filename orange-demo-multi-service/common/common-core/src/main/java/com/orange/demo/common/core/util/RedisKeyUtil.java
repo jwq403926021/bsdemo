@@ -4,7 +4,7 @@ package com.orange.demo.common.core.util;
  * Redis 键生成工具类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public class RedisKeyUtil {
 

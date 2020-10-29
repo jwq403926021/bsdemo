@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 权限字数据服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Service
 public class SysPermCodeService extends BaseService<SysPermCode, SysPermCodeDto, Long> {

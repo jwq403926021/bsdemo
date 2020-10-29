@@ -52,7 +52,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://localhost:3306/zzdemo-single?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/zzdemo-multi?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver

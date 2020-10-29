@@ -4,7 +4,7 @@ package com.orange.demo.gateway.constant;
  * 网关业务相关的常量对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public final class GatewayConstant {
 

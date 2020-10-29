@@ -2,6 +2,7 @@ package com.orange.demo.common.core.util;
 
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.alibaba.fastjson.JSONObject;
+import com.orange.demo.common.core.object.MyPageData;
 import com.github.pagehelper.Page;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import com.orange.demo.common.core.object.Tuple2;
@@ -13,7 +14,7 @@ import java.util.List;
  * 生成带有分页信息的数据列表
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public class MyPageUtil {
 
@@ -42,13 +43,13 @@ public class MyPageUtil {
      *
      * @param dataList 数据列表，该参数必须是调用PageMethod.startPage之后，立即执行mybatis查询操作的结果集。
      * @param <T>      源数据类型。
-     * @return 返回结果集和TotalCount。
+     * @return 返回分页数据对象。
      */
-    public static <T> JSONObject makeResponseData(List<T> dataList) {
-        JSONObject pageData = new JSONObject();
-        pageData.put(DATA_LIST_LITERAL, dataList);
+    public static <T> MyPageData<T> makeResponseData(List<T> dataList) {
+        MyPageData<T> pageData = new MyPageData<>();
+        pageData.setDataList(dataList);
         if (dataList instanceof Page) {
-            pageData.put(TOTAL_COUNT_LITERAL, ((Page<?>)dataList).getTotal());
+            pageData.setTotalCount(((Page<?>)dataList).getTotal());
         }
         return pageData;
     }
@@ -59,13 +60,13 @@ public class MyPageUtil {
      * @param dataList   数据列表，该参数必须是调用PageMethod.startPage之后，立即执行mybatis查询操作的结果集。
      * @param totalCount 总数量。
      * @param <T>        源数据类型。
-     * @return 返回结果集和TotalCount。
+     * @return 返回分页数据对象。
      */
-    public static <T> JSONObject makeResponseData(List<T> dataList, Long totalCount) {
-        JSONObject pageData = new JSONObject();
-        pageData.put(DATA_LIST_LITERAL, dataList);
+    public static <T> MyPageData<T> makeResponseData(List<T> dataList, Long totalCount) {
+        MyPageData<T> pageData = new MyPageData<>();
+        pageData.setDataList(dataList);
         if (totalCount != null) {
-            pageData.put(TOTAL_COUNT_LITERAL, totalCount);
+            pageData.setTotalCount(totalCount);
         }
         return pageData;
     }
@@ -77,12 +78,13 @@ public class MyPageUtil {
      * @param modelMapper 实体对象到Dto对象的数据映射器。
      * @param <D>         Dto对象类型。
      * @param <T>         实体对象类型。
-     * @return JSON对象中将包含转换后的Dto数据列表，如果dataList是Page分页对象，返回数据中要将包含分页信息。
+     * @return 返回分页数据对象。
      */
-    public static <D, T> JSONObject makeResponseData(List<T> dataList, BaseModelMapper<D, T> modelMapper) {
+    public static <D, T> MyPageData<D> makeResponseData(List<T> dataList, BaseModelMapper<D, T> modelMapper) {
+        MyPageData<D> pageData = new MyPageData<>();
         if (CollectionUtils.isEmpty(dataList)) {
             // 这里需要构建分页数据对象，统一前端数据格式
-            return MyPageUtil.makeResponseData(dataList);
+            return pageData;
         }
         long totalCount = 0L;
         if (dataList instanceof Page) {
@@ -96,9 +98,9 @@ public class MyPageUtil {
      *
      * @param responseData 第一个数据时数据列表，第二个是列表数量。
      * @param <T>          源数据类型。
-     * @return 返回结果集和TotalCount。
+     * @return 返回分页数据对象。
      */
-    public static <T> JSONObject makeResponseData(Tuple2<List<T>, Long> responseData) {
+    public static <T> MyPageData<T> makeResponseData(Tuple2<List<T>, Long> responseData) {
         return makeResponseData(responseData.getFirst(), responseData.getSecond());
     }
 

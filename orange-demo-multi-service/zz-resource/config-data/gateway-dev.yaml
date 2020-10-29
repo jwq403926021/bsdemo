@@ -2,8 +2,8 @@ server:
   port: 8082
 
 application:
-  # Jwt令牌加密的签名值。
-  tokenSigningKey: OrangeMultiDemo
+  # Jwt令牌加密的签名值。该值的长度要超过10个字符(过短会报错)。
+  tokenSigningKey: OrangeMultiDemo-signing-key
   # Jwt令牌在Http Header中的键名称。
   tokenHeaderKey: Authorization
   # Jwt令牌刷新后在Http Header中的键名称。

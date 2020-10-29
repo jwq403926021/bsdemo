@@ -9,7 +9,7 @@ import java.util.List;
  * 菜单数据访问操作接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 public interface SysMenuMapper extends BaseDaoMapper<SysMenu> {
 

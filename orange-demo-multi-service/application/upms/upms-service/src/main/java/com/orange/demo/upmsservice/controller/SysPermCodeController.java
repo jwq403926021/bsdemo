@@ -1,13 +1,11 @@
 package com.orange.demo.upmsservice.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.page.PageMethod;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
-import com.orange.demo.common.core.object.CallResult;
-import com.orange.demo.common.core.object.ResponseResult;
-import com.orange.demo.common.core.object.MyPageParam;
-import com.orange.demo.common.core.object.MyRelationParam;
+import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.MyModelUtil;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.util.MyPageUtil;
@@ -27,8 +25,9 @@ import java.util.*;
  * 权限字管理接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "权限字管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/sysPermCode")
@@ -45,8 +44,9 @@ public class SysPermCodeController {
      * @return 应答结果对象，包含新增权限字的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {"sysPermCode.permCodeId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(
+    public ResponseResult<Long> add(
             @MyRequestBody("sysPermCode") SysPermCodeDto sysPermCodeDto, @MyRequestBody String permIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysPermCodeDto);
         if (errorMessage != null) {
@@ -62,9 +62,7 @@ public class SysPermCodeController {
             permIdSet = (Set<Long>) result.getData().get("permIdSet");
         }
         sysPermCode = sysPermCodeService.saveNew(sysPermCode, permIdSet);
-        JSONObject responseData = new JSONObject();
-        responseData.put("sysPermCodeId", sysPermCode.getPermCodeId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysPermCode.getPermCodeId());
     }
 
     /**
@@ -172,7 +170,7 @@ public class SysPermCodeController {
      * @return 应答结果对象，包含该用户的全部权限资源列表。
      */
     @PostMapping("/listAllPermCodesByUserFilter")
-    public ResponseResult<JSONObject> listAllPermCodesByUserFilter(
+    public ResponseResult<MyPageData<SysPermCodeDto>> listAllPermCodesByUserFilter(
             @MyRequestBody String loginName,
             @MyRequestBody String permCode,
             @MyRequestBody MyPageParam pageParam) {
@@ -184,8 +182,8 @@ public class SysPermCodeController {
         }
         List<SysPermCode> permCodeList =
                 sysPermCodeService.getUserPermCodeListByFilter(loginName, permCode);
-        JSONObject responseData = MyPageUtil.makeResponseData(
+        MyPageData<SysPermCodeDto> pageData = MyPageUtil.makeResponseData(
                 MyModelUtil.copyCollectionTo(permCodeList, SysPermCodeDto.class));
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(pageData);
     }
 }

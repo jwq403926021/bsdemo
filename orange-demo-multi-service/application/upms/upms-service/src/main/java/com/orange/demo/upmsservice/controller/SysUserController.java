@@ -1,6 +1,5 @@
 package com.orange.demo.upmsservice.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
 import com.orange.demo.upmsservice.model.*;
@@ -15,6 +14,9 @@ import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.AddGroup;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.upmsservice.config.ApplicationConfig;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,9 @@ import java.util.*;
  * 用户管理操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "用户管理管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/sysUser")
@@ -51,8 +54,12 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @return 应答结果对象，包含新增用户的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUser.userId",
+            "sysUser.createTimeStart",
+            "sysUser.createTimeEnd"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(
+    public ResponseResult<Long> add(
             @MyRequestBody("sysUser") SysUserDto sysUserDto, @MyRequestBody String roleIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysUserDto, Default.class, AddGroup.class);
         if (errorMessage != null) {
@@ -65,9 +72,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
         }
         Set<Long> roleIdSet = (Set<Long>) result.getData().get("roleIdSet");
         sysUserService.saveNew(sysUser, roleIdSet);
-        JSONObject responseData = new JSONObject();
-        responseData.put("userId", sysUser.getUserId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysUser.getUserId());
     }
 
     /**
@@ -78,6 +83,9 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUser.createTimeStart",
+            "sysUser.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody("sysUser") SysUserDto sysUserDto, @MyRequestBody String roleIdListString) {
@@ -153,7 +161,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SysUserDto>> list(
             @MyRequestBody("sysUserFilter") SysUserDto sysUserDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -202,6 +210,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象集合。
      */
+    @ApiOperation(hidden = true, value = "listByIds")
     @PostMapping("/listByIds")
     public ResponseResult<List<SysUserDto>> listByIds(
             @RequestParam Set<Long> userIds, @RequestParam Boolean withDict) {
@@ -215,6 +224,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象数据。
      */
+    @ApiOperation(hidden = true, value = "getById")
     @PostMapping("/getById")
     public ResponseResult<SysUserDto> getById(
             @RequestParam Long userId, @RequestParam Boolean withDict) {
@@ -227,6 +237,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param userIds 主键Id集合。
      * @return 应答结果对象，包含true全部存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existIds")
     @PostMapping("/existIds")
     public ResponseResult<Boolean> existIds(@RequestParam Set<Long> userIds) {
         return super.baseExistIds(userIds);
@@ -238,6 +249,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param userId 主键Id。
      * @return 应答结果对象，包含true表示存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existId")
     @PostMapping("/existId")
     public ResponseResult<Boolean> existId(@RequestParam Long userId) {
         return super.baseExistId(userId);
@@ -249,6 +261,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listBy")
     @PostMapping("/listBy")
     public ResponseResult<List<SysUserDto>> listBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListBy(queryParam, SysUser.INSTANCE);
@@ -260,6 +273,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listMapBy")
     @PostMapping("/listMapBy")
     public ResponseResult<List<Map<String, Object>>> listMapBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListMapBy(queryParam, SysUser.INSTANCE);
@@ -271,6 +285,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "getBy")
     @PostMapping("/getBy")
     public ResponseResult<SysUserDto> getBy(@RequestBody MyQueryParam queryParam) {
         return super.baseGetBy(queryParam, SysUser.INSTANCE);
@@ -282,6 +297,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含结果数量。
      */
+    @ApiOperation(hidden = true, value = "countBy")
     @PostMapping("/countBy")
     public ResponseResult<Integer> countBy(@RequestBody MyQueryParam queryParam) {
         return super.baseCountBy(queryParam);
@@ -293,6 +309,7 @@ public class SysUserController extends BaseController<SysUser, SysUserDto, Long>
      * @param aggregationParam 聚合参数。
      * @return 应该结果对象，包含聚合计算后的分组Map列表。
      */
+    @ApiOperation(hidden = true, value = "aggregateBy")
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);

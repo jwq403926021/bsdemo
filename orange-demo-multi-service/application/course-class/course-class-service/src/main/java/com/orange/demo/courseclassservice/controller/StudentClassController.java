@@ -1,6 +1,5 @@
 package com.orange.demo.courseclassservice.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
 import com.orange.demo.courseclassservice.model.*;
@@ -13,6 +12,9 @@ import com.orange.demo.common.core.base.controller.BaseController;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,9 @@ import java.util.stream.Collectors;
  * 班级数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
+@Api(tags = "班级数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/studentClass")
@@ -50,8 +53,9 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param studentClassDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"studentClass.userId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody("studentClass") StudentClassDto studentClassDto) {
+    public ResponseResult<Long> add(@MyRequestBody("studentClass") StudentClassDto studentClassDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(studentClassDto);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -64,9 +68,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         studentClass = studentClassService.saveNew(studentClass);
-        JSONObject responseData = new JSONObject();
-        responseData.put("classId", studentClass.getClassId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(studentClass.getClassId());
     }
 
     /**
@@ -135,7 +137,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<StudentClassDto>> list(
             @MyRequestBody("studentClassFilter") StudentClassDto studentClassDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -187,7 +189,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listNotInClassCourse")
-    public ResponseResult<JSONObject> listNotInClassCourse(
+    public ResponseResult<MyPageData<CourseDto>> listNotInClassCourse(
             @MyRequestBody Long classId,
             @MyRequestBody("courseFilter") CourseDto courseDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -205,8 +207,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Course.class);
         List<Course> courseList =
                 courseService.getNotInCourseListByClassId(classId, filter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(courseList, Course.INSTANCE);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(courseList, Course.INSTANCE));
     }
 
     /**
@@ -219,7 +220,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listClassCourse")
-    public ResponseResult<JSONObject> listClassCourse(
+    public ResponseResult<MyPageData<CourseDto>> listClassCourse(
             @MyRequestBody Long classId,
             @MyRequestBody("courseFilter") CourseDto courseDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -237,8 +238,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Course.class);
         List<Course> courseList =
                 courseService.getCourseListByClassId(classId, filter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(courseList, Course.INSTANCE);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(courseList, Course.INSTANCE));
     }
 
     /**
@@ -344,7 +344,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listNotInClassStudent")
-    public ResponseResult<JSONObject> listNotInClassStudent(
+    public ResponseResult<MyPageData<StudentDto>> listNotInClassStudent(
             @MyRequestBody Long classId,
             @MyRequestBody("studentFilter") StudentDto studentDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -362,8 +362,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Student.class);
         List<Student> studentList =
                 studentService.getNotInStudentListByClassId(classId, filter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(studentList, Student.INSTANCE);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(studentList, Student.INSTANCE));
     }
 
     /**
@@ -376,7 +375,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listClassStudent")
-    public ResponseResult<JSONObject> listClassStudent(
+    public ResponseResult<MyPageData<StudentDto>> listClassStudent(
             @MyRequestBody Long classId,
             @MyRequestBody("studentFilter") StudentDto studentDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -394,8 +393,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Student.class);
         List<Student> studentList =
                 studentService.getStudentListByClassId(classId, filter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(studentList, Student.INSTANCE);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(studentList, Student.INSTANCE));
     }
 
     /**
@@ -456,6 +454,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象集合。
      */
+    @ApiOperation(hidden = true, value = "listByIds")
     @PostMapping("/listByIds")
     public ResponseResult<List<StudentClassDto>> listByIds(
             @RequestParam Set<Long> classIds, @RequestParam Boolean withDict) {
@@ -469,6 +468,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param withDict 是否包含字典关联。
      * @return 应答结果对象，包含主对象数据。
      */
+    @ApiOperation(hidden = true, value = "getById")
     @PostMapping("/getById")
     public ResponseResult<StudentClassDto> getById(
             @RequestParam Long classId, @RequestParam Boolean withDict) {
@@ -481,6 +481,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param classIds 主键Id集合。
      * @return 应答结果对象，包含true全部存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existIds")
     @PostMapping("/existIds")
     public ResponseResult<Boolean> existIds(@RequestParam Set<Long> classIds) {
         return super.baseExistIds(classIds);
@@ -492,6 +493,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param classId 主键Id。
      * @return 应答结果对象，包含true表示存在，否则false。
      */
+    @ApiOperation(hidden = true, value = "existId")
     @PostMapping("/existId")
     public ResponseResult<Boolean> existId(@RequestParam Long classId) {
         return super.baseExistId(classId);
@@ -503,6 +505,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listBy")
     @PostMapping("/listBy")
     public ResponseResult<List<StudentClassDto>> listBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListBy(queryParam, StudentClass.INSTANCE);
@@ -514,6 +517,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "listMapBy")
     @PostMapping("/listMapBy")
     public ResponseResult<List<Map<String, Object>>> listMapBy(@RequestBody MyQueryParam queryParam) {
         return super.baseListMapBy(queryParam, StudentClass.INSTANCE);
@@ -525,6 +529,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含符合查询过滤条件的对象结果集。
      */
+    @ApiOperation(hidden = true, value = "getBy")
     @PostMapping("/getBy")
     public ResponseResult<StudentClassDto> getBy(@RequestBody MyQueryParam queryParam) {
         return super.baseGetBy(queryParam, StudentClass.INSTANCE);
@@ -536,6 +541,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param queryParam 查询参数。
      * @return 应答结果对象，包含结果数量。
      */
+    @ApiOperation(hidden = true, value = "countBy")
     @PostMapping("/countBy")
     public ResponseResult<Integer> countBy(@RequestBody MyQueryParam queryParam) {
         return super.baseCountBy(queryParam);
@@ -547,6 +553,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
      * @param aggregationParam 聚合参数。
      * @return 应该结果对象，包含聚合计算后的分组Map列表。
      */
+    @ApiOperation(hidden = true, value = "aggregateBy")
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);

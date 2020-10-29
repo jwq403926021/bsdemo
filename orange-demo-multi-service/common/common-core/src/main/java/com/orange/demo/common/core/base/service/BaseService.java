@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.*;
  * @param <D> Model对应的Dto对象类型。
  * @param <K> Model对象主键的类型。
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public abstract class BaseService<M, D, K> {

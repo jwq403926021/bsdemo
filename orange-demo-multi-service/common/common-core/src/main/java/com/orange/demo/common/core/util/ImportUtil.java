@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * 导入工具类，目前支持xlsx和csv两种类型。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-08-08
  */
 @Slf4j
 public class ImportUtil {
@@ -122,7 +122,7 @@ public class ImportUtil {
          * @param rowIndex 当前行号。
          * @param row      当前行数据列表对象。
          */
-        public void doImport(int rowIndex, List<Object> row) {
+        public void doImport(long rowIndex, List<Object> row) {
             if (row == null) {
                 doProcess(batchRowList);
                 doFinish();

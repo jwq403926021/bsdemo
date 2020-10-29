@@ -19,7 +19,7 @@ import java.util.List;
  * 包含存储本地文件的功能，以及上传和下载所需的通用方法。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Slf4j
 public abstract class BaseUpDownloader {

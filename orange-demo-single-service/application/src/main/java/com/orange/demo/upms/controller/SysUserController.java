@@ -10,8 +10,9 @@ import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.AddGroup;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.config.ApplicationConfig;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,9 @@ import javax.validation.groups.Default;
  * 用户管理操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "用户管理管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysUser")
@@ -45,8 +47,12 @@ public class SysUserController {
      * @return 应答结果对象，包含新增用户的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUser.userId",
+            "sysUser.createTimeStart",
+            "sysUser.createTimeEnd"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody SysUser sysUser, @MyRequestBody String roleIdListString) {
+    public ResponseResult<Long> add(@MyRequestBody SysUser sysUser, @MyRequestBody String roleIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysUser, Default.class, AddGroup.class);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -57,9 +63,7 @@ public class SysUserController {
         }
         Set<Long> roleIdSet = (Set<Long>) result.getData().get("roleIdSet");
         sysUserService.saveNew(sysUser, roleIdSet);
-        JSONObject responseData = new JSONObject();
-        responseData.put("userId", sysUser.getUserId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysUser.getUserId());
     }
 
     /**
@@ -70,6 +74,9 @@ public class SysUserController {
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUser.createTimeStart",
+            "sysUser.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(@MyRequestBody SysUser sysUser, @MyRequestBody String roleIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysUser, Default.class, UpdateGroup.class);
@@ -143,7 +150,7 @@ public class SysUserController {
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SysUser>> list(
             @MyRequestBody SysUser sysUserFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {

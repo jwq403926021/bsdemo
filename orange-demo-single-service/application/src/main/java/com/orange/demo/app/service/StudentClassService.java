@@ -21,7 +21,7 @@ import java.util.*;
  * 班级数据数据操作服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class StudentClassService extends BaseService<StudentClass, Long> {
@@ -65,9 +65,6 @@ public class StudentClassService extends BaseService<StudentClass, Long> {
         if (studentClass.getFinishClassHour() == null) {
             studentClass.setFinishClassHour(0);
         }
-        if (studentClass.getStatus() == null) {
-            studentClass.setStatus(0);
-        }
         studentClassMapper.insert(studentClass);
         return studentClass;
     }
@@ -106,7 +103,6 @@ public class StudentClassService extends BaseService<StudentClass, Long> {
         if (studentClassMapper.updateByExampleSelective(deletedObject, studentClassExample) == 0) {
             return false;
         }
-        // 这里可继续删除关联数据。
         // 开始删除多对多子表的关联
         ClassCourse classCourse = new ClassCourse();
         classCourse.setClassId(classId);

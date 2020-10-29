@@ -22,7 +22,7 @@ import java.util.Objects;
  * 存储本地文件的上传下载实现类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Slf4j
 @Component
@@ -75,7 +75,7 @@ public class LocalUpDownloader extends BaseUpDownloader {
                 i = bis.read(buff);
             }
         } catch (IOException e) {
-            log.error("Failed to call UpDownloadUtil.doDownload", e);
+            log.error("Failed to call LocalUpDownloader.doDownload", e);
         }
     }
 

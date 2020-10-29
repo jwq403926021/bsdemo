@@ -18,7 +18,7 @@ import java.util.List;
  * 权限资源模块数据服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class SysPermModuleService extends BaseService<SysPermModule, Long> {

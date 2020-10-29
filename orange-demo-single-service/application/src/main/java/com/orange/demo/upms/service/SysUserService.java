@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * 用户管理数据操作服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class SysUserService extends BaseService<SysUser, Long> {
@@ -170,7 +170,6 @@ public class SysUserService extends BaseService<SysUser, Long> {
         if (sysUserMapper.updateByExampleSelective(deletedObject, sysUserExample) == 0) {
             return false;
         }
-        // 这里可继续删除关联数据。
         SysUserRole userRole = new SysUserRole();
         userRole.setUserId(userId);
         sysUserRoleMapper.delete(userRole);

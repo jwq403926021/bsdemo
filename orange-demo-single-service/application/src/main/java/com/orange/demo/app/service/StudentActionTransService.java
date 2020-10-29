@@ -18,7 +18,7 @@ import java.util.*;
  * 学生行为流水数据操作服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class StudentActionTransService extends BaseService<StudentActionTrans, Long> {
@@ -77,7 +77,6 @@ public class StudentActionTransService extends BaseService<StudentActionTrans, L
     @Transactional(rollbackFor = Exception.class)
     public boolean remove(Long transId) {
         return studentActionTransMapper.deleteByPrimaryKey(transId) != 0;
-        // 这里可继续删除关联数据。
     }
 
     /**

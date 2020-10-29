@@ -9,8 +9,9 @@ import com.orange.demo.common.core.util.*;
 import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,9 @@ import javax.validation.groups.Default;
  * 校区数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "校区数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/app/schoolInfo")
@@ -37,8 +39,9 @@ public class SchoolInfoController {
      * @param schoolInfo 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"schoolInfo.userId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody SchoolInfo schoolInfo) {
+    public ResponseResult<Long> add(@MyRequestBody SchoolInfo schoolInfo) {
         String errorMessage = MyCommonUtil.getModelValidationError(schoolInfo);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -50,9 +53,7 @@ public class SchoolInfoController {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         schoolInfo = schoolInfoService.saveNew(schoolInfo);
-        JSONObject responseData = new JSONObject();
-        responseData.put("schoolId", schoolInfo.getSchoolId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(schoolInfo.getSchoolId());
     }
 
     /**
@@ -121,7 +122,7 @@ public class SchoolInfoController {
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SchoolInfo>> list(
             @MyRequestBody SchoolInfo schoolInfoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {

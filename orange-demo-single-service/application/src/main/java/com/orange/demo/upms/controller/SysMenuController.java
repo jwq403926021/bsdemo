@@ -1,14 +1,13 @@
 package com.orange.demo.upms.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.upms.model.SysMenu;
 import com.orange.demo.upms.service.SysMenuService;
 import com.orange.demo.upms.service.SysPermCodeService;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
-import com.orange.demo.common.core.object.CallResult;
-import com.orange.demo.common.core.object.ResponseResult;
-import com.orange.demo.common.core.object.MyRelationParam;
+import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.common.core.annotation.MyRequestBody;
@@ -22,8 +21,9 @@ import java.util.*;
  * 菜单管理接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "菜单管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysMenu")
@@ -42,8 +42,9 @@ public class SysMenuController {
      * @return 应答结果对象，包含新增菜单的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {"sysMenu.menuId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody SysMenu sysMenu, @MyRequestBody String permCodeIdListString) {
+    public ResponseResult<Long> add(@MyRequestBody SysMenu sysMenu, @MyRequestBody String permCodeIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysMenu);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -57,9 +58,7 @@ public class SysMenuController {
             permCodeIdSet = (Set<Long>) result.getData().get("permCodeIdSet");
         }
         sysMenuService.saveNew(sysMenu, permCodeIdSet);
-        JSONObject responseData = new JSONObject();
-        responseData.put("sysMenuId", sysMenu.getMenuId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysMenu.getMenuId());
     }
 
     /**

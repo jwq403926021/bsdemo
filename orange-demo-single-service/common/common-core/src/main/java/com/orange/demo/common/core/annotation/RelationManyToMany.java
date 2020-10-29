@@ -4,9 +4,11 @@ import java.lang.annotation.*;
 
 /**
  * 标注多对多的Model关系。
+ * 重要提示：由于多对多关联表数据，很多时候都不需要跟随主表数据返回，所以该注解不会在
+ * 生成的时候自动添加到实体类字段上，需要的时候，用户可自行手动添加。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

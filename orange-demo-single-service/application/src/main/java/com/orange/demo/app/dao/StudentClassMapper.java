@@ -10,7 +10,7 @@ import java.util.*;
  * 班级数据数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public interface StudentClassMapper extends BaseDaoMapper<StudentClass> {
 

@@ -1,12 +1,13 @@
 package com.orange.demo.upms.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.upms.model.SysPerm;
 import com.orange.demo.upms.model.SysPermModule;
 import com.orange.demo.upms.service.SysPermModuleService;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
-import com.orange.demo.common.core.object.ResponseResult;
+import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.common.core.annotation.MyRequestBody;
@@ -24,8 +25,9 @@ import java.util.Map;
  * 权限资源模块管理接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "权限资源模块管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPermModule")
@@ -40,8 +42,9 @@ public class SysPermModuleController {
      * @param sysPermModule 新增权限资源模块对象。
      * @return 应答结果对象，包含新增权限资源模块的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysPermModule.moduleId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody SysPermModule sysPermModule) {
+    public ResponseResult<Long> add(@MyRequestBody SysPermModule sysPermModule) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysPermModule);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -52,9 +55,7 @@ public class SysPermModuleController {
             return ResponseResult.error(ErrorCodeEnum.DATA_PARENT_ID_NOT_EXIST, errorMessage);
         }
         sysPermModuleService.saveNew(sysPermModule);
-        JSONObject responseData = new JSONObject();
-        responseData.put("permModuleId", sysPermModule.getModuleId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysPermModule.getModuleId());
     }
 
     /**

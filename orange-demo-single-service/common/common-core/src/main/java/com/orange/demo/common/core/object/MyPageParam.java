@@ -6,7 +6,7 @@ import lombok.Getter;
  * Controller参数中的分页请求对象
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Getter
 public class MyPageParam {

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * 应用程序自定义的程序属性配置文件。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Data
 @Configuration
@@ -24,7 +24,7 @@ public class ApplicationConfig {
      */
     private String refreshedTokenHeaderKey;
     /**
-     * token 加密用的密钥
+     * token 加密用的密钥，该值的长度最少10个字符(过短会报错)。
      */
     private String tokenSigningKey;
     /**

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * 白名单中的权限资源，可以不受权限控制，任何用户皆可访问，一般用于常用的字典数据列表接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class SysPermWhitelistService extends BaseService<SysPermWhitelist, String> {

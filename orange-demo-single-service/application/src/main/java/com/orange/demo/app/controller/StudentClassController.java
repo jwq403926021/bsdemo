@@ -8,8 +8,9 @@ import com.orange.demo.common.core.util.*;
 import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,9 @@ import java.util.stream.Collectors;
  * 班级数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "班级数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/app/studentClass")
@@ -41,8 +43,9 @@ public class StudentClassController {
      * @param studentClass 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"studentClass.userId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody StudentClass studentClass) {
+    public ResponseResult<Long> add(@MyRequestBody StudentClass studentClass) {
         String errorMessage = MyCommonUtil.getModelValidationError(studentClass);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -54,9 +57,7 @@ public class StudentClassController {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         studentClass = studentClassService.saveNew(studentClass);
-        JSONObject responseData = new JSONObject();
-        responseData.put("classId", studentClass.getClassId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(studentClass.getClassId());
     }
 
     /**
@@ -125,7 +126,7 @@ public class StudentClassController {
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<StudentClass>> list(
             @MyRequestBody StudentClass studentClassFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -165,7 +166,7 @@ public class StudentClassController {
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listNotInClassCourse")
-    public ResponseResult<JSONObject> listNotInClassCourse(
+    public ResponseResult<MyPageData<Course>> listNotInClassCourse(
             @MyRequestBody Long classId,
             @MyRequestBody Course courseFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -180,8 +181,7 @@ public class StudentClassController {
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Course.class);
         List<Course> resultList =
                 courseService.getNotInCourseListByClassId(classId, courseFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     /**
@@ -194,7 +194,7 @@ public class StudentClassController {
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listClassCourse")
-    public ResponseResult<JSONObject> listClassCourse(
+    public ResponseResult<MyPageData<Course>> listClassCourse(
             @MyRequestBody Long classId,
             @MyRequestBody Course courseFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -209,8 +209,7 @@ public class StudentClassController {
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Course.class);
         List<Course> resultList =
                 courseService.getCourseListByClassId(classId, courseFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     private ResponseResult<Void> doClassCourseVerify(Long classId) {
@@ -320,7 +319,7 @@ public class StudentClassController {
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listNotInClassStudent")
-    public ResponseResult<JSONObject> listNotInClassStudent(
+    public ResponseResult<MyPageData<Student>> listNotInClassStudent(
             @MyRequestBody Long classId,
             @MyRequestBody Student studentFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -335,8 +334,7 @@ public class StudentClassController {
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Student.class);
         List<Student> resultList =
                 studentService.getNotInStudentListByClassId(classId, studentFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     /**
@@ -349,7 +347,7 @@ public class StudentClassController {
      * @return 应答结果对象，返回符合条件的数据列表。
      */
     @PostMapping("/listClassStudent")
-    public ResponseResult<JSONObject> listClassStudent(
+    public ResponseResult<MyPageData<Student>> listClassStudent(
             @MyRequestBody Long classId,
             @MyRequestBody Student studentFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -364,8 +362,7 @@ public class StudentClassController {
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Student.class);
         List<Student> resultList =
                 studentService.getStudentListByClassId(classId, studentFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     private ResponseResult<Void> doClassStudentVerify(Long classId) {

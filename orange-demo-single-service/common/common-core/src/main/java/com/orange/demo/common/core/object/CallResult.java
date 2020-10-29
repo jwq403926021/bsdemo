@@ -8,7 +8,7 @@ import lombok.Data;
  * 同时为了提升效率，减少查询次数，可以根据具体的需求，将部分验证关联对象存入data字段，以供Controller使用。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Data
 public class CallResult {

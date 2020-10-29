@@ -18,7 +18,7 @@ import java.util.*;
  * 校区数据数据操作服务类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Service
 public class SchoolInfoService extends BaseService<SchoolInfo, Long> {
@@ -75,7 +75,6 @@ public class SchoolInfoService extends BaseService<SchoolInfo, Long> {
     @Transactional(rollbackFor = Exception.class)
     public boolean remove(Long schoolId) {
         return schoolInfoMapper.deleteByPrimaryKey(schoolId) != 0;
-        // 这里可继续删除关联数据。
     }
 
     /**

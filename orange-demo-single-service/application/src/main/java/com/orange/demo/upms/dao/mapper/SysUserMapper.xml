@@ -44,7 +44,7 @@
         <where>
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>
@@ -60,7 +60,7 @@
             AND zz_sys_user_role.user_id = zz_sys_user.user_id
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>
@@ -72,7 +72,7 @@
                 WHERE zz_sys_user_role.role_id = #{roleId} AND zz_sys_user_role.user_id = zz_sys_user.user_id)
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>

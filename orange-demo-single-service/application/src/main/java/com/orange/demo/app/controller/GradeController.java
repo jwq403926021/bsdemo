@@ -8,7 +8,8 @@ import com.orange.demo.common.core.object.ResponseResult;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,9 @@ import java.util.*;
  * 年级操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "年级管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/app/grade")
@@ -37,16 +39,15 @@ public class GradeController {
      * @param grade 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"grade.gradeId"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody Grade grade) {
+    public ResponseResult<Integer> add(@MyRequestBody Grade grade) {
         String errorMessage = MyCommonUtil.getModelValidationError(grade);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         grade = gradeService.saveNew(grade);
-        JSONObject responseData = new JSONObject();
-        responseData.put("gradeId", grade.getGradeId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(grade.getGradeId());
     }
 
     /**

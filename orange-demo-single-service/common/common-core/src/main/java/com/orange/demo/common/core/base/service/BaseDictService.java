@@ -16,7 +16,7 @@ import java.util.List;
  * @param <M> Model实体对象的类型。
  * @param <K> Model对象主键的类型。
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Slf4j
 public abstract class BaseDictService<M, K> extends BaseService<M, K> {

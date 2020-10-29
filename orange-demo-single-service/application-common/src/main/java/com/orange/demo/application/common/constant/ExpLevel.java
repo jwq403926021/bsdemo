@@ -7,7 +7,7 @@ import java.util.Map;
  * 经验等级常量字典对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public final class ExpLevel {
 

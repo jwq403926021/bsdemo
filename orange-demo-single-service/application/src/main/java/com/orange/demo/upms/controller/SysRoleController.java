@@ -1,6 +1,8 @@
 package com.orange.demo.upms.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.upms.model.SysRole;
@@ -11,11 +13,7 @@ import com.orange.demo.upms.service.SysUserService;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.common.core.util.MyCommonUtil;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
-import com.orange.demo.common.core.object.MyOrderParam;
-import com.orange.demo.common.core.object.MyPageParam;
-import com.orange.demo.common.core.object.ResponseResult;
-import com.orange.demo.common.core.object.CallResult;
-import com.orange.demo.common.core.object.MyRelationParam;
+import com.orange.demo.common.core.object.*;
 import com.orange.demo.common.core.util.MyPageUtil;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,9 @@ import java.util.stream.Collectors;
  * 角色管理接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "角色管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysRole")
@@ -49,8 +48,9 @@ public class SysRoleController {
      * @return 应答结果对象，包含新增角色的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {"sysRole.roleId", "sysRole.createTimeStart", "sysRole.createTimeEnd"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody SysRole sysRole, @MyRequestBody String menuIdListString) {
+    public ResponseResult<Long> add(@MyRequestBody SysRole sysRole, @MyRequestBody String menuIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysRole);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -64,9 +64,7 @@ public class SysRoleController {
             menuIdSet = (Set<Long>) result.getData().get("menuIdSet");
         }
         sysRoleService.saveNew(sysRole, menuIdSet);
-        JSONObject responseData = new JSONObject();
-        responseData.put("roleId", sysRole.getRoleId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(sysRole.getRoleId());
     }
 
     /**
@@ -77,6 +75,7 @@ public class SysRoleController {
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {"sysRole.createTimeStart", "sysRole.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(@MyRequestBody SysRole sysRole, @MyRequestBody String menuIdListString) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysRole, Default.class, UpdateGroup.class);
@@ -130,7 +129,7 @@ public class SysRoleController {
      * @return 应答结果对象，包含角色列表。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<SysRole>> list(
             @MyRequestBody SysRole sysRoleFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
@@ -171,7 +170,7 @@ public class SysRoleController {
      * @return 应答结果对象，包含用户列表数据。
      */
     @PostMapping("/listNotInUserRole")
-    public ResponseResult<JSONObject> listNotInUserRole(
+    public ResponseResult<MyPageData<SysUser>> listNotInUserRole(
             @MyRequestBody Long roleId,
             @MyRequestBody SysUser sysUserFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -186,8 +185,7 @@ public class SysRoleController {
         String orderBy = MyOrderParam.buildOrderBy(orderParam, SysUser.class);
         List<SysUser> resultList =
                 sysUserService.getNotInSysUserListByRoleId(roleId, sysUserFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     /**
@@ -200,7 +198,7 @@ public class SysRoleController {
      * @return 应答结果对象，包含用户列表数据。
      */
     @PostMapping("/listUserRole")
-    public ResponseResult<JSONObject> listUserRole(
+    public ResponseResult<MyPageData<SysUser>> listUserRole(
             @MyRequestBody Long roleId,
             @MyRequestBody SysUser sysUserFilter,
             @MyRequestBody MyOrderParam orderParam,
@@ -214,8 +212,7 @@ public class SysRoleController {
         }
         String orderBy = MyOrderParam.buildOrderBy(orderParam, SysUser.class);
         List<SysUser> resultList = sysUserService.getSysUserListByRoleId(roleId, sysUserFilter, orderBy);
-        JSONObject responseData = MyPageUtil.makeResponseData(resultList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
 
     private ResponseResult<Void> doRoleUserVerify(Long roleId) {
@@ -286,7 +283,7 @@ public class SysRoleController {
      * @return 符合条件的角色列表。
      */
     @PostMapping("/listAllRolesByPermCode")
-    public ResponseResult<JSONObject> listAllRolesByPermCode(
+    public ResponseResult<MyPageData<SysRole>> listAllRolesByPermCode(
             @MyRequestBody Long permCodeId, @MyRequestBody MyPageParam pageParam) {
         if (MyCommonUtil.existBlankArgument(permCodeId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
@@ -295,8 +292,7 @@ public class SysRoleController {
             PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize());
         }
         List<SysRole> roleList = sysRoleService.getSysRoleListByPermCodeId(permCodeId);
-        JSONObject responseData = MyPageUtil.makeResponseData(roleList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(roleList));
     }
 
     /**
@@ -308,7 +304,7 @@ public class SysRoleController {
      * @return 符合条件的角色列表。
      */
     @PostMapping("/listAllRolesByPerm")
-    public ResponseResult<JSONObject> listAllRolesByPerm(
+    public ResponseResult<MyPageData<SysRole>> listAllRolesByPerm(
             @MyRequestBody String url, @MyRequestBody MyPageParam pageParam) {
         if (MyCommonUtil.existBlankArgument(url)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
@@ -317,7 +313,6 @@ public class SysRoleController {
             PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize());
         }
         List<SysRole> roleList = sysRoleService.getSysRoleListByPerm(url);
-        JSONObject responseData = MyPageUtil.makeResponseData(roleList);
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(MyPageUtil.makeResponseData(roleList));
     }    
 }

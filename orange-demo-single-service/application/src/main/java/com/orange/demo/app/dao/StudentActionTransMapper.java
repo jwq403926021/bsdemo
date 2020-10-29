@@ -10,7 +10,7 @@ import java.util.*;
  * 学生行为流水数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public interface StudentActionTransMapper extends BaseDaoMapper<StudentActionTrans> {
 

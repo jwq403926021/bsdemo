@@ -20,7 +20,7 @@ import java.util.List;
  * 查询分组参数请求对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @EqualsAndHashCode(callSuper = true)
 @Slf4j

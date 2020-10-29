@@ -1,6 +1,10 @@
 package com.orange.demo.upms.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.config.ApplicationConfig;
 import com.orange.demo.upms.service.*;
@@ -8,7 +12,6 @@ import com.orange.demo.upms.model.SysMenu;
 import com.orange.demo.upms.model.SysUser;
 import com.orange.demo.upms.model.constant.SysUserStatus;
 import com.orange.demo.upms.model.constant.SysUserType;
-import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.annotation.NoAuthInterface;
 import com.orange.demo.common.core.constant.ApplicationConstant;
 import com.orange.demo.common.core.constant.ErrorCodeEnum;
@@ -28,8 +31,10 @@ import java.util.*;
  * 登录接口控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@ApiSupport(order = 1)
+@Api(tags = "用户登录接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/login")
@@ -57,6 +62,12 @@ public class LoginController {
      * @param password  密码。
      * @return 应答结果对象，其中包括JWT的Token数据，以及菜单列表。
      */
+    @ApiImplicitParams({
+            // 这里包含密码密文，仅用于方便开发期间的接口测试，集成测试和发布阶段，需要将当前注解去掉。
+            // 如果您重新生成了公钥和私钥，请替换password的缺省值。
+            @ApiImplicitParam(name = "loginName", defaultValue = "admin"),
+            @ApiImplicitParam(name = "password", defaultValue = "IP3ccke3GhH45iGHB5qP9p7iZw6xUyj28Ju10rnBiPKOI35sc%2BjI7%2FdsjOkHWMfUwGYGfz8ik31HC2Ruk%2Fhkd9f6RPULTHj7VpFdNdde2P9M4mQQnFBAiPM7VT9iW3RyCtPlJexQ3nAiA09OqG%2F0sIf1kcyveSrulxembARDbDo%3D")
+    })
     @NoAuthInterface
     @GetMapping("/doLogin")
     public ResponseResult<JSONObject> doLogin(
@@ -128,7 +139,7 @@ public class LoginController {
      */
     @PostMapping("/changePassword")
     public ResponseResult<Void> changePassword(
-            @MyRequestBody String oldPass, @MyRequestBody String newPass) throws Exception {
+            @RequestParam String oldPass, @RequestParam String newPass) throws Exception {
         if (MyCommonUtil.existBlankArgument(oldPass, oldPass)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }

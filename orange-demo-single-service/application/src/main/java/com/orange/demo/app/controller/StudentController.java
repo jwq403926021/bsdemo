@@ -9,8 +9,9 @@ import com.orange.demo.common.core.util.*;
 import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,9 @@ import javax.validation.groups.Default;
  * 学生数据操作控制器类。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
+@Api(tags = "学生数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/app/student")
@@ -37,8 +39,15 @@ public class StudentController {
      * @param student 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "student.studentId",
+            "student.searchString",
+            "student.birthdayStart",
+            "student.birthdayEnd",
+            "student.registerTimeStart",
+            "student.registerTimeEnd"})
     @PostMapping("/add")
-    public ResponseResult<JSONObject> add(@MyRequestBody Student student) {
+    public ResponseResult<Long> add(@MyRequestBody Student student) {
         String errorMessage = MyCommonUtil.getModelValidationError(student);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
@@ -50,9 +59,7 @@ public class StudentController {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATAED_FAILED, errorMessage);
         }
         student = studentService.saveNew(student);
-        JSONObject responseData = new JSONObject();
-        responseData.put("studentId", student.getStudentId());
-        return ResponseResult.success(responseData);
+        return ResponseResult.success(student.getStudentId());
     }
 
     /**
@@ -61,6 +68,12 @@ public class StudentController {
      * @param student 更新对象。
      * @return 应答结果对象。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "student.searchString",
+            "student.birthdayStart",
+            "student.birthdayEnd",
+            "student.registerTimeStart",
+            "student.registerTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(@MyRequestBody Student student) {
         String errorMessage = MyCommonUtil.getModelValidationError(student, Default.class, UpdateGroup.class);
@@ -121,7 +134,7 @@ public class StudentController {
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
-    public ResponseResult<JSONObject> list(
+    public ResponseResult<MyPageData<Student>> list(
             @MyRequestBody Student studentFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {

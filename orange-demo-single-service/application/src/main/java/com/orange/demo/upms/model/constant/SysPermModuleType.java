@@ -7,7 +7,7 @@ import java.util.Map;
  * 权限资源模块类型常量对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public final class SysPermModuleType {
 

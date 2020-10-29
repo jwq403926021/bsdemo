@@ -63,7 +63,7 @@
         <where>
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>
@@ -79,7 +79,7 @@
             AND zz_class_student.student_id = zz_student.student_id
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>
@@ -94,7 +94,7 @@
                 WHERE zz_class_student.class_id = #{classId} AND zz_class_student.student_id = zz_student.student_id)
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null">
+        <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
         </if>
     </select>

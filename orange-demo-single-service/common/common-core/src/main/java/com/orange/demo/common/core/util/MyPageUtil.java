@@ -3,6 +3,7 @@ package com.orange.demo.common.core.util;
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
+import com.orange.demo.common.core.object.MyPageData;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * 生成带有分页信息的数据列表
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public class MyPageUtil {
 
@@ -37,13 +38,13 @@ public class MyPageUtil {
      * 用户构建带有分页信息的数据列表。
      *
      * @param dataList 数据列表，该参数必须是调用PageMethod.startPage之后，立即执行mybatis查询操作的结果集。
-     * @return 返回结果集和TotalCount。
+     * @return 返回分页数据对象。
      */
-    public static <T> JSONObject makeResponseData(List<T> dataList) {
-        JSONObject pageData = new JSONObject();
-        pageData.put(DATA_LIST_LITERAL, dataList);
+    public static <T> MyPageData<T> makeResponseData(List<T> dataList) {
+        MyPageData<T> pageData = new MyPageData<>();
+        pageData.setDataList(dataList);
         if (dataList instanceof Page) {
-            pageData.put(TOTAL_COUNT_LITERAL, ((Page<?>)dataList).getTotal());
+            pageData.setTotalCount(((Page<?>)dataList).getTotal());
         }
         return pageData;
     }
@@ -53,13 +54,13 @@ public class MyPageUtil {
      *
      * @param dataList   数据列表，该参数必须是调用PageMethod.startPage之后，立即执行mybatis查询操作的结果集。
      * @param totalCount 总数量。
-     * @return 返回结果集和TotalCount。
+     * @return 返回分页数据对象。
      */
-    public static <T> JSONObject makeResponseData(List<T> dataList, Long totalCount) {
-        JSONObject pageData = new JSONObject();
-        pageData.put(DATA_LIST_LITERAL, dataList);
+    public static <T> MyPageData<T> makeResponseData(List<T> dataList, Long totalCount) {
+        MyPageData<T> pageData = new MyPageData<>();
+        pageData.setDataList(dataList);
         if (totalCount != null) {
-            pageData.put(TOTAL_COUNT_LITERAL, totalCount);
+            pageData.setTotalCount(totalCount);
         }
         return pageData;
     }

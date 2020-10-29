@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * 登录用户Token验证、生成和权限验证的拦截器。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -45,13 +45,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private SysPermService sysPermService =
             ApplicationContextHolder.getBean("sysPermService");
 
-    private static SysPermWhitelistService sysPermWhilelistService =
+    private static SysPermWhitelistService sysPermWhitelistService =
             ApplicationContextHolder.getBean("sysPermWhitelistService");
 
     private static Set<String> whitelistPermSet;
 
     static {
-        List<SysPermWhitelist> sysPermWhitelistList = sysPermWhilelistService.getAllList();
+        List<SysPermWhitelist> sysPermWhitelistList = sysPermWhitelistService.getAllList();
         whitelistPermSet = sysPermWhitelistList.stream()
                 .map(SysPermWhitelist::getPermUrl).collect(Collectors.toSet());
     }

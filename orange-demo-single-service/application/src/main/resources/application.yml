@@ -56,6 +56,15 @@ pagehelper:
   supportMethodsArguments: false
   params: count=countSql
 
+swagger:
+  # 当enabled为false的时候，则可禁用swagger。
+  enabled: true
+  # 工程的基础包名。
+  basePackage: com.orange.demo
+  title: 橙单单体开源版
+  description: 橙单单体开源版详情
+  version: 1.0
+
 # 暴露监控端点
 management:
   endpoints:
@@ -116,8 +125,8 @@ spring:
         resetEnable: true
 
 application:
-  # Jwt令牌加密的签名值。
-  tokenSigningKey: OrangeSingleDemo
+  # Jwt令牌加密的签名值。该值的长度要超过10个字符(过短会报错)。
+  tokenSigningKey: OrangeSingleDemo-signing-key
   # Jwt令牌在Http Header中的键名称。
   tokenHeaderKey: Authorization
   # Jwt令牌刷新后在Http Header中的键名称。
@@ -173,8 +182,8 @@ spring:
         resetEnable: true
 
 application:
-  # Jwt令牌加密的签名值。
-  tokenSigningKey: OrangeSingleDemo
+  # Jwt令牌加密的签名值。该值的长度要超过10个字符(过短会报错)。
+  tokenSigningKey: OrangeSingleDemo-signing-key
   # Jwt令牌在Http Header中的键名称。
   tokenHeaderKey: Authorization
   # Jwt令牌刷新后在Http Header中的键名称。

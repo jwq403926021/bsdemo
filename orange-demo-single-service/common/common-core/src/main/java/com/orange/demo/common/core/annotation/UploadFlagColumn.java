@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 用于标记支持数据上传和下载的字段。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

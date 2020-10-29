@@ -6,7 +6,7 @@ import lombok.Data;
  * 数据上传操作的应答信息对象。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @Data
 public class UploadResponseInfo {

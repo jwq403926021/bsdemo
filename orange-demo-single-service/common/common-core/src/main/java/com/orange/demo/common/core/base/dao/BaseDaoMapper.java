@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @param <M> 主Model实体对象。
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 @RegisterMapper
 public interface BaseDaoMapper<M> extends Mapper<M>, InsertListMapper<M> {

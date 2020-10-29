@@ -7,7 +7,7 @@ import com.orange.demo.app.model.ClassStudent;
  * 数据操作访问接口。
  *
  * @author Jerry
- * @date 2020-10-19
+ * @date 2020-09-24
  */
 public interface ClassStudentMapper extends BaseDaoMapper<ClassStudent> {
 }

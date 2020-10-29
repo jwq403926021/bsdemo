@@ -146,6 +146,13 @@
 3. Api接口文档
 - Knife4j文档访问方式为: http://localhost:8082/doc.html#/plus。(以上四个后台服务均支持)
 - Postman Api文档和Markdown文档，位于工程根目录的zz-resource/api-docs子目录下，Postman-Api.json可直接导入Postman。(仅app后台服务支持)
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/200000_3698dcbd_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/200230_2ffe4390_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1029/200533_cd13b534_7431510.png"/></td>
+</tr>
+</table>
 
 4. 环境准备。    
 docker是必选组件。通过docker-compose命令，可快速启停服务所依赖的服务中间件，如nacos、redis、zookeeper、kafka和sentinel dashboard等。中间件的控制台访问方式，可参考工程目录下的README文件。

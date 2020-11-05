@@ -34,6 +34,7 @@
 - 操作权限和数据权限，灵活可配、运行时性能高度优化。
 - 有别于其他产品，我们不仅提供了Job框架的集成，更能生成任务处理器的业务逻辑代码。
 - 微服务和单体服务的接口命名规则和参数定义完全一致，便于您今后的平滑升级。
+- 生成器提供配置表单的全工程预览，预览过程支持菜单导航和关联表单的操作联动。
 
 #### 竞争优势
 - 排在首位的就是15万字以上的专业、详尽、完善和暗黑护眼的操作指南、开发文档和教学视频。
@@ -58,7 +59,7 @@
 - 前端: Element (Vue) / Ant Design (React) + ECharts / AntV + Axios + Webpack。
 - 后端: Spring Boot / Spring Cloud / Spring Cloud Alibaba + Spring Security OAuth2 + Mybatis + Jwt。
 - 工具库: Hutool + Guava + Caffeine + Lombok + MapStruct + 通用Mapper + Knife4j + qdox。
-- 服务组件: Redis + Zookeeper + Consul + Apollo + XXL-Job + Minio + Kafka + Nacos + Sentinel + Nepxion Discovery。
+- 服务组件: Redis + Zookeeper + Consul + Apollo + XXL-Job + Quartz + Minio + Kafka + Nacos + Sentinel + Nepxion Discovery。
 - 系统监控: ELK + PinPoint / SkyWalking + Grafana + Prometheus。
 
 #### 基础功能

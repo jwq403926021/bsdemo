@@ -9,6 +9,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @date 2020-09-24
  */
 @EnableConfigurationProperties({IdGeneratorProperties.class})
-public class IdGeneratorAutoConfigure {
+public class IdGeneratorAutoConfig {
 
 }

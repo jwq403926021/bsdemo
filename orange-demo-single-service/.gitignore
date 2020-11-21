@@ -1,7 +1,6 @@
-target/
+/target/
 !.mvn/wrapper/maven-wrapper.jar
 /.mvn/*
-/zzlogs/*
 
 ### STS ###
 .apt_generated
@@ -19,9 +18,9 @@ target/
 *.ipr
 
 ### NetBeans ###
-nbproject/private/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-src/main/java/com/formmaker/.DS_Store
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/

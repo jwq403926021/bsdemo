@@ -6,7 +6,7 @@
 
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/1029/184116_4a0ebe1e_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2020/1124/152615_5125dfbb_7431510.png"/></td>
 </tr>
 </table>
 

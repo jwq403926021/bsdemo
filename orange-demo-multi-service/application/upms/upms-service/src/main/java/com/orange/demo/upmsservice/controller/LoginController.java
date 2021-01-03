@@ -18,7 +18,6 @@ import com.orange.demo.upmsinterface.constant.SysUserStatus;
 import com.orange.demo.upmsinterface.constant.SysUserType;
 import com.orange.demo.upmsservice.config.ApplicationConfig;
 import com.orange.demo.upmsservice.model.SysMenu;
-import com.orange.demo.upmsservice.model.SysPermWhitelist;
 import com.orange.demo.upmsservice.model.SysUser;
 import com.orange.demo.upmsservice.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +129,7 @@ public class LoginController {
             jsonData.put("permCodeList", permCodeList);
             // 将白名单url列表合并到当前用户的权限资源列表中，便于网关一并处理。
             Set<String> permSet = sysUserService.getSysPermSetByUserId(tokenData.getUserId());
-            permSet.addAll(sysPermWhitelistService.getAllListWithField(SysPermWhitelist::getPermUrl));
+            permSet.addAll(sysPermWhitelistService.getWhitelistPermList());
             jsonData.put("permSet", permSet);
         }
         jsonData.put("menuList", menuList);
@@ -187,7 +186,7 @@ public class LoginController {
             jsonData.put("permCodeList", permCodeList);
             // 将白名单url列表合并到当前用户的权限资源列表中，便于网关一并处理。
             Set<String> permSet = sysUserService.getSysPermSetByUserId(user.getUserId());
-            permSet.addAll(sysPermWhitelistService.getAllListWithField(SysPermWhitelist::getPermUrl));
+            permSet.addAll(sysPermWhitelistService.getWhitelistPermList());
             jsonData.put("permSet", permSet);
         }
         jsonData.put("menuList", menuList);

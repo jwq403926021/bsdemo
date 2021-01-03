@@ -227,7 +227,6 @@ export default {
           this.formData.StudentClass.className == null ||
           this.formData.StudentClass.schoolId == null ||
           this.formData.StudentClass.leaderId == null ||
-          this.formData.StudentClass.finishClassHour == null ||
           this.formData.StudentClass.classLevel == null
         ) {
           this.$message.error('请求失败，发现必填参数为空！');

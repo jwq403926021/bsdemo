@@ -110,8 +110,7 @@ export default {
     onUpdateClassCourseClick () {
       if (
         this.classId == null ||
-        this.courseId == null ||
-        this.formData.StudentClass.course.classCourse.courseOrder == null
+        this.courseId == null
       ) {
         this.$message.error('请求失败，发现必填参数为空！');
         return;

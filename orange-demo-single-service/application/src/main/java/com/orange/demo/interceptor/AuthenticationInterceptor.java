@@ -43,10 +43,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             ApplicationContextHolder.getBean("sessionCacheHelper");
 
     private SysPermService sysPermService =
-            ApplicationContextHolder.getBean("sysPermService");
+            ApplicationContextHolder.getBean(SysPermService.class);
 
     private static SysPermWhitelistService sysPermWhitelistService =
-            ApplicationContextHolder.getBean("sysPermWhitelistService");
+            ApplicationContextHolder.getBean(SysPermWhitelistService.class);
 
     private static Set<String> whitelistPermSet;
 

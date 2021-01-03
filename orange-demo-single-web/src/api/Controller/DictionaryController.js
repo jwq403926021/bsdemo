@@ -115,6 +115,15 @@ export default class DictionaryController {
       });
     });
   }
+  static dictGradeAll (sender, params, axiosOption, httpOption) {
+    return new Promise((resolve, reject) => {
+      sender.doUrl('/admin/app/grade/listAll', 'get', params, axiosOption, httpOption).then(res => {
+        resolve(res.data);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
   static dictAddGrade (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/app/grade/add', 'post', params, axiosOption, httpOption);
   }

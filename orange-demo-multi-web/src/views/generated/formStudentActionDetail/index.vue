@@ -142,12 +142,6 @@ export default {
      * 学生行为流水数据获取函数，返回Promise
      */
     loadStudentActionTransData (params) {
-      if (
-        this.formStudentActionDetail.formFilterCopy.statsDate == null
-      ) {
-        this.formStudentActionDetail.StudentActionTrans.impl.clearTable();
-        return Promise.reject();
-      }
       if (params == null) params = {};
       params = {
         ...params,

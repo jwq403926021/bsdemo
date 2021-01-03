@@ -1,6 +1,9 @@
 package com.orange.demo.upms.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import com.orange.demo.upms.dto.SysMenuDto;
 import com.orange.demo.upms.vo.SysMenuVo;
 import com.orange.demo.upms.model.SysMenu;
 import com.orange.demo.upms.service.SysMenuService;
@@ -21,6 +24,7 @@ import java.util.*;
  * @author Jerry
  * @date 2020-09-24
  */
+@Api(tags = "菜单管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysMenu")
@@ -32,17 +36,20 @@ public class SysMenuController {
     /**
      * 添加新菜单操作。
      *
-     * @param sysMenu              新菜单对象。
+     * @param sysMenuDto           新菜单对象。
      * @param permCodeIdListString 与当前菜单Id绑定的权限Id列表，多个权限之间逗号分隔。
      * @return 应答结果对象，包含新增菜单的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {"sysMenu.menuId"})
     @PostMapping("/add")
-    public ResponseResult<Long> add(@MyRequestBody SysMenu sysMenu, @MyRequestBody String permCodeIdListString) {
-        String errorMessage = MyCommonUtil.getModelValidationError(sysMenu);
+    public ResponseResult<Long> add(
+            @MyRequestBody("sysMenu") SysMenuDto sysMenuDto, @MyRequestBody String permCodeIdListString) {
+        String errorMessage = MyCommonUtil.getModelValidationError(sysMenuDto);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
+        SysMenu sysMenu = MyModelUtil.copyTo(sysMenuDto, SysMenu.class);
         CallResult result = sysMenuService.verifyRelatedData(sysMenu, null, permCodeIdListString);
         if (!result.isSuccess()) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, result.getErrorMessage());
@@ -58,22 +65,24 @@ public class SysMenuController {
     /**
      * 更新菜单数据操作。
      *
-     * @param sysMenu              更新菜单对象。
+     * @param sysMenuDto           更新菜单对象。
      * @param permCodeIdListString 与当前菜单Id绑定的权限Id列表，多个权限之间逗号分隔。
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
     @PostMapping("/update")
-    public ResponseResult<Void> update(@MyRequestBody SysMenu sysMenu, @MyRequestBody String permCodeIdListString) {
-        String errorMessage = MyCommonUtil.getModelValidationError(sysMenu, Default.class, UpdateGroup.class);
+    public ResponseResult<Void> update(
+            @MyRequestBody("sysMenu") SysMenuDto sysMenuDto, @MyRequestBody String permCodeIdListString) {
+        String errorMessage = MyCommonUtil.getModelValidationError(sysMenuDto, Default.class, UpdateGroup.class);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
-        SysMenu originalSysMenu = sysMenuService.getById(sysMenu.getMenuId());
+        SysMenu originalSysMenu = sysMenuService.getById(sysMenuDto.getMenuId());
         if (originalSysMenu == null) {
             errorMessage = "数据验证失败，当前菜单并不存在，请刷新后重试！";
             return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
         }
+        SysMenu sysMenu = MyModelUtil.copyTo(sysMenuDto, SysMenu.class);
         CallResult result = sysMenuService.verifyRelatedData(sysMenu, originalSysMenu, permCodeIdListString);
         if (!result.isSuccess()) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, result.getErrorMessage());

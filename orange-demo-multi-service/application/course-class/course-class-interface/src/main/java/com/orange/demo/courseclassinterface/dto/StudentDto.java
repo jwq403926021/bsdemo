@@ -20,7 +20,7 @@ import java.util.Date;
  * @author Jerry
  * @date 2020-08-08
  */
-@ApiModel("StudentDto实体对象")
+@ApiModel("StudentDto对象")
 @Data
 public class StudentDto {
 
@@ -116,12 +116,6 @@ public class StudentDto {
     @ApiModelProperty(value = "校区Id", required = true)
     @NotNull(message = "数据验证失败，所属校区不能为空！")
     private Long schoolId;
-
-    /**
-     * 注册时间。
-     */
-    @ApiModelProperty(value = "注册时间")
-    private Date registerTime;
 
     /**
      * 学生状态 (0: 正常 1: 锁定 2: 注销)。

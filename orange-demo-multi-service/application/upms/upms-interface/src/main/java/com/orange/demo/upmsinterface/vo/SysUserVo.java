@@ -67,10 +67,10 @@ public class SysUserVo {
     private Long createUserId;
 
     /**
-     * 创建用户名。
+     * 更新者Id。
      */
-    @ApiModelProperty(value = "创建用户名")
-    private String createUsername;
+    @ApiModelProperty(value = "更新者Id")
+    private Long updateUserId;
 
     /**
      * 创建时间。
@@ -87,18 +87,18 @@ public class SysUserVo {
     /**
      * 多对多用户角色数据集合。
      */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "多对多用户角色数据集合")
     private List<Map<String, Object>> sysUserRoleList;
 
     /**
      * userType 常量字典关联数据。
      */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "userType 常量字典关联数据")
     private Map<String, Object> userTypeDictMap;
 
     /**
      * userStatus 常量字典关联数据。
      */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "userStatus 常量字典关联数据")
     private Map<String, Object> userStatusDictMap;
 }

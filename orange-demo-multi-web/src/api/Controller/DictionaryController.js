@@ -67,6 +67,15 @@ export default class DictionaryController {
       });
     });
   }
+  static dictAreaCodeAll (sender, params, axiosOption, httpOption) {
+    return new Promise((resolve, reject) => {
+      sender.doUrl('/admin/CourseClass/areaCode/listAll', 'get', params, axiosOption, httpOption).then(res => {
+        resolve(res.data);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
   static dictAreaCodeByParentId (sender, params, axiosOption, httpOption) {
     return new Promise((resolve, reject) => {
       sender.doUrl('/admin/CourseClass/areaCode/listDictByParentId', 'get', params, axiosOption, httpOption).then(res => {
@@ -110,6 +119,15 @@ export default class DictionaryController {
         let dictData = new staticDict.DictionaryBase();
         dictData.setList(res.data);
         resolve(dictData);
+      }).catch(err => {
+        reject(err);
+      });
+    });
+  }
+  static dictGradeAll (sender, params, axiosOption, httpOption) {
+    return new Promise((resolve, reject) => {
+      sender.doUrl('/admin/CourseClass/grade/listAll', 'get', params, axiosOption, httpOption).then(res => {
+        resolve(res.data);
       }).catch(err => {
         reject(err);
       });

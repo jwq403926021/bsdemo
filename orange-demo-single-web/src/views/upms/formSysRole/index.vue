@@ -242,6 +242,7 @@ export default {
         area: ['800px', '500px'],
         offset: '100px'
       }, params).then(res => {
+        this.fragmentSysRoleUser.sysRole.impl.dirty = true;
         this.refreshFragmentSysRole();
       }).catch(e => {});
     },
@@ -256,6 +257,11 @@ export default {
           rowData
         });
       }).then(res => {
+        if (row.roleId === this.fragmentSysRoleUser.formFilter.sysRoleId) {
+          this.fragmentSysRoleUser.formFilter.sysRoleId = undefined;
+          this.fragmentSysRoleUser.SysUser.impl.clearTable();
+        }
+        this.fragmentSysRoleUser.sysRole.impl.dirty = true;
         this.fragmentSysRole.SysRole.impl.refreshTable();
       }).catch((e) => {});
     },
@@ -270,6 +276,11 @@ export default {
       this.$confirm('是否删除此角色？').then(res => {
         SystemController.deleteRole(this, params).then(res => {
           this.$message.success('删除成功');
+          if (row.roleId === this.fragmentSysRoleUser.formFilter.sysRoleId) {
+            this.fragmentSysRoleUser.formFilter.sysRoleId = undefined;
+            this.fragmentSysRoleUser.SysUser.impl.clearTable();
+          }
+          this.fragmentSysRoleUser.sysRole.impl.dirty = true;
           this.fragmentSysRole.SysRole.impl.refreshTable();
         }).catch(e => {});
       }).catch(e => {});

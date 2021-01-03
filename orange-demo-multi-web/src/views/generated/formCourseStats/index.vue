@@ -176,7 +176,7 @@ export default {
       return new Promise((resolve, reject) => {
         CourseTransStatsController.listWithGroup(this, params).then(res => {
           resolve({
-            dataList: res.data.dataList.map((item) => {
+            dataList: (res.data.dataList || []).map((item) => {
               return {...item, gradeIdShowName: item.gradeIdDictMap.name};
             }),
             totalCount: res.data.totalCount
@@ -218,7 +218,7 @@ export default {
       return new Promise((resolve, reject) => {
         CourseTransStatsController.listWithGroup(this, params).then(res => {
           resolve({
-            dataList: res.data.dataList.map((item) => {
+            dataList: (res.data.dataList || []).map((item) => {
               return {...item, subjectIdShowName: item.subjectIdDictMap.name};
             }),
             totalCount: res.data.totalCount
@@ -260,7 +260,7 @@ export default {
       return new Promise((resolve, reject) => {
         CourseTransStatsController.listWithGroup(this, params).then(res => {
           resolve({
-            dataList: res.data.dataList.map((item) => {
+            dataList: (res.data.dataList || []).map((item) => {
               return {...item, statsDateShowName: this.formatDateByStatsType(item.statsDate, this.formCourseStats.CourseTransStats.statsType)};
             }),
             totalCount: res.data.totalCount

@@ -11,6 +11,10 @@ export default class SystemController {
     return sender.doUrl('admin/upms/login/changePassword', 'post', params, axiosOption, httpOption);
   }
 
+  static getLoginInfo (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('admin/upms/login/getLoginInfo', 'get', params, axiosOption, httpOption);
+  }
+
   static getDictList (sender, params, axiosOption, httpOption) {
     return sender.doUrl('admin/upms/sysDict/list', 'post', params, axiosOption, httpOption);
   }

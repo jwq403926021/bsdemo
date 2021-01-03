@@ -1,6 +1,9 @@
 package com.orange.demo.upms.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import com.orange.demo.upms.dto.SysPermModuleDto;
 import com.orange.demo.upms.vo.SysPermModuleVo;
 import com.orange.demo.upms.model.SysPerm;
 import com.orange.demo.upms.model.SysPermModule;
@@ -26,6 +29,7 @@ import java.util.Map;
  * @author Jerry
  * @date 2020-09-24
  */
+@Api(tags = "权限资源模块管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPermModule")
@@ -37,15 +41,17 @@ public class SysPermModuleController {
     /**
      * 新增权限资源模块操作。
      *
-     * @param sysPermModule 新增权限资源模块对象。
+     * @param sysPermModuleDto 新增权限资源模块对象。
      * @return 应答结果对象，包含新增权限资源模块的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysPermModule.moduleId"})
     @PostMapping("/add")
-    public ResponseResult<Long> add(@MyRequestBody SysPermModule sysPermModule) {
-        String errorMessage = MyCommonUtil.getModelValidationError(sysPermModule);
+    public ResponseResult<Long> add(@MyRequestBody("sysPermModule") SysPermModuleDto sysPermModuleDto) {
+        String errorMessage = MyCommonUtil.getModelValidationError(sysPermModuleDto);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
+        SysPermModule sysPermModule = MyModelUtil.copyTo(sysPermModuleDto, SysPermModule.class);
         if (sysPermModule.getParentId() != null
                 && sysPermModuleService.getById(sysPermModule.getParentId()) == null) {
             errorMessage = "数据验证失败，关联的上级权限模块并不存在，请刷新后重试！";
@@ -58,15 +64,16 @@ public class SysPermModuleController {
     /**
      * 更新权限资源模块操作。
      *
-     * @param sysPermModule 更新权限资源模块对象。
+     * @param sysPermModuleDto 更新权限资源模块对象。
      * @return 应答结果对象，包含新增权限资源模块的主键Id。
      */
     @PostMapping("/update")
-    public ResponseResult<Void> update(@MyRequestBody SysPermModule sysPermModule) {
-        String errorMessage = MyCommonUtil.getModelValidationError(sysPermModule, Default.class, UpdateGroup.class);
+    public ResponseResult<Void> update(@MyRequestBody("sysPermModule") SysPermModuleDto sysPermModuleDto) {
+        String errorMessage = MyCommonUtil.getModelValidationError(sysPermModuleDto, Default.class, UpdateGroup.class);
         if (errorMessage != null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
+        SysPermModule sysPermModule = MyModelUtil.copyTo(sysPermModuleDto, SysPermModule.class);
         SysPermModule originalPermModule = sysPermModuleService.getById(sysPermModule.getModuleId());
         if (originalPermModule == null) {
             return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);

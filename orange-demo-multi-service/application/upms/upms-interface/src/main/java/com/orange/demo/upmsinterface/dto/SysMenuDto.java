@@ -9,7 +9,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * 菜单Dto。
@@ -67,10 +66,4 @@ public class SysMenuDto {
      */
     @ApiModelProperty(value = "菜单显示顺序")
     private String icon;
-
-    /**
-     * 创建时间。
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
 }

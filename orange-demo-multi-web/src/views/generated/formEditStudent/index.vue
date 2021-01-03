@@ -461,11 +461,8 @@ export default {
           this.formData.Student.gender == null ||
           this.formData.Student.birthday == null ||
           this.formData.Student.experienceLevel == null ||
-          this.formData.Student.totalCoin == null ||
-          this.formData.Student.leftCoin == null ||
           this.formData.Student.gradeId == null ||
-          this.formData.Student.schoolId == null ||
-          this.formData.Student.status == null
+          this.formData.Student.schoolId == null
         ) {
           this.$message.error('请求失败，发现必填参数为空！');
           return;

@@ -14,5 +14,6 @@
     <modules>
         <module>common-core</module>
         <module>common-sequence</module>
+        <module>common-swagger</module>
     </modules>
 </project>

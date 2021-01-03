@@ -1,4 +1,6 @@
 import JSEncrypt from 'jsencrypt';
+// eslint-disable-next-line no-unused-vars
+// import Cookies from 'js-cookie';
 
 /**
  * 列表数据转换树形数据
@@ -219,4 +221,19 @@ export function encrypt (value) {
   let encrypt = new JSEncrypt();
   encrypt.setPublicKey(publicKey);
   return encodeURIComponent(encrypt.encrypt(value));
+}
+
+export function getToken () {
+  return sessionStorage.getItem('token');
+  // return Cookies.get('token');
+}
+
+export function setToken (token) {
+  if (token == null || token === '') {
+    sessionStorage.removeItem('token');
+    // Cookies.remove('token');
+  } else {
+    sessionStorage.setItem('token', token);
+    // Cookies.set('token', token);
+  }
 }

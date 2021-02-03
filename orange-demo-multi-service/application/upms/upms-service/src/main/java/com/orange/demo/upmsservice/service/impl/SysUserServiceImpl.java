@@ -36,8 +36,6 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
     @Autowired
-    private SysPermService sysPermService;
-    @Autowired
     private SysRoleService sysRoleService;
     @Autowired
     private IdGeneratorWrapper idGenerator;
@@ -62,11 +60,10 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
      */
     @Override
     public SysUser getSysUserByLoginName(String loginName) {
-        Example e = new Example(SysUser.class);
-        Example.Criteria c = e.createCriteria();
-        c.andEqualTo("loginName", loginName);
-        c.andEqualTo("deletedFlag", GlobalDeletedFlag.NORMAL);
-        return sysUserMapper.selectOneByExample(e);
+        SysUser filter = new SysUser();
+        filter.setLoginName(loginName);
+        filter.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        return sysUserMapper.selectOne(filter);
     }
 
     /**
@@ -235,18 +232,6 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
                 sysUserMapper.getSysUserList(inFilterField, inFilterValues, filter, orderBy);
         this.buildRelationForDataList(resultList, MyRelationParam.dictOnly());
         return resultList;
-    }
-
-    /**
-     * 获取指定用户的权限集合。
-     *
-     * @param userId 用户主键Id。
-     * @return 用户权限集合。
-     */
-    @Override
-    public Set<String> getSysPermSetByUserId(Long userId) {
-        List<SysPerm> permList = sysPermService.getPermListByUserId(userId);
-        return permList.stream().map(SysPerm::getUrl).collect(Collectors.toSet());
     }
 
     /**

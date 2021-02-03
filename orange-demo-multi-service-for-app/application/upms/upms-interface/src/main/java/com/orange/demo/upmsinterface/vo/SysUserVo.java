@@ -30,12 +30,6 @@ public class SysUserVo {
     private String loginName;
 
     /**
-     * 用户密码。
-     */
-    @ApiModelProperty(value = "用户密码")
-    private String password;
-
-    /**
      * 用户显示名称。
      */
     @ApiModelProperty(value = "用户显示名称")

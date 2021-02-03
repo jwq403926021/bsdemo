@@ -1,7 +1,5 @@
 package com.orange.demo.upms.controller;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +30,6 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2020-09-24
  */
-@Api(tags = "角色管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysRole")
@@ -51,7 +48,6 @@ public class SysRoleController {
      * @return 应答结果对象，包含新增角色的主键Id。
      */
     @SuppressWarnings("unchecked")
-    @ApiOperationSupport(ignoreParameters = {"sysRole.roleId", "sysRole.createTimeStart", "sysRole.createTimeEnd"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody("sysRole") SysRoleDto sysRoleDto, @MyRequestBody String menuIdListString) {
@@ -80,7 +76,6 @@ public class SysRoleController {
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
-    @ApiOperationSupport(ignoreParameters = {"sysRole.createTimeStart", "sysRole.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody("sysRole") SysRoleDto sysRoleDto, @MyRequestBody String menuIdListString) {

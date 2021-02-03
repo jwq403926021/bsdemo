@@ -2,8 +2,8 @@ package com.orange.demo.upmsservice.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.orange.demo.common.core.base.service.BaseService;
-import com.orange.demo.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orange.demo.common.core.base.dao.BaseDaoMapper;
+import com.orange.demo.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orange.demo.common.core.constant.GlobalDeletedFlag;
 import com.orange.demo.common.core.util.MyModelUtil;
 import com.orange.demo.common.core.object.CallResult;
@@ -64,8 +64,8 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Override
     public SysRole saveNew(SysRole role, Set<Long> menuIdSet) {
         role.setRoleId(idGenerator.nextLongId());
-        MyModelUtil.fillCommonsForInsert(role);
         role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForInsert(role);
         sysRoleMapper.insert(role);
         if (menuIdSet != null) {
             List<SysRoleMenu> roleMenuList = new LinkedList<>();
@@ -91,8 +91,8 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(SysRole role, SysRole originalRole, Set<Long> menuIdSet) {
-        MyModelUtil.fillCommonsForUpdate(role, originalRole);
         role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForUpdate(role, originalRole);
         if (sysRoleMapper.updateByPrimaryKey(role) != 1) {
             return false;
         }

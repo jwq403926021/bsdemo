@@ -17,7 +17,7 @@
 
     <select id="getPermCodeListByUserId" resultType="java.lang.String">
         SELECT
-            DISTINCT pc.perm_code
+            pc.perm_code
         FROM
             zz_sys_user_role ur,
             zz_sys_role_menu rm,

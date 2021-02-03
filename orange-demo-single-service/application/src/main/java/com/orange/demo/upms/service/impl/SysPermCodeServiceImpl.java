@@ -54,14 +54,26 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     }
 
     /**
-     * 获取指定用户的权限字列表。
+     * 获取指定用户的权限字列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的权限字列表。
      */
     @Override
-    public List<String> getPermCodeListByUserId(Long userId) {
-        return sysPermCodeMapper.getPermCodeListByUserId(userId);
+    public Collection<String> getPermCodeListByUserId(Long userId) {
+        List<String> permCodeList = sysPermCodeMapper.getPermCodeListByUserId(userId);
+        return new HashSet<>(permCodeList);
+    }
+
+    /**
+     * 获取所有权限字数据列表，已去重。
+     *
+     * @return 全部权限字列表。
+     */
+    @Override
+    public Collection<String> getAllPermCodeList() {
+        List<SysPermCode> permCodeList = this.getAllList();
+        return permCodeList.stream().map(SysPermCode::getPermCode).collect(Collectors.toSet());
     }
 
     /**

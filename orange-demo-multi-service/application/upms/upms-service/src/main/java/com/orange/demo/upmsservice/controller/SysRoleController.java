@@ -292,7 +292,7 @@ public class SysRoleController {
         }
         return ResponseResult.success();
     }
-    
+
     /**
      * 查询角色的权限资源地址列表。同时返回详细的分配路径。
      *

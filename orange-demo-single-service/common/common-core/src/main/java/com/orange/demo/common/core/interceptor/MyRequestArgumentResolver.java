@@ -206,7 +206,7 @@ public class MyRequestArgumentResolver implements HandlerMethodArgumentResolver 
                 }
             }
         } else if (parameterType == Boolean.class) {
-            return value.toString();
+            return value;
         } else if (parameterType == Character.class) {
             return value.toString().charAt(0);
         }

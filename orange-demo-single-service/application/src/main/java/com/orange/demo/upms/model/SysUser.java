@@ -1,6 +1,5 @@
 package com.orange.demo.upms.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.orange.demo.upms.model.constant.SysUserType;
 import com.orange.demo.upms.model.constant.SysUserStatus;
 import com.orange.demo.common.core.annotation.RelationConstDict;
@@ -72,7 +71,6 @@ public class SysUser {
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @JSONField(serialize = false)
     @DeletedFlagColumn
     @Column(name = "deleted_flag")
     private Integer deletedFlag;

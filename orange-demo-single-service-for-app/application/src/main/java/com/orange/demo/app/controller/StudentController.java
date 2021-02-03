@@ -11,8 +11,6 @@ import com.orange.demo.common.core.util.*;
 import com.orange.demo.common.core.constant.*;
 import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.UpdateGroup;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,6 @@ import javax.validation.groups.Default;
  * @author Jerry
  * @date 2020-09-24
  */
-@Api(tags = "学生数据管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/app/student")
@@ -41,13 +38,6 @@ public class StudentController {
      * @param studentDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
-    @ApiOperationSupport(ignoreParameters = {
-            "student.studentId",
-            "student.searchString",
-            "student.birthdayStart",
-            "student.birthdayEnd",
-            "student.registerTimeStart",
-            "student.registerTimeEnd"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody("student") StudentDto studentDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(studentDto);
@@ -71,12 +61,6 @@ public class StudentController {
      * @param studentDto 更新对象。
      * @return 应答结果对象。
      */
-    @ApiOperationSupport(ignoreParameters = {
-            "student.searchString",
-            "student.birthdayStart",
-            "student.birthdayEnd",
-            "student.registerTimeStart",
-            "student.registerTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(@MyRequestBody("student") StudentDto studentDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(studentDto, Default.class, UpdateGroup.class);

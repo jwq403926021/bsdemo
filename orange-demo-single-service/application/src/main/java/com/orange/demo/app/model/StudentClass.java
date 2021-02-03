@@ -1,6 +1,5 @@
 package com.orange.demo.app.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.orange.demo.app.model.constant.ClassLevel;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.annotation.RelationConstDict;
@@ -77,7 +76,6 @@ public class StudentClass {
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @JSONField(serialize = false)
     @DeletedFlagColumn
     private Integer status;
 

@@ -1,6 +1,5 @@
 package com.orange.demo.upms.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import com.orange.demo.common.core.annotation.RelationManyToMany;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
@@ -63,7 +62,6 @@ public class SysRole {
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @JSONField(serialize = false)
     @DeletedFlagColumn
     @Column(name = "deleted_flag")
     private Integer deletedFlag;

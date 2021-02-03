@@ -54,14 +54,26 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     }
 
     /**
-     * 获取指定用户的权限字列表。
+     * 获取指定用户的权限字列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的权限字列表。
      */
     @Override
-    public List<String> getPermCodeListByUserId(Long userId) {
-        return sysPermCodeMapper.getPermCodeListByUserId(userId);
+    public Collection<String> getPermCodeListByUserId(Long userId) {
+        List<String> permCodeList = sysPermCodeMapper.getPermCodeListByUserId(userId);
+        return new HashSet<>(permCodeList);
+    }
+
+    /**
+     * 获取所有权限字数据列表，已去重。
+     *
+     * @return 全部权限字列表。
+     */
+    @Override
+    public Collection<String> getAllPermCodeList() {
+        List<SysPermCode> permCodeList = this.getAllList();
+        return permCodeList.stream().map(SysPermCode::getPermCode).collect(Collectors.toSet());
     }
 
     /**
@@ -75,8 +87,8 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     @Override
     public SysPermCode saveNew(SysPermCode sysPermCode, Set<Long> permIdSet) {
         sysPermCode.setPermCodeId(idGenerator.nextLongId());
-        MyModelUtil.fillCommonsForInsert(sysPermCode);
         sysPermCode.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForInsert(sysPermCode);
         sysPermCodeMapper.insert(sysPermCode);
         if (permIdSet != null) {
             List<SysPermCodePerm> sysPermCodePermList = new LinkedList<>();
@@ -102,9 +114,9 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(SysPermCode sysPermCode, SysPermCode originalSysPermCode, Set<Long> permIdSet) {
-        MyModelUtil.fillCommonsForUpdate(sysPermCode, originalSysPermCode);
         sysPermCode.setParentId(originalSysPermCode.getParentId());
         sysPermCode.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForUpdate(sysPermCode, originalSysPermCode);
         if (sysPermCodeMapper.updateByPrimaryKey(sysPermCode) != 1) {
             return false;
         }

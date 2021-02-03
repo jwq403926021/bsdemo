@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 权限资源数据服务类。
@@ -124,14 +123,15 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
     }
 
     /**
-     * 获取与指定用户关联的权限资源列表。
+     * 获取与指定用户关联的权限资源列表，已去重。
      *
      * @param userId 关联的用户主键Id。
      * @return 与指定用户Id关联的权限资源列表。
      */
     @Override
-    public List<SysPerm> getPermListByUserId(Long userId) {
-        return sysPermMapper.getPermListByUserId(userId);
+    public Collection<String> getPermListByUserId(Long userId) {
+        List<String> urlList = sysPermMapper.getPermListByUserId(userId);
+        return new HashSet<>(urlList);
     }
 
     /**

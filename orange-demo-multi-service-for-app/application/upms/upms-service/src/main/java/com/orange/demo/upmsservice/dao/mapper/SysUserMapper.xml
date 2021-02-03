@@ -42,7 +42,6 @@
                 AND zz_sys_user.create_time &lt;= #{sysUserFilter.createTimeEnd}
             </if>
         </if>
-        AND zz_sys_user.deleted_flag = ${@com.orange.demo.common.core.constant.GlobalDeletedFlag@NORMAL}
     </sql>
 
     <select id="getSysUserList" resultMap="BaseResultMap" parameterType="com.orange.demo.upmsservice.model.SysUser">

@@ -91,8 +91,8 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(SysRole role, SysRole originalRole, Set<Long> menuIdSet) {
-        MyModelUtil.fillCommonsForUpdate(role, originalRole);
         role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForUpdate(role, originalRole);
         if (sysRoleMapper.updateByPrimaryKey(role) != 1) {
             return false;
         }

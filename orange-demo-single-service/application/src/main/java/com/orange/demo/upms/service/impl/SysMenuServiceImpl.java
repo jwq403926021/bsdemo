@@ -142,7 +142,7 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
      * @return 全部菜单列表。
      */
     @Override
-    public List<SysMenu> getAllMenuList() {
+    public Collection<SysMenu> getAllMenuList() {
         Example e = new Example(SysMenu.class);
         e.orderBy("showOrder");
         Example.Criteria c = e.createCriteria();
@@ -152,14 +152,19 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
     }
 
     /**
-     * 获取指定用户Id的菜单列表。
+     * 获取指定用户Id的菜单列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的菜单列表。
      */
     @Override
-    public List<SysMenu> getMenuListByUserId(Long userId) {
-        return sysMenuMapper.getMenuListByUserId(userId);
+    public Collection<SysMenu> getMenuListByUserId(Long userId) {
+        List<SysMenu> menuList = sysMenuMapper.getMenuListByUserId(userId);
+        LinkedHashMap<Long, SysMenu> menuMap = new LinkedHashMap<>();
+        for (SysMenu menu : menuList) {
+            menuMap.put(menu.getMenuId(), menu);
+        }
+        return menuMap.values();
     }
 
     /**

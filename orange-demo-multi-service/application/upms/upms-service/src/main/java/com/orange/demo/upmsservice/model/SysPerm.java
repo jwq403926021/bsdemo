@@ -1,9 +1,10 @@
 package com.orange.demo.upmsservice.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.orange.demo.common.core.annotation.DeletedFlagColumn;
+import com.orange.demo.common.core.base.model.BaseModel;
 import com.orange.demo.common.core.annotation.RelationDict;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,8 +16,9 @@ import java.util.*;
  * @date 2020-08-08
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "zz_sys_perm")
-public class SysPerm {
+public class SysPerm extends BaseModel {
 
     /**
      * 权限Id。
@@ -49,33 +51,8 @@ public class SysPerm {
     private Integer showOrder;
 
     /**
-     * 创建者Id。
-     */
-    @Column(name = "create_user_id")
-    private Long createUserId;
-
-    /**
-     * 创建时间。
-     */
-    @Column(name = "create_time")
-    private Date createTime;
-
-    /**
-     * 更新者Id。
-     */
-    @Column(name = "update_user_id")
-    private Long updateUserId;
-
-    /**
-     * 更新时间。
-     */
-    @Column(name = "update_time")
-    private Date updateTime;
-
-    /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @JSONField(serialize = false)
     @DeletedFlagColumn
     @Column(name = "deleted_flag")
     private Integer deletedFlag;

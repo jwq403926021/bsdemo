@@ -28,6 +28,7 @@
       <module name="application-common" target="1.8" />
       <module name="common" target="1.8" />
       <module name="common-core" target="1.8" />
+      <module name="common-datafilter" target="1.8" />
       <module name="common-redis" target="1.8" />
       <module name="common-sequence" target="1.8" />
       <module name="common-swagger" target="1.8" />

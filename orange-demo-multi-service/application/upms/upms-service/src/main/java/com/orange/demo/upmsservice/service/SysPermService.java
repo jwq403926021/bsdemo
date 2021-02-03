@@ -48,12 +48,12 @@ public interface SysPermService extends IBaseService<SysPerm, Long> {
     List<SysPerm> getPermListWithRelation(SysPerm sysPermFilter);
 
     /**
-     * 获取与指定用户关联的权限资源列表。
+     * 获取与指定用户关联的权限资源列表，已去重。
      *
      * @param userId 关联的用户主键Id。
-     * @return 与指定用户Id关联的权限资源列表。
+     * @return 与指定用户Id关联的权限资源URL列表。
      */
-    List<SysPerm> getPermListByUserId(Long userId);
+    Collection<String> getPermListByUserId(Long userId);
 
     /**
      * 验证权限资源对象关联的数据是否都合法。

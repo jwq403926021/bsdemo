@@ -46,15 +46,15 @@ public interface SysMenuService extends IBaseService<SysMenu, Long> {
      *
      * @return 全部菜单列表。
      */
-    List<SysMenu> getAllMenuList();
+    Collection<SysMenu> getAllMenuList();
 
     /**
-     * 获取指定用户Id的菜单列表。
+     * 获取指定用户Id的菜单列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的菜单列表。
      */
-    List<SysMenu> getMenuListByUserId(Long userId);
+    Collection<SysMenu> getMenuListByUserId(Long userId);
 
     /**
      * 判断当前菜单是否存在子菜单。

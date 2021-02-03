@@ -14,9 +14,9 @@
         <result column="deleted_flag" jdbcType="INTEGER" property="deletedFlag"/>
     </resultMap>
 
-    <select id="getPermListByUserId" resultMap="BaseResultMap">
+    <select id="getPermListByUserId" resultType="java.lang.String">
         SELECT
-            p.*
+            p.url
         FROM
             zz_sys_user_role ur,
             zz_sys_role_menu rm,
@@ -128,5 +128,5 @@
         </where>
         ORDER BY
             m.menu_id, pc.perm_code_id
-    </select>    
+    </select>
 </mapper>

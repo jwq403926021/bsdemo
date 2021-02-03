@@ -48,23 +48,13 @@ public interface SysPermService extends IBaseService<SysPerm, Long> {
     List<SysPerm> getPermListWithRelation(SysPerm sysPermFilter);
 
     /**
-     * 获取指定用户的权限资源集合，并存储于缓存，从而提升后续读取效率。
-     *
-     * @param sessionId 用户会话Id。
-     * @param userId    用户主键Id。
-     * @return 当前用户权限集合。
-     */
-    Set<String> getCacheableSysPermSetByUserId(String sessionId, Long userId);
-
-    /**
      * 将指定用户的指定会话的权限集合存入缓存。
      *
      * @param sessionId 会话Id。
      * @param userId    用户主键Id。
-     * @param isAdmin   是否是管理员。
      * @return 查询并缓存后的权限集合。
      */
-    Set<String> putUserSysPermCache(String sessionId, Long userId, boolean isAdmin);
+    Collection<String> putUserSysPermCache(String sessionId, Long userId);
 
     /**
      * 将指定会话的权限集合从缓存中移除。
@@ -74,20 +64,12 @@ public interface SysPermService extends IBaseService<SysPerm, Long> {
     void removeUserSysPermCache(String sessionId);
 
     /**
-     * 获取指定用户的权限集合，这里之所以为公有方法，因为spring cache的技术要求，私有方法数据不能缓存。
-     *
-     * @param userId 用户主键Id。
-     * @return 用户权限集合。
-     */
-    Set<String> getSysPermSetByUserId(Long userId);
-
-    /**
-     * 获取与指定用户关联的权限资源列表。
+     * 获取与指定用户关联的权限资源列表，已去重。
      *
      * @param userId 关联的用户主键Id。
      * @return 与指定用户Id关联的权限资源列表。
      */
-    List<SysPerm> getPermListByUserId(Long userId);
+    Collection<String> getPermListByUserId(Long userId);
 
     /**
      * 验证权限资源对象关联的数据是否都合法。

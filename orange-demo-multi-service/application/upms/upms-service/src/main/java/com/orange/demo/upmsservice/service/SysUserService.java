@@ -105,14 +105,6 @@ public interface SysUserService extends IBaseService<SysUser, Long> {
             String inFilterField, Set<M> inFilterValues, SysUser filter, String orderBy);
 
     /**
-     * 获取指定用户的权限集合。
-     *
-     * @param userId 用户主键Id。
-     * @return 用户权限集合。
-     */
-    Set<String> getSysPermSetByUserId(Long userId);
-
-    /**
      * 获取指定角色的用户列表。
      *
      * @param roleId  角色主键Id。

@@ -1,7 +1,5 @@
 package com.orange.demo.upms.controller;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.upms.dto.SysPermModuleDto;
 import com.orange.demo.upms.vo.SysPermModuleVo;
@@ -29,7 +27,6 @@ import java.util.Map;
  * @author Jerry
  * @date 2020-09-24
  */
-@Api(tags = "权限资源模块管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPermModule")
@@ -44,7 +41,6 @@ public class SysPermModuleController {
      * @param sysPermModuleDto 新增权限资源模块对象。
      * @return 应答结果对象，包含新增权限资源模块的主键Id。
      */
-    @ApiOperationSupport(ignoreParameters = {"sysPermModule.moduleId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody("sysPermModule") SysPermModuleDto sysPermModuleDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysPermModuleDto);
@@ -121,7 +117,7 @@ public class SysPermModuleController {
      *
      * @return 应答结果对象，包含权限资源模块列表。
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseResult<List<SysPermModuleVo>> list() {
         List<SysPermModule> permModuleList = sysPermModuleService.getAllListByOrder("showOrder");
         return ResponseResult.success(MyModelUtil.copyCollectionTo(permModuleList, SysPermModuleVo.class));
@@ -132,7 +128,7 @@ public class SysPermModuleController {
      *
      * @return 应答结果对象，包含树状列表，结构为权限资源模块和权限资源之间的树状关系。
      */
-    @GetMapping("/listAll")
+    @PostMapping("/listAll")
     public ResponseResult<List<Map<String, Object>>> listAll() {
         List<SysPermModule> sysPermModuleList = sysPermModuleService.getPermModuleAndPermList();
         List<Map<String, Object>> resultList = new LinkedList<>();

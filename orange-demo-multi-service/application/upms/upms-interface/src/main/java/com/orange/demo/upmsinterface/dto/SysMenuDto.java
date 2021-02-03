@@ -1,7 +1,7 @@
 package com.orange.demo.upmsinterface.dto;
 
-import com.orange.demo.common.core.validator.ConstDictRef;
 import com.orange.demo.common.core.validator.UpdateGroup;
+import com.orange.demo.common.core.validator.ConstDictRef;
 import com.orange.demo.upmsinterface.constant.SysMenuType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -118,6 +118,12 @@ public class StudentDto {
     private Long schoolId;
 
     /**
+     * 注册时间。
+     */
+    @ApiModelProperty(value = "注册时间")
+    private Date registerTime;
+
+    /**
      * 学生状态 (0: 正常 1: 锁定 2: 注销)。
      */
     @ApiModelProperty(value = "学生状态 (0: 正常 1: 锁定 2: 注销)", required = true)

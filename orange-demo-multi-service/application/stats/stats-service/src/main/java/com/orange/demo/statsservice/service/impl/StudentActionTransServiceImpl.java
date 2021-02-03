@@ -55,6 +55,7 @@ public class StudentActionTransServiceImpl extends BaseService<StudentActionTran
     @Override
     public StudentActionTrans saveNew(StudentActionTrans studentActionTrans) {
         studentActionTrans.setTransId(idGenerator.nextLongId());
+        studentActionTrans.setCreateTime(new Date());
         studentActionTransMapper.insert(studentActionTrans);
         return studentActionTrans;
     }
@@ -69,6 +70,7 @@ public class StudentActionTransServiceImpl extends BaseService<StudentActionTran
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(StudentActionTrans studentActionTrans, StudentActionTrans originalStudentActionTrans) {
+        studentActionTrans.setCreateTime(originalStudentActionTrans.getCreateTime());
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         return studentActionTransMapper.updateByPrimaryKey(studentActionTrans) == 1;
     }

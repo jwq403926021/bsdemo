@@ -42,7 +42,6 @@
                 AND zz_sys_user.create_time &lt;= #{sysUserFilter.createTimeEnd}
             </if>
         </if>
-        AND zz_sys_user.deleted_flag = ${@com.orange.demo.common.core.constant.GlobalDeletedFlag@NORMAL}
     </sql>
 
     <select id="getSysUserList" resultMap="BaseResultMap" parameterType="com.orange.demo.upmsservice.model.SysUser">
@@ -101,7 +100,7 @@
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <!-- 以下查询仅用于权限分配的问题定位，由于关联表较多，可能会给系统运行带来性能影响 -->
     <select id="getSysPermListWithDetail" resultType="map">
         SELECT

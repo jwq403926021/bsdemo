@@ -58,7 +58,6 @@ public class StudentServiceImpl extends BaseService<Student, Long> implements St
     @Override
     public Student saveNew(Student student) {
         student.setStudentId(idGenerator.nextLongId());
-        student.setRegisterTime(new Date());
         MyModelUtil.setDefaultValue(student, "totalCoin", 0);
         MyModelUtil.setDefaultValue(student, "leftCoin", 0);
         MyModelUtil.setDefaultValue(student, "status", StudentStatus.NORMAL);
@@ -76,7 +75,6 @@ public class StudentServiceImpl extends BaseService<Student, Long> implements St
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(Student student, Student originalStudent) {
-        student.setRegisterTime(originalStudent.getRegisterTime());
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         return studentMapper.updateByPrimaryKey(student) == 1;
     }

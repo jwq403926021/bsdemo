@@ -15,12 +15,19 @@ import java.util.*;
 public interface SysPermCodeService extends IBaseService<SysPermCode, Long> {
 
     /**
-     * 获取指定用户的权限字列表。
+     * 获取指定用户的权限字列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的权限字列表。
      */
-    List<String> getPermCodeListByUserId(Long userId);
+    Collection<String> getPermCodeListByUserId(Long userId);
+
+    /**
+     * 获取所有权限字数据列表，已去重。
+     *
+     * @return 全部权限字列表。
+     */
+    Collection<String> getAllPermCodeList();
 
     /**
      * 保存新增的权限字对象。

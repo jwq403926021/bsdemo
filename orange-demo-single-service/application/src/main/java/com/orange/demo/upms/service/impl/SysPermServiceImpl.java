@@ -8,24 +8,24 @@ import com.orange.demo.common.core.object.MyRelationParam;
 import com.orange.demo.common.core.constant.GlobalDeletedFlag;
 import com.orange.demo.common.core.object.CallResult;
 import com.orange.demo.common.core.util.MyModelUtil;
+import com.orange.demo.common.core.util.RedisKeyUtil;
+import com.orange.demo.config.ApplicationConfig;
 import com.orange.demo.upms.service.*;
 import com.orange.demo.upms.dao.SysPermCodePermMapper;
 import com.orange.demo.upms.dao.SysPermMapper;
 import com.orange.demo.upms.model.SysPerm;
 import com.orange.demo.upms.model.SysPermCodePerm;
 import com.orange.demo.upms.model.SysPermModule;
-import com.orange.demo.upms.model.SysUser;
-import com.orange.demo.upms.model.constant.SysUserType;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 权限资源数据服务类。
@@ -46,6 +46,10 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
     private SysUserService sysUserService;
     @Autowired
     private IdGeneratorWrapper idGenerator;
+    @Autowired
+    private JedisPool jedisPool;
+    @Autowired
+    private ApplicationConfig applicationConfig;
 
     /**
      * 返回主对象的Mapper对象。
@@ -83,8 +87,8 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(SysPerm perm, SysPerm originalPerm) {
-        MyModelUtil.fillCommonsForUpdate(perm, originalPerm);
         perm.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForUpdate(perm, originalPerm);
         return sysPermMapper.updateByPrimaryKeySelective(perm) != 0;
     }
 
@@ -131,38 +135,30 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
     }
 
     /**
-     * 获取指定用户的权限资源集合，并存储于缓存，从而提升后续读取效率。
-     *
-     * @param sessionId 用户会话Id。
-     * @param userId    用户主键Id。
-     * @return 当前用户权限集合。
-     */
-    @Cacheable(value = "USER_PERMISSION_CACHE", key = "#sessionId", unless = "#result == null")
-    @Override
-    public Set<String> getCacheableSysPermSetByUserId(String sessionId, Long userId) {
-        // 这里可以防止非法的userId直接访问权限受限的url
-        SysUser user = sysUserService.getById(userId);
-        if (user == null) {
-            return new HashSet<>(1);
-        }
-        // 管理员账户返回空对象，便于缓存的统一处理。
-        return user.getUserType() == SysUserType.TYPE_ADMIN
-                ? new HashSet<>(1) : this.getSysPermSetByUserId(userId);
-    }
-
-    /**
      * 将指定用户的指定会话的权限集合存入缓存。
      *
      * @param sessionId 会话Id。
      * @param userId    用户主键Id。
-     * @param isAdmin   是否是管理员。
      * @return 查询并缓存后的权限集合。
      */
-    @CachePut(value = "USER_PERMISSION_CACHE", key = "#sessionId")
     @Override
-    public Set<String> putUserSysPermCache(String sessionId, Long userId, boolean isAdmin) {
-        // 管理员账户返回空对象，便于缓存的统一处理。
-        return isAdmin ? new HashSet<>(1) : this.getSysPermSetByUserId(userId);
+    public Collection<String> putUserSysPermCache(String sessionId, Long userId) {
+        Collection<String> permList = this.getPermListByUserId(userId);
+        if (CollectionUtils.isEmpty(permList)) {
+            return permList;
+        }
+        String sessionPermKey = RedisKeyUtil.makeSessionPermIdKeyForRedis(sessionId);
+        try (Jedis jedis = jedisPool.getResource()) {
+            Transaction t = jedis.multi();
+            if (permList != null) {
+                for (String perm : permList) {
+                    t.sadd(sessionPermKey, perm);
+                }
+                t.expire(sessionPermKey, applicationConfig.getPermRedisExpiredSeconds());
+            }
+            t.exec();
+        }
+        return permList;
     }
 
     /**
@@ -170,33 +166,24 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
      *
      * @param sessionId 会话Id。
      */
-    @CacheEvict(value = "USER_PERMISSION_CACHE", key = "#sessionId")
     @Override
     public void removeUserSysPermCache(String sessionId) {
-        // 空实现即可，只是通过注解将当前sessionId从cache中删除。
+        try (Jedis jedis = jedisPool.getResource()) {
+            String sessionPermKey = RedisKeyUtil.makeSessionPermIdKeyForRedis(sessionId);
+            jedis.del(sessionPermKey);
+        }
     }
 
     /**
-     * 获取指定用户的权限集合，这里之所以为公有方法，因为spring cache的技术要求，私有方法数据不能缓存。
-     *
-     * @param userId 用户主键Id。
-     * @return 用户权限集合。
-     */
-    @Override
-    public Set<String> getSysPermSetByUserId(Long userId) {
-        List<SysPerm> permList = this.getPermListByUserId(userId);
-        return permList.stream().map(SysPerm::getUrl).collect(Collectors.toSet());
-    }
-
-    /**
-     * 获取与指定用户关联的权限资源列表。
+     * 获取与指定用户关联的权限资源列表，已去重。
      *
      * @param userId 关联的用户主键Id。
      * @return 与指定用户Id关联的权限资源列表。
      */
     @Override
-    public List<SysPerm> getPermListByUserId(Long userId) {
-        return sysPermMapper.getPermListByUserId(userId);
+    public Collection<String> getPermListByUserId(Long userId) {
+        List<String> urlList = sysPermMapper.getPermListByUserId(userId);
+        return new HashSet<>(urlList);
     }
 
     /**

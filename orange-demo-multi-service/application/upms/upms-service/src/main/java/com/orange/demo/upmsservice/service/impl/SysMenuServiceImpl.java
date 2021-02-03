@@ -10,12 +10,13 @@ import com.orange.demo.common.core.object.CallResult;
 import com.orange.demo.upmsinterface.constant.SysMenuType;
 import com.orange.demo.upmsservice.service.SysMenuService;
 import com.orange.demo.upmsservice.service.SysPermCodeService;
-import com.orange.demo.upmsservice.dao.SysMenuMapper;
 import com.orange.demo.upmsservice.dao.SysMenuPermCodeMapper;
 import com.orange.demo.upmsservice.dao.SysRoleMenuMapper;
+import com.orange.demo.upmsservice.dao.SysMenuMapper;
 import com.orange.demo.upmsservice.model.SysMenu;
 import com.orange.demo.upmsservice.model.SysMenuPermCode;
 import com.orange.demo.upmsservice.model.SysRoleMenu;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,8 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
     @Override
     public SysMenu saveNew(SysMenu sysMenu, Set<Long> permCodeIdSet) {
         sysMenu.setMenuId(idGenerator.nextLongId());
-        MyModelUtil.fillCommonsForInsert(sysMenu);
         sysMenu.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        MyModelUtil.fillCommonsForInsert(sysMenu);
         sysMenuMapper.insert(sysMenu);
         if (permCodeIdSet != null) {
             List<SysMenuPermCode> sysMenuPermCodeList = new LinkedList<>();
@@ -142,9 +143,9 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
      * @return 全部菜单列表。
      */
     @Override
-    public List<SysMenu> getAllMenuList() {
+    public Collection<SysMenu> getAllMenuList() {
         Example e = new Example(SysMenu.class);
-        e.orderBy("menuType").orderBy("showOrder");
+        e.orderBy("showOrder");
         Example.Criteria c = e.createCriteria();
         c.andIn("menuType", Arrays.asList(SysMenuType.TYPE_MENU, SysMenuType.TYPE_DIRECTORY));
         c.andEqualTo("deletedFlag", GlobalDeletedFlag.NORMAL);
@@ -152,14 +153,19 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
     }
 
     /**
-     * 获取指定用户Id的菜单列表。
+     * 获取指定用户Id的菜单列表，已去重。
      *
      * @param userId 用户主键Id。
      * @return 用户关联的菜单列表。
      */
     @Override
-    public List<SysMenu> getMenuListByUserId(Long userId) {
-        return sysMenuMapper.getMenuListByUserId(userId);
+    public Collection<SysMenu> getMenuListByUserId(Long userId) {
+        List<SysMenu> menuList = sysMenuMapper.getMenuListByUserId(userId);
+        LinkedHashMap<Long, SysMenu> menuMap = new LinkedHashMap<>();
+        for (SysMenu menu : menuList) {
+            menuMap.put(menu.getMenuId(), menu);
+        }
+        return menuMap.values();
     }
 
     /**

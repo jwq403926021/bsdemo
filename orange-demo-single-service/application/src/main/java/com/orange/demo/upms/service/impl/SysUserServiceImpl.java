@@ -61,11 +61,10 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
      */
     @Override
     public SysUser getSysUserByLoginName(String loginName) {
-        Example e = new Example(SysUser.class);
-        Example.Criteria c = e.createCriteria();
-        c.andEqualTo("loginName", loginName);
-        c.andEqualTo("deletedFlag", GlobalDeletedFlag.NORMAL);
-        return sysUserMapper.selectOneByExample(e);
+        SysUser filter = new SysUser();
+        filter.setLoginName(loginName);
+        filter.setDeletedFlag(GlobalDeletedFlag.NORMAL);
+        return sysUserMapper.selectOne(filter);
     }
 
     /**

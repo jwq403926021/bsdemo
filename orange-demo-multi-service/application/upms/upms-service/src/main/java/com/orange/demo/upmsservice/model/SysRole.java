@@ -1,11 +1,12 @@
 package com.orange.demo.upmsservice.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import com.orange.demo.common.core.annotation.RelationManyToMany;
+import com.orange.demo.common.core.base.model.BaseModel;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import com.orange.demo.upmsinterface.vo.SysRoleVo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +21,9 @@ import java.util.*;
  * @date 2020-08-08
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "zz_sys_role")
-public class SysRole {
+public class SysRole extends BaseModel {
 
     /**
      * 主键Id。
@@ -37,33 +39,8 @@ public class SysRole {
     private String roleName;
 
     /**
-     * 创建者Id。
-     */
-    @Column(name = "create_user_id")
-    private Long createUserId;
-
-    /**
-     * 创建时间。
-     */
-    @Column(name = "create_time")
-    private Date createTime;
-
-    /**
-     * 更新者Id。
-     */
-    @Column(name = "update_user_id")
-    private Long updateUserId;
-
-    /**
-     * 更新时间。
-     */
-    @Column(name = "update_time")
-    private Date updateTime;
-
-    /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @JSONField(serialize = false)
     @DeletedFlagColumn
     @Column(name = "deleted_flag")
     private Integer deletedFlag;

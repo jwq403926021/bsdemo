@@ -16,7 +16,6 @@ import com.orange.demo.common.core.util.RsaUtil;
 import com.orange.demo.common.redis.cache.SessionCacheHelper;
 import com.orange.demo.upmsinterface.constant.SysUserStatus;
 import com.orange.demo.upmsinterface.constant.SysUserType;
-import com.orange.demo.upmsservice.config.ApplicationConfig;
 import com.orange.demo.upmsservice.model.SysUser;
 import com.orange.demo.upmsservice.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +41,6 @@ public class LoginController {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
-    private ApplicationConfig appConfig;
-    @Autowired
     private SessionCacheHelper cacheHelper;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -68,11 +65,14 @@ public class LoginController {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
         SysUser user = sysUserService.getSysUserByLoginName(loginName);
+        if (user == null) {
+            return ResponseResult.error(ErrorCodeEnum.INVALID_USERNAME_PASSWORD);
+        }
         password = URLDecoder.decode(password, StandardCharsets.UTF_8.name());
         // NOTE: 第一次使用时，请务必阅读ApplicationConstant.PRIVATE_KEY的代码注释。
         // 执行RsaUtil工具类中的main函数，可以生成新的公钥和私钥。
         password = RsaUtil.decrypt(password, ApplicationConstant.PRIVATE_KEY);
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_USERNAME_PASSWORD);
         }
         String errorMessage;

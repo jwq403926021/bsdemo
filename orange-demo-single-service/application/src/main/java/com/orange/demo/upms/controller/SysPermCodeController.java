@@ -1,7 +1,5 @@
 package com.orange.demo.upms.controller;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.upms.dto.SysPermCodeDto;
 import com.orange.demo.upms.vo.SysPermCodeVo;
@@ -25,7 +23,6 @@ import java.util.*;
  * @author Jerry
  * @date 2020-09-24
  */
-@Api(tags = "权限字管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPermCode")
@@ -42,7 +39,6 @@ public class SysPermCodeController {
      * @return 应答结果对象，包含新增权限字的主键Id。
      */
     @SuppressWarnings("unchecked")
-    @ApiOperationSupport(ignoreParameters = {"sysPermCode.permCodeId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody("sysPermCode") SysPermCodeDto sysPermCodeDto, @MyRequestBody String permIdListString) {

@@ -123,9 +123,6 @@
 
 #### 开源工程部署
 1. 目录说明
-> 根据用户的反馈，我们已经支持生成纯app后台服务。该服务并不包含权限和表单，以便于用户迅速上手开发app后台。
-- 微服务app后端工程：orange-demo-multi-service-for-app
-- 单体服务app后端工程：orange-demo-single-service-for-app
 - 微服务后端工程：orange-demo-multi-service
 - 微服务前端工程：orange-demo-multi-web
 - 单体服务后端工程：orange-demo-single-service

@@ -7,8 +7,8 @@
 - 生成后工程无任何 License 限制，可进行任意修改，并用于任意数量的商用项目。
 - 技术问题的反馈、咨询和交流，我们都会及时回复，经常在开车等灯时答疑。
 
-### 生成后代码
-> 下图均为橙单生成的代码，纯手工打造。
+### 代码样例
+> 下图均为橙单生成的代码，纯手工打造，**强烈推荐展开看大图** 。
 
 <table>
 <tr>
@@ -17,14 +17,14 @@
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2021/0331/201827_3f46fd5b_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202127_f08bbc7c_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202439_874d9a9e_7431510.png"/></td>
 </tr>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202439_874d9a9e_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/204401_7aa49c0c_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0331/202845_56563c03_7431510.png"/></td>
 </tr>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203035_532833e5_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/204918_01173d01_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0331/203327_1460c4dd_7431510.png"/></td>
 </tr>
 </table>

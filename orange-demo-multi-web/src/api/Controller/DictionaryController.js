@@ -93,9 +93,6 @@ export default class DictionaryController {
   static dictDeleteAreaCode (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/areaCode/delete', 'post', params, axiosOption, httpOption);
   }
-  static dictBatchDeleteAreaCode (sender, params, axiosOption, httpOption) {
-    return sender.doUrl('', 'post', params, axiosOption, httpOption);
-  }
   static dictUpdateAreaCode (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/areaCode/update', 'post', params, axiosOption, httpOption);
   }
@@ -138,9 +135,6 @@ export default class DictionaryController {
   }
   static dictDeleteGrade (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/grade/delete', 'post', params, axiosOption, httpOption);
-  }
-  static dictBatchDeleteGrade (sender, params, axiosOption, httpOption) {
-    return sender.doUrl('', 'post', params, axiosOption, httpOption);
   }
   static dictUpdateGrade (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/CourseClass/grade/update', 'post', params, axiosOption, httpOption);

@@ -25,13 +25,6 @@
                 :index="fragmentSysRole.SysRole.impl.getTableIndex" />
               <el-table-column label="角色名称" prop="roleName">
               </el-table-column>
-              <el-table-column label="创建人" prop="createUsername">
-              </el-table-column>
-              <el-table-column label="创建时间">
-                <template slot-scope="scope">
-                  <span>{{formatDateByStatsType(scope.row.createTime, 'day')}}</span>
-                </template>
-              </el-table-column>
               <el-table-column label="操作" fixed="right" width="150px">
                 <template slot-scope="scope">
                   <el-button @click="onEditSysRoleClick(scope.row)" type="text" size="mini"
@@ -112,11 +105,6 @@
                   <el-tag :type="getUserStatusType(scope.row.userStatus)" size="mini">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="创建时间">
-                <template slot-scope="scope">
-                  <span>{{formatDateByStatsType(scope.row.createTime, 'day')}}</span>
-                </template>
-              </el-table-column>
               <el-table-column label="操作" fixed="right" width="80px">
                 <template slot-scope="scope">
                   <el-button class="btn-table-delete" type="text" size="mini"
@@ -175,7 +163,7 @@ export default {
           sysRoleName: undefined
         },
         SysRole: {
-          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, false, 'createTime', 1)
+          impl: new TableWidget(this.loadSysRoleData, this.loadSysRoleVerify, true, false)
         },
         isInit: false
       },
@@ -188,7 +176,7 @@ export default {
           impl: new DropdownWidget(this.loadSysRoleDropdownList)
         },
         SysUser: {
-          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, false, 'createTime', 1)
+          impl: new TableWidget(this.loadSysUserData, this.loadSysUserVerify, true, false)
         },
         isInit: false
       }

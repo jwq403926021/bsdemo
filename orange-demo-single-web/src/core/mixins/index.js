@@ -266,8 +266,8 @@ const cachePageMixin = {
   activated () {
     if (this.$route && this.$route.meta && this.$route.meta.refresh) {
       this.onResume();
-      this.$route.meta.refresh = false;
     }
+    this.$route.meta.refresh = true;
   }
 }
 /**

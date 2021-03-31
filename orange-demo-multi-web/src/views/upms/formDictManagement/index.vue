@@ -1,11 +1,11 @@
 <template>
   <el-container>
     <el-aside width="300px">
-      <el-card class="base-card" shadow="never" title="字典列表" :body-style="{ padding: '0px' }">
+      <el-card class="base-card" shadow="never" :body-style="{ padding: '0px' }">
         <div slot="header" class="base-card-header">
           <span>字典列表</span>
         </div>
-        <el-scrollbar :style="{height: (getClientHeight - 184) + 'px'}" class="custom-scroll">
+        <el-scrollbar :style="{height: (getMainContextHeight - 94) + 'px'}" class="custom-scroll">
           <el-tree :data="dictList" :props="{label: 'name'}" node-key="variableName" :highlight-current="true"
             :current-node-key="(dictList[0] || {}).variableName" @node-click="onDictChange">
             <div class="module-node-item" slot-scope="{ data }">
@@ -37,7 +37,7 @@
         <el-col :span="24">
           <el-table :data="getCurrentDictData" size="mini" header-cell-class-name="table-header-gray"
             :row-style="tableRowStyle"
-            :height="(getClientHeight - 178) + 'px'" row-key="id">
+            :height="(getMainContextHeight - 88) + 'px'" row-key="id">
             <el-table-column label="ID" prop="id" />
             <el-table-column label="字典名称" prop="name">
               <template slot-scope="scope">
@@ -69,7 +69,7 @@ import { DictionaryController } from '@/api';
 import editDict from '@/views/upms/formEditDict';
 
 export default {
-  name: 'systemDictManagement',
+  name: 'formDictManagement',
   data () {
     return {
       dictList: [
@@ -84,7 +84,6 @@ export default {
           listApi: DictionaryController.dictGradeAll,
           addApi: DictionaryController.dictAddGrade,
           deleteApi: DictionaryController.dictDeleteGrade,
-          batchDeleteApi: DictionaryController.dictBatchDeleteGrade,
           updateApi: DictionaryController.dictUpdateGrade,
           reloadCachedDataApi: DictionaryController.dictReloadGradeCachedData
         }
@@ -142,9 +141,10 @@ export default {
     },
     onRefreshCacheData () {
       this.$confirm('是否同步缓存？').then(res => {
-        this.currentDict.reloadCachedDataApi(this).then(res => {
-          this.$message.success('同步成功');
-        }).catch(e => {});
+        return this.currentDict.reloadCachedDataApi(this);
+      }).then(res => {
+        this.$message.success('同步成功');
+        this.updateDictData();
       }).catch(e => {});
     },
     onAddDictData () {
@@ -183,7 +183,7 @@ export default {
     getCurrentDictData () {
       return this.currentDictDataList;
     },
-    ...mapGetters(['getClientHeight'])
+    ...mapGetters(['getMainContextHeight'])
   },
   mounted () {
     this.onDictChange(this.dictList[0]);

@@ -7,7 +7,29 @@
 - 生成后工程无任何 License 限制，可进行任意修改，并用于任意数量的商用项目。
 - 技术问题的反馈、咨询和交流，我们都会及时回复，经常在开车等灯时答疑。
 
-> 春节活动期间，购买【橙单微服务教学版(299元)】工程，赠【橙单微服务多租户教学版(329元)】工程！   
+### 生成后代码
+> 下图均为橙单生成的代码，纯手工打造。
+
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203714_b01aaa17_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203923_334d627f_7431510.png"/></td>
+</tr>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/201827_3f46fd5b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202127_f08bbc7c_7431510.png"/></td>
+</tr>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202439_874d9a9e_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202845_56563c03_7431510.png"/></td>
+</tr>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203035_532833e5_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203327_1460c4dd_7431510.png"/></td>
+</tr>
+</table>
+
+> 活动期间，购买【橙单微服务教学版(299元)】工程，赠【橙单微服务多租户教学版(329元)】工程！   
 > 同时赠送多租户企业版10元购优惠券以及微服务企业版10元购优惠券，通过优惠券您可以只花10元创建属于您的企业版项目。
 
 ### 橙单生成器

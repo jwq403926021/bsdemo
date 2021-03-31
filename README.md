@@ -10,6 +10,9 @@
 
 <table>
 <tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/172816_afc87037_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/172847_2ae71c82_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/172732_8395559c_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2020/1124/152615_5125dfbb_7431510.png"/></td>
 </tr>
 </table>
@@ -17,8 +20,8 @@
 #### 选择我们
 - 技术问题的反馈、咨询和沟通交流，我们都会及时的回复，经常在开车等灯时答疑。
 - 专业、完善、详尽、暗黑护眼、完全免费开放，且同步更新的近 18 万字在线文档。
-- 精耕细作、通顺易懂、极为优质的 5A 级代码质量，顺利通过 SonarQube 和 Alibaba Code Guide 的最严格扫描。
-- 真正的中台化低代码生成工具，而非单纯的敏捷脚手架，可生成 70% 以上相对复杂的中台化业务代码。
+- 纯手工打造、合理驾驭模式、极为优质的 5A 级代码质量，顺利通过 SonarQube 和 Alibaba Code Guide 的最严格扫描。
+- 有助于中台化平台架构梳理，支持微服务池共享，可生成 70% 以上相对复杂的中台化业务代码。
 - 宽松、合理、透明、全网超低价的教学版和企业版商业授权。(请我们撸一次串的价格)
 - 生成后工程没有任何 License 限制，您可以进行任意修改，并用于任意数量的商用项目，亦可改造后用于企业内部的基础组件库。
 

@@ -187,16 +187,8 @@ docker-compose stop
 
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165025_1a5dab88_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165127_aa86f874_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165235_333782ce_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165330_3b22761a_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165440_faecc3ab_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2020/0411/165518_e381e2f7_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/194609_2e859a10_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0331/194939_75032e28_7431510.png"/></td>
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2020/0411/181606_265790ac_7431510.png"/></td>

@@ -49,10 +49,11 @@
 #### 在线资源
 - 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
 - 教学视频。[https://www.bilibili.com/video/bv1Wg4y1i7vP](https://www.bilibili.com/video/bv1Wg4y1i7vP)
+- 演示配置。[http://config.orangeforms.com](http://config.orangeforms.com)
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
 - 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
 - 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
-- 更完整的演示项目。[http://demo.orangeforms.com](http://demo.orangeforms.com)
+- 演示项目。[http://demo.orangeforms.com](http://demo.orangeforms.com)
 
 #### 多应用支持
 - 生成器支持多应用功能，应用和服务之间保持多对多关系，服务池功能已基本支持，后续版本会持续优化。

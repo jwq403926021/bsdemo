@@ -1,3 +1,15 @@
+### 本期新功能
+基于 RocketMQ 消息的方式，实现多种策略的微服务间实时数据同步。目前已支持，高可用、高可靠、高性能、幂等性和重放式顺序性等特征。下图为该功能在生成器中的配置界面和生成后的相关代码。
+<table>
+<tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113209_26d5db51_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113615_ef4c3892_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113806_320358e0_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113615_ef4c3892_7431510.png"/></td>
+</tr>
+
+
+
 ### 选择橙单
 - 有助于中台化平台架构梳理，支持微服务池共享，可生成 70% 以上相对复杂的中台化业务代码。
 - 标准化服务调用接口，无论是单体向微服务过渡，还是微服务之间的分分合合，都极为平滑且非常 Easy。

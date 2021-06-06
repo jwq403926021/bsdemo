@@ -1,17 +1,25 @@
 ### 本期新功能
-基于 RocketMQ 消息的方式，实现多种策略的微服务间实时数据同步。目前已支持，高可用、高可靠、高性能、幂等性和重放式顺序性等特征。下图为该功能在生成器中的配置界面和生成后的相关代码。
+从 1.7 版本开始支持即配即用的在线表单。随后的版本中，我们会持续迭代，并最终实现超级表单的目标。图表、统计和打印等更多实用功能将会支持。
+-  **前后端代码无一丝混淆，完全交付，且代码质量超高** ，极易学习和二次开发，同时支持单体和微服务架构。
+- 可视化的拖拉拽编辑器，目前已支持主从表联动、富文本、多图、多附件的上传和下载等大部分常用组件，后续版本会支持图表和打印。
+- 可视化接口配置编辑器，支持多数据库、主数据表、一对一表关联、一对多表关联和多种数据字典等，随后版本会支持多对多关联。
+- 支持字典过滤、主表字段过滤、一对一从表字段过滤，同时支持范围、模糊和等于查询方式。
+- 支持主表字段排序、一对一从表字段排序。
+- 非常完美、高效的支持数据权限过滤和操作权限控制。
+- 接口参数均为数据源 ID，不暴露任何后台数据表细节，从机制上彻底消除了 SQL 注入的风险。
+- 运行时效率极高，动态表单关键数据结构均缓存 Redis，从而有效提升数据接口的应答效率。
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113209_26d5db51_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113615_ef4c3892_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/113806_320358e0_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/120759_91a3fa87_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220114_1b630518_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220145_c98eb37d_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220424_7f8bb99a_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220215_b9e9d87b_7431510.png"/></td>
 </tr>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/121726_922b9c3f_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/121958_be5feebc_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/121110_fc550086_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0502/122301_29b71a4b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220246_c88160f0_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220327_3ce10e69_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220352_d3bd5ccb_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220447_4d22a16c_7431510.png"/></td>
 </tr>
 </table>
 

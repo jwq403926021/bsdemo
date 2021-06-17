@@ -4291,6 +4291,8 @@ CREATE TABLE `zz_sys_menu` (
   `menu_name` varchar(50) COLLATE utf8mb4_bin NOT NULL COMMENT '菜单显示名称',
   `menu_type` int(11) NOT NULL COMMENT '(0: 目录 1: 菜单 2: 按钮 3: UI片段)',
   `form_router_name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '前端表单路由名称，仅用于menu_type为1的菜单类型',
+  `online_form_id` bigint(20) DEFAULT NULL COMMENT '在线表单主键Id',
+  `online_menu_perm_type` int(11) DEFAULT NULL COMMENT '在线表单菜单的权限控制类型',
   `show_order` int(11) NOT NULL COMMENT '菜单显示顺序 (值越小，排序越靠前)',
   `icon` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '菜单图标',
   `create_user_id` bigint(20) NOT NULL COMMENT '创建者',

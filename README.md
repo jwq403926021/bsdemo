@@ -1,3 +1,6 @@
+### 1.8 即将发布
+ **_即将支持工作流。_** 具体功能为，支持美观的流程编辑器、流程图高亮跟踪、多版本发布、工单管理、待办已办、会签加签、撤销和提前终止等实用功能。并可基于在线表单生成复杂的工作流业务。
+
 ### 本期新功能
 从 1.7 版本开始支持即配即用的在线表单。随后的版本中，我们会持续迭代，并最终实现超级表单的目标。图表、统计和打印等更多实用功能将陆续支持。
 -  **前后端代码无一丝混淆，完全交付，且代码质量超高** ，极易学习和二次开发，同时支持单体和微服务架构。
@@ -126,7 +129,7 @@
 #### 技术选型
 - 前端: Element (Vue) / Ant Design (React) + ECharts / AntV + Axios + Webpack。
 - 后端: Spring Boot / Spring Cloud / Spring Cloud Alibaba + Spring Security OAuth2 + Mybatis + Jwt。
-- 工具库: Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + tk mapper + Knife4j + qdox。
+- 工具库: Activiti + Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + tk mapper + Knife4j + qdox。
 - 服务组件: Redis + Zookeeper + Consul + Apollo + XXL-Job + Quartz + Seata + Minio + Canal + RocketMQ + Kafka + Nacos + Sentinel。
 - 系统监控: ELK + PinPoint / SkyWalking + Grafana + Prometheus。
 
@@ -136,6 +139,7 @@
 - 页面布局：支持基于 Fragment 和 Block 的灵活布局方式，通过配置即可生成多样化的表单页面，并可预览。
 - 接口规范：微服务和单体服务的接口命名和参数定义规范完全一致，便于日后的平滑升级。
 - 在线表单：支持可视化拖来拽编辑器，表单、后台接口和数据字典均可动态配置，完美集成数据权限过滤和操作权限控制，即配即得。
+- 工作流程：支持美观的流程编辑器、流程图高亮跟踪、多版本发布、工单管理、待办已办、会签加签、撤销和提前终止等实用功能。并可基于在线表单生成复杂的工作流业务。
 - 后台架构：分布式锁、分布式 Id、分布式缓存、分布式事务、分布式限流和灰度发布等，按需集成。
 - 用户管理：支持基于 OAuth2 的单点登录。
 - 操作权限：前端控制可精确到按钮级的操作和标签级的显示，同时提供了多维度的权限分配路径查询能力。

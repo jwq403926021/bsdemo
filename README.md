@@ -7,8 +7,9 @@
 - 集成工作流和在线表单，无需写一行代码即可配置出相对复杂的工作流业务。
 - 支持同一流程的多版本发布，同时支持版本切换。
 - 支持完整的工作流工单管理，稍作修改即可支持分布式操作。(下个版本会支持相关的代码生成)
-- 开箱即用的支持，工单撤销和终止、会签加签、待办已办、历史任务、审批详情列表等。
+- 开箱即用的支持，工单撤销和终止、会签加签、待办已办、历史任务、审批详情列表、附件上传下载等。
 - 工作流前端已集成美观的流程编辑器，同时支持流程图高亮及任务跟踪。
+- 严格且合理的数据安全校验，流程敏感数据 (如合同信息等) 不会被越权访问和下载。
 - 已去除 Spring Security 的缺省依赖，并与现有权限系统完美整合。
 
 <table>
@@ -20,9 +21,9 @@
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2021/0606/220246_c88160f0_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220327_3ce10e69_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220352_d3bd5ccb_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0606/220447_4d22a16c_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0808/122030_9624ff3b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0808/122257_cfb538bb_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0808/122355_c2b5fd3e_7431510.png"/></td>
 </tr>
 </table>
 

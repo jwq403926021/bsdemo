@@ -13,13 +13,13 @@
 - 已去除 Spring Security 的缺省依赖，并与现有权限系统完美整合。
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0809/192627_81276a65_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0809/193945_dfda36ea_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0809/192855_91613dde_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0809/194108_595c2dd9_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/075823_7529af05_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/075956_5afda298_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080302_09a26dfd_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080341_3e05e0a5_7431510.png"/></td>
 </tr>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0809/193100_8cd744f3_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080449_26e040ee_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0809/194829_067a2581_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0808/122030_9624ff3b_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0808/122355_c2b5fd3e_7431510.png"/></td>

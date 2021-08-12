@@ -11,8 +11,8 @@
 - 工作流前端已集成美观的流程编辑器，同时支持流程图高亮及任务跟踪。
 - 严格且合理的数据安全校验，流程敏感数据 (如合同信息) 不会被越权访问和下载。
 - 已去除 Spring Security 的缺省依赖，并与现有权限系统完美整合。
-- 工作流与在线表单的演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
-- 演示环境禁用了数据修改操作，因此强烈推荐我们录制的在线表单和工作流的操作视频 [https://www.bilibili.com/video/BV1j44y1y7k2/](https://www.bilibili.com/video/BV1j44y1y7k2/)
+- 工作流与在线表单演示环境，全部工程代码均由橙单动态生成 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)。
+- 演示环境禁用了数据修改操作，因此强烈推荐我们录制的在线表单和工作流的操作视频 [https://www.bilibili.com/video/BV1j44y1y7k2/](https://www.bilibili.com/video/BV1j44y1y7k2/)。
 <table>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/081545_e58f667b_7431510.png"/></td>

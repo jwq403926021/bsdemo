@@ -1,5 +1,6 @@
 package com.orange.demo.courseclassservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.courseclassservice.service.*;
 import com.orange.demo.courseclassservice.dao.*;
 import com.orange.demo.courseclassservice.model.*;
@@ -69,7 +70,8 @@ public class SchoolInfoServiceImpl extends BaseService<SchoolInfo, Long> impleme
     @Override
     public boolean update(SchoolInfo schoolInfo, SchoolInfo originalSchoolInfo) {
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        return schoolInfoMapper.updateByPrimaryKey(schoolInfo) == 1;
+        UpdateWrapper<SchoolInfo> uw = this.createUpdateQueryForNullValue(schoolInfo, schoolInfo.getSchoolId());
+        return schoolInfoMapper.update(schoolInfo, uw) == 1;
     }
 
     /**
@@ -81,8 +83,7 @@ public class SchoolInfoServiceImpl extends BaseService<SchoolInfo, Long> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long schoolId) {
-        // 这里先删除主数据
-        return this.removeById(schoolId);
+        return schoolInfoMapper.deleteById(schoolId) == 1;
     }
 
     /**
@@ -149,8 +150,9 @@ public class SchoolInfoServiceImpl extends BaseService<SchoolInfo, Long> impleme
     @Override
     public <M> List<SchoolInfo> getSchoolInfoListWithRelation(
             String inFilterField, Set<M> inFilterValues, SchoolInfo filter, String orderBy) {
+        String inFilterColumn = MyModelUtil.mapToColumnName(inFilterField, SchoolInfo.class);
         List<SchoolInfo> resultList =
-                schoolInfoMapper.getSchoolInfoList(inFilterField, inFilterValues, filter, orderBy);
+                schoolInfoMapper.getSchoolInfoList(inFilterColumn, inFilterValues, filter, orderBy);
         // 在缺省生成的代码中，如果查询结果resultList不是Page对象，说明没有分页，那么就很可能是数据导出接口调用了当前方法。
         // 为了避免一次性的大量数据关联，规避因此而造成的系统运行性能冲击，这里手动进行了分批次读取，开发者可按需修改该值。
         int batchSize = resultList instanceof Page ? 0 : 1000;

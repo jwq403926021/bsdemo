@@ -135,13 +135,23 @@ public class ResponseResult<T> {
     }
 
     /**
-     * 根据参数的errorCode和errorMessage创建新的错误应答对象。
+     * 根据参数中出错的ResponseResult，创建新的错误应答对象。
      *
      * @param errorCause 导致错误原因的应答对象。
      * @return 返回创建的ResponseResult实例对象。
      */
     public static <T, E> ResponseResult<T> errorFrom(ResponseResult<E> errorCause) {
         return error(errorCause.errorCode, errorCause.getErrorMessage());
+    }
+
+    /**
+     * 根据参数中出错的CallResult，创建新的错误应答对象。
+     *
+     * @param errorCause 导致错误原因的应答对象。
+     * @return 返回创建的ResponseResult实例对象。
+     */
+    public static <T> ResponseResult<T> errorFrom(CallResult errorCause) {
+        return error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorCause.getErrorMessage());
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.orange.demo.webadmin.app.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.webadmin.app.service.*;
 import com.orange.demo.webadmin.app.dao.*;
 import com.orange.demo.webadmin.app.model.*;
@@ -16,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -84,9 +85,9 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     public boolean update(StudentClass studentClass, StudentClass originalStudentClass) {
         studentClass.setCreateUserId(originalStudentClass.getCreateUserId());
         studentClass.setCreateTime(originalStudentClass.getCreateTime());
-        studentClass.setStatus(GlobalDeletedFlag.NORMAL);
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        return studentClassMapper.updateByPrimaryKey(studentClass) == 1;
+        UpdateWrapper<StudentClass> uw = this.createUpdateQueryForNullValue(studentClass, studentClass.getClassId());
+        return studentClassMapper.update(studentClass, uw) == 1;
     }
 
     /**
@@ -98,17 +99,16 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long classId) {
-        // 这里先删除主数据
-        if (!this.removeById(classId)) {
+        if (studentClassMapper.deleteById(classId) == 0) {
             return false;
         }
         // 开始删除多对多子表的关联
         ClassCourse classCourse = new ClassCourse();
         classCourse.setClassId(classId);
-        classCourseMapper.delete(classCourse);
+        classCourseMapper.delete(new QueryWrapper<>(classCourse));
         ClassStudent classStudent = new ClassStudent();
         classStudent.setClassId(classId);
-        classStudentMapper.delete(classStudent);
+        classStudentMapper.delete(new QueryWrapper<>(classStudent));
         return true;
     }
 
@@ -156,8 +156,8 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         for (ClassCourse classCourse : classCourseList) {
             classCourse.setClassId(classId);
             MyModelUtil.setDefaultValue(classCourse, "courseOrder", 0);
+            classCourseMapper.insert(classCourse);
         }
-        classCourseMapper.insertList(classCourseList);
     }
 
     /**
@@ -169,11 +169,13 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateClassCourse(ClassCourse classCourse) {
-        Example e = new Example(ClassCourse.class);
-        e.createCriteria()
-                .andEqualTo("classId", classCourse.getClassId())
-                .andEqualTo("courseId", classCourse.getCourseId());
-        return classCourseMapper.updateByExample(classCourse, e) > 0;
+        ClassCourse filter = new ClassCourse();
+        filter.setClassId(classCourse.getClassId());
+        filter.setCourseId(classCourse.getCourseId());
+        UpdateWrapper<ClassCourse> uw =
+                BaseService.createUpdateQueryForNullValue(classCourse, ClassCourse.class);
+        uw.setEntity(filter);
+        return classCourseMapper.update(classCourse, uw) > 0;
     }
 
     /**
@@ -185,11 +187,10 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
      */
     @Override
     public ClassCourse getClassCourse(Long classId, Long courseId) {
-        Example e = new Example(ClassCourse.class);
-        e.createCriteria()
-                .andEqualTo("classId", classId)
-                .andEqualTo("courseId", courseId);
-        return classCourseMapper.selectOneByExample(e);
+        ClassCourse filter = new ClassCourse();
+        filter.setClassId(classId);
+        filter.setCourseId(courseId);
+        return classCourseMapper.selectOne(new QueryWrapper<>(filter));
     }
 
     /**
@@ -205,7 +206,7 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         ClassCourse filter = new ClassCourse();
         filter.setClassId(classId);
         filter.setCourseId(courseId);
-        return classCourseMapper.delete(filter) > 0;
+        return classCourseMapper.delete(new QueryWrapper<>(filter)) > 0;
     }
 
     /**
@@ -219,8 +220,8 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     public void addClassStudentList(List<ClassStudent> classStudentList, Long classId) {
         for (ClassStudent classStudent : classStudentList) {
             classStudent.setClassId(classId);
+            classStudentMapper.insert(classStudent);
         }
-        classStudentMapper.insertList(classStudentList);
     }
 
     /**
@@ -236,7 +237,7 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         ClassStudent filter = new ClassStudent();
         filter.setClassId(classId);
         filter.setStudentId(studentId);
-        return classStudentMapper.delete(filter) > 0;
+        return classStudentMapper.delete(new QueryWrapper<>(filter)) > 0;
     }
 
     /**

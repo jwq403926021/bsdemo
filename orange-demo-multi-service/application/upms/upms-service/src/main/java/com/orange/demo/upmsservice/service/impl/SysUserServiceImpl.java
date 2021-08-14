@@ -1,5 +1,7 @@
 package com.orange.demo.upmsservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.alibaba.fastjson.JSONObject;
 import com.orange.demo.upmsservice.service.*;
 import com.orange.demo.upmsservice.dao.*;
@@ -19,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -65,8 +66,7 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     public SysUser getSysUserByLoginName(String loginName) {
         SysUser filter = new SysUser();
         filter.setLoginName(loginName);
-        filter.setDeletedFlag(GlobalDeletedFlag.NORMAL);
-        return sysUserMapper.selectOne(filter);
+        return sysUserMapper.selectOne(new QueryWrapper<>(filter));
     }
 
     /**
@@ -86,14 +86,12 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
         MyModelUtil.fillCommonsForInsert(user);
         sysUserMapper.insert(user);
         if (CollectionUtils.isNotEmpty(roleIdSet)) {
-            List<SysUserRole> userRoleList = new LinkedList<>();
             for (Long roleId : roleIdSet) {
                 SysUserRole userRole = new SysUserRole();
                 userRole.setUserId(user.getUserId());
                 userRole.setRoleId(roleId);
-                userRoleList.add(userRole);
+                sysUserRoleMapper.insert(userRole);
             }
-            sysUserRoleMapper.insertList(userRoleList);
         }
         return user;
     }
@@ -112,23 +110,21 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
         user.setLoginName(originalUser.getLoginName());
         user.setPassword(originalUser.getPassword());
         MyModelUtil.fillCommonsForUpdate(user, originalUser);
-        user.setDeletedFlag(GlobalDeletedFlag.NORMAL);
-        if (sysUserMapper.updateByPrimaryKey(user) != 1) {
+        UpdateWrapper<SysUser> uw = this.createUpdateQueryForNullValue(user, user.getUserId());
+        if (sysUserMapper.update(user, uw) != 1) {
             return false;
         }
         // 先删除原有的User-Role关联关系，再重新插入新的关联关系
         SysUserRole deletedUserRole = new SysUserRole();
         deletedUserRole.setUserId(user.getUserId());
-        sysUserRoleMapper.delete(deletedUserRole);
+        sysUserRoleMapper.delete(new QueryWrapper<>(deletedUserRole));
         if (CollectionUtils.isNotEmpty(roleIdSet)) {
-            List<SysUserRole> userRoleList = new LinkedList<>();
             for (Long roleId : roleIdSet) {
                 SysUserRole userRole = new SysUserRole();
                 userRole.setUserId(user.getUserId());
                 userRole.setRoleId(roleId);
-                userRoleList.add(userRole);
+                sysUserRoleMapper.insert(userRole);
             }
-            sysUserRoleMapper.insertList(userRoleList);
         }
         return true;
     }
@@ -142,13 +138,10 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean changePassword(Long userId, String newPass) {
-        Example e = new Example(SysUser.class);
-        e.createCriteria()
-                .andEqualTo(super.idFieldName, userId)
-                .andEqualTo(super.deletedFlagFieldName, GlobalDeletedFlag.NORMAL);
         SysUser updatedUser = new SysUser();
+        updatedUser.setUserId(userId);
         updatedUser.setPassword(passwordEncoder.encode(newPass));
-        return sysUserMapper.updateByExampleSelective(updatedUser, e) == 1;
+        return sysUserMapper.updateById(updatedUser) == 1;
     }
 
     /**
@@ -160,13 +153,12 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long userId) {
-        // 这里先删除主数据
-        if (!this.removeById(userId)) {
+        if (sysUserMapper.deleteById(userId) == 0) {
             return false;
         }
         SysUserRole userRole = new SysUserRole();
         userRole.setUserId(userId);
-        sysUserRoleMapper.delete(userRole);
+        sysUserRoleMapper.delete(new QueryWrapper<>(userRole));
         return true;
     }
 
@@ -234,8 +226,9 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     @Override
     public <M> List<SysUser> getSysUserListWithRelation(
             String inFilterField, Set<M> inFilterValues, SysUser filter, String orderBy) {
+        String inFilterColumn = MyModelUtil.mapToColumnName(inFilterField, SysUser.class);
         List<SysUser> resultList =
-                sysUserMapper.getSysUserList(inFilterField, inFilterValues, filter, orderBy);
+                sysUserMapper.getSysUserList(inFilterColumn, inFilterValues, filter, orderBy);
         // 在缺省生成的代码中，如果查询结果resultList不是Page对象，说明没有分页，那么就很可能是数据导出接口调用了当前方法。
         // 为了避免一次性的大量数据关联，规避因此而造成的系统运行性能冲击，这里手动进行了分批次读取，开发者可按需修改该值。
         int batchSize = resultList instanceof Page ? 0 : 1000;

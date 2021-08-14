@@ -1,7 +1,9 @@
 package com.orange.demo.common.core.base.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.orange.demo.common.core.object.MyRelationParam;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,15 +14,15 @@ import java.util.*;
  * @author Jerry
  * @date 2020-09-24
  */
-public interface IBaseService<M, K> {
+public interface IBaseService<M, K extends Serializable> extends IService<M>{
 
     /**
-     * 基于主键Id删除数据。如果包含逻辑删除字段，则进行逻辑删除。
+     * 根据过滤条件删除数据。
      *
-     * @param id 主键Id值。
-     * @return true删除成功，false数据不存在。
+     * @param filter 过滤对象。
+     * @return 删除数量。
      */
-    boolean removeById(K id);
+    Integer removeBy(M filter);
 
     /**
      * 判断指定字段的数据是否存在，且仅仅存在一条记录。
@@ -39,14 +41,6 @@ public interface IBaseService<M, K> {
      * @return 存在返回true，否则false。
      */
     boolean existId(K id);
-
-    /**
-     * 获取主键Id关联的数据。
-     *
-     * @param id 主键Id。
-     * @return 主键关联的数据，不存在返回null。
-     */
-    M getById(K id);
 
     /**
      * 返回符合 filterField = filterValue 条件的一条数据。

@@ -12,6 +12,8 @@ import com.orange.demo.common.core.annotation.MyRequestBody;
 import com.orange.demo.common.core.validator.AddGroup;
 import com.orange.demo.common.core.validator.UpdateGroup;
 import com.orange.demo.webadmin.config.ApplicationConfig;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import javax.validation.groups.Default;
  * @author Jerry
  * @date 2020-09-24
  */
+@Api(tags = "用户管理管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysUser")
@@ -46,6 +49,10 @@ public class SysUserController {
      * @return 应答结果对象，包含新增用户的主键Id。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUserDto.userId",
+            "sysUserDto.createTimeStart",
+            "sysUserDto.createTimeEnd"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysUserDto sysUserDto, @MyRequestBody String roleIdListString) {
@@ -71,6 +78,9 @@ public class SysUserController {
      * @return 应答结果对象。
      */
     @SuppressWarnings("unchecked")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUserDto.createTimeStart",
+            "sysUserDto.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody SysUserDto sysUserDto, @MyRequestBody String roleIdListString) {

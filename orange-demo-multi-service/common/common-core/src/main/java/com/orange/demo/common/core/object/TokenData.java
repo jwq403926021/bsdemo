@@ -64,6 +64,10 @@ public class TokenData {
      */
     private String uaaAccessToken;
     /**
+     * 数据库路由键(仅当水平分库时使用)。
+     */
+    private Integer datasourceRouteKey;
+    /**
      * 登录IP。
      */
     private String loginIp;

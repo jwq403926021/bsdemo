@@ -1,5 +1,7 @@
 package com.orange.demo.courseclassservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.courseclassservice.service.*;
 import com.orange.demo.courseclassservice.dao.*;
 import com.orange.demo.courseclassservice.model.*;
@@ -16,7 +18,6 @@ import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -83,9 +84,9 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     public boolean update(StudentClass studentClass, StudentClass originalStudentClass) {
         studentClass.setCreateUserId(originalStudentClass.getCreateUserId());
         studentClass.setCreateTime(originalStudentClass.getCreateTime());
-        studentClass.setStatus(GlobalDeletedFlag.NORMAL);
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        return studentClassMapper.updateByPrimaryKey(studentClass) == 1;
+        UpdateWrapper<StudentClass> uw = this.createUpdateQueryForNullValue(studentClass, studentClass.getClassId());
+        return studentClassMapper.update(studentClass, uw) == 1;
     }
 
     /**
@@ -97,17 +98,16 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long classId) {
-        // 这里先删除主数据
-        if (!this.removeById(classId)) {
+        if (studentClassMapper.deleteById(classId) == 0) {
             return false;
         }
         // 开始删除多对多中间表的关联
         ClassCourse classCourse = new ClassCourse();
         classCourse.setClassId(classId);
-        classCourseMapper.delete(classCourse);
+        classCourseMapper.delete(new QueryWrapper<>(classCourse));
         ClassStudent classStudent = new ClassStudent();
         classStudent.setClassId(classId);
-        classStudentMapper.delete(classStudent);
+        classStudentMapper.delete(new QueryWrapper<>(classStudent));
         return true;
     }
 
@@ -175,8 +175,9 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     @Override
     public <M> List<StudentClass> getStudentClassListWithRelation(
             String inFilterField, Set<M> inFilterValues, StudentClass filter, String orderBy) {
+        String inFilterColumn = MyModelUtil.mapToColumnName(inFilterField, StudentClass.class);
         List<StudentClass> resultList =
-                studentClassMapper.getStudentClassList(inFilterField, inFilterValues, filter, orderBy);
+                studentClassMapper.getStudentClassList(inFilterColumn, inFilterValues, filter, orderBy);
         // 在缺省生成的代码中，如果查询结果resultList不是Page对象，说明没有分页，那么就很可能是数据导出接口调用了当前方法。
         // 为了避免一次性的大量数据关联，规避因此而造成的系统运行性能冲击，这里手动进行了分批次读取，开发者可按需修改该值。
         int batchSize = resultList instanceof Page ? 0 : 1000;
@@ -196,8 +197,8 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         for (ClassCourse classCourse : classCourseList) {
             classCourse.setClassId(classId);
             MyModelUtil.setDefaultValue(classCourse, "courseOrder", 0);
+            classCourseMapper.insert(classCourse);
         }
-        classCourseMapper.insertList(classCourseList);
     }
 
     /**
@@ -209,11 +210,13 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateClassCourse(ClassCourse classCourse) {
-        Example e = new Example(ClassCourse.class);
-        e.createCriteria()
-                .andEqualTo("classId", classCourse.getClassId())
-                .andEqualTo("courseId", classCourse.getCourseId());
-        return classCourseMapper.updateByExample(classCourse, e) > 0;
+        ClassCourse filter = new ClassCourse();
+        filter.setClassId(classCourse.getClassId());
+        filter.setCourseId(classCourse.getCourseId());
+        UpdateWrapper<ClassCourse> uw =
+                BaseService.createUpdateQueryForNullValue(classCourse, ClassCourse.class);
+        uw.setEntity(filter);
+        return classCourseMapper.update(classCourse, uw) > 0;
     }
 
     /**
@@ -225,11 +228,10 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
      */
     @Override
     public ClassCourse getClassCourse(Long classId, Long courseId) {
-        Example e = new Example(ClassCourse.class);
-        e.createCriteria()
-                .andEqualTo("classId", classId)
-                .andEqualTo("courseId", courseId);
-        return classCourseMapper.selectOneByExample(e);
+        ClassCourse filter = new ClassCourse();
+        filter.setClassId(classId);
+        filter.setCourseId(courseId);
+        return classCourseMapper.selectOne(new QueryWrapper<>(filter));
     }
 
     /**
@@ -245,7 +247,7 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         ClassCourse filter = new ClassCourse();
         filter.setClassId(classId);
         filter.setCourseId(courseId);
-        return classCourseMapper.delete(filter) > 0;
+        return classCourseMapper.delete(new QueryWrapper<>(filter)) > 0;
     }
 
     /**
@@ -259,8 +261,8 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
     public void addClassStudentList(List<ClassStudent> classStudentList, Long classId) {
         for (ClassStudent classStudent : classStudentList) {
             classStudent.setClassId(classId);
+            classStudentMapper.insert(classStudent);
         }
-        classStudentMapper.insertList(classStudentList);
     }
 
     /**
@@ -276,7 +278,7 @@ public class StudentClassServiceImpl extends BaseService<StudentClass, Long> imp
         ClassStudent filter = new ClassStudent();
         filter.setClassId(classId);
         filter.setStudentId(studentId);
-        return classStudentMapper.delete(filter) > 0;
+        return classStudentMapper.delete(new QueryWrapper<>(filter)) > 0;
     }
 
     /**

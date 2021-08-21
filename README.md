@@ -3,7 +3,7 @@
 
 从 1.8 版本开始支持工作流。该版本目前已支持工作流和在线表单的完整集成。后续版本将支持工作流基于静态表单的代码生成，可为更复杂的流程业务提供较好的二次开发体验。
 -  **前后端代码无一丝混淆，完全交付，且代码质量超高** ，极易学习和二次开发，同时支持单体和微服务架构。
-- 集成 Activiti 7.x 作为工作流引擎，同时提供线上操作教学视频。
+- 同时集成 Activiti 7.x 和 Flowable 6.6 作为工作流引擎，配置工程时可自行二选一。
 - 集成工作流和在线表单，无需写一行代码即可配置出相对复杂的工作流业务。
 - 支持同一流程的多版本发布，同时支持版本切换。
 - 支持完整的工作流工单管理，稍作修改即可支持分布式操作。(下个版本会支持相关的代码生成)
@@ -129,7 +129,7 @@
 #### 技术选型
 - 前端: Element (Vue) / Ant Design (React) + ECharts / AntV + Axios + Webpack。
 - 后端: Spring Boot / Spring Cloud / Spring Cloud Alibaba + Spring Security OAuth2 + Mybatis + Jwt。
-- 工具库: Activiti + Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + tk mapper + Knife4j + qdox。
+- 工具库: Activiti + Flowable + Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + tk mapper + Knife4j + qdox。
 - 服务组件: Redis + Zookeeper + Consul + Apollo + XXL-Job + Quartz + Seata + Minio + Canal + RocketMQ + Kafka + Nacos + Sentinel。
 - 系统监控: ELK + PinPoint / SkyWalking + Grafana + Prometheus。
 

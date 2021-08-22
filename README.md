@@ -16,16 +16,16 @@
 - 演示环境禁用了数据修改操作，因此强烈推荐我们录制的在线表单和工作流的操作视频 [https://www.bilibili.com/video/BV1j44y1y7k2/](https://www.bilibili.com/video/BV1j44y1y7k2/)。
 <table>
 <tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0822/143220_ef7fe017_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/081545_e58f667b_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/075956_5afda298_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/080302_09a26dfd_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080341_3e05e0a5_7431510.png"/></td>
 </tr>
 <tr>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080341_3e05e0a5_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/080449_26e040ee_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/075823_7529af05_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0808/122030_9624ff3b_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0808/122355_c2b5fd3e_7431510.png"/></td>
 </tr>
 </table>
 

@@ -1,6 +1,5 @@
 package com.orange.demo.webadmin.app.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.webadmin.app.service.*;
 import com.orange.demo.webadmin.app.dao.*;
 import com.orange.demo.webadmin.app.model.*;
@@ -69,8 +68,7 @@ public class SchoolInfoServiceImpl extends BaseService<SchoolInfo, Long> impleme
     @Override
     public boolean update(SchoolInfo schoolInfo, SchoolInfo originalSchoolInfo) {
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        UpdateWrapper<SchoolInfo> uw = this.createUpdateQueryForNullValue(schoolInfo, schoolInfo.getSchoolId());
-        return schoolInfoMapper.update(schoolInfo, uw) == 1;
+        return schoolInfoMapper.updateByPrimaryKey(schoolInfo) == 1;
     }
 
     /**
@@ -82,7 +80,8 @@ public class SchoolInfoServiceImpl extends BaseService<SchoolInfo, Long> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long schoolId) {
-        return schoolInfoMapper.deleteById(schoolId) == 1;
+        // 这里先删除主数据
+        return this.removeById(schoolId);
     }
 
     /**

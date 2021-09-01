@@ -1,7 +1,5 @@
 package com.orange.demo.courseclassservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.courseclassservice.service.*;
 import com.orange.demo.courseclassservice.dao.*;
 import com.orange.demo.courseclassservice.model.*;
@@ -82,8 +80,7 @@ public class CourseServiceImpl extends BaseService<Course, Long> implements Cour
         course.setCreateTime(originalCourse.getCreateTime());
         course.setUpdateTime(new Date());
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        UpdateWrapper<Course> uw = this.createUpdateQueryForNullValue(course, course.getCourseId());
-        return courseMapper.update(course, uw) == 1;
+        return courseMapper.updateByPrimaryKey(course) == 1;
     }
 
     /**
@@ -95,13 +92,14 @@ public class CourseServiceImpl extends BaseService<Course, Long> implements Cour
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long courseId) {
-        if (courseMapper.deleteById(courseId) == 0) {
+        // 这里先删除主数据
+        if (!this.removeById(courseId)) {
             return false;
         }
         // 开始删除与本地多对多父表的关联
         ClassCourse classCourse = new ClassCourse();
         classCourse.setCourseId(courseId);
-        classCourseMapper.delete(new QueryWrapper<>(classCourse));
+        classCourseMapper.delete(classCourse);
         return true;
     }
 

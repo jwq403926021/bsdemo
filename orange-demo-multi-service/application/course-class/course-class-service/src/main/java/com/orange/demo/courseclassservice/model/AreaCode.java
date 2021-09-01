@@ -1,7 +1,8 @@
 package com.orange.demo.courseclassservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * 行政区划实体对象。
@@ -10,30 +11,31 @@ import lombok.Data;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_area_code")
+@Table(name = "zz_area_code")
 public class AreaCode {
 
     /**
      * 行政区划主键Id
      */
-    @TableId(value = "area_id")
+    @Id
+    @Column(name = "area_id")
     private Long areaId;
 
     /**
      * 行政区划名称
      */
-    @TableField(value = "area_name")
+    @Column(name = "area_name")
     private String areaName;
 
     /**
      * 行政区划级别 (1: 省级别 2: 市级别 3: 区级别)
      */
-    @TableField(value = "area_level")
+    @Column(name = "area_level")
     private Integer areaLevel;
 
     /**
      * 父级行政区划Id
      */
-    @TableField(value = "parent_id")
+    @Column(name = "parent_id")
     private Long parentId;
 }

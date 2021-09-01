@@ -1,7 +1,5 @@
 package com.orange.demo.courseclassservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.application.common.constant.StudentStatus;
 import com.orange.demo.courseclassservice.service.*;
 import com.orange.demo.courseclassservice.dao.*;
@@ -81,8 +79,7 @@ public class StudentServiceImpl extends BaseService<Student, Long> implements St
     @Override
     public boolean update(Student student, Student originalStudent) {
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        UpdateWrapper<Student> uw = this.createUpdateQueryForNullValue(student, student.getStudentId());
-        return studentMapper.update(student, uw) == 1;
+        return studentMapper.updateByPrimaryKey(student) == 1;
     }
 
     /**
@@ -94,13 +91,14 @@ public class StudentServiceImpl extends BaseService<Student, Long> implements St
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long studentId) {
-        if (studentMapper.deleteById(studentId) == 0) {
+        // 这里先删除主数据
+        if (!this.removeById(studentId)) {
             return false;
         }
         // 开始删除与本地多对多父表的关联
         ClassStudent classStudent = new ClassStudent();
         classStudent.setStudentId(studentId);
-        classStudentMapper.delete(new QueryWrapper<>(classStudent));
+        classStudentMapper.delete(classStudent);
         return true;
     }
 

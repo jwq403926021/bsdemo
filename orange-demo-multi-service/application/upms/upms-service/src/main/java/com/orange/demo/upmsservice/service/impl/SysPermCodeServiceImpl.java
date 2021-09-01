@@ -1,8 +1,6 @@
 package com.orange.demo.upmsservice.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orange.demo.common.core.base.dao.BaseDaoMapper;
@@ -95,12 +93,14 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
         MyModelUtil.fillCommonsForInsert(sysPermCode);
         sysPermCodeMapper.insert(sysPermCode);
         if (permIdSet != null) {
+            List<SysPermCodePerm> sysPermCodePermList = new LinkedList<>();
             for (Long permId : permIdSet) {
                 SysPermCodePerm permCodePerm = new SysPermCodePerm();
                 permCodePerm.setPermCodeId(sysPermCode.getPermCodeId());
                 permCodePerm.setPermId(permId);
-                sysPermCodePermMapper.insert(permCodePerm);
+                sysPermCodePermList.add(permCodePerm);
             }
+            sysPermCodePermMapper.insertList(sysPermCodePermList);
         }
         return sysPermCode;
     }
@@ -117,22 +117,23 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     @Override
     public boolean update(SysPermCode sysPermCode, SysPermCode originalSysPermCode, Set<Long> permIdSet) {
         sysPermCode.setParentId(originalSysPermCode.getParentId());
+        sysPermCode.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         MyModelUtil.fillCommonsForUpdate(sysPermCode, originalSysPermCode);
-        UpdateWrapper<SysPermCode> uw =
-                this.createUpdateQueryForNullValue(sysPermCode, sysPermCode.getPermCodeId());
-        if (sysPermCodeMapper.update(sysPermCode, uw) != 1) {
+        if (sysPermCodeMapper.updateByPrimaryKey(sysPermCode) != 1) {
             return false;
         }
         SysPermCodePerm deletedPermCodePerm = new SysPermCodePerm();
         deletedPermCodePerm.setPermCodeId(sysPermCode.getPermCodeId());
-        sysPermCodePermMapper.delete(new QueryWrapper<>(deletedPermCodePerm));
+        sysPermCodePermMapper.delete(deletedPermCodePerm);
         if (permIdSet != null) {
+            List<SysPermCodePerm> sysPermCodePermList = new LinkedList<>();
             for (Long permId : permIdSet) {
                 SysPermCodePerm permCodePerm = new SysPermCodePerm();
                 permCodePerm.setPermCodeId(sysPermCode.getPermCodeId());
                 permCodePerm.setPermId(permId);
-                sysPermCodePermMapper.insert(permCodePerm);
+                sysPermCodePermList.add(permCodePerm);
             }
+            sysPermCodePermMapper.insertList(sysPermCodePermList);
         }
         return true;
     }
@@ -146,15 +147,15 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long permCodeId) {
-        if (sysPermCodeMapper.deleteById(permCodeId) != 1) {
+        if (!this.removeById(permCodeId)) {
             return false;
         }
         SysMenuPermCode menuPermCode = new SysMenuPermCode();
         menuPermCode.setPermCodeId(permCodeId);
-        sysMenuPermCodeMapper.delete(new QueryWrapper<>(menuPermCode));
+        sysMenuPermCodeMapper.delete(menuPermCode);
         SysPermCodePerm permCodePerm = new SysPermCodePerm();
         permCodePerm.setPermCodeId(permCodeId);
-        sysPermCodePermMapper.delete(new QueryWrapper<>(permCodePerm));
+        sysPermCodePermMapper.delete(permCodePerm);
         return true;
     }
 

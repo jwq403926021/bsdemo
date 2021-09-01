@@ -27,7 +27,7 @@ import java.util.Map;
 @Slf4j
 public class DataSourceResolveAspect {
 
-    private Map<Class<? extends DataSourceResolver>, DataSourceResolver> resolverMap = new HashMap<>();
+    private final Map<Class<? extends DataSourceResolver>, DataSourceResolver> resolverMap = new HashMap<>();
 
     /**
      * 所有配置 MyDataSource 注解的Service。

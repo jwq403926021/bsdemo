@@ -1,14 +1,15 @@
 package com.orange.demo.courseclassservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.courseclassapi.vo.StudentClassVo;
 import com.orange.demo.courseclassapi.constant.ClassLevel;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.annotation.RelationConstDict;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
+import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -20,61 +21,62 @@ import java.util.Map;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_class")
+@Table(name = "zz_class")
 public class StudentClass {
 
     /**
      * 班级Id。
      */
-    @TableId(value = "class_id")
+    @Id
+    @Column(name = "class_id")
     private Long classId;
 
     /**
      * 班级名称。
      */
-    @TableField(value = "class_name")
+    @Column(name = "class_name")
     private String className;
 
     /**
      * 学校Id。
      */
-    @TableField(value = "school_id")
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**
      * 学生班长Id。
      */
-    @TableField(value = "leader_id")
+    @Column(name = "leader_id")
     private Long leaderId;
 
     /**
      * 已完成课时数量。
      */
-    @TableField(value = "finish_class_hour")
+    @Column(name = "finish_class_hour")
     private Integer finishClassHour;
 
     /**
      * 班级级别(0: 初级班 1: 培优班 2: 冲刺提分班 3: 竞赛班)。
      */
-    @TableField(value = "class_level")
+    @Column(name = "class_level")
     private Integer classLevel;
 
     /**
      * 创建用户。
      */
-    @TableField(value = "create_user_id")
+    @Column(name = "create_user_id")
     private Long createUserId;
 
     /**
      * 班级创建时间。
      */
-    @TableField(value = "create_time")
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @TableLogic
+    @DeletedFlagColumn
     private Integer status;
 
     @RelationDict(
@@ -83,7 +85,7 @@ public class StudentClass {
             slaveModelClass = SchoolInfo.class,
             slaveIdField = "schoolId",
             slaveNameField = "schoolName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> schoolIdDictMap;
 
     @RelationDict(
@@ -92,13 +94,13 @@ public class StudentClass {
             slaveModelClass = Student.class,
             slaveIdField = "studentId",
             slaveNameField = "studentName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> leaderIdDictMap;
 
     @RelationConstDict(
             masterIdField = "classLevel",
             constantDictClass = ClassLevel.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> classLevelDictMap;
 
     @Mapper

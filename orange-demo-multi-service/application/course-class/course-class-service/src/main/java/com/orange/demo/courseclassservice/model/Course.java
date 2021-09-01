@@ -1,6 +1,5 @@
 package com.orange.demo.courseclassservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.courseclassapi.vo.CourseVo;
 import com.orange.demo.courseclassapi.constant.CourseDifficult;
 import com.orange.demo.application.common.constant.Subject;
@@ -12,6 +11,7 @@ import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,19 +24,20 @@ import java.util.Map;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_course")
+@Table(name = "zz_course")
 public class Course {
 
     /**
      * 主键Id。
      */
-    @TableId(value = "course_id")
+    @Id
+    @Column(name = "course_id")
     private Long courseId;
 
     /**
      * 课程名称。
      */
-    @TableField(value = "course_name")
+    @Column(name = "course_name")
     private String courseName;
 
     /**
@@ -57,86 +58,86 @@ public class Course {
     /**
      * 年级Id。
      */
-    @TableField(value = "grade_id")
+    @Column(name = "grade_id")
     private Integer gradeId;
 
     /**
      * 学科Id。
      */
-    @TableField(value = "subject_id")
+    @Column(name = "subject_id")
     private Integer subjectId;
 
     /**
      * 课时数量。
      */
-    @TableField(value = "class_hour")
+    @Column(name = "class_hour")
     private Integer classHour;
 
     /**
      * 多张课程图片地址。
      */
     @UploadFlagColumn(storeType = UploadStoreTypeEnum.LOCAL_SYSTEM)
-    @TableField(value = "picture_url")
+    @Column(name = "picture_url")
     private String pictureUrl;
 
     /**
      * 创建用户Id。
      */
-    @TableField(value = "create_user_id")
+    @Column(name = "create_user_id")
     private Long createUserId;
 
     /**
      * 创建时间。
      */
-    @TableField(value = "create_time")
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 最后修改时间。
      */
-    @TableField(value = "update_time")
+    @Column(name = "update_time")
     private Date updateTime;
 
     /**
      * price 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private BigDecimal priceStart;
 
     /**
      * price 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private BigDecimal priceEnd;
 
     /**
      * classHour 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private Integer classHourStart;
 
     /**
      * classHour 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private Integer classHourEnd;
 
     /**
      * updateTime 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String updateTimeStart;
 
     /**
      * updateTime 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String updateTimeEnd;
 
     /**
      * courseId 的多对多关联表数据对象。
      */
-    @TableField(exist = false)
+    @Transient
     private ClassCourse classCourse;
 
     @RelationDict(
@@ -145,19 +146,19 @@ public class Course {
             slaveModelClass = Grade.class,
             slaveIdField = "gradeId",
             slaveNameField = "gradeName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> gradeIdDictMap;
 
     @RelationConstDict(
             masterIdField = "difficulty",
             constantDictClass = CourseDifficult.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> difficultyDictMap;
 
     @RelationConstDict(
             masterIdField = "subjectId",
             constantDictClass = Subject.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> subjectIdDictMap;
 
     @Mapper

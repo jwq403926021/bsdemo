@@ -1,6 +1,5 @@
 package com.orange.demo.statsservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orange.demo.statsservice.service.*;
 import com.orange.demo.statsservice.dao.*;
 import com.orange.demo.statsservice.model.*;
@@ -76,8 +75,7 @@ public class StudentActionTransServiceImpl extends BaseService<StudentActionTran
     public boolean update(StudentActionTrans studentActionTrans, StudentActionTrans originalStudentActionTrans) {
         studentActionTrans.setCreateTime(originalStudentActionTrans.getCreateTime());
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
-        UpdateWrapper<StudentActionTrans> uw = this.createUpdateQueryForNullValue(studentActionTrans, studentActionTrans.getTransId());
-        return studentActionTransMapper.update(studentActionTrans, uw) == 1;
+        return studentActionTransMapper.updateByPrimaryKey(studentActionTrans) == 1;
     }
 
     /**
@@ -89,7 +87,8 @@ public class StudentActionTransServiceImpl extends BaseService<StudentActionTran
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long transId) {
-        return studentActionTransMapper.deleteById(transId) == 1;
+        // 这里先删除主数据
+        return this.removeById(transId);
     }
 
     /**

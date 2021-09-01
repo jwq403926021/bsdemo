@@ -1,7 +1,7 @@
 package com.orange.demo.statsservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import javax.persistence.*;
 
 /**
  * SchoolInfo实体对象。
@@ -10,30 +10,31 @@ import lombok.Data;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_school_info")
+@Table(name = "zz_school_info")
 public class SchoolInfo {
 
     /**
      * 学校Id。
      */
-    @TableId(value = "school_id")
+    @Id
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**
      * 学校名称。
      */
-    @TableField(value = "school_name")
+    @Column(name = "school_name")
     private String schoolName;
 
     /**
      * 所在省Id。
      */
-    @TableField(value = "province_id")
+    @Column(name = "province_id")
     private Long provinceId;
 
     /**
      * 所在城市Id。
      */
-    @TableField(value = "city_id")
+    @Column(name = "city_id")
     private Long cityId;
 }

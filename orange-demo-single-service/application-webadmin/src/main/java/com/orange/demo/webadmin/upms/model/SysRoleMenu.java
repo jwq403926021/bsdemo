@@ -1,7 +1,8 @@
 package com.orange.demo.webadmin.upms.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * 角色菜单实体对象。
@@ -10,18 +11,20 @@ import lombok.Data;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_sys_role_menu")
+@Table(name = "zz_sys_role_menu")
 public class SysRoleMenu {
 
     /**
      * 角色Id。
      */
-    @TableField(value = "role_id")
+    @Id
+    @Column(name = "role_id")
     private Long roleId;
 
     /**
      * 菜单Id。
      */
-    @TableField(value = "menu_id")
+    @Id
+    @Column(name = "menu_id")
     private Long menuId;
 }

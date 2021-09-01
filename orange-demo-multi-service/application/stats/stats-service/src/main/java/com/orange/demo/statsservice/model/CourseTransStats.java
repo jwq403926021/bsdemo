@@ -1,6 +1,5 @@
 package com.orange.demo.statsservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.statsapi.vo.CourseTransStatsVo;
 import com.orange.demo.courseclassapi.vo.CourseVo;
 import com.orange.demo.courseclassapi.client.CourseClient;
@@ -13,6 +12,7 @@ import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -24,79 +24,81 @@ import java.util.Map;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_course_trans_stats")
+@Table(name = "zz_course_trans_stats")
 public class CourseTransStats {
 
     /**
      * 主键Id。
      */
-    @TableId(value = "stats_id", type = IdType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stats_id")
     private Long statsId;
 
     /**
      * 统计日期。
      */
-    @TableField(value = "stats_date")
+    @Column(name = "stats_date")
     private Date statsDate;
 
     /**
      * 科目Id。
      */
-    @TableField(value = "subject_id")
+    @Column(name = "subject_id")
     private Integer subjectId;
 
     /**
      * 年级Id。
      */
-    @TableField(value = "grade_id")
+    @Column(name = "grade_id")
     private Integer gradeId;
 
     /**
      * 年级名称。
      */
-    @TableField(value = "grade_name")
+    @Column(name = "grade_name")
     private String gradeName;
 
     /**
      * 课程Id。
      */
-    @TableField(value = "course_id")
+    @Column(name = "course_id")
     private Long courseId;
 
     /**
      * 课程名称。
      */
-    @TableField(value = "course_name")
+    @Column(name = "course_name")
     private String courseName;
 
     /**
      * 学生上课次数。
      */
-    @TableField(value = "student_attend_count")
+    @Column(name = "student_attend_count")
     private Integer studentAttendCount;
 
     /**
      * 学生献花数量。
      */
-    @TableField(value = "student_flower_amount")
+    @Column(name = "student_flower_amount")
     private Integer studentFlowerAmount;
 
     /**
      * 学生献花次数。
      */
-    @TableField(value = "student_flower_count")
+    @Column(name = "student_flower_count")
     private Integer studentFlowerCount;
 
     /**
      * statsDate 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String statsDateStart;
 
     /**
      * statsDate 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String statsDateEnd;
 
     @RelationDict(
@@ -105,7 +107,7 @@ public class CourseTransStats {
             slaveModelClass = GradeVo.class,
             slaveIdField = "gradeId",
             slaveNameField = "gradeName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> gradeIdDictMap;
 
     @RelationDict(
@@ -114,13 +116,13 @@ public class CourseTransStats {
             slaveModelClass = CourseVo.class,
             slaveIdField = "courseId",
             slaveNameField = "courseName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> courseIdDictMap;
 
     @RelationConstDict(
             masterIdField = "subjectId",
             constantDictClass = Subject.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> subjectIdDictMap;
 
     @Mapper

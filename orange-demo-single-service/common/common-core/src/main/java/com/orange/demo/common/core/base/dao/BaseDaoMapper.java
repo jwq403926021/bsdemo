@@ -1,8 +1,10 @@
 package com.orange.demo.common.core.base.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import tk.mybatis.mapper.additional.insert.InsertListMapper;
+import tk.mybatis.mapper.annotation.RegisterMapper;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,8 @@ import java.util.Map;
  * @author Jerry
  * @date 2020-09-24
  */
-public interface BaseDaoMapper<M> extends BaseMapper<M> {
+@RegisterMapper
+public interface BaseDaoMapper<M> extends Mapper<M>, InsertListMapper<M> {
 
     /**
      * 根据指定的表名、显示字段列表、过滤条件字符串和分组字段，返回聚合计算后的查询结果。

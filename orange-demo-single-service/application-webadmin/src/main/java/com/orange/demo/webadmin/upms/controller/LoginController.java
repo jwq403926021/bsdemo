@@ -10,8 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import com.orange.demo.webadmin.config.ApplicationConfig;
 import com.orange.demo.webadmin.upms.service.*;
-import com.orange.demo.webadmin.upms.model.SysMenu;
-import com.orange.demo.webadmin.upms.model.SysUser;
+import com.orange.demo.webadmin.upms.model.*;
 import com.orange.demo.webadmin.upms.model.constant.SysUserStatus;
 import com.orange.demo.webadmin.upms.model.constant.SysUserType;
 import com.orange.demo.common.core.annotation.NoAuthInterface;
@@ -175,9 +174,10 @@ public class LoginController {
     }
 
     private JSONObject buildLoginData(SysUser user) {
+        int deviceType = MyCommonUtil.getDeviceType();
         boolean isAdmin = user.getUserType() == SysUserType.TYPE_ADMIN;
         Map<String, Object> claims = new HashMap<>(3);
-        String sessionId = user.getLoginName() + "_" + MyCommonUtil.generateUuid();
+        String sessionId = user.getLoginName() + "_" + deviceType + "_" + MyCommonUtil.generateUuid();
         claims.put("sessionId", sessionId);
         String token = JwtUtil.generateToken(claims, appConfig.getExpiration(), appConfig.getTokenSigningKey());
         JSONObject jsonData = new JSONObject();
@@ -192,6 +192,7 @@ public class LoginController {
         tokenData.setIsAdmin(isAdmin);
         tokenData.setLoginIp(IpUtil.getRemoteIpAddress(ContextUtil.getHttpRequest()));
         tokenData.setLoginTime(new Date());
+        tokenData.setDeviceType(deviceType);
         String sessionIdKey = RedisKeyUtil.makeSessionIdKey(sessionId);
         String sessionData = JSON.toJSONString(tokenData, SerializerFeature.WriteNonStringValueAsString);
         RBucket<String> bucket = redissonClient.getBucket(sessionIdKey);

@@ -40,13 +40,16 @@ spring:
     request-context-attribute: request
     suffix: .ftl
 
-mybatis-plus:
-  mapper-locations: classpath:com/orange/demo/webadmin/*/dao/mapper/*Mapper.xml,com/orange/demo/common/log/dao/mapper/*Mapper.xml
-  type-aliases-package: com.orange.demo.webadmin.*.model,com.orange.demo.common.log.model
-  global-config:
-    db-config:
-      logic-delete-value: -1
-      logic-not-delete-value: 1
+# mybatis的基本配置
+mybatis:
+  mapperLocations: classpath:com/orange/demo/webadmin/*/dao/mapper/*Mapper.xml,com/orange/demo/common/log/dao/mapper/*Mapper.xml
+  typeAliasesPackage: com.orange.demo.webadmin.*.model,com.orange.demo.common.log.model
+
+# mybatis的通用mapper的配置
+mapper:
+  mappers: tk.mybatis.mapper.common.Mapper,tk.mybatis.mapper.additional.insert.InsertListMapper
+  not-empty: false
+  identity: MYSQL
 
 # 自动分页的配置
 pagehelper:

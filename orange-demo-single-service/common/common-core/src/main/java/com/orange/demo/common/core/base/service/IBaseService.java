@@ -1,10 +1,10 @@
 package com.orange.demo.common.core.base.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.orange.demo.common.core.object.MyRelationParam;
 
-import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 所有Service的接口。
@@ -14,7 +14,15 @@ import java.util.*;
  * @author Jerry
  * @date 2020-09-24
  */
-public interface IBaseService<M, K extends Serializable> extends IService<M>{
+public interface IBaseService<M, K> {
+
+    /**
+     * 基于主键Id删除数据。如果包含逻辑删除字段，则进行逻辑删除。
+     *
+     * @param id 主键Id值。
+     * @return true删除成功，false数据不存在。
+     */
+    boolean removeById(K id);
 
     /**
      * 根据过滤条件删除数据。
@@ -41,6 +49,14 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
      * @return 存在返回true，否则false。
      */
     boolean existId(K id);
+
+    /**
+     * 获取主键Id关联的数据。
+     *
+     * @param id 主键Id。
+     * @return 主键关联的数据，不存在返回null。
+     */
+    M getById(K id);
 
     /**
      * 返回符合 filterField = filterValue 条件的一条数据。
@@ -218,7 +234,7 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
      *
      * @param resultList    主表实体对象列表。数据集成将直接作用于该对象列表。
      * @param relationParam 实体对象数据组装的参数构建器。
-     * @param batchSize     每批集成的记录数量。小于等于时将不做分批处理。
+     * @param batchSize     每批集成的记录数量。小于等于0时将不做分批处理。
      */
     void buildRelationForDataList(List<M> resultList, MyRelationParam relationParam, int batchSize);
 
@@ -236,7 +252,7 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
      *
      * @param resultList    主表实体对象列表。数据集成将直接作用于该对象列表。
      * @param relationParam 实体对象数据组装的参数构建器。
-     * @param batchSize     每批集成的记录数量。小于等于时将不做分批处理。
+     * @param batchSize     每批集成的记录数量。小于等于0时将不做分批处理。
      * @param ignoreFields  该集合中的字段，即便包含注解也不会在当前调用中进行数据组装。
      */
     void buildRelationForDataList(
@@ -269,4 +285,16 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
      * 仅仅在spring boot 启动后的监听器事件中调用，缓存所有service的关联关系，加速后续的数据绑定效率。
      */
     void loadRelationStruct();
+
+    /**
+     * 内部使用的批量保存方法。在使用前要确保清楚该方法的实现功能。
+     * 该方法通常用于从表数据的批量更新，为了保证已有数据的主键不变，我们通常会在执行该方法前，根据主表的关联数据，
+     * 删除从表中的数据。之后在迭代参数dataList，并将没有主键值的对象视为新对象，该方法将为这些新对象生成主键值。
+     * 其他包含主键值的对象，为已有对象，不做任何修改。填充主键后，将dataList集合中的数据批量插入到数据表。
+     *
+     * @param dataList      待操作的数据列表。
+     * @param idGenerator   主键值生成器方法。
+     * @param batchInserter 批量插入方法。
+     */
+    void saveInternal(List<M> dataList, Supplier<K> idGenerator, Consumer<List<M>> batchInserter);
 }

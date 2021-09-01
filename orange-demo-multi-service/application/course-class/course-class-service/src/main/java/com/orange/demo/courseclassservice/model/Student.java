@@ -1,6 +1,5 @@
 package com.orange.demo.courseclassservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.courseclassapi.vo.StudentVo;
 import com.orange.demo.application.common.constant.Gender;
 import com.orange.demo.application.common.constant.ExpLevel;
@@ -12,6 +11,7 @@ import com.orange.demo.common.core.util.MyCommonUtil;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -23,43 +23,44 @@ import java.util.Map;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_student")
+@Table(name = "zz_student")
 public class Student {
 
     /**
      * 学生Id。
      */
-    @TableId(value = "student_id")
+    @Id
+    @Column(name = "student_id")
     private Long studentId;
 
     /**
      * 登录手机。
      */
-    @TableField(value = "login_mobile")
+    @Column(name = "login_mobile")
     private String loginMobile;
 
     /**
      * 学生姓名。
      */
-    @TableField(value = "student_name")
+    @Column(name = "student_name")
     private String studentName;
 
     /**
      * 所在省份Id。
      */
-    @TableField(value = "province_id")
+    @Column(name = "province_id")
     private Long provinceId;
 
     /**
      * 所在城市Id。
      */
-    @TableField(value = "city_id")
+    @Column(name = "city_id")
     private Long cityId;
 
     /**
      * 区县Id。
      */
-    @TableField(value = "district_id")
+    @Column(name = "district_id")
     private Long districtId;
 
     /**
@@ -75,37 +76,37 @@ public class Student {
     /**
      * 经验等级 (0: 初级 1: 中级 2: 高级 3: 资深)。
      */
-    @TableField(value = "experience_level")
+    @Column(name = "experience_level")
     private Integer experienceLevel;
 
     /**
      * 总共充值学币数量。
      */
-    @TableField(value = "total_coin")
+    @Column(name = "total_coin")
     private Integer totalCoin;
 
     /**
      * 可用学币数量。
      */
-    @TableField(value = "left_coin")
+    @Column(name = "left_coin")
     private Integer leftCoin;
 
     /**
      * 年级Id。
      */
-    @TableField(value = "grade_id")
+    @Column(name = "grade_id")
     private Integer gradeId;
 
     /**
      * 校区Id。
      */
-    @TableField(value = "school_id")
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**
      * 注册时间。
      */
-    @TableField(value = "register_time")
+    @Column(name = "register_time")
     private Date registerTime;
 
     /**
@@ -116,31 +117,31 @@ public class Student {
     /**
      * birthday 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String birthdayStart;
 
     /**
      * birthday 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String birthdayEnd;
 
     /**
      * registerTime 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String registerTimeStart;
 
     /**
      * registerTime 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String registerTimeEnd;
 
     /**
      * true LIKE搜索字符串。
      */
-    @TableField(exist = false)
+    @Transient
     private String searchString;
 
     public void setSearchString(String searchString) {
@@ -153,7 +154,7 @@ public class Student {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> provinceIdDictMap;
 
     @RelationDict(
@@ -162,7 +163,7 @@ public class Student {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> cityIdDictMap;
 
     @RelationDict(
@@ -171,7 +172,7 @@ public class Student {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> districtIdDictMap;
 
     @RelationDict(
@@ -180,7 +181,7 @@ public class Student {
             slaveModelClass = Grade.class,
             slaveIdField = "gradeId",
             slaveNameField = "gradeName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> gradeIdDictMap;
 
     @RelationDict(
@@ -189,25 +190,25 @@ public class Student {
             slaveModelClass = SchoolInfo.class,
             slaveIdField = "schoolId",
             slaveNameField = "schoolName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> schoolIdDictMap;
 
     @RelationConstDict(
             masterIdField = "gender",
             constantDictClass = Gender.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> genderDictMap;
 
     @RelationConstDict(
             masterIdField = "experienceLevel",
             constantDictClass = ExpLevel.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> experienceLevelDictMap;
 
     @RelationConstDict(
             masterIdField = "status",
             constantDictClass = StudentStatus.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> statusDictMap;
 
     @Mapper

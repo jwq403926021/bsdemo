@@ -1,6 +1,6 @@
 package com.orange.demo.upmsservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import com.orange.demo.common.core.annotation.RelationManyToMany;
 import com.orange.demo.common.core.base.model.BaseModel;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -21,33 +22,34 @@ import java.util.*;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "zz_sys_role")
+@Table(name = "zz_sys_role")
 public class SysRole extends BaseModel {
 
     /**
      * 主键Id。
      */
-    @TableId(value = "role_id")
+    @Id
+    @Column(name = "role_id")
     private Long roleId;
 
     /**
      * 角色名称。
      */
-    @TableField(value = "role_name")
+    @Column(name = "role_name")
     private String roleName;
 
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @TableLogic
-    @TableField(value = "deleted_flag")
+    @DeletedFlagColumn
+    @Column(name = "deleted_flag")
     private Integer deletedFlag;
 
     @RelationManyToMany(
             relationMapperName = "sysRoleMenuMapper",
             relationMasterIdField = "roleId",
             relationModelClass = SysRoleMenu.class)
-    @TableField(exist = false)
+    @Transient
     private List<SysRoleMenu> sysRoleMenuList;
 
     @Mapper

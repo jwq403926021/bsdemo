@@ -1,7 +1,8 @@
 package com.orange.demo.webadmin.upms.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * 白名单实体对象。
@@ -10,24 +11,25 @@ import lombok.Data;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_sys_perm_whitelist")
+@Table(name = "zz_sys_perm_whitelist")
 public class SysPermWhitelist {
 
     /**
      * 权限资源的URL。
      */
-    @TableId(value = "perm_url")
+    @Id
+    @Column(name = "perm_url")
     private String permUrl;
 
     /**
      * 权限资源所属模块名字(通常是Controller的名字)。
      */
-    @TableField(value = "module_name")
+    @Column(name = "module_name")
     private String moduleName;
 
     /**
      * 权限的名称。
      */
-    @TableField(value = "perm_name")
+    @Column(name = "perm_name")
     private String permName;
 }

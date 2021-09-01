@@ -1,12 +1,12 @@
 package com.orange.demo.webadmin.app.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import com.orange.demo.webadmin.app.vo.StudentActionStatsVo;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -18,145 +18,146 @@ import java.util.Map;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_student_action_stats")
+@Table(name = "zz_student_action_stats")
 public class StudentActionStats {
 
     /**
      * 主键Id。
      */
-    @TableId(value = "stats_id")
+    @Id
+    @Column(name = "stats_id")
     private Long statsId;
 
     /**
      * 统计日期。
      */
-    @TableField(value = "stats_date")
+    @Column(name = "stats_date")
     private Date statsDate;
 
     /**
      * 统计小时。
      */
-    @TableField(value = "stats_month")
+    @Column(name = "stats_month")
     private Date statsMonth;
 
     /**
      * 年级Id。
      */
-    @TableField(value = "grade_id")
+    @Column(name = "grade_id")
     private Integer gradeId;
 
     /**
      * 学生所在省Id。
      */
-    @TableField(value = "province_id")
+    @Column(name = "province_id")
     private Long provinceId;
 
     /**
      * 学生所在城市Id。
      */
-    @TableField(value = "city_id")
+    @Column(name = "city_id")
     private Long cityId;
 
     /**
      * 购课学币数量。
      */
-    @TableField(value = "buy_course_amount")
+    @Column(name = "buy_course_amount")
     private Integer buyCourseAmount;
 
     /**
      * 购买课程次数。
      */
-    @TableField(value = "buy_course_count")
+    @Column(name = "buy_course_count")
     private Integer buyCourseCount;
 
     /**
      * 购买视频学币数量。
      */
-    @TableField(value = "buy_video_amount")
+    @Column(name = "buy_video_amount")
     private Integer buyVideoAmount;
 
     /**
      * 购买视频次数。
      */
-    @TableField(value = "buy_video_count")
+    @Column(name = "buy_video_count")
     private Integer buyVideoCount;
 
     /**
      * 购买作业学币数量。
      */
-    @TableField(value = "buy_paper_amount")
+    @Column(name = "buy_paper_amount")
     private Integer buyPaperAmount;
 
     /**
      * 购买作业次数。
      */
-    @TableField(value = "buy_paper_count")
+    @Column(name = "buy_paper_count")
     private Integer buyPaperCount;
 
     /**
      * 购买献花数量。
      */
-    @TableField(value = "buy_flower_amount")
+    @Column(name = "buy_flower_amount")
     private Integer buyFlowerAmount;
 
     /**
      * 购买献花次数。
      */
-    @TableField(value = "buy_flower_count")
+    @Column(name = "buy_flower_count")
     private Integer buyFlowerCount;
 
     /**
      * 充值学币数量。
      */
-    @TableField(value = "recharge_coin_amount")
+    @Column(name = "recharge_coin_amount")
     private Integer rechargeCoinAmount;
 
     /**
      * 充值学币次数。
      */
-    @TableField(value = "recharge_coin_count")
+    @Column(name = "recharge_coin_count")
     private Integer rechargeCoinCount;
 
     /**
      * 线下课程上课次数。
      */
-    @TableField(value = "do_course_count")
+    @Column(name = "do_course_count")
     private Integer doCourseCount;
 
     /**
      * 观看视频次数。
      */
-    @TableField(value = "watch_video_count")
+    @Column(name = "watch_video_count")
     private Integer watchVideoCount;
 
     /**
      * 购买献花消费学币数量。
      */
-    @TableField(value = "watch_video_total_second")
+    @Column(name = "watch_video_total_second")
     private Integer watchVideoTotalSecond;
 
     /**
      * 做题数量。
      */
-    @TableField(value = "do_exercise_count")
+    @Column(name = "do_exercise_count")
     private Integer doExerciseCount;
 
     /**
      * 做题正确的数量。
      */
-    @TableField(value = "do_exercise_correct_count")
+    @Column(name = "do_exercise_correct_count")
     private Integer doExerciseCorrectCount;
 
     /**
      * statsDate 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String statsDateStart;
 
     /**
      * statsDate 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String statsDateEnd;
 
     @RelationDict(
@@ -165,7 +166,7 @@ public class StudentActionStats {
             slaveModelClass = Grade.class,
             slaveIdField = "gradeId",
             slaveNameField = "gradeName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> gradeIdDictMap;
 
     @RelationDict(
@@ -174,7 +175,7 @@ public class StudentActionStats {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> provinceIdDictMap;
 
     @RelationDict(
@@ -183,7 +184,7 @@ public class StudentActionStats {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> cityIdDictMap;
 
     @Mapper

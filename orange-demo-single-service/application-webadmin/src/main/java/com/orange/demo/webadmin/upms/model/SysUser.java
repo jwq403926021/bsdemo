@@ -1,15 +1,16 @@
 package com.orange.demo.webadmin.upms.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.webadmin.upms.model.constant.SysUserType;
 import com.orange.demo.webadmin.upms.model.constant.SysUserStatus;
 import com.orange.demo.common.core.annotation.RelationConstDict;
 import com.orange.demo.common.core.annotation.RelationManyToMany;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
+import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import com.orange.demo.webadmin.upms.vo.SysUserVo;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -22,19 +23,20 @@ import java.util.List;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_sys_user")
+@Table(name = "zz_sys_user")
 public class SysUser {
 
     /**
      * 用户Id。
      */
-    @TableId(value = "user_id")
+    @Id
+    @Column(name = "user_id")
     private Long userId;
 
     /**
      * 登录用户名。
      */
-    @TableField(value = "login_name")
+    @Column(name = "login_name")
     private String loginName;
 
     /**
@@ -45,68 +47,68 @@ public class SysUser {
     /**
      * 用户显示名称。
      */
-    @TableField(value = "show_name")
+    @Column(name = "show_name")
     private String showName;
 
     /**
      * 用户类型(0: 管理员 1: 系统管理用户 2: 系统业务用户)。
      */
-    @TableField(value = "user_type")
+    @Column(name = "user_type")
     private Integer userType;
 
     /**
      * 用户头像的Url。
      */
-    @TableField(value = "head_image_url")
+    @Column(name = "head_image_url")
     private String headImageUrl;
 
     /**
      * 用户状态(0: 正常 1: 锁定)。
      */
-    @TableField(value = "user_status")
+    @Column(name = "user_status")
     private Integer userStatus;
 
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @TableLogic
-    @TableField(value = "deleted_flag")
+    @DeletedFlagColumn
+    @Column(name = "deleted_flag")
     private Integer deletedFlag;
 
     /**
      * 创建用户Id。
      */
-    @TableField(value = "create_user_id")
+    @Column(name = "create_user_id")
     private Long createUserId;
 
     /**
      * 更新者Id。
      */
-    @TableField(value = "update_user_id")
+    @Column(name = "update_user_id")
     private Long updateUserId;
 
     /**
      * 创建时间。
      */
-    @TableField(value = "create_time")
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 更新时间。
      */
-    @TableField(value = "update_time")
+    @Column(name = "update_time")
     private Date updateTime;
 
     /**
      * createTime 范围过滤起始值(>=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String createTimeStart;
 
     /**
      * createTime 范围过滤结束值(<=)。
      */
-    @TableField(exist = false)
+    @Transient
     private String createTimeEnd;
 
     /**
@@ -116,19 +118,19 @@ public class SysUser {
             relationMapperName = "sysUserRoleMapper",
             relationMasterIdField = "userId",
             relationModelClass = SysUserRole.class)
-    @TableField(exist = false)
+    @Transient
     private List<SysUserRole> sysUserRoleList;
 
     @RelationConstDict(
             masterIdField = "userType",
             constantDictClass = SysUserType.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> userTypeDictMap;
 
     @RelationConstDict(
             masterIdField = "userStatus",
             constantDictClass = SysUserStatus.class)
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> userStatusDictMap;
 
     @Mapper

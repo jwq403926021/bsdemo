@@ -131,7 +131,7 @@ public class ResponseResult<T> {
      * @return 返回创建的ResponseResult实例对象
      */
     public static <T> ResponseResult<T> error(String errorCode, String errorMessage) {
-        return new ResponseResult<>(false, errorCode, errorMessage);
+        return new ResponseResult<>(errorCode, errorMessage);
     }
 
     /**
@@ -213,8 +213,8 @@ public class ResponseResult<T> {
 
     }
 
-    private ResponseResult(boolean success, String errorCode, String errorMessage) {
-        this.success = success;
+    private ResponseResult(String errorCode, String errorMessage) {
+        this.success = false;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

@@ -1,7 +1,6 @@
 package com.orange.demo.common.core.base.service;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.orange.demo.common.core.constant.GlobalDeletedFlag;
 import com.orange.demo.common.core.exception.MyRuntimeException;
 import com.orange.demo.common.core.cache.DictionaryCache;
@@ -9,8 +8,8 @@ import com.orange.demo.common.core.object.TokenData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -23,7 +22,7 @@ import java.util.*;
  * @date 2020-09-24
  */
 @Slf4j
-public abstract class BaseDictService<M, K extends Serializable> extends BaseService<M, K> implements IBaseDictService<M, K> {
+public abstract class BaseDictService<M, K> extends BaseService<M, K> implements IBaseDictService<M, K> {
 
     /**
      * 缓存池对象。
@@ -90,7 +89,15 @@ public abstract class BaseDictService<M, K extends Serializable> extends BaseSer
         if (tenantIdField != null) {
             ReflectUtil.setFieldValue(data, tenantIdField, TokenData.takeFromRequest().getTenantId());
         }
-        return mapper().updateById(data) == 1;
+        if (deletedFlagFieldName != null) {
+            try {
+                setDeletedFlagMethod.invoke(data, GlobalDeletedFlag.NORMAL);
+            } catch (Exception e) {
+                log.error("Failed to call reflection [setDeletedFlagMethod] in BaseDictService.update.", e);
+                throw new MyRuntimeException(e);
+            }
+        }
+        return mapper().updateByPrimaryKey(data) == 1;
     }
 
     /**
@@ -102,7 +109,7 @@ public abstract class BaseDictService<M, K extends Serializable> extends BaseSer
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(K id) {
-        return mapper().deleteById(id) == 1;
+        return this.removeById(id);
     }
 
     /**
@@ -111,16 +118,15 @@ public abstract class BaseDictService<M, K extends Serializable> extends BaseSer
      * @param id 主键Id。
      * @return 主键关联的数据，不存在返回null。
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public M getById(Serializable id) {
-        M data = dictionaryCache.get((K) id);
+    public M getById(K id) {
+        M data = dictionaryCache.get(id);
         if (data != null) {
             return data;
         }
         data = super.getById(id);
         if (data != null) {
-            this.dictionaryCache.put((K) id, data);
+            this.dictionaryCache.put(id, data);
         }
         return data;
     }
@@ -214,10 +220,8 @@ public abstract class BaseDictService<M, K extends Serializable> extends BaseSer
             List<M> dataList = this.getInList((Set<K>) inFilterValues);
             return dataList.size() == inFilterValues.size();
         }
-        String columnName = this.safeMapToColumnName(inFilterField);
-        QueryWrapper<M> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in(columnName, inFilterValues);
-        return mapper().selectCount(queryWrapper) == inFilterValues.size();
+        Example e = this.makeDefaultInListExample(inFilterField, inFilterValues, null);
+        return mapper().selectCountByExample(e) == inFilterValues.size();
     }
 
     /**

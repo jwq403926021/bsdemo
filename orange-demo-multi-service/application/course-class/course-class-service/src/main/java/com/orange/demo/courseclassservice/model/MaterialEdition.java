@@ -1,7 +1,7 @@
 package com.orange.demo.courseclassservice.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import javax.persistence.*;
 
 /**
  * MaterialEdition实体对象。
@@ -10,19 +10,21 @@ import lombok.Data;
  * @date 2020-08-08
  */
 @Data
-@TableName(value = "zz_material_edition")
+@Table(name = "zz_material_edition")
 public class MaterialEdition {
 
     /**
      * 主键Id。
      */
-    @TableId(value = "edition_id", type = IdType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "edition_id")
     private Integer editionId;
 
     /**
      * 教材版本名称。
      */
-    @TableField(value = "edition_name")
+    @Column(name = "edition_name")
     private String editionName;
 
     /**

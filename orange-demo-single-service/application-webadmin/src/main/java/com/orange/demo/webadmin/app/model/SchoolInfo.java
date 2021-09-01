@@ -1,12 +1,12 @@
 package com.orange.demo.webadmin.app.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.orange.demo.common.core.annotation.RelationDict;
 import com.orange.demo.common.core.base.mapper.BaseModelMapper;
 import com.orange.demo.webadmin.app.vo.SchoolInfoVo;
 import lombok.Data;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import javax.persistence.*;
 
 import java.util.Map;
 
@@ -17,31 +17,32 @@ import java.util.Map;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_school_info")
+@Table(name = "zz_school_info")
 public class SchoolInfo {
 
     /**
      * 学校Id。
      */
-    @TableId(value = "school_id")
+    @Id
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**
      * 学校名称。
      */
-    @TableField(value = "school_name")
+    @Column(name = "school_name")
     private String schoolName;
 
     /**
      * 所在省Id。
      */
-    @TableField(value = "province_id")
+    @Column(name = "province_id")
     private Long provinceId;
 
     /**
      * 所在城市Id。
      */
-    @TableField(value = "city_id")
+    @Column(name = "city_id")
     private Long cityId;
 
     @RelationDict(
@@ -50,7 +51,7 @@ public class SchoolInfo {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> provinceIdDictMap;
 
     @RelationDict(
@@ -59,7 +60,7 @@ public class SchoolInfo {
             slaveModelClass = AreaCode.class,
             slaveIdField = "areaId",
             slaveNameField = "areaName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> cityIdDictMap;
 
     @Mapper

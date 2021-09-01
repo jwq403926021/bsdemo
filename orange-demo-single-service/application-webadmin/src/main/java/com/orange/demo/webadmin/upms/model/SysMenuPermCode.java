@@ -1,7 +1,8 @@
 package com.orange.demo.webadmin.upms.model;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * 菜单与权限字关联实体对象。
@@ -10,18 +11,20 @@ import lombok.Data;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_sys_menu_perm_code")
+@Table(name = "zz_sys_menu_perm_code")
 public class SysMenuPermCode {
 
     /**
      * 关联菜单Id。
      */
-    @TableField(value = "menu_id")
+    @Id
+    @Column(name = "menu_id")
     private Long menuId;
 
     /**
      * 关联权限字Id。
      */
-    @TableField(value = "perm_code_id")
+    @Id
+    @Column(name = "perm_code_id")
     private Long permCodeId;
 }

@@ -1,6 +1,5 @@
 package com.orange.demo.webadmin.upms.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.alibaba.fastjson.JSONObject;
 import com.orange.demo.common.core.base.service.BaseService;
 import com.orange.demo.common.core.util.MyModelUtil;
@@ -71,12 +70,14 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
         role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysRoleMapper.insert(role);
         if (menuIdSet != null) {
+            List<SysRoleMenu> roleMenuList = new LinkedList<>();
             for (Long menuId : menuIdSet) {
                 SysRoleMenu roleMenu = new SysRoleMenu();
                 roleMenu.setRoleId(role.getRoleId());
                 roleMenu.setMenuId(menuId);
-                sysRoleMenuMapper.insert(roleMenu);
+                roleMenuList.add(roleMenu);
             }
+            sysRoleMenuMapper.insertList(roleMenuList);
         }
         return role;
     }
@@ -92,20 +93,23 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(SysRole role, SysRole originalRole, Set<Long> menuIdSet) {
+        role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         MyModelUtil.fillCommonsForUpdate(role, originalRole);
-        if (sysRoleMapper.updateById(role) != 1) {
+        if (sysRoleMapper.updateByPrimaryKey(role) != 1) {
             return false;
         }
         SysRoleMenu deletedRoleMenu = new SysRoleMenu();
         deletedRoleMenu.setRoleId(role.getRoleId());
-        sysRoleMenuMapper.delete(new QueryWrapper<>(deletedRoleMenu));
+        sysRoleMenuMapper.delete(deletedRoleMenu);
         if (menuIdSet != null) {
+            List<SysRoleMenu> roleMenuList = new LinkedList<>();
             for (Long menuId : menuIdSet) {
                 SysRoleMenu roleMenu = new SysRoleMenu();
                 roleMenu.setRoleId(role.getRoleId());
                 roleMenu.setMenuId(menuId);
-                sysRoleMenuMapper.insert(roleMenu);
+                roleMenuList.add(roleMenu);
             }
+            sysRoleMenuMapper.insertList(roleMenuList);
         }
         return true;
     }
@@ -119,15 +123,15 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean remove(Long roleId) {
-        if (sysRoleMapper.deleteById(roleId) != 1) {
+        if (!this.removeById(roleId)) {
             return false;
         }
         SysRoleMenu roleMenu = new SysRoleMenu();
         roleMenu.setRoleId(roleId);
-        sysRoleMenuMapper.delete(new QueryWrapper<>(roleMenu));
+        sysRoleMenuMapper.delete(roleMenu);
         SysUserRole userRole = new SysUserRole();
         userRole.setRoleId(roleId);
-        sysUserRoleMapper.delete(new QueryWrapper<>(userRole));
+        sysUserRoleMapper.delete(userRole);
         return true;
     }
 
@@ -151,9 +155,7 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addUserRoleList(List<SysUserRole> userRoleList) {
-        for (SysUserRole userRole : userRoleList) {
-            sysUserRoleMapper.insert(userRole);
-        }
+        sysUserRoleMapper.insertList(userRoleList);
     }
 
     /**
@@ -169,7 +171,7 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
         SysUserRole userRole  = new SysUserRole();
         userRole.setRoleId(roleId);
         userRole.setUserId(userId);
-        return sysUserRoleMapper.delete(new QueryWrapper<>(userRole)) == 1;
+        return sysUserRoleMapper.delete(userRole) == 1;
     }
 
     /**

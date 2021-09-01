@@ -27,13 +27,14 @@ sequence:
   # zk中生成WorkNode的路径。不同的业务可以使用不同的路径，以免冲突。
   zkPath: com/orange/demo
 
-mybatis-plus:
-  mapper-locations: classpath:com/orange/demo/*/dao/mapper/*Mapper.xml,com/orange/demo/common/datasync/dao/mapper/*Mapper.xml,com/orange/demo/common/log/dao/mapper/*Mapper.xml
-  type-aliases-package: com.orange.demo.*.model,com.orange.demo.common.datasync.model,com.orange.demo.common.log.model
-  global-config:
-    db-config:
-      logic-delete-value: -1
-      logic-not-delete-value: 1
+mybatis:
+  mapperLocations: classpath:com/orange/demo/*/dao/mapper/*Mapper.xml,com/orange/demo/common/datasync/dao/mapper/*Mapper.xml,com/orange/demo/common/log/dao/mapper/*Mapper.xml
+  typeAliasesPackage: com.orange.demo.*.model,com.orange.demo.common.datasync.model,com.orange.demo.common.log.model
+
+mapper:
+  mappers: tk.mybatis.mapper.common.Mapper,tk.mybatis.mapper.additional.insert.InsertListMapper
+  not-empty: false
+  identity: MYSQL
 
 pagehelper:
   helperDialect: mysql

@@ -1,9 +1,10 @@
 package com.orange.demo.webadmin.upms.model;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.orange.demo.common.core.annotation.DeletedFlagColumn;
 import com.orange.demo.common.core.annotation.RelationDict;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -13,25 +14,26 @@ import java.util.*;
  * @date 2020-09-24
  */
 @Data
-@TableName(value = "zz_sys_perm")
+@Table(name = "zz_sys_perm")
 public class SysPerm {
 
     /**
      * 权限资源Id。
      */
-    @TableId(value = "perm_id")
+    @Id
+    @Column(name = "perm_id")
     private Long permId;
 
     /**
      * 权限所在的权限模块Id。
      */
-    @TableField(value = "module_id")
+    @Column(name = "module_id")
     private Long moduleId;
 
     /**
      * 权限名称。
      */
-    @TableField(value = "perm_name")
+    @Column(name = "perm_name")
     private String permName;
 
     /**
@@ -42,38 +44,38 @@ public class SysPerm {
     /**
      * 权限在当前模块下的顺序，由小到大。
      */
-    @TableField(value = "show_order")
+    @Column(name = "show_order")
     private Integer showOrder;
 
     /**
      * 创建者Id。
      */
-    @TableField(value = "create_user_id")
+    @Column(name = "create_user_id")
     private Long createUserId;
 
     /**
      * 创建时间。
      */
-    @TableField(value = "create_time")
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 更新者Id。
      */
-    @TableField(value = "update_user_id")
+    @Column(name = "update_user_id")
     private Long updateUserId;
 
     /**
      * 更新时间。
      */
-    @TableField(value = "update_time")
+    @Column(name = "update_time")
     private Date updateTime;
 
     /**
      * 逻辑删除标记字段(1: 正常 -1: 已删除)。
      */
-    @TableLogic
-    @TableField(value = "deleted_flag")
+    @DeletedFlagColumn
+    @Column(name = "deleted_flag")
     private Integer deletedFlag;
 
     @RelationDict(
@@ -82,6 +84,6 @@ public class SysPerm {
             slaveModelClass = SysPermModule.class,
             slaveIdField = "moduleId",
             slaveNameField = "moduleName")
-    @TableField(exist = false)
+    @Transient
     private Map<String, Object> moduleIdDictMap;
 }

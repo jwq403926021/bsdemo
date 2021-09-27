@@ -42,28 +42,6 @@
 - 技术问题的反馈、咨询和交流，我们都会及时回复，经常在开车等灯时答疑。
 - 生成后工程无任何 License 限制，可进行任意修改，并用于任意数量的商用项目。
 
-### 代码样例
-> 下图均为橙单生成的代码，纯手工打造，**强烈推荐展开看大图** 。
-
-<table>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203714_b01aaa17_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203923_334d627f_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/201827_3f46fd5b_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202439_874d9a9e_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/204401_7aa49c0c_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/202845_56563c03_7431510.png"/></td>
-</tr>
-<tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/204918_01173d01_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0331/203035_532833e5_7431510.png"/></td>
-</tr>
-</table>
-
 ### 橙单生成器
 如果说基础框架是技术轮子，那么我们就是生产线。不仅可以造出各种尺寸的轮子，通过我们的在线配置工具，还能生成您的更多业务所需。为了使轮子更为贴近项目的架构需求，我们目前已支持多种类型的工程结构模板，如多应用、多租户、多渠道等。架构师们通过选择最为适合的项目类型，可最大程度的降低对生成后工程进行裁剪和改造的工作量。
 > 下图所示的微服务组件，在创建项目时可正交化组合。生成后的工程不仅可用于企业中台化改造，同样也适用于开发者进行微服务全技术栈的快速学习。

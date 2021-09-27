@@ -1,7 +1,7 @@
-### 本期新功能
->  **如果您不想东拼西凑的去找工作流的各种代码案例和小技巧，也不想自己趟坑，而是分分钟就想看到成熟稳定的结果，请考虑橙单** 。相比于其他付费脚手架的组件集成和 API 封装，橙单则提供了更为完整实用的工作流功能。全部代码经过创始人团队的严格测试，可极大降低开发者的上手成本。与此同时，我们提供了完全免费且非常详尽的线上文档。QQ群和微信群中的相关问题，均会得到快速的回复和技术支持。
+### 重要声明
+ **橙单正式开源基于 flowable 6.6 和在线表单的的工作流功能，前后台代码全部开放，无任何代码混淆。** 欢迎加入我们的QQ群(788581363)，或添加作者个人QQ(3510245832) 拉你入群。
 
-截至 1.9 版本，橙单低代码生成器已可生成支持工作流和在线表单的企业级工程。后续版本将支持工作流基于静态表单的代码生成，可为更复杂的流程业务提供较好的二次开发体验。
+#### 工作流支持
 -  **前后端代码无一丝混淆，完全交付，且代码质量超高** ，极易学习和二次开发，同时支持单体和微服务架构。
 - 同时集成 Activiti 7.x 和 Flowable 6.6 作为工作流引擎，配置工程时可自行二选一。
 - 集成工作流和在线表单，无需写一行代码即可配置出相对复杂的工作流业务。
@@ -18,21 +18,21 @@
 
 <table>
 <tr>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0822/143220_ef7fe017_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0901/201141_d6a804cb_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0901/103633_3feebae3_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/081545_e58f667b_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080341_3e05e0a5_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080449_26e040ee_7431510.png"/></td>
 </tr>
 <tr>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/075956_5afda298_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/080302_09a26dfd_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080341_3e05e0a5_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0810/080449_26e040ee_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0822/143220_ef7fe017_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/0901/201141_d6a804cb_7431510.png"/></td>
 </tr>
 </table>
 
 ### 选择橙单
-- 宽松、合理、透明、全网没有之一的最低价商业授权。( **99 + 10 = 单体教学版 + 单体企业版** )
+- 如果您不想东拼西凑的去找各种代码案例和小技巧，也不想自己趟坑，而是分分钟就想得到成熟稳定的自定义技术栈架构，请考虑橙单** 。
 - 有助于中台化平台架构梳理，支持微服务池共享，可生成 70% 以上相对复杂的中台化业务代码。
 - 标准化服务调用接口，无论是单体向微服务过渡，还是微服务之间的分分合合，都极为平滑且非常 Easy。
 - 纯手工打造、合理驾驭模式、教科书般的 5A 级代码质量。

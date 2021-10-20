@@ -45,7 +45,8 @@
 
 #### 在线资源
 - 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
-- 教学视频。[https://www.bilibili.com/video/bv1Wg4y1i7vP](https://www.bilibili.com/video/bv1Wg4y1i7vP)
+- 橙单配置视频。[https://www.bilibili.com/video/bv1Wg4y1i7vP](https://www.bilibili.com/video/bv1Wg4y1i7vP)
+- 工作流操作视频：[https://www.bilibili.com/video/BV1j44y1y7k2?p=1](https://www.bilibili.com/video/BV1j44y1y7k2?p=1)
 - 教学版演示配置。[http://config.orangeforms.com](http://config.orangeforms.com)
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
 - 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)

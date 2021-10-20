@@ -16,7 +16,7 @@
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/075956_5afda298_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0810/080302_09a26dfd_7431510.png"/></td>
   <td><img src="https://images.gitee.com/uploads/images/2021/0822/143220_ef7fe017_7431510.png"/></td>
-  <td><img src="https://images.gitee.com/uploads/images/2021/0901/201141_d6a804cb_7431510.png"/></td>
+  <td><img src="https://images.gitee.com/uploads/images/2021/1020/193130_270d1c30_7431510.png"/></td>
 </tr>
 </table>
 

@@ -68,7 +68,6 @@
 - 严格且合理的数据安全校验，流程敏感数据 (如合同信息) 不会被越权访问和下载。
 - 已去除 Spring Security 的缺省依赖，并与现有权限系统完美整合。
 - 工作流与在线表单演示环境，全部代码由橙单生成器直接生成，未经任何修改。 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)。
-- 橙单生成后工程(除工作流外)演示环境，全部代码由橙单生成器直接生成，未经任何修改。 [http://demo.orangeforms.com](http://demo.orangeforms.com)。
 
 #### 在线表单支持
 - 前后端代码完全交付，甚至可配置为自己的项目包名。

@@ -51,8 +51,8 @@
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
 - 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
 - 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
-- 演示项目。[http://demo.orangeforms.com](http://demo.orangeforms.com)
-- 工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 完整演示项目(不含工作流)。[http://demo.orangeforms.com](http://demo.orangeforms.com)
+- 在线表单和工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 
 #### 工作流支持
 -  **从 2.0 版本开始，支持静态表单 + 工作流的代码生成。用户可在生成器配置表单和流程，再生成相关的完整业务代码，生成后代码对于二次开发极为友好** 。

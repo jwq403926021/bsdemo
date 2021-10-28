@@ -102,7 +102,7 @@
 - J.T 老师，15年开发经验，前端全栈架构师，思维极缜密、号边界王。精通 C++/Java/Javascript/Vue & React/C++客户端/Android原生/小程序/视频直播编解码技术。
 - 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。 [![加入QQ群1(已满)](https://img.shields.io/badge/788581363-red.svg)](//shang.qq.com/wpa/qunwpa?idkey=590857a1b4c587e2be3d66b9a7e2015109772e777c6451c897dee393489b1661) [![加入QQ群2](https://img.shields.io/badge/883176267-red.svg)](//shang.qq.com/wpa/qunwpa?idkey=590857a1b4c587e2be3d66b9a7e2015109772e777c6451c897dee393489b1661)
 - 由于被恶意举报，如果您通过群号搜索不到，请添加作者的 QQ (3510245832)，我们会将您拉入群中。
-![QQ群](https://images.gitee.com/uploads/images/2021/1028/112646_5eb3a10a_7431510.png "orange-group1.png")
+![QQ群](https://images.gitee.com/uploads/images/2021/1028/112843_04869611_7431510.png "orange-group1.png")
 
 ### 生成后工程
 >可无限制的用于学习、培训、接私活、公司自用和开发商业项目等场景，其中基础框架代码将永久免费，并持续更新。

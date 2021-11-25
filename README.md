@@ -1,5 +1,5 @@
 ### 重要声明
- **_从 2.0 版本开始，橙单正式开源基于 Flowable 6.6 / Activiti 7.x 和在线表单的的工作流功能，前后台代码完整开源，无任何混淆。而此前开源的单体和微服务工程，基础架构代码目前也已全部开源，18 万字的线上文档全部免费。_** 欢迎加入我们的QQ群(788581363)，或添加作者个人QQ(3510245832) 拉你入群。如果橙单对您确有帮助，Fork 的同时，也请 Star 一下。
+ **_从 2.0 版本开始，橙单正式完整开源基于 Flowable 6.6 / Activiti 7.x 和在线表单的的工作流功能，前后台代码完整开源，无任何混淆。而此前开源的单体和微服务工程，基础架构代码目前也已全部开源，18 万字的线上文档全部免费。_** 欢迎加入我们的技术支持QQ群2(883176267)，或添加作者个人QQ(3510245832) 拉你入群。如果橙单对您确有帮助，Fork 的同时，也请 Star 一下。
 > 翻看源码之后你会发现，如此高质量且 Human Readable 的代码竟然全部是由工具生成的。
 
 ### 最新功能
@@ -51,8 +51,8 @@
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
 - 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
 - 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
-- 演示项目。[http://demo.orangeforms.com](http://demo.orangeforms.com)
-- 工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 完整演示项目(不含工作流)。[http://demo.orangeforms.com](http://demo.orangeforms.com)
+- 在线表单和工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 
 #### 工作流支持
 -  **从 2.0 版本开始，支持静态表单 + 工作流的代码生成。用户可在生成器配置表单和流程，再生成相关的完整业务代码，生成后代码对于二次开发极为友好** 。
@@ -62,8 +62,8 @@
 - 支持同一流程的多版本发布，同时支持版本切换。
 - 支持完整的工作流工单管理，稍作修改即可支持分布式操作。(下个版本会支持相关的代码生成)
 - 支持部门岗位和用户岗位，配置工程时可自行选择是否支持。
-- 支持基于部门、岗位、本部门领导岗位、上级部门领导岗位等候选组。
-- 开箱即用的支持，工单撤销和终止、会签加签、待办已办转办、历史任务、审批详情列表、附件上传下载等。
+- 支持基于角色、部门、岗位、本部门岗位、上级部门岗位、指定部门岗位、本部门领导岗位、上级部门领导岗位等候选组。
+- 开箱即用的支持，工单撤销和终止、会签加签、待办已办转办、催办、历史任务、审批详情列表、附件上传下载等。
 - 工作流前端已集成美观的流程编辑器，同时支持流程图高亮及任务跟踪。
 - 严格且合理的数据安全校验，流程敏感数据 (如合同信息) 不会被越权访问和下载。
 - 已去除 Spring Security 的缺省依赖，并与现有权限系统完美整合。
@@ -100,9 +100,9 @@
 #### 关于我们
 - S.L 老师，20年开发经验，后台全栈架构师，代码强迫症、性能洁癖、能看出一像素偏差。精通 C++/Java/Scala/Web高并发/大数据/C++服务器/视频直播网络技术，略懂容器。
 - J.T 老师，15年开发经验，前端全栈架构师，思维极缜密、号边界王。精通 C++/Java/Javascript/Vue & React/C++客户端/Android原生/小程序/视频直播编解码技术。
-- 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。 [![加入QQ群](https://img.shields.io/badge/788581363-red.svg)](//shang.qq.com/wpa/qunwpa?idkey=590857a1b4c587e2be3d66b9a7e2015109772e777c6451c897dee393489b1661)
+- 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群2:[![加入QQ群2](https://img.shields.io/badge/883176267-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=cMMom9SdX1j57T_58WihLZ4TBrBpokrv&jump_from=webapi)
 - 由于被恶意举报，如果您通过群号搜索不到，请添加作者的 QQ (3510245832)，我们会将您拉入群中。
-![QQ群](https://images.gitee.com/uploads/images/2020/0924/092230_dda4c368_7431510.png "orange-group1.png")
+![QQ群](https://images.gitee.com/uploads/images/2021/1028/112843_04869611_7431510.png "orange-group1.png")
 
 ### 生成后工程
 >可无限制的用于学习、培训、接私活、公司自用和开发商业项目等场景，其中基础框架代码将永久免费，并持续更新。

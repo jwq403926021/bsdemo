@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.orange.demo.common.swagger.config.SwaggerAutoConfiguration
+com.orangeforms.common.swagger.config.SwaggerAutoConfiguration

@@ -35,7 +35,7 @@
 #### 在线资源
 - 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
 - 演示配置。[http://config.orangeforms.com](http://config.orangeforms.com)
-- 开发环境搭建和项目启动。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
+- 环境搭建启动。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
 - 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
 - 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)

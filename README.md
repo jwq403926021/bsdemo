@@ -18,7 +18,7 @@
 - orange-demo-flowable 基于 Flowable 6.6 的完整工作流组件及其示例，同时包含完整的在线表单代码，前端工程包含流程编辑器和在线表单编辑器。
 - orange-demo-activiti 基于 Activiti 7.x 的完整工作流组件及其示例，同时包含完整的在线表单代码，前端工程包含流程编辑器和在线表单编辑器。
 - orange-demo-multi 基于 Nacos + Redis + Kafka + ELK + Skywalking 的全栈微服务架构。包含完整的用户权限和数据权限管理。
-- - orange-demo-multi-uaa 基于 OAuth + Nacos + Redis + Kafka + ELK + Skywalking 的全栈微服务单点登录架构，权限管理已去除对 Spring Security 的依赖。
+- orange-demo-multi-uaa 基于 OAuth2 + Nacos + Redis + Kafka + ELK + Skywalking 的全栈微服务单点登录架构，权限管理已去除对 Spring Security 的依赖。
 - orange-demo-single 单体架构工程，如果项目中不需要工作流和在线表单，可使用该工程为模板进行二次开发，省去您系统裁剪的时间开销。
 
 ### 选择橙单

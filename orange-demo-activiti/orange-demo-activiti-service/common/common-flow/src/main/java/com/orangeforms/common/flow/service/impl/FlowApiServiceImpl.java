@@ -175,9 +175,9 @@ public class FlowApiServiceImpl implements FlowApiService {
             this.handleMultiInstanceApprovalType(
                     task.getExecutionId(), flowTaskComment.getApprovalType(), taskVariableData);
             taskVariableData.put(FlowConstant.OPERATION_TYPE_VAR, flowTaskComment.getApprovalType());
-            taskService.complete(task.getId(), taskVariableData, true);
             flowTaskComment.fillWith(task);
             flowTaskCommentService.saveNew(flowTaskComment);
+            taskService.complete(task.getId(), taskVariableData, true);
         } else {
             taskService.complete(task.getId(), taskVariableData, true);
         }

@@ -11,6 +11,8 @@ import com.orangeforms.common.core.util.*;
 import com.orangeforms.common.core.constant.*;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.webadmin.config.ApplicationConfig;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "用户管理管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysUser")
@@ -45,6 +48,10 @@ public class SysUserController {
      * @param roleIdListString     逗号分隔的角色Id列表。
      * @return 应答结果对象，包含新增用户的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUserDto.userId",
+            "sysUserDto.createTimeStart",
+            "sysUserDto.createTimeEnd"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysUserDto sysUserDto,
@@ -77,6 +84,9 @@ public class SysUserController {
      * @param roleIdListString     逗号分隔的角色Id列表。
      * @return 应答结果对象。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "sysUserDto.createTimeStart",
+            "sysUserDto.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody SysUserDto sysUserDto,

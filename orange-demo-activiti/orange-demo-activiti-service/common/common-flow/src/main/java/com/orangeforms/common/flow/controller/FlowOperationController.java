@@ -1,11 +1,13 @@
 package com.orangeforms.common.flow.controller;
 
+import io.swagger.annotations.Api;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.orangeforms.common.core.annotation.DisableDataFilter;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "通用流程操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowOperation")
@@ -466,10 +469,14 @@ public class FlowOperationController {
 
     /**
      * 催办工单，只有流程发起人才可以催办工单。
+     * 催办场景必须要取消数据权限过滤，因为流程的指派很可能是跨越部门的。
+     * 既然被指派和催办了，这里就应该禁用工单表的数据权限过滤约束。
+     * 如果您的系统没有支持数据权限过滤，DisableDataFilter不会有任何影响，建议保留。
      *
      * @param workOrderId 工单Id。
      * @return 应答结果。
      */
+    @DisableDataFilter
     @PostMapping("/remindRuntimeTask")
     public ResponseResult<Void> remindRuntimeTask(@MyRequestBody(required = true) Long workOrderId) {
         FlowWorkOrder flowWorkOrder = flowWorkOrderService.getById(workOrderId);
@@ -496,6 +503,7 @@ public class FlowOperationController {
      * @param cancelReason 取消原因。
      * @return 应答结果。
      */
+    @DisableDataFilter
     @PostMapping("/cancelWorkOrder")
     public ResponseResult<Void> cancelWorkOrder(
             @MyRequestBody(required = true) Long workOrderId,
@@ -528,6 +536,7 @@ public class FlowOperationController {
      * @param stopReason        停止原因。
      * @return 执行结果应答。
      */
+    @DisableDataFilter
     @PostMapping("/stopProcessInstance")
     public ResponseResult<Void> stopProcessInstance(
             @MyRequestBody(required = true) String processInstanceId,

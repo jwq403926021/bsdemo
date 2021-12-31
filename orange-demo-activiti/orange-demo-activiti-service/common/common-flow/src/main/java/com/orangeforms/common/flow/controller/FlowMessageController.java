@@ -1,5 +1,6 @@
 package com.orangeforms.common.flow.controller;
 
+import io.swagger.annotations.Api;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.MyPageUtil;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "工作流消息操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowMessage")

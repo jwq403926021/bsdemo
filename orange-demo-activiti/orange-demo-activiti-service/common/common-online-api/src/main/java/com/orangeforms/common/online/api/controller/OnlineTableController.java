@@ -1,5 +1,6 @@
 package com.orangeforms.common.online.api.controller;
 
+import io.swagger.annotations.Api;
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
@@ -27,6 +28,7 @@ import java.util.Map;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "数据表操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-online-api.urlPrefix}/onlineTable")

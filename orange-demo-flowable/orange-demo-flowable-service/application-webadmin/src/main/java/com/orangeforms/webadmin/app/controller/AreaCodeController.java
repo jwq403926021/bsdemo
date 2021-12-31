@@ -1,5 +1,6 @@
 package com.orangeforms.webadmin.app.controller;
 
+import io.swagger.annotations.Api;
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.orangeforms.webadmin.app.model.AreaCode;
 import com.orangeforms.webadmin.app.service.AreaCodeService;
@@ -21,6 +22,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "行政区划数据访问接口")
 @RestController
 @RequestMapping("/admin/app/areaCode")
 public class AreaCodeController {

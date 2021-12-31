@@ -3,9 +3,9 @@
 <mapper namespace="com.orangeforms.common.flow.dao.FlowMessageMapper">
     <resultMap id="BaseResultMap" type="com.orangeforms.common.flow.model.FlowMessage">
         <id column="message_id" jdbcType="BIGINT" property="messageId"/>
-        <id column="message_type" jdbcType="TINYINT" property="messageType"/>
-        <id column="message_content" jdbcType="VARCHAR" property="messageContent"/>
-        <id column="remind_count" jdbcType="INTEGER" property="remindCount"/>
+        <result column="message_type" jdbcType="TINYINT" property="messageType"/>
+        <result column="message_content" jdbcType="VARCHAR" property="messageContent"/>
+        <result column="remind_count" jdbcType="INTEGER" property="remindCount"/>
         <result column="work_order_id" jdbcType="BIGINT" property="workOrderId"/>
         <result column="process_definition_id" jdbcType="VARCHAR" property="processDefinitionId"/>
         <result column="process_definition_key" jdbcType="VARCHAR" property="processDefinitionKey"/>
@@ -18,6 +18,7 @@
         <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime"/>
         <result column="task_assignee" jdbcType="VARCHAR" property="taskAssignee"/>
         <result column="task_finished" jdbcType="BIT" property="taskFinished"/>
+        <result column="business_data_shot" jdbcType="LONGVARCHAR" property="businessDataShot"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>

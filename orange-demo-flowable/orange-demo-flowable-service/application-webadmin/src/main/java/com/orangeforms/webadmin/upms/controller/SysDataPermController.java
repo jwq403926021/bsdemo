@@ -1,5 +1,7 @@
 package com.orangeforms.webadmin.upms.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "数据权限管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysDataPerm")
@@ -47,6 +50,11 @@ public class SysDataPermController {
      * @param deptIdListString 数据权限关联的部门Id列表，多个之间逗号分隔。
      * @return 应答结果对象。包含新增数据权限对象的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "sysDataPermDto.dataPermId",
+            "sysDataPermDto.createTimeStart",
+            "sysDataPermDto.createTimeEnd",
+            "sysDataPermDto.searchString"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysDataPermDto sysDataPermDto, @MyRequestBody String deptIdListString) {
@@ -74,6 +82,10 @@ public class SysDataPermController {
      * @param deptIdListString 数据权限关联的部门Id列表，多个之间逗号分隔。
      * @return 应答结果对象。
      */
+    @ApiOperationSupport(ignoreParameters = {
+            "sysDataPermDto.createTimeStart",
+            "sysDataPermDto.createTimeEnd",
+            "sysDataPermDto.searchString"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody SysDataPermDto sysDataPermDto, @MyRequestBody String deptIdListString) {

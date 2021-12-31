@@ -1,5 +1,7 @@
 package com.orangeforms.common.online.api.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
@@ -25,6 +27,7 @@ import java.util.List;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "验证规则操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-online-api.urlPrefix}/onlineRule")
@@ -39,6 +42,7 @@ public class OnlineRuleController {
      * @param onlineRuleDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"onlineRuleDto.ruleId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody OnlineRuleDto onlineRuleDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(onlineRuleDto);

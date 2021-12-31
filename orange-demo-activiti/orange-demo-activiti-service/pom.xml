@@ -29,6 +29,7 @@
         <caffeine.version>3.0.2</caffeine.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
+        <log4j2.version>2.17.0</log4j2.version>
         <disruptor.version>3.4.3</disruptor.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <activiti.version>7.1.0.M6</activiti.version>
@@ -38,6 +39,7 @@
         <pagehelper.version>1.3.0</pagehelper.version>
         <redisson.version>3.15.4</redisson.version>
         <qdox.version>2.0.0</qdox.version>
+        <knife4j.version>2.0.8</knife4j.version>
     </properties>
 
     <modules>
@@ -91,7 +93,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.15.0</version>
+            <version>${log4j2.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j-api</artifactId>
@@ -102,7 +104,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jul</artifactId>
-            <version>2.15.0</version>
+            <version>${log4j2.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j-api</artifactId>
@@ -113,7 +115,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.15.0</version>
+            <version>${log4j2.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j-core</artifactId>
@@ -128,7 +130,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.15.0</version>
+            <version>${log4j2.version}</version>
         </dependency>
         <!-- aop模块 -->
         <dependency>

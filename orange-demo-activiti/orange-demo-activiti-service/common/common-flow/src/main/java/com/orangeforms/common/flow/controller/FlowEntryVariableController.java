@@ -1,5 +1,7 @@
 package com.orangeforms.common.flow.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.github.pagehelper.page.PageMethod;
 import com.orangeforms.common.flow.vo.*;
 import com.orangeforms.common.flow.dto.*;
@@ -23,6 +25,7 @@ import javax.validation.groups.Default;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "工作流变量操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowEntryVariable")
@@ -37,6 +40,7 @@ public class FlowEntryVariableController {
      * @param flowEntryVariableDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"flowEntryVariableDto.variableId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody FlowEntryVariableDto flowEntryVariableDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(flowEntryVariableDto);

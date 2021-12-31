@@ -1,5 +1,7 @@
 package com.orangeforms.common.online.api.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONObject;
 import com.orangeforms.common.core.annotation.MyRequestBody;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "在线表单操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-online-api.urlPrefix}/onlineForm")
@@ -58,6 +61,7 @@ public class OnlineFormController {
      * @param onlineFormDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"onlineFormDto.formId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody OnlineFormDto onlineFormDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(onlineFormDto);

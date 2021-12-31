@@ -1,5 +1,7 @@
 package com.orangeforms.common.flow.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -39,6 +41,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "工作流操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowEntry")
@@ -59,6 +62,7 @@ public class FlowEntryController {
      * @param flowEntryDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"flowEntryDto.entryId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody FlowEntryDto flowEntryDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(flowEntryDto);

@@ -276,10 +276,11 @@ public class MybatisDataFilterInterceptor implements Interceptor {
             return;
         }
         String dataPermSessionKey = RedisKeyUtil.makeSessionDataPermIdKey(tokenData.getSessionId());
-        String dataPermData = redissonClient.getBucket(dataPermSessionKey).get().toString();
-        if (StringUtils.isBlank(dataPermData)) {
+        Object cachedData = redissonClient.getBucket(dataPermSessionKey).get();
+        if (cachedData == null) {
             throw new NoDataPermException("No Related DataPerm found for SQL_ID [ " + sqlId + " ].");
         }
+        String dataPermData = cachedData.toString();
         Map<Integer, String> dataPermMap = new HashMap<>(8);
         for (Map.Entry<String, Object> entry : JSON.parseObject(dataPermData).entrySet()) {
             dataPermMap.put(Integer.valueOf(entry.getKey()), entry.getValue().toString());

@@ -118,6 +118,12 @@ public class FlowMessage {
     private Boolean taskFinished;
 
     /**
+     * 业务数据快照。
+     */
+    @TableField(value = "business_data_shot")
+    private String businessDataShot;
+
+    /**
      * 更新时间。
      */
     @TableField(value = "update_time")

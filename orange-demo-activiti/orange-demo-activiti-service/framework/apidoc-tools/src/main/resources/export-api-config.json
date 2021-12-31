@@ -1,5 +1,5 @@
 {
-  "projectName": "橙单在线表单",
+  "projectName": "橙单工作流开源版",
   "basePackage": "com.orangeforms",
   "projectRootPath": "这里请使用当前工程的根目录，如：e:/xxx/OrangeDemo 或者 /Users/xxx/OrangeDemo",
   "microService": "false",

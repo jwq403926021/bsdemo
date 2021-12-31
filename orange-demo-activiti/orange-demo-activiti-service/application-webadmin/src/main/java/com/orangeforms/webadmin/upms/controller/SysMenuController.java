@@ -2,6 +2,8 @@ package com.orangeforms.webadmin.upms.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.TypeReference;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.orangeforms.webadmin.upms.dto.SysMenuDto;
 import com.orangeforms.webadmin.upms.vo.SysMenuVo;
@@ -25,6 +27,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "菜单管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysMenu")
@@ -40,6 +43,7 @@ public class SysMenuController {
      * @param permCodeIdListString 与当前菜单Id绑定的权限Id列表，多个权限之间逗号分隔。
      * @return 应答结果对象，包含新增菜单的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysMenuDto.menuId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysMenuDto sysMenuDto, @MyRequestBody String permCodeIdListString) {

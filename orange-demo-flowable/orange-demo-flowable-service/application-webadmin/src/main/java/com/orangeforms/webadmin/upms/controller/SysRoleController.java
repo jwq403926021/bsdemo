@@ -1,6 +1,8 @@
 package com.orangeforms.webadmin.upms.controller;
 
 import cn.jimmyshi.beanquery.BeanQuery;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "角色管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysRole")
@@ -49,6 +52,7 @@ public class SysRoleController {
      * @param menuIdListString 与当前角色Id绑定的menuId列表，多个menuId之间逗号分隔。
      * @return 应答结果对象，包含新增角色的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysRoleDto.roleId", "sysRoleDto.createTimeStart", "sysRoleDto.createTimeEnd"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysRoleDto sysRoleDto, @MyRequestBody String menuIdListString) {
@@ -76,6 +80,7 @@ public class SysRoleController {
      * @param menuIdListString 与当前角色Id绑定的menuId列表，多个menuId之间逗号分隔。
      * @return 应答结果对象。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysRoleDto.createTimeStart", "sysRoleDto.createTimeEnd"})
     @PostMapping("/update")
     public ResponseResult<Void> update(
             @MyRequestBody SysRoleDto sysRoleDto, @MyRequestBody String menuIdListString) {

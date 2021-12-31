@@ -116,6 +116,10 @@ public class OperationLogAspect {
             if (saveOperationLog) {
                 this.operationLogPostProcess(operationLogAnnotation, respData, operationLog, result);
             }
+            if (elapse > properties.getSlowLogMs()) {
+                log.warn("耗时较长的请求完成警告, url={}，elapse={}ms reqData={} respData={}",
+                        request.getRequestURI(), elapse, params, respData);
+            }
             log.info("请求完成, url={}，elapse={}ms, respData={}", request.getRequestURI(), elapse, respData);
         } catch (Exception e) {
             if (saveOperationLog) {

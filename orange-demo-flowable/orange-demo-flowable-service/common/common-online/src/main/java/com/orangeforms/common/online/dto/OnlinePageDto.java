@@ -4,6 +4,8 @@ import com.orangeforms.common.core.validator.ConstDictRef;
 import com.orangeforms.common.core.validator.UpdateGroup;
 import com.orangeforms.common.online.model.constant.PageStatus;
 import com.orangeforms.common.online.model.constant.PageType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -15,29 +17,34 @@ import javax.validation.constraints.NotNull;
  * @author Jerry
  * @date 2021-06-06
  */
+@ApiModel("在线表单所在页面Dto对象")
 @Data
 public class OnlinePageDto {
 
     /**
      * 主键Id。
      */
+    @ApiModelProperty(value = "主键Id")
     @NotNull(message = "数据验证失败，主键Id不能为空！", groups = {UpdateGroup.class})
     private Long pageId;
 
     /**
      * 页面编码。
      */
+    @ApiModelProperty(value = "页面编码")
     private String pageCode;
 
     /**
      * 页面名称。
      */
+    @ApiModelProperty(value = "页面名称")
     @NotBlank(message = "数据验证失败，页面名称不能为空！")
     private String pageName;
 
     /**
      * 页面类型。
      */
+    @ApiModelProperty(value = "页面类型")
     @NotNull(message = "数据验证失败，页面类型不能为空！")
     @ConstDictRef(constDictClass = PageType.class, message = "数据验证失败，页面类型为无效值！")
     private Integer pageType;
@@ -45,6 +52,7 @@ public class OnlinePageDto {
     /**
      * 页面编辑状态。
      */
+    @ApiModelProperty(value = "页面编辑状态")
     @NotNull(message = "数据验证失败，状态不能为空！")
     @ConstDictRef(constDictClass = PageStatus.class, message = "数据验证失败，状态为无效值！")
     private Integer status;

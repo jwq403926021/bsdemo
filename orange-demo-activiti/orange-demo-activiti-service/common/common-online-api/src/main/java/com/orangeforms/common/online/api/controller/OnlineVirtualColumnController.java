@@ -1,5 +1,7 @@
 package com.orangeforms.common.online.api.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.github.pagehelper.page.PageMethod;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.*;
@@ -24,6 +26,7 @@ import javax.validation.groups.Default;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "虚拟字段操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-online-api.urlPrefix}/onlineVirtualColumn")
@@ -38,6 +41,7 @@ public class OnlineVirtualColumnController {
      * @param onlineVirtualColumnDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"onlineVirtualColumnDto.virtualColumnId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody OnlineVirtualColumnDto onlineVirtualColumnDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(onlineVirtualColumnDto);

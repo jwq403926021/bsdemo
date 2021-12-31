@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.RedisKeyUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -22,6 +23,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "在线用户接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/loginUser")

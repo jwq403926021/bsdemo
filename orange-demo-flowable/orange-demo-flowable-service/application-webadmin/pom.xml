@@ -45,6 +45,11 @@
             <artifactId>common-datafilter</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.orangeforms</groupId>
+            <artifactId>common-swagger</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 	</dependencies>
 
 	<build>

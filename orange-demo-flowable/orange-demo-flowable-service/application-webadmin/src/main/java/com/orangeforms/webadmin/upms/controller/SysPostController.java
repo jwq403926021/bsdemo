@@ -1,5 +1,7 @@
 package com.orangeforms.webadmin.upms.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import cn.jimmyshi.beanquery.BeanQuery;
 import com.github.pagehelper.page.PageMethod;
 import com.orangeforms.common.core.object.*;
@@ -24,6 +26,7 @@ import javax.validation.groups.Default;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "岗位管理操作管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPost")
@@ -38,6 +41,7 @@ public class SysPostController {
      * @param sysPostDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysPostDto.postId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody SysPostDto sysPostDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysPostDto);

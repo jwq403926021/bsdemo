@@ -1,5 +1,6 @@
 package com.orangeforms.common.flow.online.controller;
 
+import io.swagger.annotations.Api;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
@@ -8,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.page.PageMethod;
+import com.orangeforms.common.core.annotation.DisableDataFilter;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
@@ -54,6 +56,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "在线标案流程操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowOnlineOperation")
@@ -82,6 +85,7 @@ public class FlowOnlineOperationController {
 
     /**
      * 根据指定流程的主版本，发起一个流程实例，同时作为第一个任务节点的执行人，执行第一个用户任务。
+     * 该接口无需数据权限过滤，因此用DisableDataFilter注解标注。如果当前系统没有支持数据权限过滤，该注解不会有任何影响。
      *
      * @param processDefinitionKey 流程定义标识。
      * @param flowTaskCommentDto   审批意见。
@@ -90,6 +94,7 @@ public class FlowOnlineOperationController {
      * @param slaveData            流程审批相关的多个从表数据。
      * @return 应答结果对象。
      */
+    @DisableDataFilter
     @PostMapping("/startAndTakeUserTask/{processDefinitionKey}")
     public ResponseResult<Void> startAndTakeUserTask(
             @PathVariable("processDefinitionKey") String processDefinitionKey,
@@ -157,6 +162,7 @@ public class FlowOnlineOperationController {
 
     /**
      * 提交流程的用户任务。
+     * 该接口无需数据权限过滤，因此用DisableDataFilter注解标注。如果当前系统没有支持数据权限过滤，该注解不会有任何影响。
      *
      * @param processInstanceId  流程实例Id。
      * @param taskId             流程任务Id。
@@ -166,6 +172,7 @@ public class FlowOnlineOperationController {
      * @param slaveData          流程审批相关的多个从表数据。
      * @return 应答结果对象。
      */
+    @DisableDataFilter
     @PostMapping("/submitUserTask")
     public ResponseResult<Void> submitUserTask(
             @MyRequestBody(required = true) String processInstanceId,
@@ -219,11 +226,13 @@ public class FlowOnlineOperationController {
 
     /**
      * 获取当前流程实例的详情数据。包括主表数据、一对一从表数据、一对多从表数据列表等。
+     * 该接口无需数据权限过滤，因此用DisableDataFilter注解标注。如果当前系统没有支持数据权限过滤，该注解不会有任何影响。
      *
      * @param processInstanceId 当前运行时的流程实例Id。
      * @param taskId            流程任务Id。
      * @return 当前流程实例的详情数据。
      */
+    @DisableDataFilter
     @GetMapping("/viewUserTask")
     public ResponseResult<JSONObject> viewUserTask(@RequestParam String processInstanceId, @RequestParam String taskId) {
         String errorMessage;
@@ -257,11 +266,13 @@ public class FlowOnlineOperationController {
 
     /**
      * 获取已经结束的流程实例的详情数据。包括主表数据、一对一从表数据、一对多从表数据列表等。
+     * 该接口无需数据权限过滤，因此用DisableDataFilter注解标注。如果当前系统没有支持数据权限过滤，该注解不会有任何影响。
      *
      * @param processInstanceId 历史流程实例Id。
      * @param taskId            历史任务Id。如果该值为null，仅有发起人可以查看当前流程数据，否则只有任务的指派人才能查看。
      * @return 历史流程实例的详情数据。
      */
+    @DisableDataFilter
     @GetMapping("/viewHistoricProcessInstance")
     public ResponseResult<JSONObject> viewHistoricProcessInstance(
             @RequestParam String processInstanceId, @RequestParam(required = false) String taskId) {
@@ -336,6 +347,8 @@ public class FlowOnlineOperationController {
         List<FlowWorkOrder> flowWorkOrderList = flowWorkOrderService.getFlowWorkOrderList(flowWorkOrderFilter, orderBy);
         MyPageData<FlowWorkOrderVo> resultData =
                 MyPageUtil.makeResponseData(flowWorkOrderList, FlowWorkOrder.INSTANCE);
+        // 工单自身的查询中可以受到数据权限的过滤，但是工单集成业务数据时，则无需再对业务数据进行数据权限过滤了。
+        GlobalThreadLocal.setDataFilter(false);
         ResponseResult<Void> responseResult = this.makeWorkOrderTaskInfo(resultData.getDataList());
         if (!responseResult.isSuccess()) {
             return ResponseResult.errorFrom(responseResult);
@@ -385,6 +398,7 @@ public class FlowOnlineOperationController {
      * 越权访问限制说明：
      * taskId为空，当前用户必须为当前流程的发起人，否则必须为当前任务的指派人或候选人。
      * relationId为空，下载数据为主表字段，否则为关联的从表字段。
+     * 该接口无需数据权限过滤，因此用DisableDataFilter注解标注。如果当前系统没有支持数据权限过滤，该注解不会有任何影响。
      *
      * @param processDefinitionKey 流程引擎流程定义标识。
      * @param processInstanceId    流程实例Id。
@@ -396,6 +410,7 @@ public class FlowOnlineOperationController {
      * @param asImage              是否为图片文件。
      * @param response             Http 应答对象。
      */
+    @DisableDataFilter
     @GetMapping("/download")
     public void download(
             @RequestParam String processDefinitionKey,

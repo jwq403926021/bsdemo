@@ -2,12 +2,14 @@ package com.orangeforms.common.core.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.*;
 import com.orangeforms.common.core.exception.InvalidDataFieldException;
 import com.orangeforms.common.core.annotation.*;
 import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.object.Tuple2;
+import com.orangeforms.common.core.upload.UploadResponseInfo;
 import com.orangeforms.common.core.upload.UploadStoreInfo;
 import com.google.common.base.CaseFormat;
 import lombok.extern.slf4j.Slf4j;
@@ -706,6 +708,46 @@ public class MyModelUtil {
         if (v == null) {
             ReflectUtil.setFieldValue(data, fieldName, defaultValue);
         }
+    }
+    
+    /**
+     * 获取当前数据对象中，所有上传文件字段的数据，并将上传后的文件名存到集合中并返回。
+     *
+     * @param data  数据对象。
+     * @param clazz 数据对象的Class类型。
+     * @param <M>   数据对象类型。
+     * @return 当前数据对象中，所有上传文件字段中，文件名属性的集合。
+     */
+    public static <M> Set<String> extractDownloadFileName(M data, Class<M> clazz) {
+        Set<String> resultSet = new HashSet<>();
+        Field[] fields = ReflectUtil.getFields(clazz);
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(UploadFlagColumn.class)) {
+                String v = (String) ReflectUtil.getFieldValue(data, field);
+                List<UploadResponseInfo> fileInfoList = JSON.parseArray(v, UploadResponseInfo.class);
+                if (CollectionUtils.isNotEmpty(fileInfoList)) {
+                    fileInfoList.forEach(fileInfo -> resultSet.add(fileInfo.getFilename()));
+                }
+            }
+        }
+        return resultSet;
+    }
+
+    /**
+     * 获取当前数据对象列表中，所有上传文件字段的数据，并将上传后的文件名存到集合中并返回。
+     *
+     * @param dataList 数据对象。
+     * @param clazz    数据对象的Class类型。
+     * @param <M>      数据对象类型。
+     * @return 当前数据对象中，所有上传文件字段中，文件名属性的集合。
+     */
+    public static <M> Set<String> extractDownloadFileName(List<M> dataList, Class<M> clazz) {
+        if (CollectionUtils.isEmpty(dataList)) {
+            return null;
+        }
+        Set<String> resultSet = new HashSet<>();
+        dataList.forEach(data -> resultSet.addAll(extractDownloadFileName(data, clazz)));
+        return resultSet;
     }
 
     /**

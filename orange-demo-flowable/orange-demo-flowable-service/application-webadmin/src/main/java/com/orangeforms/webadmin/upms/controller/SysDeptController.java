@@ -10,6 +10,8 @@ import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.*;
 import com.orangeforms.common.core.constant.*;
 import com.orangeforms.common.core.annotation.MyRequestBody;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "部门管理管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysDept")
@@ -40,6 +43,7 @@ public class SysDeptController {
      * @param sysDeptDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysDeptDto.deptId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody SysDeptDto sysDeptDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(sysDeptDto, false);

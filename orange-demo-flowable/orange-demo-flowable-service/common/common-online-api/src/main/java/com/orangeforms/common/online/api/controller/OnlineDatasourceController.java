@@ -1,5 +1,7 @@
 package com.orangeforms.common.online.api.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import cn.hutool.core.collection.CollUtil;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
@@ -30,6 +32,7 @@ import java.util.List;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "数据模型操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-online-api.urlPrefix}/onlineDatasource")
@@ -53,6 +56,7 @@ public class OnlineDatasourceController {
      * @param pageId              关联的页面Id。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"onlineDatasourceDto.datasourceId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody OnlineDatasourceDto onlineDatasourceDto,

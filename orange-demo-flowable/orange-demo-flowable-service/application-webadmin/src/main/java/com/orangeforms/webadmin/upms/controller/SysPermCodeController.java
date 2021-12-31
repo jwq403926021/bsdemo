@@ -1,5 +1,7 @@
 package com.orangeforms.webadmin.upms.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import com.orangeforms.webadmin.upms.dto.SysPermCodeDto;
@@ -24,6 +26,7 @@ import java.util.*;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "权限字管理接口")
 @Slf4j
 @RestController
 @RequestMapping("/admin/upms/sysPermCode")
@@ -39,6 +42,7 @@ public class SysPermCodeController {
      * @param permIdListString 与当前权限Id绑定的权限资源Id列表，多个权限资源之间逗号分隔。
      * @return 应答结果对象，包含新增权限字的主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"sysPermCodeDto.permCodeId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(
             @MyRequestBody SysPermCodeDto sysPermCodeDto, @MyRequestBody String permIdListString) {

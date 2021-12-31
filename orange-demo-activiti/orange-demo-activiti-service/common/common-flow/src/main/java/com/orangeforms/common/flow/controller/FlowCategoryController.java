@@ -1,5 +1,7 @@
 package com.orangeforms.common.flow.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.jimmyshi.beanquery.BeanQuery;
@@ -31,6 +33,7 @@ import java.util.Map;
  * @author Jerry
  * @date 2021-06-06
  */
+@Api(tags = "工作流分类操作接口")
 @Slf4j
 @RestController
 @RequestMapping("${common-flow.urlPrefix}/flowCategory")
@@ -47,6 +50,7 @@ public class FlowCategoryController {
      * @param flowCategoryDto 新增对象。
      * @return 应答结果对象，包含新增对象主键Id。
      */
+    @ApiOperationSupport(ignoreParameters = {"flowCategoryDto.categoryId"})
     @PostMapping("/add")
     public ResponseResult<Long> add(@MyRequestBody FlowCategoryDto flowCategoryDto) {
         String errorMessage = MyCommonUtil.getModelValidationError(flowCategoryDto);

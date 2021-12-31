@@ -21,5 +21,6 @@
         <module>common-flow</module>
         <module>common-redis</module>
         <module>common-sequence</module>
+        <module>common-swagger</module>
     </modules>
 </project>

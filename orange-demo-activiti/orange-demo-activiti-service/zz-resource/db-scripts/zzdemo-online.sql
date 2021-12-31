@@ -5547,6 +5547,7 @@ CREATE TABLE `zz_flow_message` (
   `task_start_time` datetime DEFAULT NULL COMMENT '任务开始时间',
   `task_finished` bit(1) NOT NULL DEFAULT b'0' COMMENT '任务是否已完成',
   `task_assignee` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务指派人登录名',
+  `business_data_shot` longtext COLLATE utf8mb4_bin COMMENT '业务数据快照',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',

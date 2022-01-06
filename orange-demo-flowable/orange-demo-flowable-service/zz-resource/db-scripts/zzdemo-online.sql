@@ -5893,12 +5893,6 @@ CREATE TABLE `zz_flow_message` (
   KEY `idx_update_time` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- ----------------------------
--- Records of zz_flow_message
--- ----------------------------
-BEGIN;
-INSERT INTO `zz_flow_message` VALUES (1471369219575648256, 0, NULL, 1, 1471362093398626304, 'flowLeave:2:de31b55a-5e35-11ec-9f5e-f20bcee4e113', 'flowLeave', '请假申请', 'e13cdd0b-5e36-11ec-9f5e-f20bcee4e113', 'userA', '4afee132-5e38-11ec-9f5e-f20bcee4e113', 'Activity_0olxatv', 'HR审批', '2021-12-16 14:20:41', b'1', NULL, '2021-12-16 14:38:53', 1440965465605148672, '2021-12-16 14:38:53', 1440965465605148672, '员工A');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for zz_flow_message_candicate_identity

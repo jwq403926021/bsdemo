@@ -173,4 +173,14 @@ public interface BaseClient<D, V, K> {
     default ResponseResult<MyPageData<V>> listByNotInList(MyQueryParam queryParam) {
         throw new UnsupportedOperationException();
     }
+
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。
+     *
+     * @param queryParam 查询参数。
+     * @return filterSet中，在从表中不存在的数据集合。
+     */
+    default ResponseResult<List<?>> notExist(MyQueryParam queryParam) {
+        throw new UnsupportedOperationException();
+    }
 }

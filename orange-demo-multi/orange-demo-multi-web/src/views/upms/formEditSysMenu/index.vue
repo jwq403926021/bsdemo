@@ -1,10 +1,10 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini" label-position="right" @submit.native.prevent>
+  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="12">
         <el-form-item label="上级菜单">
           <el-cascader :options="menuTree" v-model="parentMenuPath" :props="menuProps" placeholder="选择父菜单"
-            :disabled="!canEditParent || isEdit" :clearable="true" :change-on-select="true" size="mini"
+            :disabled="!canEditParent || isEdit" :clearable="true" :change-on-select="true" :size="defaultFormItemSize"
             @change="onParentMenuChange" />
         </el-form-item>
       </el-col>
@@ -41,7 +41,7 @@
         <el-card shadow="never">
           <div slot="header" class="card-header">
             <span>权限字列表</span>
-            <el-input size="mini" v-model="permCodeNameFilter" placeholder="输入权限字名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
+            <el-input :size="defaultFormItemSize" v-model="permCodeNameFilter" placeholder="输入权限字名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
           </div>
           <el-scrollbar style="height: 210px;" wrap-class="scrollbar_dropdown__wrap">
             <el-tree ref="permCodeTree" :check-strictly="true"
@@ -54,8 +54,8 @@
     </el-row>
     <!-- 弹窗按钮 -->
     <el-row type="flex" justify="end" class="dialog-btn-layer mt20">
-      <el-button size="mini" @click="onCancel(false)" >取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit"
+      <el-button :size="defaultFormItemSize" @click="onCancel(false)" >取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit"
         :disabled="!(checkPermCodeExist('formSysMenu:fragmentSysMenu:add') || checkPermCodeExist('formSysMenu:fragmentSysMenu:update'))">
         确定
       </el-button>

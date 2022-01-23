@@ -1,6 +1,6 @@
 <template>
   <div class="panel-tab__content">
-    <el-form ref="form" size="mini" label-width="80px" :model="formData" :rules="rules" @submit.native.prevent>
+    <el-form ref="form" :size="defaultFormItemSize" label-width="80px" :model="formData" :rules="rules" @submit.native.prevent>
       <el-form-item label="表单路由" prop="routerName"
         v-if="flowEntry().bindFormType === SysFlowEntryBindFormType.ROUTER_FORM">
         <el-input v-model="formData.routerName" clearable @change="updateElementFormKey" />
@@ -37,7 +37,7 @@
             </el-table-column>
             <el-table-column label="按钮类型" min-width="100px">
               <template slot-scope="scope">
-                <el-tag size="mini" effect="dark">{{SysFlowTaskOperationType.getValue(scope.row.type)}}</el-tag>
+                <el-tag :size="defaultFormItemSize" effect="dark">{{SysFlowTaskOperationType.getValue(scope.row.type)}}</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="显示顺序" prop="showOrder" width="60px" />
@@ -109,7 +109,7 @@ export default {
           formId: this.flowEntry().bindFormType === this.SysFlowEntryBindFormType.ONLINE_FORM ? this.formData.formId : undefined,
           routerName: this.flowEntry().bindFormType === this.SysFlowEntryBindFormType.ONLINE_FORM ? undefined : this.formData.routerName,
           readOnly: !this.formData.editable,
-          groupType: this.formData.groupType || 'ROLE'
+          groupType: this.formData.groupType || 'ASSIGNEE'
         });
         window.bpmnInstances.modeling.updateProperties(this.bpmnELement, { formKey: formKeyString });
       });

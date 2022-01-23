@@ -7,7 +7,7 @@
             {{widgetConfig.showName}}
           </div>
           <div>
-            <el-button size="mini"
+            <el-button :size="defaultFormItemSize"
               v-for="operation in getTableOperation(false)" :key="operation.id"
               :plain="operation.plain"
               :type="operation.btnType"
@@ -18,7 +18,7 @@
         </el-row>
       </el-col>
       <el-col :span="24">
-        <el-table size="mini" header-cell-class-name="table-header-gray" ref="tableImpl"
+        <el-table :size="defaultFormItemSize" header-cell-class-name="table-header-gray" ref="tableImpl"
           :style="{height: (widgetConfig.tableInfo.height != null && widgetConfig.tableInfo.height !== '') ? widgetConfig.tableInfo.height + 'px' : undefined}"
           :height="(widgetConfig.tableInfo.height != null && widgetConfig.tableInfo.height !== '') ? widgetConfig.tableInfo.height + 'px' : undefined"
           :data="tableWidget.dataList" :row-key="primaryColumnName"
@@ -32,7 +32,7 @@
               :sortable="tableColumn.sortable ? 'custom' : false"
             >
               <template slot-scope="scope">
-                <el-tag size="mini" :type="scope.row[tableColumn.dataFieldName] ? 'success' : 'danger'">
+                <el-tag :size="defaultFormItemSize" :type="scope.row[tableColumn.dataFieldName] ? 'success' : 'danger'">
                   {{scope.row[tableColumn.dataFieldName] ? '是' : '否'}}
                 </el-tag>
               </template>
@@ -84,7 +84,7 @@
               </template>
             </el-table-column>
           </template>
-          <el-table-column v-if="formType === SysOnlineFormType.WORK_ORDER" label="当前任务" prop="(runtimeTaskInfo || {}).taskName" />
+          <el-table-column v-if="formType === SysOnlineFormType.WORK_ORDER" label="当前任务" prop="runtimeTaskInfo.taskName" />
           <el-table-column v-if="formType === SysOnlineFormType.WORK_ORDER" label="流程创建时间" width="180px" prop="createTime" />
           <el-table-column v-if="formType === SysOnlineFormType.WORK_ORDER" label="流程状态" width="100px" prop="flowStatus" />
           <el-table-column
@@ -94,27 +94,27 @@
             <template slot-scope="scope">
               <el-button v-for="operation in getTableOperation(true)" :key="operation.id"
                 :class="operation.btnClass"
-                type="text" size="mini"
+                type="text" :size="defaultFormItemSize"
                 @click.stop="onOperationClick(operation, scope.row)"
               >
                 {{operation.name}}
               </el-button>
-              <el-button type="text" size="mini"
+              <el-button type="text" :size="defaultFormItemSize"
                 v-if="formType === SysOnlineFormType.WORK_ORDER && (scope.row.initTaskInfo || {}).taskKey !== (scope.row.runtimeTaskInfo || {}).taskKey"
                 @click.stop="onViewWorkOrder(scope.row)">
                 详情
               </el-button>
-              <el-button type="text" size="mini"
+              <el-button type="text" :size="defaultFormItemSize"
                 v-if="formType === SysOnlineFormType.WORK_ORDER && (scope.row.initTaskInfo || {}).taskKey === (scope.row.runtimeTaskInfo || {}).taskKey"
                 @click.stop="onHandlerWorkOrder(scope.row)">
                 办理
               </el-button>
-              <el-button type="text" size="mini"
+              <el-button type="text" :size="defaultFormItemSize"
               v-if="formType === SysOnlineFormType.WORK_ORDER"
                 @click.stop="onHandlerRemindClick(scope.row)">
                 催办
               </el-button>
-              <el-button type="text" size="mini" class="table-btn error"
+              <el-button type="text" :size="defaultFormItemSize" class="table-btn error"
                 v-if="formType === SysOnlineFormType.WORK_ORDER"
                 @click.stop="onCancelWorkOrder(scope.row)">
                 撤销

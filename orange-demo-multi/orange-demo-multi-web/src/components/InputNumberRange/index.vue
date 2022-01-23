@@ -212,6 +212,7 @@ export default {
   watch: {
     value: {
       handler: function (val, oldVal) {
+        this.userInput = val;
         if (!this.valueEquals(val, oldVal) && this.validateEvent) {
           this.dispatch('ElFormItem', 'el.form.change', val);
         }

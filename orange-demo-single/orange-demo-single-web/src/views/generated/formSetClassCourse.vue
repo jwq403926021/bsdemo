@@ -1,8 +1,10 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSetClassCourseFilter" :model="formSetClassCourse" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="所属年级">
+        <el-form-item label="所属年级" prop="formFilter.gradeId">
           <el-select class="filter-item" v-model="formSetClassCourse.formFilter.gradeId" :clearable="true" filterable
             placeholder="所属年级" :loading="formSetClassCourse.gradeId.impl.loading"
             @visible-change="formSetClassCourse.gradeId.impl.onVisibleChange"
@@ -10,7 +12,7 @@
             <el-option v-for="item in formSetClassCourse.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属科目">
+        <el-form-item label="所属科目" prop="formFilter.subjectId">
           <el-select class="filter-item" v-model="formSetClassCourse.formFilter.subjectId" :clearable="true" filterable
             placeholder="所属科目" :loading="formSetClassCourse.subjectId.impl.loading"
             @visible-change="formSetClassCourse.subjectId.impl.onVisibleChange"
@@ -18,7 +20,7 @@
             <el-option v-for="item in formSetClassCourse.subjectId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="课程难度">
+        <el-form-item label="课程难度" prop="formFilter.difficulty">
           <el-select class="filter-item" v-model="formSetClassCourse.formFilter.difficulty" :clearable="true" filterable
             placeholder="课程难度" :loading="formSetClassCourse.difficulty.impl.loading"
             @visible-change="formSetClassCourse.difficulty.impl.onVisibleChange"
@@ -26,13 +28,14 @@
             <el-option v-for="item in formSetClassCourse.difficulty.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="课程名称">
+        <el-form-item label="课程名称" prop="formFilter.courseName">
           <el-input class="filter-item" v-model="formSetClassCourse.formFilter.courseName"
             :clearable="true" placeholder="课程名称"
           />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSetClassCourse(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSetClassCourse:formSetClassCourse:addClassCourse')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormSetClassCourse">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSetClassCourse(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSetClassCourse:formSetClassCourse:addClassCourse')"
           @click="onAddClassCourseClick()">
           添加
         </el-button>
@@ -40,7 +43,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSetClassCourse.Course.impl.dataList" size="mini"
+        <el-table :data="formSetClassCourse.Course.impl.dataList" :size="defaultFormItemSize"
           @sort-change="formSetClassCourse.Course.impl.onSortChange"
           @selection-change="onCourseSelectionChange"
           header-cell-class-name="table-header-gray">
@@ -147,6 +150,10 @@ export default {
       this.refreshParentCachedPage = isSuccess;
       this.$router.go(-1);
     },
+    onResetFormSetClassCourse () {
+      this.$refs.formSetClassCourseFilter.resetFields();
+      this.refreshFormSetClassCourse(true);
+    },
     onCourseSelectionChange (values) {
       this.tableSelectRowList = values;
     },
@@ -154,12 +161,6 @@ export default {
      * 班级课程数据获取函数，返回Promise
      */
     loadCourseWidgetData (params) {
-      if (
-        this.classId == null
-      ) {
-        this.formSetClassCourse.Course.impl.clearTable();
-        return Promise.reject();
-      }
       if (params == null) params = {};
       params = {
         ...params,

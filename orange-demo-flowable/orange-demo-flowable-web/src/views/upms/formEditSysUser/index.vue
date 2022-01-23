@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini" label-position="right" @submit.native.prevent>
+  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24">
         <el-form-item label="登录名称" prop="loginName">
@@ -56,8 +56,8 @@
     </el-row>
     <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer">
-      <el-button size="mini" type="primary" :plain="true" @click="onCancel(false)" >取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit"
+      <el-button :size="defaultFormItemSize" type="primary" :plain="true" @click="onCancel(false)" >取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit"
         :disabled="!(checkPermCodeExist('formSysUser:fragmentSysUser:update') || checkPermCodeExist('formSysUser:fragmentSysUser:add'))">
         确定
       </el-button>

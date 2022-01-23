@@ -122,18 +122,7 @@ public class StudentController extends BaseController<Student, StudentVo, Long> 
         if (MyCommonUtil.existBlankArgument(studentId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        Student originalStudent = studentService.getById(studentId);
-        if (originalStudent == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (!studentService.remove(studentId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(studentId);
     }
 
     /**
@@ -397,5 +386,35 @@ public class StudentController extends BaseController<Student, StudentVo, Long> 
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);
+    }
+
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。主要用于微服务间远程过程调用。
+     *
+     * @param queryParam 查询参数。
+     * @return 不存在的数据集合。
+     */
+    @ApiOperation(hidden = true, value = "notExist")
+    @PostMapping("/notExist")
+    public ResponseResult<List<?>> notExist(@RequestBody MyQueryParam queryParam) {
+        List<?> notExistIdSet = service().notExist(
+                queryParam.getInFilterField(), queryParam.getInFilterValues(), true);
+        return ResponseResult.success(notExistIdSet);
+    }
+
+    private ResponseResult<Void> doDelete(Long studentId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        Student originalStudent = studentService.getById(studentId);
+        if (originalStudent == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (!studentService.remove(studentId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

@@ -2,18 +2,18 @@
   <div class="tab-dialog-box" style="position: relative; margin-top: -15px;">
     <el-tabs v-model="activeFragmentId">
       <el-tab-pane label="用户查询" name="fragmentSysPermUser" style="width: 100%;">
-        <el-form label-width="100px" size="mini" label-position="left" @submit.native.prevent>
+        <el-form label-width="100px" :size="defaultFormItemSize" label-position="left" @submit.native.prevent>
           <filter-box :item-width="350">
             <el-form-item label="用户名">
               <el-input class="filter-item" v-model="fragmentSysPermUser.formFilter.loginName" clearable
                 placeholder="" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysPermUser(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysPermUser(true)">查询</el-button>
           </filter-box>
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysPermUser.SysUser.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysPermUser.SysUser.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysPermUser.SysUser.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px"
@@ -27,18 +27,18 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="角色查询" name="fragmentSysPermRole" style="width: 100%;">
-        <el-form label-width="100px" size="mini" label-position="left" @submit.native.prevent>
+        <el-form label-width="100px" :size="defaultFormItemSize" label-position="left" @submit.native.prevent>
           <filter-box :item-width="350">
             <el-form-item label="角色名称">
               <el-input class="filter-item" v-model="fragmentSysPermRole.formFilter.roleName" clearable
                 placeholder="" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysPermRole(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysPermRole(true)">查询</el-button>
           </filter-box>
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysPermRole.SysRole.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysPermRole.SysRole.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysPermRole.SysRole.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px"
@@ -50,7 +50,7 @@
               </el-table-column>
               <el-table-column label="菜单类型" prop="permCodeType">
                 <template slot-scope="scope">
-                  <el-tag size="mini" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
+                  <el-tag :size="defaultFormItemSize" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="角色名称" prop="roleName" />
@@ -60,18 +60,18 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="菜单查询" name="fragmentSysPermMenu" style="width: 100%;">
-        <el-form label-width="100px" size="mini" label-position="left" @submit.native.prevent>
+        <el-form label-width="100px" :size="defaultFormItemSize" label-position="left" @submit.native.prevent>
           <filter-box :item-width="350">
             <el-form-item label="菜单名称">
               <el-input class="filter-item" v-model="fragmentSysPermMenu.formFilter.menuName" clearable
                 placeholder="" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysPermMenu(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysPermMenu(true)">查询</el-button>
           </filter-box>
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysPermMenu.SysMenu.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysPermMenu.SysMenu.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysPermMenu.SysMenu.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px"
@@ -83,7 +83,7 @@
               </el-table-column>
               <el-table-column label="菜单类型" prop="menuType">
                 <template slot-scope="scope">
-                  <el-tag size="mini" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
+                  <el-tag :size="defaultFormItemSize" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="权限字" prop="permCode" />

@@ -1,8 +1,8 @@
 package com.orangeforms.webadmin.upms.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.*;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.webadmin.upms.service.*;
 import com.orangeforms.webadmin.upms.dao.*;
 import com.orangeforms.webadmin.upms.model.*;
@@ -170,6 +170,15 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
         SysUser updatedUser = new SysUser();
         updatedUser.setUserId(userId);
         updatedUser.setPassword(passwordEncoder.encode(newPass));
+        return sysUserMapper.updateById(updatedUser) == 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean changeHeadImage(Long userId, String newHeadImage) {
+        SysUser updatedUser = new SysUser();
+        updatedUser.setUserId(userId);
+        updatedUser.setHeadImageUrl(newHeadImage);
         return sysUserMapper.updateById(updatedUser) == 1;
     }
 

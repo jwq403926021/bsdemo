@@ -24,6 +24,13 @@
         </el-form>
       </div>
     </div>
+    <Verify
+      ref="verify"
+      @success="onVerifySuccess"
+      :mode="'pop'"
+      captchaType="blockPuzzle"
+      :imgSize="{ width: '330px', height: '155px' }"
+    />
   </div>
 </template>
 
@@ -32,8 +39,12 @@ import { SystemController } from '@/api';
 import { mapMutations } from 'vuex';
 import projectConfig from '@/core/config';
 import { encrypt, setToken } from '@/utils';
+import Verify from '@/components/Verifition/Verify.vue';
 
 export default {
+  components: {
+    Verify
+  },
   data () {
     return {
       bkImg: require('@/assets/img/login.png'),
@@ -57,22 +68,29 @@ export default {
     dataFormSubmit () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          let params = {
-            loginName: this.dataForm.mobilePhone,
-            password: encrypt(this.dataForm.password)
-          };
-
-          SystemController.login(this, params, null, {showMask: false}).then(data => {
-            this.setMenuList(data.data.menuList);
-            delete data.data.menuList;
-
-            this.setUserInfo(data.data);
-            setToken(data.data.tokenData);
-            this.setCurrentMenuId(null);
-            this.$router.replace({ name: 'main' });
-          }).catch(e => {});
+          this.$refs.verify.show();
         }
       });
+    },
+    login (verifyParams) {
+      let params = {
+        loginName: this.dataForm.mobilePhone,
+        password: encrypt(this.dataForm.password),
+        captchaVerification: (verifyParams || {}).captchaVerification
+      };
+
+      SystemController.login(this, params, null, {showMask: false}).then(data => {
+        this.setMenuList(data.data.menuList);
+        delete data.data.menuList;
+
+        this.setUserInfo(data.data);
+        setToken(data.data.tokenData);
+        this.setCurrentMenuId(null);
+        this.$router.replace({ name: 'main' });
+      }).catch(e => {});
+    },
+    onVerifySuccess (verifyParams) {
+      this.login(verifyParams);
     },
     ...mapMutations(['setUserInfo', 'setMenuList', 'setCurrentMenuId'])
   },

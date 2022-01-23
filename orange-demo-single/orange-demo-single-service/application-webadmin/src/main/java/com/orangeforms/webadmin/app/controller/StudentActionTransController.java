@@ -108,18 +108,7 @@ public class StudentActionTransController {
         if (MyCommonUtil.existBlankArgument(transId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        StudentActionTrans originalStudentActionTrans = studentActionTransService.getById(transId);
-        if (originalStudentActionTrans == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (!studentActionTransService.remove(transId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(transId);
     }
 
     /**
@@ -162,5 +151,21 @@ public class StudentActionTransController {
         }
         StudentActionTransVo studentActionTransVo = StudentActionTrans.INSTANCE.fromModel(studentActionTrans);
         return ResponseResult.success(studentActionTransVo);
+    }
+
+    private ResponseResult<Void> doDelete(Long transId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        StudentActionTrans originalStudentActionTrans = studentActionTransService.getById(transId);
+        if (originalStudentActionTrans == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (!studentActionTransService.remove(transId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

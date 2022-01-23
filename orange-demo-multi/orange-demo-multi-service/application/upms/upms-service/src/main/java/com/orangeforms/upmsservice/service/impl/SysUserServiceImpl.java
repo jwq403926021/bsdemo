@@ -1,8 +1,8 @@
 package com.orangeforms.upmsservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.*;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.upmsservice.service.*;
 import com.orangeforms.upmsservice.dao.*;
 import com.orangeforms.upmsservice.model.*;
@@ -158,7 +158,7 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     }
 
     /**
-     * 重置用户密码。
+     * 修改用户密码。
      * @param userId  用户主键Id。
      * @param newPass 新密码。
      * @return 成功返回true，否则false。
@@ -169,6 +169,15 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
         SysUser updatedUser = new SysUser();
         updatedUser.setUserId(userId);
         updatedUser.setPassword(passwordEncoder.encode(newPass));
+        return sysUserMapper.updateById(updatedUser) == 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean changeHeadImage(Long userId, String newHeadImage) {
+        SysUser updatedUser = new SysUser();
+        updatedUser.setUserId(userId);
+        updatedUser.setHeadImageUrl(newHeadImage);
         return sysUserMapper.updateById(updatedUser) == 1;
     }
 

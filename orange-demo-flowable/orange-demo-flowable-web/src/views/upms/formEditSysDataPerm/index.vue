@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formEditSysDataPerm" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="120px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="120px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="数据权限名称" prop="SysDataPerm.dataPermName">
@@ -23,7 +23,7 @@
           <el-card shadow="never">
             <div slot="header" class="card-header">
               <span>部门列表</span>
-              <el-input size="mini" v-model="deptNameFilter" placeholder="输入部门名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
+              <el-input :size="defaultFormItemSize" v-model="deptNameFilter" placeholder="输入部门名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
             </div>
             <el-scrollbar style="height: 250px;" wrap-class="scrollbar_dropdown__wrap">
               <el-tree ref="deptTree" :data="deptTree" show-checkbox node-key="id" default-expand-all
@@ -34,10 +34,10 @@
       </el-row>
       <el-col :span="24" style="margin-top: 20px;">
         <el-row type="flex" justify="end">
-          <el-button type="primary" size="mini" :plain="true" @click="onCancel(false)">
+          <el-button type="primary" :size="defaultFormItemSize" :plain="true" @click="onCancel(false)">
             取消
           </el-button>
-          <el-button type="primary" size="mini" @click="onUpdateClick()"
+          <el-button type="primary" :size="defaultFormItemSize" @click="onUpdateClick()"
             :disabled="!(checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:add') || checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:update'))">
             保存
           </el-button>

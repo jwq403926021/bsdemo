@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysUser" :model="formSysUser" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="用户状态">
+        <el-form-item label="用户状态" prop="formFilter.sysUserStatus">
           <el-select class="filter-item" v-model="formSysUser.formFilter.sysUserStatus" :clearable="true"
             placeholder="用户状态" :loading="formSysUser.sysUserStatus.impl.loading"
             @visible-change="formSysUser.sysUserStatus.impl.onVisibleChange"
@@ -10,12 +10,13 @@
             <el-option v-for="item in formSysUser.sysUserStatus.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="登录名称">
+        <el-form-item label="登录名称" prop="formFilter.sysUserLoginName">
           <el-input class="filter-item" v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true" placeholder="登录名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSysUser(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:add')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSysUser(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:add')"
           @click="onAddRow()">
           新建
         </el-button>
@@ -23,7 +24,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSysUser.SysUser.impl.dataList" size="mini" @sort-change="formSysUser.SysUser.impl.onSortChange"
+        <el-table :data="formSysUser.SysUser.impl.dataList" :size="defaultFormItemSize" @sort-change="formSysUser.SysUser.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="formSysUser.SysUser.impl.getTableIndex" />
           <el-table-column label="用户名" prop="loginName" sortable="custom">
@@ -33,7 +34,7 @@
           <el-table-column label="账号类型" prop="userTypeDictMap.name" />
           <el-table-column label="状态">
             <template slot-scope="scope">
-              <el-tag :type="getUserStatusType(scope.row.userStatus)" size="mini">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
+              <el-tag :type="getUserStatusType(scope.row.userStatus)" :size="defaultFormItemSize">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="创建时间">
@@ -43,22 +44,22 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="220px">
             <template slot-scope="scope">
-              <el-button class="btn-table-edit" type="text" size="mini" @click="onEditRow(scope.row)"
+              <el-button class="btn-table-edit" type="text" :size="defaultFormItemSize" @click="onEditRow(scope.row)"
                 :disabled="isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:update')"
               >
                 编辑
               </el-button>
-              <el-button class="btn-table-delete" type="text" size="mini" @click="onDeleteRow(scope.row)"
+              <el-button class="btn-table-delete" type="text" :size="defaultFormItemSize" @click="onDeleteRow(scope.row)"
                 :disabled="isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:delete')"
               >
                 删除
               </el-button>
-              <el-button class="btn-table-delete" type="text" size="mini" @click="onResetPassword(scope.row)"
+              <el-button class="btn-table-delete" type="text" :size="defaultFormItemSize" @click="onResetPassword(scope.row)"
                 :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:resetPassword')"
               >
                 重置密码
               </el-button>
-              <el-button class="btn-table-primary" type="text" size="mini"
+              <el-button class="btn-table-primary" type="text" :size="defaultFormItemSize"
                 v-if="checkPermCodeExist('formSysUser:fragmentSysUser:listSysUserPermDetail')"
                 @click="onSysUserPermClick(scope.row)">
                 权限详情
@@ -121,6 +122,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSysUser.resetFields();
+      this.refreshFormSysUser(true);
+    },
     isAdmin (row) {
       return (row.userType === this.SysUserType.ADMIN);
     },

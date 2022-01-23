@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="form" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="120px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="120px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="过滤数据表" prop="tableId">
@@ -14,7 +14,7 @@
                   <span>{{table.tableName}}</span>
                   <el-tag
                     :type="table.relationType == null ? 'success' : 'parimary'"
-                    style="margin-left: 30px;" size="mini" effect="dark" >
+                    style="margin-left: 30px;" :size="defaultFormItemSize" effect="dark" >
                     {{(table.relationType == null || index === 0) ? '主表' : '一对一关联'}}
                   </el-tag>
                 </el-row>
@@ -72,11 +72,11 @@
         </el-col>
         <el-col :span="24" style="margin-top: 15px;">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini"
+            <el-button type="primary" :size="defaultFormItemSize"
               @click="onSubmit()">
               保存
             </el-button>

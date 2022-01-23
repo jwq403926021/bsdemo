@@ -60,7 +60,7 @@
               <el-table-column label="数据表名" prop="tableName" />
               <el-table-column label="关联类型" prop="relationType">
                 <template slot-scope="scope">
-                  <el-tag size="mini" :type="getDatasourceTableTagType(scope.row.relationType)" effect="dark">
+                  <el-tag :size="defaultFormItemSize" :type="getDatasourceTableTagType(scope.row.relationType)" effect="dark">
                     {{getDatasourceTableTagName(scope.row.relationType)}}
                   </el-tag>
                 </template>
@@ -69,7 +69,7 @@
               <el-table-column label="从表关联字段" prop="slaveColumnName" />
               <el-table-column label="级联删除" prop="cascadeDelete">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.relationType != null" size="mini"
+                  <el-tag v-if="scope.row.relationType != null" :size="defaultFormItemSize"
                     :type="scope.row.cascadeDelete ? 'success' : 'danger'" effect="dark">
                     {{scope.row.cascadeDelete ? '是' : '否'}}
                   </el-tag>
@@ -77,7 +77,7 @@
               </el-table-column>
               <el-table-column label="是否左连接" prop="leftJoin">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.relationType != null" size="mini"
+                  <el-tag v-if="scope.row.relationType != null" :size="defaultFormItemSize"
                     :type="scope.row.leftJoin ? 'success' : 'danger'" effect="dark">
                     {{scope.row.leftJoin ? '是' : '否'}}
                   </el-tag>
@@ -86,22 +86,22 @@
               <el-table-column label="操作" width="250px" fixed="right">
                 <template slot-scope="scope">
                   <!-- 数据源主表只有当没有任何关联的时候才可以编辑 -->
-                  <el-button class="table-btn success" size="mini" type="text"
+                  <el-button class="table-btn success" :size="defaultFormItemSize" type="text"
                     @click="onEditDatasourceTable(scope.row)"
                     :disabled="scope.row.relationType == null && Array.isArray(scope.row.relationList) && scope.row.relationList.length > 0"
                   >
                     编辑
                   </el-button>
-                  <el-button size="mini" type="text"
+                  <el-button :size="defaultFormItemSize" type="text"
                     @click="onEditTableColumn(scope.row)">
                     字段管理
                   </el-button>
-                  <el-button size="mini" type="text"
+                  <el-button :size="defaultFormItemSize" type="text"
                     :disabled="scope.row.relationType != null"
                     @click="onEditVirtualColumn(scope.row)">
                     聚合计算
                   </el-button>
-                  <el-button class="table-btn delete" size="mini" type="text"
+                  <el-button class="table-btn delete" :size="defaultFormItemSize" type="text"
                     :disabled="scope.row.relationType == null && (!Array.isArray(scope.row.relationList) || scope.row.relationList.length <= 0)"
                     @click="onDeleteDatasourceTable(scope.row)"
                   >
@@ -141,7 +141,7 @@
               <el-table-column label="表单名称" prop="formName" />
               <el-table-column label="表单类型" prop="formType">
                 <template slot-scope="scope">
-                  <el-tag size="mini" effect="dark"
+                  <el-tag :size="defaultFormItemSize" effect="dark"
                     :type="getFormTypeTag(scope.row.formType)"
                   >
                     {{SysOnlineFormType.getValue(scope.row.formType)}}
@@ -150,9 +150,9 @@
               </el-table-column>
               <el-table-column label="操作" width="150px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="text" @click="onDesignPageForm(scope.row)">页面布局</el-button>
-                  <el-button class="table-btn success" size="mini" type="text" @click="onEditPageForm(scope.row)">编辑</el-button>
-                  <el-button class="table-btn delete" size="mini" type="text" style="color: #F56C6C;" @click="onDeletePageForm(scope.row)">删除</el-button>
+                  <el-button :size="defaultFormItemSize" type="text" @click="onDesignPageForm(scope.row)">页面布局</el-button>
+                  <el-button class="table-btn success" :size="defaultFormItemSize" type="text" @click="onEditPageForm(scope.row)">编辑</el-button>
+                  <el-button class="table-btn delete" :size="defaultFormItemSize" type="text" style="color: #F56C6C;" @click="onDeletePageForm(scope.row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 所有Service的接口。
@@ -136,6 +137,17 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
      * @return 全部存在返回true，否则false。
      */
     <T> boolean existUniqueKeyList(String inFilterField, Set<T> inFilterValues);
+
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。
+     *
+     * @param filterField 过滤的Java字段。
+     * @param filterSet   过滤字段数据集合。
+     * @param findFirst   是否找到第一个就返回。
+     * @param <R> 过滤字段类型。
+     * @return filterSet中，在从表中不存在的数据集合。
+     */
+    <R> List<R> notExist(String filterField, Set<R> filterSet, boolean findFirst);
 
     /**
      * 返回符合主键 in (idValues) 条件的所有数据。
@@ -270,13 +282,66 @@ public interface IBaseService<M, K extends Serializable> extends IService<M>{
     CallResult verifyRelatedData(M data, M originalData);
 
     /**
+     * 根据最新对象和原有对象的数据对比，判断关联的字典数据和多对一主表数据是否都是合法数据。
+     * 如果data对象中包含主键值，方法内部会获取原有对象值，并进行更新方式的关联数据比对，否则视为新增数据关联对象比对。
+     *
+     * @param data 数据对象。
+     * @return 应答结果对象。
+     */
+    CallResult verifyRelatedData(M data);
+
+    /**
      * 根据最新对象列表和原有对象列表的数据对比，判断关联的字典数据和多对一主表数据是否都是合法数据。
-     * NOTE: BaseService中会给出返回CallResult.ok()的缺省实现。每个业务服务实现类在需要的时候可以重载该方法。
+     * 如果dataList列表中的对象包含主键值，方法内部会获取原有对象值，并进行更新方式的关联数据比对，否则视为新增数据关联对象比对。
      *
      * @param dataList 数据对象列表。
      * @return 应答结果对象。
      */
     CallResult verifyRelatedData(List<M> dataList);
+
+    /**
+     * 批量导入数据列表，对依赖常量字典的数据进行验证。
+     *
+     * @param dataList  批量导入数据列表。
+     * @param fieldName 业务主表中依赖常量字典的字段名。
+     * @param idGetter  获取业务主表中依赖常量字典字段值的Function对象。
+     * @param <R>       业务主表中依赖常量字典的字段类型。
+     * @return 验证结果，如果失败，在data中包含具体的错误对象。
+     */
+    <R> CallResult verifyImportForConstDict(List<M> dataList, String fieldName, Function<M, R> idGetter);
+
+    /**
+     * 批量导入数据列表，对依赖字典表字典的数据进行验证。
+     *
+     * @param dataList  批量导入数据列表。
+     * @param fieldName 业务主表中依赖字典表字典的字段名。
+     * @param idGetter  获取业务主表中依赖字典表字典字段值的Function对象。
+     * @param <R>       业务主表中依赖字典表字典的字段类型。
+     * @return 验证结果，如果失败，在data中包含具体的错误对象。
+     */
+    <R> CallResult verifyImportForDict(List<M> dataList, String fieldName, Function<M, R> idGetter);
+
+    /**
+     * 批量导入数据列表，对依赖数据源字典的数据进行验证。
+     *
+     * @param dataList  批量导入数据列表。
+     * @param fieldName 业务主表中依赖数据源字典的字段名。
+     * @param idGetter  获取业务主表中依赖数据源字典字段值的Function对象。
+     * @param <R>       业务主表中依赖数据源字典的字段类型。
+     * @return 验证结果，如果失败，在data中包含具体的错误对象。
+     */
+    <R> CallResult verifyImportForDatasourceDict(List<M> dataList, String fieldName, Function<M, R> idGetter);
+
+    /**
+     * 批量导入数据列表，对存在一对一关联的数据进行验证。
+     *
+     * @param dataList  批量导入数据列表。
+     * @param fieldName 业务主表中存在一对一关联的字段名。
+     * @param idGetter  获取业务主表中一对一关联字段值的Function对象。
+     * @param <R>       业务主表中存在一对一关联的字段类型。
+     * @return 验证结果，如果失败，在data中包含具体的错误对象。
+     */
+    <R> CallResult verifyImportForOneToOneRelation(List<M> dataList, String fieldName, Function<M, R> idGetter);
 
     /**
      * 集成所有与主表实体对象相关的关联数据列表。包括一对一、字典、一对多和多对多聚合运算等。

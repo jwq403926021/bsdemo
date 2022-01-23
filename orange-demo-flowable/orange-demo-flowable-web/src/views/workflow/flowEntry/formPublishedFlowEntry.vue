@@ -3,7 +3,7 @@
   <div class="form-single-fragment" style="position: relative;">
     <el-row>
       <el-col :span="24" v-if="entryXml == null">
-        <el-table ref="flowEntry" :data="publishedFlowEntryWidget.dataList" size="mini" height="655px"
+        <el-table ref="flowEntry" :data="publishedFlowEntryWidget.dataList" :size="defaultFormItemSize" height="655px"
           @sort-change="publishedFlowEntryWidget.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="publishedFlowEntryWidget.getTableIndex" />
@@ -19,19 +19,19 @@
           </el-table-column>
           <el-table-column label="流程版本" prop="publishVersion">
             <template slot-scope="scope">
-              <el-tag size="mini" type="primary" effect="dark">{{'V:' + scope.row.publishVersion}}</el-tag>
+              <el-tag :size="defaultFormItemSize" type="primary" effect="dark">{{'V:' + scope.row.publishVersion}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="激活状态" prop="activeStatus">
             <template slot-scope="scope">
-              <el-tag size="mini" effect="dark" :type="scope.row.activeStatus ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" effect="dark" :type="scope.row.activeStatus ? 'success' : 'danger'">
                 {{scope.row.activeStatus ? '激活' : '挂起'}}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="主版本" prop="mainVersion">
             <template slot-scope="scope">
-              <el-tag size="mini" effect="dark" :type="scope.row.mainVersion ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" effect="dark" :type="scope.row.mainVersion ? 'success' : 'danger'">
                 {{scope.row.mainVersion ? '是' : '否'}}
               </el-tag>
             </template>
@@ -40,14 +40,14 @@
           <el-table-column label="操作" fixed="right" width="200px">
             <template slot-scope="scope">
               <el-button class="table-btn" :class="scope.row.activeStatus ? 'delete' : 'success'"
-                @click.stop="onSetActiveStatus(scope.row)" type="text" size="mini">
+                @click.stop="onSetActiveStatus(scope.row)" type="text" :size="defaultFormItemSize">
                 {{scope.row.activeStatus ? '挂起' : '激活'}}
               </el-button>
-              <el-button class="table-btn primary" type="text" size="mini" @click="getTaskProcessXml(scope.row)">
+              <el-button class="table-btn primary" type="text" :size="defaultFormItemSize" @click="getTaskProcessXml(scope.row)">
                 流程图
               </el-button>
               <el-button class="table-btn primary" :disabled="scope.row.mainVersion"
-                @click.stop="onSetMainVersion(scope.row)" type="text" size="mini">
+                @click.stop="onSetMainVersion(scope.row)" type="text" :size="defaultFormItemSize">
                 设置为主版本
               </el-button>
             </template>

@@ -1,5 +1,6 @@
 package com.orangeforms.common.core.advice;
 
+import com.orangeforms.common.core.util.MyDateUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,6 @@ public class MyControllerAdvice {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class,
-                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), false));
+                new CustomDateEditor(new SimpleDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT), false));
     }
 }

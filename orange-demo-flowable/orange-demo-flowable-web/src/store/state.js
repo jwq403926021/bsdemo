@@ -28,5 +28,5 @@ export default {
   currentColumnId: getObjectFromSessionStorage('currentColumnId', undefined),
   // 消息列表
   messageTimeer: null,
-  messageList: []
+  messageCount: []
 }

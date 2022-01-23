@@ -100,4 +100,9 @@ public abstract class BaseFallbackFactory<D, V, K, T extends BaseClient<D, V, K>
     public ResponseResult<MyPageData<V>> listByNotInList(MyQueryParam queryParam) {
         return ResponseResult.error(ErrorCodeEnum.RPC_DATA_ACCESS_FAILED);
     }
+
+    @Override
+    public ResponseResult<List<?>> notExist(MyQueryParam queryParam) {
+        return ResponseResult.error(ErrorCodeEnum.RPC_DATA_ACCESS_FAILED);
+    }
 }

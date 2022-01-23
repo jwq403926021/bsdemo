@@ -107,8 +107,28 @@ export default class FlowOperationController {
   static rejectRuntimeTask (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/flow/flowOperation/rejectRuntimeTask', 'post', params, axiosOption, httpOption);
   }
+  // 驳回到起点
+  static rejectToStartUserTask (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/flow/flowOperation/rejectToStartUserTask', 'post', params, axiosOption, httpOption);
+  }
   // 撤销
   static revokeHistoricTask (sender, params, axiosOption, httpOption) {
     return sender.doUrl('/admin/flow/flowOperation/revokeHistoricTask', 'post', params, axiosOption, httpOption);
+  }
+  // 抄送消息列表
+  static listCopyMessage (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/flow/flowMessage/listCopyMessage', 'post', params, axiosOption, httpOption);
+  }
+  // 消息个数
+  static getMessageCount (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/flow/flowMessage/getMessageCount', 'get', params, axiosOption, httpOption);
+  }
+  // 在线表单流程抄送消息数据
+  static viewOnlineCopyBusinessData (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/flow/flowOnlineOperation/viewCopyBusinessData', 'get', params, axiosOption, httpOption);
+  }
+  // 静态表单流程抄送消息数据
+  static viewCopyBusinessData (sender, params, axiosOption, httpOption) {
+    return sender.doUrl('/admin/flow/flowOperation/viewCopyBusinessData', 'get', params, axiosOption, httpOption);
   }
 }

@@ -15,9 +15,11 @@
     </el-aside>
     <el-main style="padding-left: 15px;">
       <el-scrollbar :style="{height: (getMainContextHeight - 42) + 'px'}" class="custom-scroll">
-        <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+        <el-form ref="formStudentFilter" :model="formStudent" :size="defaultFormItemSize"
+          label-width="100px" label-position="right" @submit.native.prevent
+        >
           <filter-box :item-width="350">
-            <el-form-item label="所属年级">
+            <el-form-item label="所属年级" prop="formFilter.gradeId">
               <el-select class="filter-item" v-model="formStudent.formFilter.gradeId" :clearable="true" filterable
                 placeholder="所属年级" :loading="formStudent.gradeId.impl.loading"
                 @visible-change="formStudent.gradeId.impl.onVisibleChange"
@@ -25,18 +27,19 @@
                 <el-option v-for="item in formStudent.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
               </el-select>
             </el-form-item>
-            <el-form-item label="注册日期">
+            <el-form-item label="注册日期" prop="formFilter.registerDate">
               <date-range class="filter-item" v-model="formStudent.formFilter.registerDate" :clearable="true" :allowTypes="['day']" align="left"
                 range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
                 format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
             </el-form-item>
-            <el-form-item label="学生姓名">
+            <el-form-item label="学生姓名" prop="formFilter.searchString">
               <el-input class="filter-item" v-model="formStudent.formFilter.searchString"
                 :clearable="true" placeholder="输入学生姓名 / 手机号码 模糊查询"
               />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormStudent(true)">查询</el-button>
-            <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formStudent:formStudent:formCreateStudent')"
+            <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormStudent">重置</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormStudent(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formStudent:formStudent:formCreateStudent')"
               @click="onFormCreateStudentClick()">
               新建
             </el-button>
@@ -44,8 +47,9 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table ref="student" :data="formStudent.Student.impl.dataList" size="mini" @sort-change="formStudent.Student.impl.onSortChange"
-              header-cell-class-name="table-header-gray">
+            <el-table ref="student" :data="formStudent.Student.impl.dataList" :size="defaultFormItemSize" @sort-change="formStudent.Student.impl.onSortChange"
+              header-cell-class-name="table-header-gray"
+            >
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudent.Student.impl.getTableIndex" />
               <el-table-column label="学生姓名" prop="studentName">
               </el-table-column>
@@ -65,11 +69,11 @@
               </el-table-column>
               <el-table-column label="操作" fixed="right">
                 <template slot-scope="scope">
-                  <el-button @click.stop="onFormEditStudentClick(scope.row)" type="text" size="mini"
+                  <el-button @click.stop="onFormEditStudentClick(scope.row)" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formStudent:formStudent:formEditStudent')">
                     编辑
                   </el-button>
-                  <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
+                  <el-button @click.stop="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formStudent:formStudent:delete')">
                     删除
                   </el-button>
@@ -143,6 +147,10 @@ export default {
     }
   },
   methods: {
+    onResetFormStudent () {
+      this.$refs.formStudentFilter.resetFields();
+      this.refreshFormStudent(true);
+    },
     /**
      * 学生数据数据获取函数，返回Promise
      */
@@ -262,22 +270,16 @@ export default {
       this.$dialog.show('编辑', formEditStudent, {
         area: '800px'
       }, params).then(res => {
-        this.formStudent.Student.impl.refreshTable();
       }).catch(e => {});
     },
     /**
      * 删除
      */
     onDeleteClick (row) {
-      let params = {
-        studentId: row.studentId
-      };
-
       this.$confirm('是否删除此学生？').then(res => {
-        StudentController.delete(this, params).then(res => {
-          this.$message.success('删除成功');
-          this.formStudent.Student.impl.refreshTable();
-        }).catch(e => {});
+        this.formStudent.Student.impl.dataList = this.formStudent.Student.impl.dataList.filter(item => {
+          return item.__cascade_add_temp_id__ !== row.__cascade_add_temp_id__;
+        });
       }).catch(e => {});
     },
     onResume () {

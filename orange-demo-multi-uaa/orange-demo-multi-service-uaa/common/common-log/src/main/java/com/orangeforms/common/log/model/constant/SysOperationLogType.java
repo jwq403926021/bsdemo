@@ -36,6 +36,10 @@ public final class SysOperationLogType {
      */
     public static final int DELETE = 20;
     /**
+     * 批量删除。
+     */
+    public static final int DELETE_BATCH = 21;
+    /**
      * 新增多对多关联。
      */
     public static final int ADD_M2M = 25;
@@ -43,6 +47,10 @@ public final class SysOperationLogType {
      * 移除多对多关联。
      */
     public static final int DELETE_M2M = 30;
+    /**
+     * 批量移除多对多关联。
+     */
+    public static final int DELETE_M2M_BATCH = 31;
     /**
      * 查询。
      */
@@ -55,6 +63,10 @@ public final class SysOperationLogType {
      * 导出。
      */
     public static final int EXPORT = 45;
+    /**
+     * 导入。
+     */
+    public static final int IMPORT = 46;
     /**
      * 上传。
      */

@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formTaskCommit" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24"
           v-if="operation.type !== SysFlowTaskOperationType.CO_SIGN && operation.type !== SysFlowTaskOperationType.MULTI_SIGN">
@@ -18,11 +18,11 @@
         </el-col>
         <el-col :span="24">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini" @click="onSubmitClick()">
+            <el-button type="primary" :size="defaultFormItemSize" @click="onSubmitClick()">
               提交
             </el-button>
           </el-row>

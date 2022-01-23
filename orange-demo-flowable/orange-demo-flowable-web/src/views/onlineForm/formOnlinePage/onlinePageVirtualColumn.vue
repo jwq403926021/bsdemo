@@ -4,7 +4,7 @@
     <div class="table-column-list">
       <div class="title">
         <span>虚拟字段列表</span>
-        <el-button class="table-btn success" size="mini" type="text"
+        <el-button class="table-btn success" :size="defaultFormItemSize" type="text"
           icon="el-icon-circle-plus-outline"
           @click.stop="onAddNewVirtualColumn">
           新增
@@ -17,7 +17,7 @@
           @click.stop="onActiveColumnClick(column)"
         >
           <span style="margin-right: 10px;">{{column.columnPrompt}}</span>
-          <el-button class="table-btn delete" size="mini" type="text" style="margin-left: 10px;"
+          <el-button class="table-btn delete" :size="defaultFormItemSize" type="text" style="margin-left: 10px;"
             @click.stop="onDeleteColumn(column)"
           >
             删除
@@ -57,7 +57,7 @@
                   :value="item.relationId" :label="item.relationName">
                   <div style="display: flex; justify-content: space-between; align-items: center">
                     <span>{{item.relationName}}</span>
-                    <el-tag style="margin-left: 30px;" size="mini"
+                    <el-tag style="margin-left: 30px;" :size="defaultFormItemSize"
                       :type="getDatasourceTableTagType(item.relationType)">
                       {{SysOnlineRelationType.getValue(item.relationType)}}
                     </el-tag>
@@ -110,7 +110,7 @@
       </el-row>
       <el-row style="margin-top: 15px;">
         <el-col :span="24" style="border-top: 1px solid #EBEEF5;">
-          <el-table size="mini" :data="virtualColumnFilterList" :show-header="false" empty-text="请添加过滤条件">
+          <el-table :size="defaultFormItemSize" :data="virtualColumnFilterList" :show-header="false" empty-text="请添加过滤条件">
             <el-table-column label="操作" width="45px">
               <template slot-scope="scope">
                 <el-button class="table-btn delete" type="text" icon="el-icon-remove-outline"
@@ -125,7 +125,7 @@
             </el-table-column>
             <el-table-column label="所属表" width="100px">
               <template>
-                <el-tag size="mini" type="success">关联从表</el-tag>
+                <el-tag :size="defaultFormItemSize" type="success">关联从表</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="过滤类型" width="100px">

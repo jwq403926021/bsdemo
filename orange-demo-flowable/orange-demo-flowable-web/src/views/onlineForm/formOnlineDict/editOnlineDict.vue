@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formEditOnlineFormDict" :model="formOnlineDict" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="150px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="150px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="字典名称" prop="dictName">
@@ -58,7 +58,7 @@
             <el-input class="input-item" v-model="formOnlineDict.dictListUrl"
               :clearable="true" placeholder="输入字典获取url"
               @change="clearDictInfo">
-              <el-button slot="append" size="mini" @click="onGetDictData(true)">获取数据</el-button>
+              <el-button slot="append" :size="defaultFormItemSize" @click="onGetDictData(true)">获取数据</el-button>
             </el-input>
           </el-form-item>
         </el-col>
@@ -146,7 +146,7 @@
         </el-col>
         <!-- 字典数据 -->
         <el-col :span="24" v-if="formOnlineDict.dictType === SysOnlineDictType.STATIC || formOnlineDict.dictType === SysOnlineDictType.CUSTOM">
-          <el-table :data="dictData" size="mini" header-cell-class-name="table-header-gray" height="300px">
+          <el-table :data="dictData" :size="defaultFormItemSize" header-cell-class-name="table-header-gray" height="300px">
             <el-table-column label="字典键数据" prop="id" />
             <el-table-column label="字典值数据" prop="name" />
             <el-table-column label="操作" width="100px" fixed="right" align="right"
@@ -165,11 +165,11 @@
         </el-col>
         <el-col :span="24" style="margin-top: 15px;">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini"
+            <el-button type="primary" :size="defaultFormItemSize"
               @click="onSaveClick()">
               保存
             </el-button>

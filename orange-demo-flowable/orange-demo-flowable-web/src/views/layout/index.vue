@@ -12,34 +12,36 @@
           </el-menu>
         </div>
         <div class="header-menu" style="flex-grow: 1;">
-          <el-popover class="message" style="margin-right: 20px;" width="300" placement="bottom-end" :offset="20" popper-class="message-popover">
-            <el-badge slot="reference" is-dot :hidden="(getMessageList || {}).dataList == null || (getMessageList || {}).dataList.length <= 0"
+          <el-dropdown trigger="click" style="margin-right: 10px;" @command="handleMessage">
+            <el-badge is-dot :hidden="(getMessageCount || {}).totalCount == null || (getMessageCount || {}).totalCount <= 0"
               style="height: 180x; line-height: 18px; cursor: pointer;">
               <i class="el-icon-bell" style="font-size: 18px;" />
             </el-badge>
-            <el-table :data="(getMessageList || {}).dataList" size="mini" empty-text="暂无消息" :show-header="false">
-              <el-table-column label="流程名称" prop="processDefinitionName" />
-              <el-table-column width="80px">
-                <template slot-scope="scope">
-                  <el-button size="mini" type="text" @click="onSubmit(scope.row)">办理</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-button v-if="getMessageList && (getMessageList.dataList || []).length < getMessageList.totalCount"
-              size="small" type="text" style="width: 100%;"
-              @click="onMoreMessageClick">
-              查看更多
-            </el-button>
-          </el-popover>
+            <el-dropdown-menu slot="dropdown" style="min-width: 130px;">
+              <el-dropdown-item class="user-dropdown-item" command="remindingMessage">
+                催办消息
+                <el-badge :value="(getMessageCount || {}).remindingMessageCount"
+                  :hidden="(getMessageCount || {}).remindingMessageCount == null || (getMessageCount || {}).remindingMessageCount <= 0"
+                />
+              </el-dropdown-item>
+              <el-dropdown-item class="user-dropdown-item" command="copyMessage">
+                抄送消息
+                <el-badge :value="(getMessageCount || {}).copyMessageCount"
+                  :hidden="(getMessageCount || {}).copyMessageCount == null || (getMessageCount || {}).copyMessageCount <= 0"
+                />
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <el-dropdown class="user-dropdown" trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">{{(getUserInfo || {}).showName}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item class="user-dropdown-item" command="modifyPassword">修改密码</el-dropdown-item>
+              <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage">修改头像</el-dropdown-item>
               <el-dropdown-item class="user-dropdown-item" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <img :src="header" class="header-img" />
+          <img :src="getHeadImageUrl ? getHeadImageUrl : header" class="header-img" />
         </div>
       </el-header>
       <el-main :style="{'padding-bottom': '15px', 'padding-top': (getMultiTags ? '0px' : '15px')}">
@@ -60,11 +62,13 @@
 import '@/staticDict/onlineStaticDict.js';
 import SideBar from './components/sidebar/sidebar.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+/* eslint-disable-next-line */
+import { uploadMixin, statsDateRangeMixin } from '@/core/mixins';
 import Breadcrumb from './components/breadcrumb';
 import TagPanel from './components/tags/tagPanel.vue';
 import formModifyPassword from './components/formModifyPassword/index.vue';
+import formModifyHeadImage from './components/formModifyHeadImage/index.vue';
 import { SystemController } from '@/api';
-import { FlowOperationController } from '@/api/flowController.js';
 import { getToken, setToken } from '@/utils';
 
 export default {
@@ -78,6 +82,7 @@ export default {
     'breadcrumb': Breadcrumb,
     'tag-panel': TagPanel
   },
+  mixins: [uploadMixin, statsDateRangeMixin],
   methods: {
     toggleSideBar () {
       this.setCollapse(!this.getCollapse);
@@ -125,47 +130,22 @@ export default {
         this.$dialog.show('修改密码', formModifyPassword, {
           area: ['500px']
         }, {}).catch(e => {});
+      } else if (command === 'modifyHeadImage') {
+        this.$dialog.show('修改头像', formModifyHeadImage, {
+          area: ['500px']
+        }, {}).catch(e => {});
       }
     },
-    // 办理催办任务
-    onSubmit (row) {
-      console.log(row);
-      let params = {
-        processInstanceId: row.processInstanceId,
-        processDefinitionId: row.processDefinitionId,
-        taskId: row.taskId
-      }
-
-      FlowOperationController.viewRuntimeTaskInfo(this, params).then(res => {
-        if (res.data) {
-          this.$router.push({
-            name: res.data.routerName || 'handlerFlowTask',
-            query: {
-              isRuntime: true,
-              taskId: row.taskId,
-              processDefinitionKey: row.processDefinitionKey,
-              processInstanceId: row.processInstanceId,
-              processDefinitionId: row.processDefinitionId,
-              formId: res.data.formId,
-              routerName: res.data.routerName,
-              readOnly: res.data.readOnly,
-              taskName: row.taskName,
-              flowEntryName: row.processDefinitionName,
-              processInstanceInitiator: row.processInstanceInitiator,
-              // 过滤掉加签和撤销操作，只有在已完成任务里可以操作
-              operationList: (res.data.operationList || []).filter(item => {
-                return item.type !== this.SysFlowTaskOperationType.CO_SIGN && item.type !== this.SysFlowTaskOperationType.REVOKE;
-              }),
-              variableList: res.data.variableList
-            }
-          });
-        }
-      }).catch(e => {});
+    handleMessage (type) {
+      this.onMoreMessageClick(type);
     },
     // 更多催办消息
-    onMoreMessageClick () {
+    onMoreMessageClick (type) {
       this.$router.push({
-        name: 'formMessage'
+        name: 'formMessage',
+        query: {
+          type: type
+        }
       });
     },
     ...mapMutations([
@@ -199,6 +179,14 @@ export default {
         {'min-height': this.getMainContextHeight + 'px'}
       ]
     },
+    getHeadImageUrl () {
+      if (this.getUserInfo && this.getUserInfo.headImageUrl != null && this.getUserInfo.headImageUrl !== '') {
+        let temp = this.getUploadFileUrl(this.getUserInfo.headImageUrl, { filename: this.getUserInfo.headImageUrl.filename });
+        return temp;
+      } else {
+        return null;
+      }
+    },
     ...mapGetters([
       'getMultiTags',
       'getClientHeight',
@@ -210,7 +198,7 @@ export default {
       'getCurrentColumnId',
       'getColumnList',
       'getMenuItem',
-      'getMessageList',
+      'getMessageCount',
       'getMainContextHeight'
     ])
   },

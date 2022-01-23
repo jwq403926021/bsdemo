@@ -1,26 +1,27 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="80px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="onlineWorkOrder" :model="formFilter" label-width="80px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="330">
-        <el-form-item label="工单状态">
-          <el-select class="filter-item" v-model="flowStatus" :clearable="true"
+        <el-form-item label="工单状态" prop="flowStatus">
+          <el-select class="filter-item" v-model="formFilter.flowStatus" :clearable="true"
             placeholder="工单状态">
             <el-option v-for="item in SysFlowWorkOrderStatus.getList()" :key="item.id"
               :label="item.name" :value="item.id"
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="创建日期">
-          <date-range class="filter-item" v-model="createTime" :clearable="true" :allowTypes="['day']" align="left"
+        <el-form-item label="创建日期" prop="createTime">
+          <date-range class="filter-item" v-model="formFilter.createTime" :clearable="true" :allowTypes="['day']" align="left"
             range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize"
           :disabled="processDefinitionKey == null"
           @click="onSearch()">
           查询
         </el-button>
-        <el-button slot="operator" type="primary" size="mini"
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize"
           :disabled="processDefinitionKey == null"
           @click="onStartFlow()">
           新建
@@ -74,11 +75,17 @@ export default {
     return {
       processDefinitionKey: undefined,
       processDefinitionName: undefined,
-      createTime: [],
-      flowStatus: undefined
+      formFilter: {
+        createTime: [],
+        flowStatus: undefined
+      }
     }
   },
   methods: {
+    onReset () {
+      this.$refs.onlineWorkOrder.resetFields();
+      this.onSearch();
+    },
     getTableQueryParams (widget) {
       let queryParams = [];
       if (Array.isArray(widget.queryParamList)) {
@@ -109,7 +116,7 @@ export default {
         params = {
           ...params,
           flowWorkOrderDtoFilter: {
-            flowStatus: this.flowStatus,
+            flowStatus: this.formFilter.flowStatus,
             createTimeStart: Array.isArray(this.createTime) ? this.createTime[0] : undefined,
             createTimeEnd: Array.isArray(this.createTime) ? this.createTime[1] : undefined
           }
@@ -119,12 +126,12 @@ export default {
           processDefinitionKey: this.processDefinitionKey
         }).then(res => {
           res.data.dataList = res.data.dataList.map(item => {
-            let initTaskInfo = JSON.parse(item.initTaskInfo);
+            let initTaskInfo = item.initTaskInfo == null ? {} : JSON.parse(item.initTaskInfo);
             let runtimeTaskInfo = (Array.isArray(item.runtimeTaskInfoList) && item.runtimeTaskInfoList.length > 0) ? item.runtimeTaskInfoList[0] : {};
             return {
               ...item,
               flowStatus: this.SysFlowWorkOrderStatus.getValue(item.flowStatus),
-              ...Object.keys(item.masterData).reduce((retObj, key) => {
+              ...Object.keys(item.masterData || {}).reduce((retObj, key) => {
                 retObj['masterTable__' + key] = item.masterData[key];
                 return retObj;
               }, {}),

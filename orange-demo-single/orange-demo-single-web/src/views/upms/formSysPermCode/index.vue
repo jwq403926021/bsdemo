@@ -1,15 +1,16 @@
 <template>
   <div>
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formPermCode" :model="formPermCode" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="权限字名称">
+        <el-form-item label="权限字名称" prop="formFilter.showName">
           <el-input class="filter-item" v-model="formPermCode.formFilter.showName"
             :clearable="true" placeholder="权限字名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" size="mini" :plain="true" @click="refreshFormPermCode(true)">
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :plain="true" @click="refreshFormPermCode(true)">
           查询
         </el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysPermCode:fragmentSysPermCode:add')"
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysPermCode:fragmentSysPermCode:add')"
           @click="onCreatePermCodeClick()">
           新建
         </el-button>
@@ -17,13 +18,13 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="getPermCodeList" size="mini" @sort-change="formPermCode.SysPermCode.impl.onSortChange"
+        <el-table :data="getPermCodeList" :size="defaultFormItemSize" @sort-change="formPermCode.SysPermCode.impl.onSortChange"
           row-key="permCodeId" header-cell-class-name="table-header-gray">
           <el-table-column label="权限字名称" prop="showName" width="250px">
           </el-table-column>
           <el-table-column label="权限字类型" prop="permCodeType" width="150px">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getPermCodeType(scope.row.permCodeType)">{{SysPermCodeType.getValue(scope.row.permCodeType)}}</el-tag>
+              <el-tag :size="defaultFormItemSize" :type="getPermCodeType(scope.row.permCodeType)">{{SysPermCodeType.getValue(scope.row.permCodeType)}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="显示顺序" prop="showOrder" width="100px">
@@ -32,19 +33,19 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="200px">
             <template slot-scope="scope">
-              <el-button @click="onEditPermCodeClick(scope.row)" type="text" size="mini"
+              <el-button @click="onEditPermCodeClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysPermCode:fragmentSysPermCode:update')">
                 编辑
               </el-button>
-              <el-button @click="onAddChildPermCodeClick(scope.row)" type="text" size="mini"
+              <el-button @click="onAddChildPermCodeClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="scope.row.permCodeType === 2 || !checkPermCodeExist('formSysPermCode:fragmentSysPermCode:add')">
                 添加
               </el-button>
-              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+              <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysPermCode:fragmentSysPermCode:delete')">
                 删除
               </el-button>
-              <el-button class="btn-table-primary" type="text" size="mini"
+              <el-button class="btn-table-primary" type="text" :size="defaultFormItemSize"
                 v-if="checkPermCodeExist('formSysPermCode:fragmentSysPermCode:listSysPermCodePermDetail')"
                 @click="onSysPermCodeDetailClick(scope.row)">
                 权限详情
@@ -96,6 +97,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formPermCode.resetFields();
+      this.refreshFormPermCode(true);
+    },
     getPermCodeType (permCodeType) {
       switch (permCodeType) {
         case this.SysPermCodeType.FORM: return 'primary';

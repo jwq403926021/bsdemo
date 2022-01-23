@@ -1,40 +1,41 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysOperationLog" :model="formSysOperationLog" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="操作人员">
+        <el-form-item label="操作人员" prop="formFilter.operatorName">
           <el-input class="filter-item" v-model="formSysOperationLog.formFilter.operatorName" :clearable="true" />
         </el-form-item>
-        <el-form-item label="操作类型">
+        <el-form-item label="操作类型" prop="formFilter.operationType">
           <el-select class="filter-item" v-model="formSysOperationLog.formFilter.operationType" :clearable="true" placeholder=""
             filterable :loading="formSysOperationLog.operationType.impl.loading"
             @visible-change="formSysOperationLog.operationType.impl.onVisibleChange">
             <el-option v-for="item in formSysOperationLog.operationType.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="操作状态">
+        <el-form-item label="操作状态" prop="formFilter.success">
           <el-select class="filter-item" v-model="formSysOperationLog.formFilter.success" :clearable="true" filterable placeholder="">
             <el-option :value="1" label="成功" />
             <el-option :value="0" label="失败" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Trace Id">
+        <el-form-item label="Trace Id" prop="formFilter.traceId">
           <el-input class="filter-item" v-model="formSysOperationLog.formFilter.traceId" :clearable="true" />
         </el-form-item>
-        <el-form-item label="调用时长">
+        <el-form-item label="调用时长" prop="formFilter.elapse">
           <input-number-range class="filter-item" v-model="formSysOperationLog.formFilter.elapse" :clearable="true" />
         </el-form-item>
-        <el-form-item label="操作日期">
+        <el-form-item label="操作日期" prop="formFilter.operationTime">
           <date-range class="filter-item" v-model="formSysOperationLog.formFilter.operationTime" :clearable="true" :allowTypes="['day']" align="left"
             range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             format="yyyy-MM-dd" value-format="yyyy-MM-dd hh:mm:ss" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormOperationType(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormOperationType(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="teacher" :data="formSysOperationLog.operationLog.impl.dataList" size="mini" @sort-change="formSysOperationLog.operationLog.impl.onSortChange"
+        <el-table ref="teacher" :data="formSysOperationLog.operationLog.impl.dataList" :size="defaultFormItemSize" @sort-change="formSysOperationLog.operationLog.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formSysOperationLog.operationLog.impl.getTableIndex" />
           <el-table-column label="系统模块" prop="serviceName" width="200px" />
@@ -49,7 +50,7 @@
           <el-table-column label="调用时长" prop="elapse" width="100px" />
           <el-table-column label="操作状态" prop="success" width="100px" >
             <template slot-scope="scope">
-              <el-tag size="mini" v-if="scope.row.success != null"
+              <el-tag :size="defaultFormItemSize" v-if="scope.row.success != null"
                 :type="scope.row.success ? 'success' : 'danger'">
                 {{scope.row.success ? '成功' : '失败'}}
               </el-tag>
@@ -58,7 +59,7 @@
           <el-table-column label="操作时间" prop="operationTime" width="150px" />
           <el-table-column label="操作" fixed="right" width="150px" >
             <template slot-scope="scope">
-              <el-button @click.stop="onFormViewSysOperationLogClick(scope.row)" type="text" size="mini">
+              <el-button @click.stop="onFormViewSysOperationLogClick(scope.row)" type="text" :size="defaultFormItemSize">
                 详情
               </el-button>
             </template>
@@ -122,6 +123,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSysOperationLog.resetFields();
+      this.refreshFormOperationType(true);
+    },
     /**
      * 操作日志数据数据获取函数，返回Promise
      */

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.orangeforms.common.core.interceptor.MyRequestArgumentResolver;
+import com.orangeforms.common.core.util.MyDateUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -44,8 +45,8 @@ public class CommonWebMvcConfig implements WebMvcConfigurer {
 
 	@Bean
 	public FastJsonHttpMessageConverter fastJsonHttpMessageConverters() {
-	FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-	List<MediaType> supportedMediaTypes = new ArrayList<>();
+		FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+		List<MediaType> supportedMediaTypes = new ArrayList<>();
 		supportedMediaTypes.add(MediaType.APPLICATION_JSON);
 		supportedMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
 		fastConverter.setSupportedMediaTypes(supportedMediaTypes);
@@ -54,7 +55,7 @@ public class CommonWebMvcConfig implements WebMvcConfigurer {
 				SerializerFeature.PrettyFormat,
 				SerializerFeature.DisableCircularReferenceDetect,
 				SerializerFeature.IgnoreNonFieldGetter);
-		fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
+		fastJsonConfig.setDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
 		fastConverter.setFastJsonConfig(fastJsonConfig);
 		return fastConverter;
 	}

@@ -1,26 +1,27 @@
 <template>
   <!-- 待办任务 -->
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formMyTask" :model="formMyTask" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="流程名称">
+        <el-form-item label="流程名称" prop="formFilter.processDefinitionName">
           <el-input class="filter-item" v-model="formMyTask.formFilter.processDefinitionName"
             :clearable="true" placeholder="流程名称" />
         </el-form-item>
-        <el-form-item label="流程标识">
+        <el-form-item label="流程标识" prop="formFilter.processDefinitionKey">
           <el-input class="filter-item" v-model="formMyTask.formFilter.processDefinitionKey"
             :clearable="true" placeholder="流程标识" />
         </el-form-item>
-        <el-form-item label="任务名称">
+        <el-form-item label="任务名称" prop="formFilter.taskName">
           <el-input class="filter-item" v-model="formMyTask.formFilter.taskName"
             :clearable="true" placeholder="任务名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshMyTask(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshMyTask(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="flowEntry" :data="formMyTask.taskWidget.dataList" size="mini" @sort-change="formMyTask.taskWidget.onSortChange"
+        <el-table ref="flowEntry" :data="formMyTask.taskWidget.dataList" :size="defaultFormItemSize" @sort-change="formMyTask.taskWidget.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formMyTask.taskWidget.getTableIndex" />
           <el-table-column label="流程名称" prop="processDefinitionName" />
@@ -29,7 +30,7 @@
           <el-table-column label="任务发起时间" prop="processInstanceStartTime" />
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button class="table-btn primary" size="mini" type="text" @click="onSubmit(scope.row)">办理</el-button>
+              <el-button class="table-btn primary" :size="defaultFormItemSize" type="text" @click="onSubmit(scope.row)">办理</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,6 +81,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formMyTask.resetFields();
+      this.refreshMyTask(true);
+    },
     loadTaskData (params) {
       if (params == null) params = {};
       params = {

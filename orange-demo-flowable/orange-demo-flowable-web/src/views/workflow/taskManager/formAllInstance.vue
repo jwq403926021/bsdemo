@@ -1,21 +1,21 @@
 <template>
   <!-- 流程实例 -->
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formAllInstance" :model="formFilter" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="流程名称">
+        <el-form-item label="流程名称" prop="processDefinitionName">
           <el-input class="filter-item"
             v-model="formFilter.processDefinitionName"
             :clearable="true" placeholder="流程名称"
           />
         </el-form-item>
-        <el-form-item label="发起人">
+        <el-form-item label="发起人" prop="startUser">
           <el-input class="filter-item"
             v-model="formFilter.startUser"
             :clearable="true" placeholder="发起人"
           />
         </el-form-item>
-        <el-form-item label="发起时间">
+        <el-form-item label="发起时间" prop="createDate">
           <date-range class="filter-item"
             v-model="formFilter.createDate"
             :clearable="true" :allowTypes="['day']" align="left"
@@ -23,12 +23,13 @@
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss"
           />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormAllInstance(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormAllInstance(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="teacher" :data="formAllInstanceWidget.dataList" size="mini" @sort-change="formAllInstanceWidget.onSortChange"
+        <el-table ref="teacher" :data="formAllInstanceWidget.dataList" :size="defaultFormItemSize" @sort-change="formAllInstanceWidget.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formAllInstanceWidget.getTableIndex" />
           <el-table-column label="流程名称" prop="processDefinitionName" />
@@ -38,13 +39,13 @@
           <el-table-column label="任务结束时间" prop="endTime" />
           <el-table-column label="操作" width="150px">
             <template slot-scope="scope">
-              <el-button class="table-btn success" size="mini" type="text" @click="onShowProcessViewer(scope.row)">流程图</el-button>
-              <el-button class="table-btn primary" size="mini" type="text"
+              <el-button class="table-btn success" :size="defaultFormItemSize" type="text" @click="onShowProcessViewer(scope.row)">流程图</el-button>
+              <el-button class="table-btn primary" :size="defaultFormItemSize" type="text"
                 :disabled="scope.row.endTime != null || !checkPermCodeExist('formAllInstance:formAllInstance:stop')"
                 @click="onStopTask(scope.row)">
                 终止
               </el-button>
-              <el-button class="table-btn delete" size="mini" type="text"
+              <el-button class="table-btn delete" :size="defaultFormItemSize" type="text"
                 :disabled="scope.row.endTime == null || !checkPermCodeExist('formAllInstance:formAllInstance:delete')"
                 @click="onDeleteTask(scope.row)">
                 删除
@@ -100,6 +101,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formAllInstance.resetFields();
+      this.refreshFormAllInstance(true);
+    },
     /**
      * 获取所有流程实例
      */

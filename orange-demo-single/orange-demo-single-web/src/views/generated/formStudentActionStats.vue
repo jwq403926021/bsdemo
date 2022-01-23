@@ -1,13 +1,15 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formStudentActionStatsFilter" :model="formStudentActionStats" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="统计日期">
+        <el-form-item label="统计日期" prop="formFilter.statsDate">
           <date-range class="filter-item" v-model="formStudentActionStats.formFilter.statsDate" :clearable="true" :allowTypes="['day']" align="left"
             range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
         </el-form-item>
-        <el-form-item label="所属年级">
+        <el-form-item label="所属年级" prop="formFilter.gradeId">
           <el-select class="filter-item" v-model="formStudentActionStats.formFilter.gradeId" :clearable="true" filterable
             placeholder="所属年级" :loading="formStudentActionStats.gradeId.impl.loading"
             @visible-change="formStudentActionStats.gradeId.impl.onVisibleChange"
@@ -15,13 +17,15 @@
             <el-option v-for="item in formStudentActionStats.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormStudentActionStats(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormStudentActionStats">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormStudentActionStats(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="studentActionStats" :data="formStudentActionStats.StudentActionStats.impl.dataList" size="mini" @sort-change="formStudentActionStats.StudentActionStats.impl.onSortChange"
-          header-cell-class-name="table-header-gray">
+        <el-table ref="studentActionStats" :data="formStudentActionStats.StudentActionStats.impl.dataList" :size="defaultFormItemSize" @sort-change="formStudentActionStats.StudentActionStats.impl.onSortChange"
+          header-cell-class-name="table-header-gray"
+        >
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudentActionStats.StudentActionStats.impl.getTableIndex" />
           <el-table-column label="统计日期">
             <template slot-scope="scope">
@@ -125,6 +129,10 @@ export default {
     }
   },
   methods: {
+    onResetFormStudentActionStats () {
+      this.$refs.formStudentActionStatsFilter.resetFields();
+      this.refreshFormStudentActionStats(true);
+    },
     /**
      * 学生行为统计数据获取函数，返回Promise
      */

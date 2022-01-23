@@ -6,6 +6,7 @@
     :processInstanceInitiator="processInstanceInitiator"
     :taskName="taskName"
     :operationList="operationList"
+    :isRuntime="isRuntime"
     @close="handlerClose(false)"
     @start="handlerStart"
     @submit="handlerOperation"
@@ -58,6 +59,10 @@ export default {
     readOnly: {
       type: [String, Boolean],
       default: true
+    },
+    // 消息id，用于抄送消息回显
+    messageId: {
+      type: String
     },
     // 流程实例id
     processInstanceId: {
@@ -144,7 +149,7 @@ export default {
             } else if (operationType === this.SysFlowTaskOperationType.SET_ASSIGNEE) {
               // 设置下一个任务节点处理人
               if (formData.taskVariableData == null) formData.taskVariableData = {};
-              formData.taskVariableData.appointedAssignee = assignee;
+              formData.taskVariableData.appointedAssignee = Array.isArray(assignee) ? assignee[0] : undefined;
             }
             resolve(formData);
           }).catch(e => {
@@ -160,11 +165,11 @@ export default {
     /**
      * 启动流程
      */
-    handlerStart (operation) {
+    handlerStart (operation, copyItemList) {
       if (!this.isOnlineForm) {
         let funHandlerStart = this.getRouterCompomentFunction('handlerStart');
         if (funHandlerStart != null) {
-          funHandlerStart(operation).then(res => {
+          funHandlerStart(operation, copyItemList).then(res => {
             this.handlerClose();
           }).catch(e => {});
         } else {
@@ -180,7 +185,11 @@ export default {
               taskVariableData: formData.taskVariableData,
               flowTaskCommentDto: {
                 approvalType: operation.type
-              }
+              },
+              copyData: (copyItemList || []).reduce((retObj, item) => {
+                retObj[item.type] = item.id;
+                return retObj;
+              }, {})
             }, {
               processDefinitionKey: this.processDefinitionKey
             }).then(res => {
@@ -195,7 +204,7 @@ export default {
      * 流程操作
      * @param {Object} operation 流程操作
      */
-    handlerOperation (operation) {
+    handlerOperation (operation, copyItemList) {
       if (this.isOnlineForm) {
         this.preHandlerOperation(operation, this.isStart).then(res => {
           // 加签操作
@@ -208,6 +217,17 @@ export default {
           // 驳回操作
           if (operation.type === this.SysFlowTaskOperationType.REJECT) {
             FlowOperationController.rejectRuntimeTask(this, {
+              processInstanceId: this.processInstanceId,
+              taskId: this.taskId,
+              comment: (res || {}).message
+            }).then(res => {
+              this.handlerClose();
+            }).catch(e => {});
+            return;
+          }
+          // 驳回到起点
+          if (operation.type === this.SysFlowTaskOperationType.REJECT_TO_START) {
+            FlowOperationController.rejectToStartUserTask(this, {
               processInstanceId: this.processInstanceId,
               taskId: this.taskId,
               comment: (res || {}).message
@@ -240,7 +260,11 @@ export default {
                 approvalType: operation.type,
                 delegateAssginee: operation.type === this.SysFlowTaskOperationType.TRANSFER ? (res || {}).assignee : undefined
               },
-              taskVariableData: formData.taskVariableData
+              taskVariableData: formData.taskVariableData,
+              copyData: (copyItemList || []).reduce((retObj, item) => {
+                retObj[item.type] = item.id;
+                return retObj;
+              }, {})
             }
 
             FlowOperationController.submitUserTask(this, params).then(res => {
@@ -253,7 +277,7 @@ export default {
       } else {
         let funHandlerOperation = this.getRouterCompomentFunction('handlerOperation');
         if (funHandlerOperation) {
-          funHandlerOperation(operation).then(res => {
+          funHandlerOperation(operation, copyItemList).then(res => {
             this.handlerClose();
           }).catch(e => {});
         } else {
@@ -275,7 +299,15 @@ export default {
           taskId: this.taskId
         }
         // 判断是展示历史流程的数据还是待办流程的数据
-        let httpCall = (this.taskId != null && this.isRuntime) ? FlowOperationController.viewUserTask(this, params) : FlowOperationController.viewHistoricProcessInstance(this, params);
+        let httpCall = null;
+        if (this.messageId != null) {
+          // 抄送消息
+          httpCall = FlowOperationController.viewOnlineCopyBusinessData(this, {
+            messageId: this.messageId
+          });
+        } else {
+          httpCall = (this.taskId != null && this.isRuntime) ? FlowOperationController.viewUserTask(this, params) : FlowOperationController.viewHistoricProcessInstance(this, params);
+        }
         httpCall.then(res => {
           this.isStart = (res.data == null);
           // 一对多数据

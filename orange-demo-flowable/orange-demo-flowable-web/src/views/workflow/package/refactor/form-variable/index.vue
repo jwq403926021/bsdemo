@@ -1,6 +1,6 @@
 <template>
   <div class="panel-tab__content">
-    <el-form size="mini" label-width="90px" @submit.native.prevent>
+    <el-form :size="defaultFormItemSize" label-width="90px" @submit.native.prevent>
       <el-form-item label="任务变量">
         <el-select v-model="taskVariableList" clearable multiple collapse-tags
           placeholder="选择任务节点使用的变量" filterable default-first-option

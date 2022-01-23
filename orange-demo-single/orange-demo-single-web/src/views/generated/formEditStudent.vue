@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formEditStudent" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="学生姓名" prop="Student.studentName">
@@ -125,11 +125,11 @@
         </el-col>
         <el-col :span="24">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini" :disabled="!checkPermCodeExist('formEditStudent:formEditStudent:update')"
+            <el-button type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formEditStudent:formEditStudent:update')"
               @click="onUpdateClick()">
               保存
             </el-button>

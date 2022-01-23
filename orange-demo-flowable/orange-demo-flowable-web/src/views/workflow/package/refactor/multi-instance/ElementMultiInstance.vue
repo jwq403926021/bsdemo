@@ -1,6 +1,6 @@
 <template>
   <div class="panel-tab__content">
-    <el-form size="mini" label-width="90px" @submit.native.prevent>
+    <el-form :size="defaultFormItemSize" label-width="90px" @submit.native.prevent>
       <el-form-item label="内置变量">
         <el-button type="primary" @click="showVariableDlg = true">查看</el-button>
       </el-form-item>

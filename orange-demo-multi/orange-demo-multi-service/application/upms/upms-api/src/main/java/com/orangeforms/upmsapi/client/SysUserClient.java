@@ -167,6 +167,16 @@ public interface SysUserClient extends BaseClient<SysUserDto, SysUserVo, Long> {
     ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam);
 
     /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。
+     *
+     * @param queryParam 查询参数。
+     * @return filterSet中，在从表中不存在的数据集合。
+     */
+    @Override
+    @PostMapping("/sysUser/notExist")
+    ResponseResult<List<?>> notExist(@RequestBody MyQueryParam queryParam);
+
+    /**
      * 获取指定角色Id集合的用户数据集合。
      * @param roleIds 角色Id集合。
      * @return 应该结果对象，包含查询后的用户列表。

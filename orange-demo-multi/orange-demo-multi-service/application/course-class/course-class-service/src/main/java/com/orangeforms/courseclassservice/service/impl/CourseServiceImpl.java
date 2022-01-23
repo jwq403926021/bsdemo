@@ -1,7 +1,7 @@
 package com.orangeforms.courseclassservice.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.*;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.courseclassservice.service.*;
 import com.orangeforms.courseclassservice.dao.*;
@@ -198,8 +198,12 @@ public class CourseServiceImpl extends BaseService<Course, Long> implements Cour
      */
     @Override
     public List<Course> getNotInCourseListByClassId(Long classId, Course filter, String orderBy) {
-        List<Course> resultList =
-                courseMapper.getNotInCourseListByClassId(classId, filter, orderBy);
+        List<Course> resultList;
+        if (classId != null) {
+            resultList = courseMapper.getNotInCourseListByClassId(classId, filter, orderBy);
+        } else {
+            resultList = getCourseList(filter, orderBy);
+        }
         this.buildRelationForDataList(resultList, MyRelationParam.dictOnly());
         return resultList;
     }

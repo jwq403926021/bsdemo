@@ -68,6 +68,11 @@ const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
     symbol: 'REJECT'
   },
   {
+    id: 'rejectToStart',
+    name: '驳回到起点',
+    symbol: 'REJECT_TO_START'
+  },
+  {
     id: 'revoke',
     name: '撤销',
     symbol: 'REVOKE'
@@ -182,6 +187,55 @@ const SysFlowWorkOrderStatus = new DictionaryBase('工单状态', [
 ]);
 Vue.prototype.SysFlowWorkOrderStatus = SysFlowWorkOrderStatus;
 
+const SysFlowCopyForType = new DictionaryBase('抄送类型', [
+  {
+    id: 'user',
+    name: '抄送人',
+    symbol: 'USER'
+  },
+  {
+    id: 'dept',
+    name: '抄送部门',
+    symbol: 'DEPT'
+  },
+  {
+    id: 'role',
+    name: '抄送角色',
+    symbol: 'ROLE'
+  },
+  {
+    id: 'deptPostLeader',
+    name: '审批人部门领导',
+    symbol: 'SELF_DEPT_LEADER'
+  },
+  {
+    id: 'upDeptPostLeader',
+    name: '审批人上级部门领导',
+    symbol: 'UP_DEPT_LEADER'
+  },
+  {
+    id: 'allDeptPost',
+    name: '抄送岗位',
+    symbol: 'POST'
+  },
+  {
+    id: 'selfDeptPost',
+    name: '审批人部门岗位',
+    symbol: 'SELF_DEPT_POST'
+  },
+  {
+    id: 'upDeptPost',
+    name: '审批人上级部门岗位',
+    symbol: 'UP_DEPT_POST'
+  },
+  {
+    id: 'deptPost',
+    name: '指定部门岗位',
+    symbol: 'DEPT_POST'
+  }
+]);
+Vue.prototype.SysFlowCopyForType = SysFlowCopyForType;
+
 export {
   SysFlowEntryPublishedStatus,
   SysFlowEntryBindFormType,
@@ -189,5 +243,6 @@ export {
   SysFlowTaskOperationType,
   SysFlowTaskType,
   SysFlowVariableType,
-  SysFlowWorkOrderStatus
+  SysFlowWorkOrderStatus,
+  SysFlowCopyForType
 }

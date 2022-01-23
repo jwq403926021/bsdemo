@@ -1,16 +1,17 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysLoginUser" :model="formSysLoginUser" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="登录名称">
+        <el-form-item label="登录名称" prop="formFilter.loginName">
           <el-input class="filter-item" v-model="formSysLoginUser.formFilter.loginName" :clearable="true" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormOperationType(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormOperationType(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="teacher" :data="formSysLoginUser.loginUser.impl.dataList" size="mini" @sort-change="formSysLoginUser.loginUser.impl.onSortChange"
+        <el-table ref="teacher" :data="formSysLoginUser.loginUser.impl.dataList" :size="defaultFormItemSize" @sort-change="formSysLoginUser.loginUser.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formSysLoginUser.loginUser.impl.getTableIndex" />
           <el-table-column label="登录名称" prop="loginName" />
@@ -19,7 +20,7 @@
           <el-table-column label="登录时间" prop="loginTime" />
           <el-table-column label="操作" fixed="right" width="150px" >
             <template slot-scope="scope">
-              <el-button @click.stop="onDeleteLoginUserClick(scope.row)" type="text" size="mini">
+              <el-button @click.stop="onDeleteLoginUserClick(scope.row)" type="text" :size="defaultFormItemSize">
                 强退
               </el-button>
             </template>
@@ -69,6 +70,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSysLoginUser.resetFields();
+      this.refreshFormOperationType(true);
+    },
     /**
      * 登录用户数据数据获取函数，返回Promise
      */

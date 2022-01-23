@@ -1,15 +1,15 @@
 <template>
   <!-- 历史任务 -->
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formMyHistoryTask" :model="formFilter" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="流程名称">
+        <el-form-item label="流程名称" prop="processDefinitionName">
           <el-input class="filter-item"
             v-model="formFilter.processDefinitionName"
             :clearable="true" placeholder="流程名称"
           />
         </el-form-item>
-        <el-form-item label="发起时间">
+        <el-form-item label="发起时间" prop="createDate">
           <date-range class="filter-item"
             v-model="formFilter.createDate"
             :clearable="true" :allowTypes="['day']" align="left"
@@ -17,12 +17,13 @@
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss"
           />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormMyHistoryTask(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormMyHistoryTask(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="teacher" :data="formMyHistoryTaskWidget.dataList" size="mini" @sort-change="formMyHistoryTaskWidget.onSortChange"
+        <el-table ref="teacher" :data="formMyHistoryTaskWidget.dataList" :size="defaultFormItemSize" @sort-change="formMyHistoryTaskWidget.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formMyHistoryTaskWidget.getTableIndex" />
           <el-table-column label="流程名称" prop="processDefinitionName" />
@@ -32,7 +33,7 @@
           <el-table-column label="任务结束时间" prop="endTime" />
           <el-table-column label="操作" width="100px">
             <template slot-scope="scope">
-              <el-button class="table-btn success" size="mini" type="text" @click="onFlowDetail(scope.row)">详情</el-button>
+              <el-button class="table-btn success" :size="defaultFormItemSize" type="text" @click="onFlowDetail(scope.row)">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,6 +81,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formMyHistoryTask.resetFields();
+      this.refreshFormMyHistoryTask(true);
+    },
     /**
      * 获取所有流程实例
      */

@@ -31,7 +31,7 @@
         </template>
         <!-- 上传文件 -->
         <template v-else-if="!widgetConfig.isImage">
-          <el-button size="mini" type="primary">点击上传</el-button>
+          <el-button :size="defaultFormItemSize" type="primary">点击上传</el-button>
         </template>
       </el-upload>
       <template v-else>

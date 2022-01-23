@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="form" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="表单编码" prop="formCode">
@@ -38,7 +38,7 @@
               <el-option v-for="item in getValidTableList" :key="item.tableId" :value="item.tableId" :label="item.tableName">
                 <el-row type="flex" justify="space-between" align="middle">
                   <span>{{item.tableName}}</span>
-                  <el-tag size="mini" :type="getDatasourceTableTagType(item.relationType)" effect="dark"
+                  <el-tag :size="defaultFormItemSize" :type="getDatasourceTableTagType(item.relationType)" effect="dark"
                     style="margin-left: 30px;"
                   >
                     {{getDatasourceTableTagName(item.relationType)}}
@@ -50,11 +50,11 @@
         </el-col>
         <el-col :span="24">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini"
+            <el-button type="primary" :size="defaultFormItemSize"
               @click="onSubmit()">
               保存
             </el-button>

@@ -3,14 +3,15 @@
     <el-tabs v-model="activeFragmentId" :before-leave="onFragmentChange">
       <el-tab-pane label="角色管理" name="fragmentSysRole" style="width: 100%;"
         v-if="checkPermCodeExist('formSysRole:fragmentSysRole')">
-        <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+        <el-form ref="fragmentSysRole" :model="fragmentSysRole" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
           <filter-box :item-width="350">
-            <el-form-item label="角色名称">
+            <el-form-item label="角色名称" prop="formFilter.sysRoleName">
               <el-input class="filter-item" v-model="fragmentSysRole.formFilter.sysRoleName"
                 :clearable="true" placeholder="角色名称" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysRole(true)">查询</el-button>
-            <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:add')"
+            <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetRole">重置</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysRole(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:add')"
               @click="onAddSysRoleClick()">
               新建
             </el-button>
@@ -18,7 +19,7 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysRole.SysRole.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysRole.SysRole.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysRole.SysRole.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="50px"
@@ -27,15 +28,15 @@
               </el-table-column>
               <el-table-column label="操作" fixed="right" width="150px">
                 <template slot-scope="scope">
-                  <el-button @click="onEditSysRoleClick(scope.row)" type="text" size="mini"
+                  <el-button @click="onEditSysRoleClick(scope.row)" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:update')">
                     编辑
                   </el-button>
-                  <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+                  <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:delete')">
                     删除
                   </el-button>
-                  <el-button class="btn-table-primary" type="text" size="mini"
+                  <el-button class="btn-table-primary" type="text" :size="defaultFormItemSize"
                     v-if="checkPermCodeExist('formSysRole:fragmentSysRole:listSysRolePermDetail')"
                     @click="onSysRolePermClick(scope.row)">
                     权限详情
@@ -61,7 +62,7 @@
       </el-tab-pane>
       <el-tab-pane label="用户授权" name="fragmentSysRoleUser" style="width: 100%;"
         v-if="checkPermCodeExist('formSysRole:fragmentSysRoleUser')">
-        <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+        <el-form ref="fragmentSysRoleUser" :model="fragmentSysRoleUser" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
           <filter-box :item-width="350">
             <el-form-item label="用户角色">
               <el-select class="filter-item" v-model="fragmentSysRoleUser.formFilter.sysRoleId" clearable
@@ -71,14 +72,15 @@
                 <el-option v-for="item in fragmentSysRoleUser.sysRole.impl.dropdownList" :key="item.roleId" :value="item.roleId" :label="item.roleName" />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名">
+            <el-form-item label="用户名" prop="formFilter.sysUserLoginName">
               <el-input class="filter-item" v-model="fragmentSysRoleUser.formFilter.sysUserLoginName"
                 :clearable="true" placeholder="输入用户名 / 昵称查询" @change="refreshFragmentSysRoleUser(true)" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysRoleUser(true)">
+            <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetRoleUser">重置</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysRoleUser(true)">
               查询
             </el-button>
-            <el-button slot="operator" type="primary" size="mini" @click="onAddRow()"
+            <el-button slot="operator" type="primary" :size="defaultFormItemSize" @click="onAddRow()"
               :disabled="!checkPermCodeExist('formSysRole:fragmentSysRoleUser:addUserRole') ||
               fragmentSysRoleUser.formFilter.sysRoleId == null || fragmentSysRoleUser.formFilter.sysRoleId === ''">
               添加用户
@@ -87,7 +89,7 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysRoleUser.SysUser.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysRoleUser.SysUser.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysRoleUser.SysUser.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="fragmentSysRoleUser.SysUser.impl.getTableIndex" />
@@ -102,12 +104,12 @@
               </el-table-column>
               <el-table-column label="状态">
                 <template slot-scope="scope">
-                  <el-tag :type="getUserStatusType(scope.row.userStatus)" size="mini">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
+                  <el-tag :type="getUserStatusType(scope.row.userStatus)" :size="defaultFormItemSize">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="操作" fixed="right" width="80px">
                 <template slot-scope="scope">
-                  <el-button class="btn-table-delete" type="text" size="mini"
+                  <el-button class="btn-table-delete" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formSysRole:fragmentSysRoleUser:deleteUserRole')"
                     @click="onDeleteRow(scope.row)">
                     移除
@@ -183,6 +185,14 @@ export default {
     }
   },
   methods: {
+    onResetRole () {
+      this.$refs.fragmentSysRole.resetFields();
+      this.refreshFragmentSysRole(true);
+    },
+    onResetRoleUser () {
+      this.$refs.fragmentSysRoleUser.resetFields();
+      this.refreshFragmentSysRoleUser(true);
+    },
     /**
      * 用户角色数据获取函数，返回Primise
      */

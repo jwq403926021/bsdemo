@@ -249,4 +249,8 @@ export default class SystemController {
   static deleteSysLoginUser (sender, params, axiosOption, httpOption) {
     return sender.doUrl('admin/upms/loginUser/delete', 'post', params, axiosOption, httpOption);
   }
+  // 上传用户头像URL
+  static changeHeadImageUrl () {
+    return 'admin/upms/login/changeHeadImage';
+  }
 }

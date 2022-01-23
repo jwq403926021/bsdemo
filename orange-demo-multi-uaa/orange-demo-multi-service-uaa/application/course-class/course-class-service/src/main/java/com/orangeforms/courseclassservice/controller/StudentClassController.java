@@ -114,18 +114,7 @@ public class StudentClassController extends BaseController<StudentClass, Student
         if (MyCommonUtil.existBlankArgument(classId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        StudentClass originalStudentClass = studentClassService.getById(classId);
-        if (originalStudentClass == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (!studentClassService.remove(classId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(classId);
     }
 
     /**
@@ -194,13 +183,8 @@ public class StudentClassController extends BaseController<StudentClass, Student
         }
         Course filter = MyModelUtil.copyTo(courseDtoFilter, Course.class);
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Course.class);
-        List<Course> courseList;
-        if (MyCommonUtil.isNotBlankOrNull(classId)) {
-            courseList = courseService.getNotInCourseListByClassId(classId, filter, orderBy);
-        } else {
-            courseList = courseService.getCourseList(filter, orderBy);
-            courseService.buildRelationForDataList(courseList, MyRelationParam.dictOnly());
-        }
+        List<Course> courseList =
+                courseService.getNotInCourseListByClassId(classId, filter, orderBy);
         return ResponseResult.success(MyPageUtil.makeResponseData(courseList, Course.INSTANCE));
     }
 
@@ -349,13 +333,8 @@ public class StudentClassController extends BaseController<StudentClass, Student
         }
         Student filter = MyModelUtil.copyTo(studentDtoFilter, Student.class);
         String orderBy = MyOrderParam.buildOrderBy(orderParam, Student.class);
-        List<Student> studentList;
-        if (MyCommonUtil.isNotBlankOrNull(classId)) {
-            studentList = studentService.getNotInStudentListByClassId(classId, filter, orderBy);
-        } else {
-            studentList = studentService.getStudentList(filter, orderBy);
-            studentService.buildRelationForDataList(studentList, MyRelationParam.dictOnly());
-        }
+        List<Student> studentList =
+                studentService.getNotInStudentListByClassId(classId, filter, orderBy);
         return ResponseResult.success(MyPageUtil.makeResponseData(studentList, Student.INSTANCE));
     }
 
@@ -630,5 +609,35 @@ public class StudentClassController extends BaseController<StudentClass, Student
     @PostMapping("/aggregateBy")
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);
+    }
+
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。主要用于微服务间远程过程调用。
+     *
+     * @param queryParam 查询参数。
+     * @return 不存在的数据集合。
+     */
+    @ApiOperation(hidden = true, value = "notExist")
+    @PostMapping("/notExist")
+    public ResponseResult<List<?>> notExist(@RequestBody MyQueryParam queryParam) {
+        List<?> notExistIdSet = service().notExist(
+                queryParam.getInFilterField(), queryParam.getInFilterValues(), true);
+        return ResponseResult.success(notExistIdSet);
+    }
+
+    private ResponseResult<Void> doDelete(Long classId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        StudentClass originalStudentClass = studentClassService.getById(classId);
+        if (originalStudentClass == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (!studentClassService.remove(classId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

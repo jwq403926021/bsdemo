@@ -21,11 +21,15 @@
         <div slot="title" class="panel-tab__title"><i class="el-icon-s-data"></i>任务变量</div>
         <form-variable :id="elementId" :type="elementType" />
       </el-collapse-item>
-      <el-collapse-item name="task" v-if="elementType && elementType.indexOf('Task') !== -1" key="task">
+      <el-collapse-item name="task" v-if="elementType && (elementType.indexOf('Task') !== -1 || elementType === 'SubProcess')" key="task">
         <div slot="title" class="panel-tab__title"><i class="el-icon-s-claim"></i>任务设置</div>
         <element-task :id="elementId" :type="elementType" />
       </el-collapse-item>
-      <el-collapse-item name="multiInstance" v-if="elementType && elementType.indexOf('Task') !== -1" key="multiInstance">
+      <el-collapse-item name="copyFor" v-if="formVisible" key="copyFor">
+        <div slot="title" class="panel-tab__title"><i class="el-icon-s-custom"></i>抄送设置</div>
+        <CopyForSelect :id="elementId" :type="elementType" />
+      </el-collapse-item>
+      <el-collapse-item name="multiInstance" v-if="elementType && (elementType.indexOf('Task') !== -1 || elementType === 'SubProcess')" key="multiInstance">
         <div slot="title" class="panel-tab__title"><i class="el-icon-s-help"></i>多实例</div>
         <element-multi-instance :business-object="elementBusinessObject" :type="elementType" />
       </el-collapse-item>
@@ -66,6 +70,7 @@ import ElementProperties from "./properties/ElementProperties";
 // import ElementForm from "./form/ElementForm";
 import ElementForm from "./form/flowFormConfig";
 import FormVariable from "./form-variable/index.vue";
+import CopyForSelect from "./copy-for/index.vue";
 import UserTaskListeners from "./listeners/UserTaskListeners";
 // import ElementMultiInstanceAssignee from './multi-instance/ElementMultiInstanceAssignee.vue';
 
@@ -88,7 +93,8 @@ export default {
     ElementMultiInstance,
     ElementTask,
     ElementOtherConfig,
-    ElementBaseInfo
+    ElementBaseInfo,
+    CopyForSelect
     // ElementMultiInstanceAssignee
   },
   componentName: "MyPropertiesPanel",

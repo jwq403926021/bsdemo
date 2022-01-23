@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formViewOperationLog" :model="formData" class="full-width-input" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="操作模块：">
@@ -16,7 +16,7 @@
         <el-col :span="24">
           <el-form-item label="请求地址：">
             <span class="input-item">{{formData.formViewSysOperationLog.requestUrl}}</span>
-            <el-tag size="mini" style="margin-left: 10px"
+            <el-tag :size="defaultFormItemSize" style="margin-left: 10px"
               :type="formData.formViewSysOperationLog.requestMethod === 'GET' ? 'success' : 'primary'">
               {{formData.formViewSysOperationLog.requestMethod}}
             </el-tag>

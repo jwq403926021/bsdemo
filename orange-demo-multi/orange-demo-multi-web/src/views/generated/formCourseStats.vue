@@ -1,17 +1,20 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formCourseStatsFilter" :model="formCourseStats" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="统计日期">
+        <el-form-item label="统计日期" prop="formFilter.statsDate">
           <date-range class="filter-item" v-model="formCourseStats.formFilter.statsDate" :clearable="true" :allowTypes="['day']" align="left"
             range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormCourseStats(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormCourseStats">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormCourseStats(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-form ref="formCourseStats" :model="formData" class="full-width-input" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col class="table-box gutter-bottom" :span="12">
           <el-card class="base-card" style="height: 350px" shadow="never" :body-style="{padding: '0px'}">
@@ -160,6 +163,10 @@ export default {
     }
   },
   methods: {
+    onResetFormCourseStats () {
+      this.$refs.formCourseStatsFilter.resetFields();
+      this.refreshFormCourseStats(true);
+    },
     /**
      * 课程统计（年级）数据获取函数，返回Promise
      */

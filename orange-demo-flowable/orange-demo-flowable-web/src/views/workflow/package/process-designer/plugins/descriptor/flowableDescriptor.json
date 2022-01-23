@@ -1128,6 +1128,38 @@
       ]
     },
     {
+      "name": "CopyItemList",
+      "superClass": [ "Element" ],
+      "meta": {
+        "allowedIn": [
+          "bpmn:UserTask"
+        ]
+      },
+      "properties": [
+        {
+          "name": "copyItemList",
+          "type": "CopyItem",
+          "isMany": true
+        }
+      ]
+    },
+    {
+      "name": "CopyItem",
+      "superClass": [ "Element" ],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
       "name": "DeptPostList",
       "superClass": [ "Element" ],
       "meta": {

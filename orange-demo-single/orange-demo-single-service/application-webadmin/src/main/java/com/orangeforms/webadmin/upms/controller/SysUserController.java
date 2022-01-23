@@ -1,6 +1,11 @@
 package com.orangeforms.webadmin.upms.controller;
 
 import com.alibaba.fastjson.TypeReference;
+import cn.hutool.core.util.ReflectUtil;
+import com.orangeforms.common.core.upload.BaseUpDownloader;
+import com.orangeforms.common.core.upload.UpDownloaderFactory;
+import com.orangeforms.common.core.upload.UploadResponseInfo;
+import com.orangeforms.common.core.upload.UploadStoreInfo;
 import com.orangeforms.common.log.annotation.OperationLog;
 import com.orangeforms.common.log.model.constant.SysOperationLogType;
 import com.github.pagehelper.page.PageMethod;
@@ -12,6 +17,7 @@ import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.*;
 import com.orangeforms.common.core.constant.*;
 import com.orangeforms.common.core.annotation.MyRequestBody;
+import com.orangeforms.common.redis.cache.SessionCacheHelper;
 import com.orangeforms.webadmin.config.ApplicationConfig;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -19,7 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -40,6 +48,10 @@ public class SysUserController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ApplicationConfig appConfig;
+    @Autowired
+    private SessionCacheHelper cacheHelper;
+    @Autowired
+    private UpDownloaderFactory upDownloaderFactory;
 
     /**
      * 新增用户操作。
@@ -144,18 +156,7 @@ public class SysUserController {
         if (MyCommonUtil.existBlankArgument(userId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        SysUser originalSysUser = sysUserService.getById(userId);
-        if (originalSysUser == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (!sysUserService.remove(userId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(userId);
     }
 
     /**
@@ -201,6 +202,101 @@ public class SysUserController {
     }
 
     /**
+     * 附件文件下载。
+     * 这里将图片和其他类型的附件文件放到不同的父目录下，主要为了便于今后图片文件的迁移。
+     *
+     * @param userId 附件所在记录的主键Id。
+     * @param fieldName 附件所属的字段名。
+     * @param filename  文件名。如果没有提供该参数，就从当前记录的指定字段中读取。
+     * @param asImage   下载文件是否为图片。
+     * @param response  Http 应答对象。
+     */
+    @OperationLog(type = SysOperationLogType.DOWNLOAD, saveResponse = false)
+    @GetMapping("/download")
+    public void download(
+            @RequestParam(required = false) Long userId,
+            @RequestParam String fieldName,
+            @RequestParam String filename,
+            @RequestParam Boolean asImage,
+            HttpServletResponse response) {
+        if (MyCommonUtil.existBlankArgument(fieldName, filename, asImage)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        // 使用try来捕获异常，是为了保证一旦出现异常可以返回500的错误状态，便于调试。
+        // 否则有可能给前端返回的是200的错误码。
+        try {
+            // 如果请求参数中没有包含主键Id，就判断该文件是否为当前session上传的。
+            if (userId == null) {
+                if (!cacheHelper.existSessionUploadFile(filename)) {
+                    ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+            } else {
+                SysUser sysUser = sysUserService.getById(userId);
+                if (sysUser == null) {
+                    ResponseResult.output(HttpServletResponse.SC_NOT_FOUND);
+                    return;
+                }
+                String fieldJsonData = (String) ReflectUtil.getFieldValue(sysUser, fieldName);
+                if (fieldJsonData == null) {
+                    ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
+                if (!BaseUpDownloader.containFile(fieldJsonData, filename)) {
+                    ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+            }
+            UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+            if (!storeInfo.isSupportUpload()) {
+                ResponseResult.output(HttpServletResponse.SC_NOT_IMPLEMENTED,
+                        ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FIELD));
+                return;
+            }
+            BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+            upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
+                    SysUser.class.getSimpleName(), fieldName, filename, asImage, response);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 文件上传操作。
+     *
+     * @param fieldName  上传文件名。
+     * @param asImage    是否作为图片上传。如果是图片，今后下载的时候无需权限验证。否则就是附件上传，下载时需要权限验证。
+     * @param uploadFile 上传文件对象。
+     */
+    @OperationLog(type = SysOperationLogType.UPLOAD, saveResponse = false)
+    @PostMapping("/upload")
+    public void upload(
+            @RequestParam String fieldName,
+            @RequestParam Boolean asImage,
+            @RequestParam("uploadFile") MultipartFile uploadFile) throws Exception {
+        UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+        // 这里就会判断参数中指定的字段，是否支持上传操作。
+        if (!storeInfo.isSupportUpload()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.INVALID_UPLOAD_FIELD));
+            return;
+        }
+        // 根据字段注解中的存储类型，通过工厂方法获取匹配的上传下载实现类，从而解耦。
+        BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+        UploadResponseInfo responseInfo = upDownloader.doUpload(null,
+                appConfig.getUploadFileBaseDir(), SysUser.class.getSimpleName(), fieldName, asImage, uploadFile);
+        if (responseInfo.getUploadFailed()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.UPLOAD_FAILED, responseInfo.getErrorMessage()));
+            return;
+        }
+        cacheHelper.putSessionUploadFile(responseInfo.getFilename());
+        ResponseResult.output(ResponseResult.success(responseInfo));
+    }
+
+    /**
      * 查询用户的权限资源地址列表。同时返回详细的分配路径。
      *
      * @param userId 用户Id。
@@ -243,5 +339,21 @@ public class SysUserController {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
         return ResponseResult.success(sysUserService.getSysMenuListWithDetail(userId, menuName));
+    }
+
+    private ResponseResult<Void> doDelete(Long userId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        SysUser originalSysUser = sysUserService.getById(userId);
+        if (originalSysUser == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (!sysUserService.remove(userId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

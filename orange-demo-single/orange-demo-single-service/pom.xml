@@ -11,7 +11,6 @@
 
     <properties>
         <spring-boot.version>2.3.10.RELEASE</spring-boot.version>
-        <spring-platform.version>Cairo-SR8</spring-platform.version>
         <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -19,25 +18,28 @@
         <java.version>1.8</java.version>
         <application.name>OrangeSingleDemo</application.name>
         <!-- 工具库版本 -->
+        <joda-time.version>2.10.13</joda-time.version>
+        <guava.version>20.0</guava.version>
+        <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <common-csv.version>1.8</common-csv.version>
-        <poi-ooxml.version>4.1.2</poi-ooxml.version>
-        <hutool.version>5.6.4</hutool.version>
+        <poi-ooxml.version>5.0.0</poi-ooxml.version>
+        <hutool.version>5.7.18</hutool.version>
         <jjwt.version>0.9.1</jjwt.version>
         <fastjson.version>1.2.76</fastjson.version>
         <bean.query.version>1.1.5</bean.query.version>
         <caffeine.version>3.0.2</caffeine.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
-        <disruptor.version>3.4.3</disruptor.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
+        <redisson.version>3.15.4</redisson.version>
+        <qdox.version>2.0.0</qdox.version>
+        <knife4j.version>2.0.8</knife4j.version>
+        <ajcaptcha.version>1.3.0</ajcaptcha.version>
         <!-- 数据库工具版本 -->
         <druid.version>1.2.6</druid.version>
         <mybatisplus.version>3.4.2</mybatisplus.version>
         <pagehelper.version>1.3.0</pagehelper.version>
-        <redisson.version>3.15.4</redisson.version>
-        <qdox.version>2.0.0</qdox.version>
-        <knife4j.version>2.0.8</knife4j.version>
     </properties>
 
     <modules>
@@ -52,12 +54,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- freemarker 模板引擎模块 -->
         <dependency>
@@ -72,64 +68,7 @@
         <!-- 日志模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-            <version>2.6.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-core</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j-jul</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.15.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-api</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-jul</artifactId>
-            <version>2.15.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-api</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.15.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-core</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j-api</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.15.0</version>
+            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <!-- aop模块 -->
         <dependency>
@@ -187,12 +126,6 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- log4j2 全异步所依赖的Disruptor框架 -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${disruptor.version}</version>
-        </dependency>
         <!--swagger 2.10.5 必须的依赖 -->
         <dependency>
             <groupId>org.springframework.plugin</groupId>
@@ -218,13 +151,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.spring.platform</groupId>
-                <artifactId>platform-bom</artifactId>
-                <version>${spring-platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

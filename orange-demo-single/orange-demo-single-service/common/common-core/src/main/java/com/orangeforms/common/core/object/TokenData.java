@@ -84,6 +84,10 @@ public class TokenData {
      * 登录时间。
      */
     private Date loginTime;
+    /**
+     * 登录头像地址。
+     */
+    private String headImageUrl;
 
     /**
      * 将令牌对象添加到Http请求对象。

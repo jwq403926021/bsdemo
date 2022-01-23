@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysDept" :model="formSysDept" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="部门名称">
+        <el-form-item label="部门名称" prop="formFilter.deptName">
           <el-input class="filter-item" v-model="formSysDept.formFilter.deptName"
             :clearable="true" placeholder="部门名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSysDept(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:add')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSysDept(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:add')"
           @click="onCreateSysDeptClick()">
           新建
         </el-button>
@@ -15,7 +16,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSysDept.SysDeptList.impl.dataList" size="mini" row-key="deptId"
+        <el-table :data="formSysDept.SysDeptList.impl.dataList" :size="defaultFormItemSize" row-key="deptId"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="50px">
           </el-table-column>
@@ -23,11 +24,11 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="150px">
             <template slot-scope="scope">
-            <el-button @click="onEditSysDeptClick(scope.row)" type="text" size="mini"
+            <el-button @click="onEditSysDeptClick(scope.row)" type="text" :size="defaultFormItemSize"
               :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:update')">
               编辑
             </el-button>
-            <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+            <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
               :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:delete')">
               删除
             </el-button>
@@ -71,6 +72,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSysDept.resetFields();
+      this.refreshFormSysDept(true);
+    },
     /**
      * 部门列表数据获取函数，返回Primise
      */

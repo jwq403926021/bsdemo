@@ -16,17 +16,17 @@
       </el-card>
     </el-aside>
     <el-main style="margin-left: 15px; background-color: white; padding: 20px;">
-      <el-form label-width="120px" size="mini" label-position="left" @submit.native.prevent>
+      <el-form label-width="120px" :size="defaultFormItemSize" label-position="left" @submit.native.prevent>
         <filter-box :item-width="350">
           <el-form-item v-if="dirtyCount > 0" label="失效缓存数量：">
             <span style="color: #F56C6C;">{{dirtyCount}}</span>
           </el-form-item>
-          <el-button slot="operator" type="primary" size="mini" :plain="true"
+          <el-button slot="operator" type="primary" :size="defaultFormItemSize" :plain="true"
             :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:reloadCache') || currentDict == null"
             @click="onRefreshCacheData">
             同步缓存
           </el-button>
-          <el-button slot="operator" type="primary" size="mini"
+          <el-button slot="operator" type="primary" :size="defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:add') || currentDict == null"
             @click="onAddDictData">
             添加数据
@@ -35,14 +35,14 @@
       </el-form>
       <el-row>
         <el-col :span="24">
-          <el-table :data="getCurrentDictData" size="mini" header-cell-class-name="table-header-gray"
+          <el-table :data="getCurrentDictData" :size="defaultFormItemSize" header-cell-class-name="table-header-gray"
             :row-style="tableRowStyle"
             :height="(getMainContextHeight - 90) + 'px'" row-key="id">
             <el-table-column label="ID" prop="id" />
             <el-table-column label="字典名称" prop="name">
               <template slot-scope="scope">
                 <span>{{scope.row.name}}</span>
-                <el-tag v-if="scope.row.dirty" size="mini" effect="dark" type="warning"
+                <el-tag v-if="scope.row.dirty" :size="defaultFormItemSize" effect="dark" type="warning"
                   style="margin-left: 15px;">
                   缓存失效
                 </el-tag>
@@ -50,8 +50,8 @@
             </el-table-column>
             <el-table-column label="操作" width="150px">
               <template slot-scope="scope">
-                <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:update')" @click="onUpdateDictDataClick(scope.row)">编辑</el-button>
-                <el-button type="text" size="mini" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:delete')" @click="onDeleteDictDataClick(scope.row)">删除</el-button>
+                <el-button type="text" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:update')" @click="onUpdateDictDataClick(scope.row)">编辑</el-button>
+                <el-button type="text" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysDict:fragmentSysDict:delete')" @click="onDeleteDictDataClick(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>

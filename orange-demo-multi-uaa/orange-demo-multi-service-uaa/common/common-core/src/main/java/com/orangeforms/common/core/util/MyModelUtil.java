@@ -2,12 +2,14 @@ package com.orangeforms.common.core.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.*;
 import com.orangeforms.common.core.exception.InvalidDataFieldException;
 import com.orangeforms.common.core.annotation.*;
 import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.object.Tuple2;
+import com.orangeforms.common.core.upload.UploadResponseInfo;
 import com.orangeforms.common.core.upload.UploadStoreInfo;
 import com.google.common.base.CaseFormat;
 import lombok.extern.slf4j.Slf4j;
@@ -64,20 +66,34 @@ public class MyModelUtil {
     private static final Map<String, Tuple2<String, Integer>> CACHED_COLUMNINFO_MAP = new ConcurrentHashMap<>();
 
     /**
-     * 将bean的数据列表转换为Map列表。
+     * 将Bean的数据列表转换为Map列表。
      *
-     * @param dataList bean数据列表。
-     * @param <T>      bean对象类型。
+     * @param dataList Bean数据列表。
+     * @param <T>      Bean对象类型。
      * @return 转换后的Map列表。
      */
     public static <T> List<Map<String, Object>> beanToMapList(List<T> dataList) {
         if (CollectionUtils.isEmpty(dataList)) {
-            return null;
+            return new LinkedList<>();
         }
         List<Map<String, Object>> resultList = new LinkedList<>();
-        for (T data : dataList) {
-            resultList.add(BeanUtil.beanToMap(data));
+        dataList.forEach(data -> resultList.add(BeanUtil.beanToMap(data)));
+        return resultList;
+    }
+
+    /**
+     * 将Map的数据列表转换为Bean列表。
+     *
+     * @param dataList Map数据列表。
+     * @param <T>      Bean对象类型。
+     * @return 转换后的Bean对象列表。
+     */
+    public static <T> List<T> mapToBeanList(List<Map<String, Object>> dataList, Class<T> clazz) {
+        if (CollectionUtils.isEmpty(dataList)) {
+            return new LinkedList<>();
         }
+        List<T> resultList = new LinkedList<>();
+        dataList.forEach(data -> resultList.add(BeanUtil.toBeanIgnoreError(data, clazz)));
         return resultList;
     }
 
@@ -296,7 +312,7 @@ public class MyModelUtil {
             }
         }
     }
-    
+
     /**
      * 主Model类型中，遍历所有包含RelationConstDict注解的字段，并将关联的静态字典中的数据，
      * 填充到thisModelList集合元素对象的被注解字段中。
@@ -719,6 +735,46 @@ public class MyModelUtil {
         if (v == null) {
             ReflectUtil.setFieldValue(data, fieldName, defaultValue);
         }
+    }
+
+    /**
+     * 获取当前数据对象中，所有上传文件字段的数据，并将上传后的文件名存到集合中并返回。
+     *
+     * @param data  数据对象。
+     * @param clazz 数据对象的Class类型。
+     * @param <M>   数据对象类型。
+     * @return 当前数据对象中，所有上传文件字段中，文件名属性的集合。
+     */
+    public static <M> Set<String> extractDownloadFileName(M data, Class<M> clazz) {
+        Set<String> resultSet = new HashSet<>();
+        Field[] fields = ReflectUtil.getFields(clazz);
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(UploadFlagColumn.class)) {
+                String v = (String) ReflectUtil.getFieldValue(data, field);
+                List<UploadResponseInfo> fileInfoList = JSON.parseArray(v, UploadResponseInfo.class);
+                if (CollectionUtils.isNotEmpty(fileInfoList)) {
+                    fileInfoList.forEach(fileInfo -> resultSet.add(fileInfo.getFilename()));
+                }
+            }
+        }
+        return resultSet;
+    }
+
+    /**
+     * 获取当前数据对象列表中，所有上传文件字段的数据，并将上传后的文件名存到集合中并返回。
+     *
+     * @param dataList 数据对象。
+     * @param clazz    数据对象的Class类型。
+     * @param <M>      数据对象类型。
+     * @return 当前数据对象中，所有上传文件字段中，文件名属性的集合。
+     */
+    public static <M> Set<String> extractDownloadFileName(List<M> dataList, Class<M> clazz) {
+        Set<String> resultSet = new HashSet<>();
+        if (CollectionUtils.isEmpty(dataList)) {
+            return resultSet;
+        }
+        dataList.forEach(data -> resultSet.addAll(extractDownloadFileName(data, clazz)));
+        return resultSet;
     }
 
     /**

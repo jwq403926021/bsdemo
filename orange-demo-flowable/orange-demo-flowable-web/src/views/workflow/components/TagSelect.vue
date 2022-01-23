@@ -2,7 +2,7 @@
   <div class="tag-select">
     <div class="tag-box">
       <el-tag v-for="item in selectValues" :key="item.id" effect="dark"
-        style="margin-right: 5px;" type="primary" size="mini" closable
+        style="margin-right: 5px;" type="primary" :size="defaultFormItemSize" closable
         @close="onDeleteTag(item)"
       >
         {{item.name}}

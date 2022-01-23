@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment">
     <el-form ref="form" :model="formData" class="full-width-input" :rules="rules"
-      :label-width="formConfig.labelWidth + 'px'" size="mini"
+      :label-width="formConfig.labelWidth + 'px'" :size="defaultFormItemSize"
       :label-position="formConfig.labelPosition"
       @submit.native.prevent>
       <el-row :gutter="formConfig.gutter">
@@ -182,8 +182,12 @@ export default {
                   tempObj.slaveData[widget.relation.relationId] = tableData;
                 }
               } else {
-                tempObj.slaveData[widget.relation.relationId][widget.column.columnName] = that.formData[that.getWidgetFieldName(widget)];
-                if (tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] == null) tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] = widget;
+                let value = that.formData[that.getWidgetFieldName(widget)];
+                if (value != null && widget.column != null) {
+                  if (tempObj.slaveData[widget.relation.relationId] == null) tempObj.slaveData[widget.relation.relationId] = {};
+                  tempObj.slaveData[widget.relation.relationId][widget.column.columnName] = value;
+                  if (tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] == null) tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] = widget;
+                }
               }
             }
 

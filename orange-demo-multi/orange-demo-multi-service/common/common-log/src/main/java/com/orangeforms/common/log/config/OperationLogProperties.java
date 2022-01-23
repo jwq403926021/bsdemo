@@ -18,6 +18,10 @@ public class OperationLogProperties {
      */
     private boolean enabled = true;
     /**
+     * 接口调用的毫秒数大于该值后，将输出慢日志警告。
+     */
+    private long slowLogMs = 50000;
+    /**
      * kafka topic
      */
     private String kafkaTopic = "SysOperationLog";

@@ -29,6 +29,10 @@ public class MyDateUtil {
      */
     public static final String COMMON_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
     /**
+     * 统一的短日期时间pattern，今后可以根据自己的需求去修改。
+     */
+    public static final String COMMON_SHORT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    /**
      * 缺省日期格式化器，提前获取提升运行时效率。
      */
     private static final DateTimeFormatter DATE_PARSE_FORMATTER =

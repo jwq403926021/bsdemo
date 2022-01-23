@@ -100,6 +100,9 @@ const globalMixin = {
     ...mapMutations(['setLoadingStatus'])
   },
   computed: {
+    defaultFormItemSize () {
+      return 'mini';
+    },
     ...mapGetters(['getUserInfo'])
   },
   watch: {

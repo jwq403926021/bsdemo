@@ -1,23 +1,15 @@
 import { FlowOperationController } from '@/api/flowController.js';
 
-// 催办消息下拉个数
-const MESSAGE_SHOW_COUNT = 10;
 // 催办消息轮询间隔
-const MESSAGE_TIMER_INTERVAL = 10000;
+const MESSAGE_TIMER_INTERVAL = 1000 * 60 * 5;
 
 // 获得消息列表数据
 function loadMessage (context, owner) {
-  let params = {
-    pageParam: {
-      pageSize: MESSAGE_SHOW_COUNT,
-      pageNum: 1
-    }
-  }
-  FlowOperationController.listRemindingTask(owner, params, null, {
+  FlowOperationController.getMessageCount(owner, {}, null, {
     showMask: false,
     showError: false
   }).then(res => {
-    context.commit('setMessageList', res.data);
+    context.commit('setMessageCount', res.data);
   }).catch(e => {
     console.error(e);
   });

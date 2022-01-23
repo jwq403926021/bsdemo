@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini" label-position="right" @submit.native.prevent>
+  <el-form ref="form" :model="formData" :rules="rules" label-width="110px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24" >
         <el-form-item label="菜单名称" prop="menuName">
@@ -15,8 +15,8 @@
     </el-row>
     <!-- 弹窗按钮 -->
     <el-row type="flex" justify="end" class="dialog-btn-layer mt20">
-      <el-button size="mini" @click="onCancel(false)" >取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit">确定</el-button>
+      <el-button :size="defaultFormItemSize" @click="onCancel(false)" >取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit">确定</el-button>
     </el-row>
   </el-form>
 </template>

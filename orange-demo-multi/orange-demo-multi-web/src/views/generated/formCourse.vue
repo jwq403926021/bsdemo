@@ -1,8 +1,10 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formCourseFilter" :model="formCourse" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="所属年级">
+        <el-form-item label="所属年级" prop="formFilter.gradeId">
           <el-select class="filter-item" v-model="formCourse.formFilter.gradeId" :clearable="true" filterable
             placeholder="所属年级" :loading="formCourse.gradeId.impl.loading"
             @visible-change="formCourse.gradeId.impl.onVisibleChange"
@@ -10,7 +12,7 @@
             <el-option v-for="item in formCourse.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属学科">
+        <el-form-item label="所属学科" prop="formFilter.subjectId">
           <el-select class="filter-item" v-model="formCourse.formFilter.subjectId" :clearable="true" filterable
             placeholder="所属学科" :loading="formCourse.subjectId.impl.loading"
             @visible-change="formCourse.subjectId.impl.onVisibleChange"
@@ -18,7 +20,7 @@
             <el-option v-for="item in formCourse.subjectId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="课程难度">
+        <el-form-item label="课程难度" prop="formFilter.difficulty">
           <el-select class="filter-item" v-model="formCourse.formFilter.difficulty" :clearable="true" filterable
             placeholder="课程难度" :loading="formCourse.difficulty.impl.loading"
             @visible-change="formCourse.difficulty.impl.onVisibleChange"
@@ -26,13 +28,14 @@
             <el-option v-for="item in formCourse.difficulty.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="课程名称">
+        <el-form-item label="课程名称" prop="formFilter.courseName">
           <el-input class="filter-item" v-model="formCourse.formFilter.courseName"
             :clearable="true" placeholder="课程名称"
           />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormCourse(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formCourse:formCourse:formCreateCourse')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormCourse">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormCourse(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formCourse:formCourse:formCreateCourse')"
           @click="onFormCreateCourseClick()">
           新建
         </el-button>
@@ -40,8 +43,9 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="course" :data="formCourse.Course.impl.dataList" size="mini" @sort-change="formCourse.Course.impl.onSortChange"
-          header-cell-class-name="table-header-gray">
+        <el-table ref="course" :data="formCourse.Course.impl.dataList" :size="defaultFormItemSize" @sort-change="formCourse.Course.impl.onSortChange"
+          header-cell-class-name="table-header-gray"
+        >
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formCourse.Course.impl.getTableIndex" />
           <el-table-column label="课程名称" prop="courseName">
           </el-table-column>
@@ -73,11 +77,11 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
-              <el-button @click.stop="onFormEditCourseClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onFormEditCourseClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formCourse:formCourse:formEditCourse')">
                 编辑
               </el-button>
-              <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formCourse:formCourse:delete')">
                 删除
               </el-button>
@@ -151,6 +155,10 @@ export default {
     }
   },
   methods: {
+    onResetFormCourse () {
+      this.$refs.formCourseFilter.resetFields();
+      this.refreshFormCourse(true);
+    },
     /**
      * 课程数据数据获取函数，返回Promise
      */
@@ -277,22 +285,16 @@ export default {
       this.$dialog.show('编辑', formEditCourse, {
         area: '800px'
       }, params).then(res => {
-        this.formCourse.Course.impl.refreshTable();
       }).catch(e => {});
     },
     /**
      * 删除
      */
     onDeleteClick (row) {
-      let params = {
-        courseId: row.courseId
-      };
-
       this.$confirm('是否删除此课程？').then(res => {
-        CourseController.delete(this, params).then(res => {
-          this.$message.success('删除成功');
-          this.formCourse.Course.impl.refreshTable();
-        }).catch(e => {});
+        this.formCourse.Course.impl.dataList = this.formCourse.Course.impl.dataList.filter(item => {
+          return item.__cascade_add_temp_id__ !== row.__cascade_add_temp_id__;
+        });
       }).catch(e => {});
     },
     onResume () {

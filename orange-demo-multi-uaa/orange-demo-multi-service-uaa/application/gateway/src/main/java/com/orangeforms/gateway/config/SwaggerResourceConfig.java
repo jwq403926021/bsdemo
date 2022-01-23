@@ -32,7 +32,11 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
         List<String> routes = new ArrayList<>();
-        routeLocator.getRoutes().subscribe(route -> routes.add(route.getId()));
+        routeLocator.getRoutes().subscribe(route -> {
+            if (!"upms-captcha".equals(route.getId())) {
+                routes.add(route.getId());
+            }
+        });
         gatewayProperties.getRoutes().stream().filter(routeDefinition -> routes.contains(routeDefinition.getId()))
                 .forEach(route -> route.getPredicates().stream()
                         .filter(predicateDefinition -> ("Path").equalsIgnoreCase(predicateDefinition.getName()))

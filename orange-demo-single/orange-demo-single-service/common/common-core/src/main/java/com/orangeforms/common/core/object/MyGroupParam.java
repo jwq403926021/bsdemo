@@ -1,15 +1,17 @@
 package com.orangeforms.common.core.object;
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.orangeforms.common.core.config.CoreProperties;
 import com.orangeforms.common.core.constant.ApplicationConstant;
 import com.orangeforms.common.core.exception.InvalidClassFieldException;
 import com.orangeforms.common.core.exception.InvalidDataFieldException;
 import com.orangeforms.common.core.exception.InvalidDataModelException;
+import com.orangeforms.common.core.util.ApplicationContextHolder;
 import com.orangeforms.common.core.util.MyModelUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ import java.util.List;
 @Slf4j
 @Data
 public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
+
+    private final CoreProperties coreProperties =
+            ApplicationContextHolder.getBean(CoreProperties.class);
 
     /**
      * SQL语句的SELECT LIST中，分组字段的返回字段名称列表。
@@ -54,15 +59,15 @@ public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
         StringBuilder groupSelectBuilder = new StringBuilder(128);
         int i = 0;
         for (GroupInfo groupInfo : groupParam) {
-            GroupBaseData groupBaseData = parseGroupBaseData(groupInfo, modelClazz);
-            if (StringUtils.isBlank(groupBaseData.tableName)) {
+            GroupBaseData groupBaseData = groupParam.parseGroupBaseData(groupInfo, modelClazz);
+            if (StrUtil.isBlank(groupBaseData.tableName)) {
                 throw new InvalidDataModelException(groupBaseData.modelName);
             }
-            if (StringUtils.isBlank(groupBaseData.columnName)) {
+            if (StrUtil.isBlank(groupBaseData.columnName)) {
                 throw new InvalidDataFieldException(groupBaseData.modelName, groupBaseData.fieldName);
             }
-            processGroupInfo(groupInfo, groupBaseData, groupByBuilder, groupSelectBuilder);
-            String aliasName = StringUtils.isBlank(groupInfo.aliasName) ? groupInfo.fieldName : groupInfo.aliasName;
+            groupParam.processGroupInfo(groupInfo, groupBaseData, groupByBuilder, groupSelectBuilder);
+            String aliasName = StrUtil.isBlank(groupInfo.aliasName) ? groupInfo.fieldName : groupInfo.aliasName;
             // selectGroupFieldList中的元素，目前只是被export操作使用。会根据集合中的元素名称匹配导出表头。
             groupParam.selectGroupFieldList.add(aliasName);
             if (++i < groupParam.size()) {
@@ -74,12 +79,12 @@ public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
         return groupParam;
     }
 
-    private static GroupBaseData parseGroupBaseData(GroupInfo groupInfo, Class<?> modelClazz) {
+    private GroupBaseData parseGroupBaseData(GroupInfo groupInfo, Class<?> modelClazz) {
         GroupBaseData baseData = new GroupBaseData();
-        if (StringUtils.isBlank(groupInfo.fieldName)) {
+        if (StrUtil.isBlank(groupInfo.fieldName)) {
             throw new IllegalArgumentException("GroupInfo.fieldName can't be EMPTY");
         }
-        String[] stringArray = StringUtils.split(groupInfo.fieldName,'.');
+        String[] stringArray = StrUtil.splitToArray(groupInfo.fieldName, '.');
         if (stringArray.length == 1) {
             baseData.modelName = modelClazz.getSimpleName();
             baseData.fieldName = groupInfo.fieldName;
@@ -99,29 +104,48 @@ public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
         return baseData;
     }
 
-    private static void processGroupInfo(
+    private void processGroupInfo(
             GroupInfo groupInfo,
             GroupBaseData baseData,
             StringBuilder groupByBuilder,
             StringBuilder groupSelectBuilder) {
         String tableName = baseData.tableName;
         String columnName = baseData.columnName;
-        if (StringUtils.isNotBlank(groupInfo.dateAggregateBy)) {
-            groupByBuilder.append("DATE_FORMAT(").append(tableName).append(".").append(columnName);
-            groupSelectBuilder.append("DATE_FORMAT(").append(tableName).append(".").append(columnName);
-            if (ApplicationConstant.DAY_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
-                groupByBuilder.append(", '%Y-%m-%d')");
-                groupSelectBuilder.append(", '%Y-%m-%d')");
-            } else if (ApplicationConstant.MONTH_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
-                groupByBuilder.append(", '%Y-%m-01')");
-                groupSelectBuilder.append(", '%Y-%m-01')");
-            } else if (ApplicationConstant.YEAR_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
-                groupByBuilder.append(", '%Y-01-01')");
-                groupSelectBuilder.append(", '%Y-01-01')");
+        if (StrUtil.isNotBlank(groupInfo.dateAggregateBy)) {
+            if (coreProperties.isMySql()) {
+                groupByBuilder.append("DATE_FORMAT(").append(tableName).append(".").append(columnName);
+                groupSelectBuilder.append("DATE_FORMAT(").append(tableName).append(".").append(columnName);
+                if (ApplicationConstant.DAY_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", '%Y-%m-%d')");
+                    groupSelectBuilder.append(", '%Y-%m-%d')");
+                } else if (ApplicationConstant.MONTH_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", '%Y-%m-01')");
+                    groupSelectBuilder.append(", '%Y-%m-01')");
+                } else if (ApplicationConstant.YEAR_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", '%Y-01-01')");
+                    groupSelectBuilder.append(", '%Y-01-01')");
+                } else {
+                    throw new IllegalArgumentException("Illegal DATE_FORMAT for GROUP ID list.");
+                }
+            } else if (coreProperties.isPostgresql()) {
+                groupByBuilder.append("TO_CHAR(").append(tableName).append(".").append(columnName);
+                groupSelectBuilder.append("TO_CHAR(").append(tableName).append(".").append(columnName);
+                if (ApplicationConstant.DAY_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", ''YYYY-MM-dd'')");
+                    groupSelectBuilder.append(", 'YYYY-MM-dd'')");
+                } else if (ApplicationConstant.MONTH_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", 'YYYY-MM-01')");
+                    groupSelectBuilder.append(", 'YYYY-MM-01')");
+                } else if (ApplicationConstant.YEAR_AGGREGATION.equals(groupInfo.dateAggregateBy)) {
+                    groupByBuilder.append(", 'YYYY-01-01')");
+                    groupSelectBuilder.append(", 'YYYY-01-01')");
+                } else {
+                    throw new IllegalArgumentException("Illegal TO_CHAR for GROUP ID list.");
+                }
             } else {
-                throw new IllegalArgumentException("Illegal DATE_FORMAT for GROUP ID list.");
+                throw new UnsupportedOperationException("Unsupport Database Type.");
             }
-            if (StringUtils.isNotBlank(groupInfo.aliasName)) {
+            if (StrUtil.isNotBlank(groupInfo.aliasName)) {
                 groupSelectBuilder.append(" ").append(groupInfo.aliasName);
             } else {
                 groupSelectBuilder.append(" ").append(columnName);
@@ -129,7 +153,7 @@ public class MyGroupParam extends ArrayList<MyGroupParam.GroupInfo> {
         } else {
             groupByBuilder.append(tableName).append(".").append(columnName);
             groupSelectBuilder.append(tableName).append(".").append(columnName);
-            if (StringUtils.isNotBlank(groupInfo.aliasName)) {
+            if (StrUtil.isNotBlank(groupInfo.aliasName)) {
                 groupSelectBuilder.append(" ").append(groupInfo.aliasName);
             }
         }

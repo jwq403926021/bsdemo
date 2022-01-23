@@ -1,13 +1,14 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysDeptPost" :model="formSysDeptPost" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="岗位名称">
+        <el-form-item label="岗位名称" prop="formFilter.postName">
           <el-input class="filter-item" v-model="formSysDeptPost.formFilter.postName"
             :clearable="true" placeholder="岗位名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSysDeptPost(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:editPost')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSysDeptPost(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:editPost')"
           @click="onFormSetDeptPostClick()">
           岗位设置
         </el-button>
@@ -15,7 +16,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="sysPost" :data="formSysDeptPost.SysPost.impl.dataList" size="mini" @sort-change="formSysDeptPost.SysPost.impl.onSortChange"
+        <el-table ref="sysPost" :data="formSysDeptPost.SysPost.impl.dataList" :size="defaultFormItemSize" @sort-change="formSysDeptPost.SysPost.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formSysDeptPost.SysPost.impl.getTableIndex" />
           <el-table-column label="岗位名称" prop="postName">
@@ -23,14 +24,14 @@
           <el-table-column label="岗位别名" prop="sysDeptPost.postShowName">
             <template slot-scope="scope">
               <span v-if="formSysDeptPost.SysPost.currentRow == null || formSysDeptPost.SysPost.currentRow.postId !== scope.row.postId">{{(scope.row.sysDeptPost || {}).postShowName}}</span>
-              <el-input v-else size="mini" v-model="formSysDeptPost.SysPost.currentRow.sysDeptPost.postShowName" />
+              <el-input v-else :size="defaultFormItemSize" v-model="formSysDeptPost.SysPost.currentRow.sysDeptPost.postShowName" />
             </template>
           </el-table-column>
           <el-table-column label="岗位层级" prop="level" sortable="custom">
           </el-table-column>
           <el-table-column label="领导岗位" prop="leaderPost" sortable="custom">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.leaderPost ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" :type="scope.row.leaderPost ? 'success' : 'danger'">
                 {{scope.row.leaderPost ? '是' : '否'}}
               </el-tag>
             </template>
@@ -38,21 +39,21 @@
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button v-if="formSysDeptPost.SysPost.currentRow == null"
-                @click.stop="onEditPostName(scope.row)" type="text" size="mini"
+                @click.stop="onEditPostName(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:editPost')">
                 修改别名
               </el-button>
               <el-button class="table-btn delete" v-if="formSysDeptPost.SysPost.currentRow == null"
-                @click.stop="onDeleteSysDeptPostClick(scope.row)" type="text" size="mini"
+                @click.stop="onDeleteSysDeptPostClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:editPost')">
                 移除
               </el-button>
               <el-button v-if="formSysDeptPost.SysPost.currentRow != null && formSysDeptPost.SysPost.currentRow.postId === scope.row.postId"
-                @click.stop="onSavePostName(scope.row)" type="text" size="mini">
+                @click.stop="onSavePostName(scope.row)" type="text" :size="defaultFormItemSize">
                 保存
               </el-button>
               <el-button v-if="formSysDeptPost.SysPost.currentRow != null && formSysDeptPost.SysPost.currentRow.postId === scope.row.postId"
-                @click.stop="onCancelSavePostName(scope.row)" type="text" size="mini">
+                @click.stop="onCancelSavePostName(scope.row)" type="text" :size="defaultFormItemSize">
                 取消
               </el-button>
             </template>
@@ -122,6 +123,10 @@ export default {
       this.removeCachePage(this.$options.name);
       this.refreshParentCachedPage = isSuccess;
       this.$router.go(-1);
+    },
+    onReset () {
+      this.$refs.formSysDeptPost.resetFields();
+      this.refreshFormSysDeptPost(true);
     },
     /**
      * 部门岗位数据获取函数，返回Promise

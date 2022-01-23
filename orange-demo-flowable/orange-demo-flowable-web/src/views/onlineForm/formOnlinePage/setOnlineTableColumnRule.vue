@@ -2,7 +2,7 @@
   <div class="form-single-fragment" style="position: relative;">
     <!-- 设置字段验证规则 -->
     <el-form v-if="!isCreateRule" class="full-width-input" ref="form" :rules="rules" :model="formData"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="验证规则" prop="ruleId" key="ruleId">
@@ -49,7 +49,7 @@
     </el-form>
     <!-- 新建验证规则 -->
     <el-form v-if="isCreateRule" class="full-width-input" ref="ruleData" :rules="rules" :model="ruleData"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="规则类型" prop="ruleType">
@@ -69,8 +69,8 @@
       </el-row>
     </el-form>
     <el-row type="flex" justify="end">
-      <el-button type="primary" size="mini" :plain="true" @click="onCancelClick">取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit">保存</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" :plain="true" @click="onCancelClick">取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit">保存</el-button>
     </el-row>
   </div>
 </template>

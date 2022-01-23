@@ -1,6 +1,6 @@
 <template>
   <div class="panel-tab__content">
-    <el-form size="mini" label-width="90px" @submit.native.prevent>
+    <el-form :size="defaultFormItemSize" label-width="90px" @submit.native.prevent>
       <el-form-item label="集合类型">
         <el-select v-model="collectionType" key="collectionType" placeholder="">
           <el-option label="候选用户" value="assignee" />

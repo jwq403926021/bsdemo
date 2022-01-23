@@ -1,5 +1,6 @@
 package com.orangeforms.common.redis.cache;
 
+import cn.hutool.core.collection.CollUtil;
 import com.orangeforms.common.core.object.TokenData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -41,6 +42,28 @@ public class SessionCacheHelper {
             sessionUploadFileSet.add(filename);
             cache.put(TokenData.takeFromRequest().getSessionId(), sessionUploadFileSet);
         }
+    }
+
+    /**
+     * 缓存当前Session可以下载的文件集合。
+     *
+     * @param filenameSet 后台服务本地存储的文件名，而不是上传时的原始文件名。
+     */
+    public void putSessionDownloadableFileNameSet(Set<String> filenameSet) {
+        if (CollUtil.isEmpty(filenameSet)) {
+            return;
+        }
+        Set<String> sessionUploadFileSet = null;
+        Cache cache = cacheManager.getCache(RedissonCacheConfig.CacheEnum.UPLOAD_FILENAME_CACHE.name());
+        Cache.ValueWrapper valueWrapper = cache.get(TokenData.takeFromRequest().getSessionId());
+        if (valueWrapper != null) {
+            sessionUploadFileSet = (Set<String>) valueWrapper.get();
+        }
+        if (sessionUploadFileSet == null) {
+            sessionUploadFileSet = new HashSet<>();
+        }
+        sessionUploadFileSet.addAll(filenameSet);
+        cache.put(TokenData.takeFromRequest().getSessionId(), sessionUploadFileSet);
     }
 
     /**

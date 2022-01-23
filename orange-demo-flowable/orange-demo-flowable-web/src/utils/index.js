@@ -83,7 +83,7 @@ export function nameTranslate (name, type) {
  * @param {String} childKey 子节点字段名
  */
 function findNode (node, id, list, idKey = 'id', childKey = 'children') {
-  if (Array.isArray(list)) list.push(node[idKey]);
+  if (Array.isArray(list)) list.push(node);
   if (node[idKey] === id) {
     return node;
   }
@@ -104,7 +104,7 @@ function findNode (node, id, list, idKey = 'id', childKey = 'children') {
  * @param {*} idKey 主键字段名
  * @param {*} childKey 子节点字段名
  */
-export function findTreeNodePath (treeRoot, id, idKey = 'id', childKey = 'children') {
+export function findTreeNodeObjectPath (treeRoot, id, idKey = 'id', childKey = 'children') {
   let tempList = [];
   for (let i = 0; i < treeRoot.length; i++) {
     if (findNode(treeRoot[i], id, tempList, idKey, childKey)) {
@@ -114,6 +114,11 @@ export function findTreeNodePath (treeRoot, id, idKey = 'id', childKey = 'childr
 
   return [];
 }
+
+export function findTreeNodePath (treeRoot, id, idKey = 'id', childKey = 'children') {
+  return (this.findTreeNodeObjectPath(treeRoot, id, idKey, childKey) || []).map(item => item[idKey]);
+}
+
 /**
  * 通过id从树中查找节点
  * @param {Array} treeRoot 根节点数组

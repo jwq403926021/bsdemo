@@ -1,7 +1,6 @@
 package com.orangeforms.upmsservice.service;
 
 import com.orangeforms.common.core.base.service.IBaseService;
-import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.upmsservice.model.SysPerm;
 
 import java.util.*;

@@ -132,18 +132,7 @@ public class CourseController {
         if (MyCommonUtil.existBlankArgument(courseId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        Course originalCourse = courseService.getById(courseId);
-        if (originalCourse == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (!courseService.remove(courseId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(courseId);
     }
 
     /**
@@ -308,5 +297,21 @@ public class CourseController {
         List<Course> resultList = courseService.getInList(new HashSet<>(dictIds));
         return ResponseResult.success(BeanQuery.select(
                 "courseId as id", "courseName as name").executeFrom(resultList));
+    }
+
+    private ResponseResult<Void> doDelete(Long courseId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        Course originalCourse = courseService.getById(courseId);
+        if (originalCourse == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (!courseService.remove(courseId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

@@ -84,7 +84,7 @@ public class RedisTenantTreeDictionaryCache<K, V> extends RedisTenantDictionaryC
     protected RListMultimap<K, String> getTenantTreeDataMap() {
         Long tenantId = TokenData.takeFromRequest().getTenantId();
         StringBuilder s = new StringBuilder(64);
-        s.append(dictionaryName).append("-")
+        s.append(TENANT_DICT_PREFIX).append(dictionaryName).append("-")
                 .append(tenantId).append(ApplicationConstant.TREE_DICT_CACHE_NAME_SUFFIX);
         return redissonClient.getListMultimap(s.toString());
     }

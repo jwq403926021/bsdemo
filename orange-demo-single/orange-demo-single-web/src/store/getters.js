@@ -83,7 +83,7 @@ export default {
   getCurrentColumnId: (state) => {
     return state.currentColumnId;
   },
-  getMessageList: (state) => {
-    return state.messageList;
+  getMessageCount: (state) => {
+    return state.messageCount;
   }
 }

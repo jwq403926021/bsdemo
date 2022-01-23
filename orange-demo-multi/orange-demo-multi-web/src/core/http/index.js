@@ -119,7 +119,47 @@ const fetchDownload = function (url, params, fileName) {
     });
   });
 }
-
+/**
+ * 上传文件
+ * @param {*} url 请求的url
+ * @param {*} params 请求参数
+ */
+const fetchUpload = function (url, params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: requestUrl(url),
+      method: 'post',
+      data: params,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      transformRequest: [
+        function (data) {
+          let formData = new FormData();
+          Object.keys(data).map(key => {
+            formData.append(key, data[key]);
+          });
+          return formData;
+        }
+      ]
+    }).then(res => {
+      if (res.data && res.data.success) {
+        resolve(res.data);
+      } else {
+        Message.error({
+          showClose: true,
+          message: res.data.errorMessage ? res.data.errorMessage : '数据请求失败'
+        });
+      }
+    }).catch(e => {
+      Message.error({
+        showClose: true,
+        message: e.errorMessage ? e.errorMessage : '网络请求错误'
+      });
+      reject(e);
+    });
+  });
+}
 // url调用节流Set
 const ajaxThrottleSet = new Set();
 /**
@@ -191,6 +231,7 @@ const doUrl = function (url, type, params, axiosOption, options) {
   }
 };
 
+Vue.prototype.upload = fetchUpload;
 Vue.prototype.download = fetchDownload;
 Vue.prototype.doUrl = doUrl;
 Vue.prototype.loadingManager = loadingManager;

@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 public class RedisTenantDictionaryCache<K, V> implements DictionaryCache<K, V> {
 
     /**
+     * 字典数据前缀，便于Redis工具分组显示。
+     */
+    protected static final String TENANT_DICT_PREFIX = "TENANT-DICT-TABLE:";
+    /**
      * redisson客户端。
      */
     protected final RedissonClient redissonClient;
@@ -102,8 +106,8 @@ public class RedisTenantDictionaryCache<K, V> implements DictionaryCache<K, V> {
     protected RMap<K, String> getTenantDataMap() {
         Long tenantId = TokenData.takeFromRequest().getTenantId();
         StringBuilder s = new StringBuilder(64);
-        s.append(dictionaryName).append("-")
-                .append(tenantId).append(ApplicationConstant.TREE_DICT_CACHE_NAME_SUFFIX);
+        s.append(TENANT_DICT_PREFIX).append(dictionaryName).append("-")
+                .append(tenantId).append(ApplicationConstant.DICT_CACHE_NAME_SUFFIX);
         return redissonClient.getMap(s.toString());
     }
 

@@ -2,7 +2,7 @@
   <div class="form-single-fragment" style="position: relative;">
     <el-scrollbar class="custom-scroll" :style="{height: formConfig.height + 'px', 'min-height': '100px'}">
       <el-form ref="form" :model="formData" class="full-width-input" :rules="rules"
-        :label-width="formConfig.labelWidth + 'px'" size="mini"
+        :label-width="formConfig.labelWidth + 'px'" :size="defaultFormItemSize"
         :label-position="formConfig.labelPosition"
         @submit.native.prevent>
         <el-row :gutter="formConfig.gutter">
@@ -62,12 +62,12 @@
       </el-form>
     </el-scrollbar>
     <el-row v-if="formConfig.formType === SysOnlineFormType.FORM" type="flex" justify="end" style="margin-top: 15px;">
-      <el-button type="primary" size="mini" :plain="true"
+      <el-button type="primary" :size="defaultFormItemSize" :plain="true"
         v-if="formConfig.formKind === SysOnlineFormKind.DIALOG"
         @click="onCancel(false)">
         取消
       </el-button>
-      <el-button type="primary" size="mini"
+      <el-button type="primary" :size="defaultFormItemSize"
         @click="onSave()">
         保存
       </el-button>

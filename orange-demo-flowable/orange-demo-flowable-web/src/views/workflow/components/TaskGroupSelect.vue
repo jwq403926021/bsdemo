@@ -1,15 +1,15 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row type="flex" justify="end">
-        <el-button type="primary" size="mini" @click="onSubmit" :disabled="!canCommit">
+        <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit" :disabled="!canCommit">
             添加分组
           </el-button>
       </el-row>
     </el-form>
     <el-row style="margin-top: 18px;">
       <el-col :span="24">
-        <el-table :data="allGroupList" size="mini" height="452px"
+        <el-table :data="allGroupList" :size="defaultFormItemSize" height="452px"
           header-cell-class-name="table-header-gray"
           row-key="id" :default-expand-all="true"
           @selection-change="handleSelectionChange"

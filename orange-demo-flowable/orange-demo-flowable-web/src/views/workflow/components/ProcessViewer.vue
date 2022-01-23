@@ -11,15 +11,15 @@
       </marker>
     </defs>
     <!-- 已完成节点悬浮弹窗 -->
-    <el-dialog class="comment-dialog" :title="dlgTitle || '审批记录'" :visible.sync="dialogVisible">
+    <el-dialog class="comment-dialog" :title="dlgTitle || '审批记录'" :visible.sync="dialogVisible" :append-to-body="true">
       <el-row>
-        <el-table :data="taskCommentList" size="mini" border header-cell-class-name="table-header-gray" height="500px">
+        <el-table :data="taskCommentList" :size="defaultFormItemSize" border header-cell-class-name="table-header-gray" height="500px">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" />
           <el-table-column label="执行人" prop="createUsername" width="150px" />
           <el-table-column label="操作" width="150px">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getOperationTagType(scope.row.approvalType)" effect="dark">{{SysFlowTaskOperationType.getValue(scope.row.approvalType)}}</el-tag>
-              <el-tag v-if="scope.row.delegateAssginee != null" size="mini" type="success" effect="plain" style="margin-left: 10px;">{{scope.row.delegateAssginee}}</el-tag>
+              <el-tag :size="defaultFormItemSize" :type="getOperationTagType(scope.row.approvalType)" effect="dark">{{SysFlowTaskOperationType.getValue(scope.row.approvalType)}}</el-tag>
+              <el-tag v-if="scope.row.delegateAssginee != null" :size="defaultFormItemSize" type="success" effect="plain" style="margin-left: 10px;">{{scope.row.delegateAssginee}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="审批意见">

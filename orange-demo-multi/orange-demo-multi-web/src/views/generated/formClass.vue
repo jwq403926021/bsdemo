@@ -1,8 +1,10 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formClassFilter" :model="formClass" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="所属校区">
+        <el-form-item label="所属校区" prop="formFilter.schoolId">
           <el-select class="filter-item" v-model="formClass.formFilter.schoolId" :clearable="true" filterable
             placeholder="所属校区" :loading="formClass.schoolId.impl.loading"
             @visible-change="formClass.schoolId.impl.onVisibleChange"
@@ -10,23 +12,24 @@
             <el-option v-for="item in formClass.schoolId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="班级名称">
+        <el-form-item label="班级名称" prop="formFilter.className">
           <el-input class="filter-item" v-model="formClass.formFilter.className"
             :clearable="true" placeholder="班级名称"
           />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormClass(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormClass">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormClass(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-form ref="formClass" :model="formData" class="full-width-input" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-card class="base-card" shadow="never" style="height: 620px">
             <div slot="header" class="base-card-header">
               <span>班级列表</span>
               <div class="base-card-operation">
-                <el-button @click="onFormCreateClassClick()" type="text" size="mini"
+                <el-button @click="onFormCreateClassClick()" type="text" :size="defaultFormItemSize"
                   :disabled="!checkPermCodeExist('formClass:formClass:formCreateClass')">
                   新建
                 </el-button>
@@ -34,9 +37,10 @@
             </div>
             <el-row class="no-scroll" :gutter="20">
               <el-col class="table-box gutter-bottom" :span="24">
-                <el-table ref="studentClass" :data="formClass.StudentClass.impl.dataList" size="mini" @sort-change="formClass.StudentClass.impl.onSortChange"
+                <el-table ref="studentClass" :data="formClass.StudentClass.impl.dataList" :size="defaultFormItemSize" @sort-change="formClass.StudentClass.impl.onSortChange"
                   header-cell-class-name="table-header-gray"
-                  highlight-current-row @current-change="formClass.StudentClass.impl.currentRowChange">
+                  highlight-current-row @current-change="formClass.StudentClass.impl.currentRowChange"
+                >
                   <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.StudentClass.impl.getTableIndex" />
                   <el-table-column label="班级名称" prop="className">
                   </el-table-column>
@@ -49,11 +53,11 @@
                   </el-table-column>
                   <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
-                      <el-button @click.stop="onFormEditClassClick(scope.row)" type="text" size="mini"
+                      <el-button @click.stop="onFormEditClassClick(scope.row)" type="text" :size="defaultFormItemSize"
                         :disabled="!checkPermCodeExist('formClass:formClass:formEditClass')">
                         编辑
                       </el-button>
-                      <el-button @click.stop="onDeleteClick(scope.row)" type="text" size="mini"
+                      <el-button @click.stop="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                         :disabled="!checkPermCodeExist('formClass:formClass:delete')">
                         删除
                       </el-button>
@@ -82,7 +86,7 @@
                 <div slot="header" class="base-card-header">
                   <span>班级课程</span>
                   <div class="base-card-operation">
-                    <el-button @click="onFormSetClassCourseClick()" type="text" size="mini"
+                    <el-button @click="onFormSetClassCourseClick()" type="text" :size="defaultFormItemSize"
                       :disabled="!checkPermCodeExist('formClass:formClass:formSetClassCourse') || !formSetClassCourseEnabled">
                       设置班级课程
                     </el-button>
@@ -90,8 +94,9 @@
                 </div>
                 <el-row class="no-scroll" :gutter="20">
                   <el-col class="table-box gutter-bottom" :span="24">
-                    <el-table ref="course" :data="formClass.Course.impl.dataList" size="mini" @sort-change="formClass.Course.impl.onSortChange"
-                      header-cell-class-name="table-header-gray">
+                    <el-table ref="course" :data="formClass.Course.impl.dataList" :size="defaultFormItemSize" @sort-change="formClass.Course.impl.onSortChange"
+                      header-cell-class-name="table-header-gray"
+                    >
                       <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.Course.impl.getTableIndex" />
                       <el-table-column label="课程名称" prop="courseName">
                       </el-table-column>
@@ -101,11 +106,11 @@
                       </el-table-column>
                       <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
-                          <el-button @click.stop="onDeleteClassCourseClick(scope.row)" type="text" size="mini"
+                          <el-button @click.stop="onDeleteClassCourseClick(scope.row)" type="text" :size="defaultFormItemSize"
                             :disabled="!checkPermCodeExist('formClass:formClass:deleteClassCourse') || !deleteClassCourseEnabled">
                             移除
                           </el-button>
-                          <el-button @click.stop="onFormEditClassCourseOrderClick(scope.row)" type="text" size="mini"
+                          <el-button @click.stop="onFormEditClassCourseOrderClick(scope.row)" type="text" :size="defaultFormItemSize"
                             :disabled="!checkPermCodeExist('formClass:formClass:formEditClassCourseOrder') || !formEditClassCourseOrderEnabled">
                             课程顺序
                           </el-button>
@@ -132,7 +137,7 @@
                 <div slot="header" class="base-card-header">
                   <span>班级学生</span>
                   <div class="base-card-operation">
-                    <el-button @click="onFormSetClassStudentClick()" type="text" size="mini"
+                    <el-button @click="onFormSetClassStudentClick()" type="text" :size="defaultFormItemSize"
                       :disabled="!checkPermCodeExist('formClass:formClass:formSetClassStudent') || !formSetClassStudentEnabled">
                       设置班级学生
                     </el-button>
@@ -140,8 +145,9 @@
                 </div>
                 <el-row class="no-scroll" :gutter="20">
                   <el-col class="table-box gutter-bottom" :span="24">
-                    <el-table ref="student" :data="formClass.Student.impl.dataList" size="mini" @sort-change="formClass.Student.impl.onSortChange"
-                      header-cell-class-name="table-header-gray">
+                    <el-table ref="student" :data="formClass.Student.impl.dataList" :size="defaultFormItemSize" @sort-change="formClass.Student.impl.onSortChange"
+                      header-cell-class-name="table-header-gray"
+                    >
                       <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formClass.Student.impl.getTableIndex" />
                       <el-table-column label="姓名" prop="studentName">
                       </el-table-column>
@@ -151,7 +157,7 @@
                       </el-table-column>
                       <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
-                          <el-button @click.stop="onDeleteClassStudentClick(scope.row)" type="text" size="mini"
+                          <el-button @click.stop="onDeleteClassStudentClick(scope.row)" type="text" :size="defaultFormItemSize"
                             :disabled="!checkPermCodeExist('formClass:formClass:deleteClassStudent') || !deleteClassStudentEnabled">
                             移除
                           </el-button>
@@ -263,6 +269,10 @@ export default {
     }
   },
   methods: {
+    onResetFormClass () {
+      this.$refs.formClassFilter.resetFields();
+      this.refreshFormClass(true);
+    },
     /**
      * 班级数据数据获取函数，返回Promise
      */
@@ -305,12 +315,6 @@ export default {
      * 班级课程数据获取函数，返回Promise
      */
     loadCourseWidgetData (params) {
-      if (
-        (this.formClass.StudentClass.impl.currentRow || {}).classId == null
-      ) {
-        this.formClass.Course.impl.clearTable();
-        return Promise.reject();
-      }
       if (params == null) params = {};
       params = {
         ...params,
@@ -337,12 +341,6 @@ export default {
      * 班级学生数据获取函数，返回Promise
      */
     loadStudentWidgetData (params) {
-      if (
-        (this.formClass.StudentClass.impl.currentRow || {}).classId == null
-      ) {
-        this.formClass.Student.impl.clearTable();
-        return Promise.reject();
-      }
       if (params == null) params = {};
       params = {
         ...params,
@@ -452,7 +450,6 @@ export default {
       this.$dialog.show('新建', formCreateClass, {
         area: '800px'
       }, params).then(res => {
-        this.refreshClassCardWidget();
       }).catch(e => {});
     },
     /**
@@ -481,16 +478,10 @@ export default {
      * 移除
      */
     onDeleteClassCourseClick (row) {
-      let params = {
-        classId: (this.formClass.StudentClass.impl.currentRow || {}).classId,
-        courseId: row.courseId
-      };
-
       this.$confirm('是否从班级中移除此课程？').then(res => {
-        StudentClassController.deleteClassCourse(this, params).then(res => {
-          this.$message.success('移除成功');
-          this.formClass.Course.impl.refreshTable();
-        }).catch(e => {});
+        this.formClass.Course.impl.dataList = this.formClass.Course.impl.dataList.filter(item => {
+          return item.__cascade_add_temp_id__ !== row.__cascade_add_temp_id__;
+        });
       }).catch(e => {});
     },
     /**
@@ -505,23 +496,16 @@ export default {
       this.$dialog.show('课程顺序', formEditClassCourseOrder, {
         area: '400px'
       }, params).then(res => {
-        this.formClass.Course.impl.refreshTable();
       }).catch(e => {});
     },
     /**
      * 移除
      */
     onDeleteClassStudentClick (row) {
-      let params = {
-        classId: (this.formClass.StudentClass.impl.currentRow || {}).classId,
-        studentId: row.studentId
-      };
-
       this.$confirm('是否从班级中移除此学生？').then(res => {
-        StudentClassController.deleteClassStudent(this, params).then(res => {
-          this.$message.success('移除成功');
-          this.formClass.Student.impl.refreshTable();
-        }).catch(e => {});
+        this.formClass.Student.impl.dataList = this.formClass.Student.impl.dataList.filter(item => {
+          return item.__cascade_add_temp_id__ !== row.__cascade_add_temp_id__;
+        });
       }).catch(e => {});
     },
     /**
@@ -535,22 +519,16 @@ export default {
       this.$dialog.show('编辑', formEditClass, {
         area: '800px'
       }, params).then(res => {
-        this.formClass.StudentClass.impl.refreshTable();
       }).catch(e => {});
     },
     /**
      * 删除
      */
     onDeleteClick (row) {
-      let params = {
-        classId: row.classId
-      };
-
       this.$confirm('是否删除此班级？').then(res => {
-        StudentClassController.delete(this, params).then(res => {
-          this.$message.success('删除成功');
-          this.formClass.StudentClass.impl.refreshTable();
-        }).catch(e => {});
+        this.formClass.StudentClass.impl.dataList = this.formClass.StudentClass.impl.dataList.filter(item => {
+          return item.__cascade_add_temp_id__ !== row.__cascade_add_temp_id__;
+        });
       }).catch(e => {});
     },
     onResume () {

@@ -44,12 +44,21 @@ public interface SysUserService extends IBaseService<SysUser, Long> {
     boolean update(SysUser user, SysUser originalUser, Set<Long> roleIdSet, Set<Long> dataPermIdSet);
 
     /**
-     * 重置用户密码。
+     * 修改用户密码。
      * @param userId  用户主键Id。
      * @param newPass 新密码。
      * @return 成功返回true，否则false。
      */
     boolean changePassword(Long userId, String newPass);
+
+    /**
+     * 修改用户头像。
+     *
+     * @param userId  用户主键Id。
+     * @param newHeadImage 新的头像信息。
+     * @return 成功返回true，否则false。
+     */
+    boolean changeHeadImage(Long userId, String newHeadImage);
 
     /**
      * 删除指定数据。

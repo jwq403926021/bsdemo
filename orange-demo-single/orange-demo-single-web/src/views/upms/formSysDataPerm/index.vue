@@ -3,9 +3,9 @@
     <el-tabs v-model="activeFragmentId" :before-leave="onFragmentChange">
       <el-tab-pane label="数据权限管理" name="fragmentSysDataPerm" style="width: 100%;"
         v-if="checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm')">
-        <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+        <el-form ref="fragmentSysDataPerm" :model="fragmentSysDataPerm" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
           <filter-box :item-width="350">
-            <el-form-item label="过滤规则">
+            <el-form-item label="过滤规则" prop="formFilter.sysDatapermType">
               <el-select class="filter-item" v-model="fragmentSysDataPerm.formFilter.sysDatapermType" :clearable="true"
                 placeholder="过滤规则" :loading="fragmentSysDataPerm.sysDatapermType.impl.loading"
                 @visible-change="onSysDatapermTypeVisibleChange"
@@ -13,12 +13,13 @@
                 <el-option v-for="item in fragmentSysDataPerm.sysDatapermType.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
               </el-select>
             </el-form-item>
-            <el-form-item label="数据权限名称">
+            <el-form-item label="数据权限名称" prop="formFilter.sysDataPermName">
               <el-input class="filter-item" v-model="fragmentSysDataPerm.formFilter.sysDataPermName"
                 :clearable="true" placeholder="数据权限名称" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysDataPerm(true)">查询</el-button>
-            <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:add')"
+            <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetDataPerm">重置</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysDataPerm(true)">查询</el-button>
+            <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:add')"
               @click="onAddDataPermClick()">
               新建
             </el-button>
@@ -26,7 +27,7 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysDataPerm.SysDataPerm.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysDataPerm.SysDataPerm.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysDataPerm.SysDataPerm.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px"
@@ -42,11 +43,11 @@
               </el-table-column>
               <el-table-column label="操作" fixed="right">
                 <template slot-scope="scope">
-                <el-button @click="onEditDataPermClick(scope.row)" type="text" size="mini"
+                <el-button @click="onEditDataPermClick(scope.row)" type="text" :size="defaultFormItemSize"
                   :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:update')">
                   编辑
                 </el-button>
-                <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+                <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                   :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:delete')">
                   删除
                 </el-button>
@@ -71,9 +72,9 @@
       </el-tab-pane>
       <el-tab-pane label="用户授权" name="fragmentSysDataPermUser" style="width: 100%;"
         v-if="checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser')">
-        <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+        <el-form ref="fragmentSysDataPermUser" :model="fragmentSysDataPermUser" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
           <filter-box :item-width="350">
-            <el-form-item label="数据权限">
+            <el-form-item label="数据权限" prop="formFilter.dataPermId">
               <el-select class="filter-item" v-model="fragmentSysDataPermUser.formFilter.dataPermId" clearable
                 placeholder="数据权限" :loading="fragmentSysDataPermUser.dataPermId.impl.loading"
                 @visible-change="fragmentSysDataPermUser.dataPermId.impl.onVisibleChange"
@@ -82,14 +83,15 @@
                   :value="item.dataPermId" :label="item.dataPermName" />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名">
+            <el-form-item label="用户名" prop="formFilter.searchString">
               <el-input class="filter-item" v-model="fragmentSysDataPermUser.formFilter.searchString"
                 :clearable="true" placeholder="输入用户名 / 昵称查询" @change="refreshFragmentSysDataPermUser(true)" />
             </el-form-item>
-            <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFragmentSysDataPermUser(true)">
+            <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetDataPermUser">重置</el-button>
+            <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFragmentSysDataPermUser(true)">
               查询
             </el-button>
-            <el-button slot="operator" type="primary" size="mini" @click="onAddDataPermUserClick()"
+            <el-button slot="operator" type="primary" :size="defaultFormItemSize" @click="onAddDataPermUserClick()"
               :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:addDataPermUser') ||
               fragmentSysDataPermUser.formFilter.dataPermId == null || fragmentSysDataPermUser.formFilter.dataPermId === ''">
               添加用户
@@ -98,7 +100,7 @@
         </el-form>
         <el-row>
           <el-col :span="24">
-            <el-table :data="fragmentSysDataPermUser.SysDataPermUserList.impl.dataList" size="mini" :height="getTableHeight + 'px'"
+            <el-table :data="fragmentSysDataPermUser.SysDataPermUserList.impl.dataList" :size="defaultFormItemSize" :height="getTableHeight + 'px'"
               @sort-change="fragmentSysDataPermUser.SysDataPermUserList.impl.onSortChange"
               header-cell-class-name="table-header-gray">
               <el-table-column label="序号" header-align="center" align="center" type="index" width="55px"
@@ -114,12 +116,12 @@
               </el-table-column>
               <el-table-column label="状态">
                 <template slot-scope="scope">
-                  <el-tag :type="getUserStatusType(scope.row.userStatus)" size="mini">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
+                  <el-tag :type="getUserStatusType(scope.row.userStatus)" :size="defaultFormItemSize">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="操作" fixed="right" width="80px">
                 <template slot-scope="scope">
-                  <el-button class="btn-table-delete" type="text" size="mini"
+                  <el-button class="btn-table-delete" type="text" :size="defaultFormItemSize"
                     :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser')"
                     @click="onDeleteRow(scope.row)">移除</el-button>
                 </template>
@@ -197,6 +199,14 @@ export default {
     }
   },
   methods: {
+    onResetDataPerm () {
+      this.$refs.fragmentSysDataPerm.resetFields();
+      this.refreshFragmentSysDataPerm(true);
+    },
+    onResetDataPermUser () {
+      this.$refs.fragmentSysDataPermUser.resetFields();
+      this.refreshFragmentSysDataPermUser(true);
+    },
     /**
      * 数据权限数据获取函数，返回Primise
      */

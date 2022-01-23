@@ -1,13 +1,15 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formStudentActionDetailFilter" :model="formStudentActionDetail" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="统计日期">
+        <el-form-item label="统计日期" prop="formFilter.statsDate">
           <date-range class="filter-item" v-model="formStudentActionDetail.formFilter.statsDate" :clearable="true" :allowTypes="['day']" align="left"
             range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
         </el-form-item>
-        <el-form-item label="所属年级">
+        <el-form-item label="所属年级" prop="formFilter.gradeId">
           <el-select class="filter-item" v-model="formStudentActionDetail.formFilter.gradeId" :clearable="true" filterable
             placeholder="所属年级" :loading="formStudentActionDetail.gradeId.impl.loading"
             @visible-change="formStudentActionDetail.gradeId.impl.onVisibleChange"
@@ -15,7 +17,7 @@
             <el-option v-for="item in formStudentActionDetail.gradeId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="行为类型">
+        <el-form-item label="行为类型" prop="formFilter.actionType">
           <el-select class="filter-item" v-model="formStudentActionDetail.formFilter.actionType" :clearable="true" filterable
             placeholder="行为类型" :loading="formStudentActionDetail.actionType.impl.loading"
             @visible-change="formStudentActionDetail.actionType.impl.onVisibleChange"
@@ -23,13 +25,15 @@
             <el-option v-for="item in formStudentActionDetail.actionType.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormStudentActionDetail(true)">查询</el-button>
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormStudentActionDetail">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormStudentActionDetail(true)">查询</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="studentActionTrans" :data="formStudentActionDetail.StudentActionTrans.impl.dataList" size="mini" @sort-change="formStudentActionDetail.StudentActionTrans.impl.onSortChange"
-          header-cell-class-name="table-header-gray">
+        <el-table ref="studentActionTrans" :data="formStudentActionDetail.StudentActionTrans.impl.dataList" :size="defaultFormItemSize" @sort-change="formStudentActionDetail.StudentActionTrans.impl.onSortChange"
+          header-cell-class-name="table-header-gray"
+        >
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formStudentActionDetail.StudentActionTrans.impl.getTableIndex" />
           <el-table-column label="学生名称" prop="studentName">
           </el-table-column>
@@ -139,6 +143,10 @@ export default {
       this.removeCachePage(this.$options.name);
       this.refreshParentCachedPage = isSuccess;
       this.$router.go(-1);
+    },
+    onResetFormStudentActionDetail () {
+      this.$refs.formStudentActionDetailFilter.resetFields();
+      this.refreshFormStudentActionDetail(true);
     },
     /**
      * 学生行为流水数据获取函数，返回Promise

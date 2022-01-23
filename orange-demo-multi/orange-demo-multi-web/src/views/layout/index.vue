@@ -17,10 +17,11 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item class="user-dropdown-item" command="modifyPassword">修改密码</el-dropdown-item>
+              <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage">修改头像</el-dropdown-item>
               <el-dropdown-item class="user-dropdown-item" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <img :src="header" class="header-img" />
+          <img :src="getHeadImageUrl ? getHeadImageUrl : header" class="header-img" />
         </div>
       </el-header>
       <el-main :style="{'padding-bottom': '15px', 'padding-top': (getMultiTags ? '0px' : '15px')}">
@@ -40,9 +41,12 @@
 <script>
 import SideBar from './components/sidebar/sidebar.vue';
 import { mapGetters, mapMutations } from 'vuex';
+/* eslint-disable-next-line */
+import { uploadMixin, statsDateRangeMixin } from '@/core/mixins';
 import Breadcrumb from './components/breadcrumb';
 import TagPanel from './components/tags/tagPanel.vue';
 import formModifyPassword from './components/formModifyPassword/index.vue';
+import formModifyHeadImage from './components/formModifyHeadImage/index.vue';
 import { SystemController } from '@/api';
 import { getToken, setToken } from '@/utils';
 
@@ -57,6 +61,7 @@ export default {
     'breadcrumb': Breadcrumb,
     'tag-panel': TagPanel
   },
+  mixins: [uploadMixin, statsDateRangeMixin],
   methods: {
     toggleSideBar () {
       this.setCollapse(!this.getCollapse);
@@ -104,6 +109,10 @@ export default {
         this.$dialog.show('修改密码', formModifyPassword, {
           area: ['500px']
         }, {}).catch(e => {});
+      } else if (command === 'modifyHeadImage') {
+        this.$dialog.show('修改头像', formModifyHeadImage, {
+          area: ['500px']
+        }, {}).catch(e => {});
       }
     },
     ...mapMutations([
@@ -131,6 +140,14 @@ export default {
       return [
         {'min-height': this.getMainContextHeight + 'px'}
       ]
+    },
+    getHeadImageUrl () {
+      if (this.getUserInfo && this.getUserInfo.headImageUrl != null && this.getUserInfo.headImageUrl !== '') {
+        let temp = this.getUploadFileUrl(this.getUserInfo.headImageUrl, { filename: this.getUserInfo.headImageUrl.filename });
+        return temp;
+      } else {
+        return null;
+      }
     },
     ...mapGetters([
       'getMultiTags',

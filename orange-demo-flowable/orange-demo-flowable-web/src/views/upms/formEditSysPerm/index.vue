@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formCreatePerm" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="权限名称" prop="SysPerm.permName">
@@ -12,7 +12,7 @@
         <el-col :span="24">
           <el-form-item label="所属模块" prop="SysPerm.moduleId">
             <el-cascader class="input-item" :options="permModuleList" v-model="formData.SysPerm.moduleId"
-              placeholder="选择所属模块" :clearable="true" size="mini" :props="{value: 'moduleId', label: 'moduleName'}" />
+              placeholder="选择所属模块" :clearable="true" :size="defaultFormItemSize" :props="{value: 'moduleId', label: 'moduleName'}" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -29,11 +29,11 @@
         </el-col>
         <el-col :span="24">
           <el-row type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini" @click="onAddClick()"
+            <el-button type="primary" :size="defaultFormItemSize" @click="onAddClick()"
               :disabled="!(checkPermCodeExist('formSysPerm:fragmentSysPerm:updatePerm') || checkPermCodeExist('formSysPerm:fragmentSysPerm:addPerm'))">
               保存
             </el-button>

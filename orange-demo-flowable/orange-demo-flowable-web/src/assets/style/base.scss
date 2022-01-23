@@ -130,6 +130,10 @@ body .layer-advance-dialog .layui-layer-content {
     }
   }
 
+  .el-button + .btn-import {
+    margin-left: 10px!important;
+  }
+
    /**
    * 过滤组件样式
    **/
@@ -228,6 +232,22 @@ body .layer-advance-dialog .layui-layer-content {
     .el-input-number {
       width: 100%;
     }
+  }
+
+  .el-form-item.el-form-item--mini {
+    min-height: 29px;
+  }
+
+  .el-form-item.el-form-item--small {
+    min-height: 32px;
+  }
+
+  .el-form-item.el-form-item--medium {
+    min-height: 36px;
+  }
+
+  .el-form-item.el-form-item--default {
+    min-height: 40px;
   }
 
   .el-aside {
@@ -472,6 +492,12 @@ body .layer-advance-dialog .layui-layer-content {
   .user-dropdown-item {
     font-size: 12px;
     color: $--color-text-primary;
+
+    .el-badge {
+      margin-top: -8px;
+      margin-left: 10px;
+      height: 20px;
+    }
   }
 
   .hamburger-container {

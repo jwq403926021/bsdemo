@@ -1,12 +1,12 @@
 package com.orangeforms.courseclassservice.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.*;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.courseclassservice.service.*;
 import com.orangeforms.courseclassservice.dao.*;
 import com.orangeforms.courseclassservice.model.*;
-import com.orangeforms.upmsapi.client.*;
+import com.orangeforms.upmsapi.client.SysDeptClient;
 import com.orangeforms.common.core.util.*;
 import com.orangeforms.common.core.object.MyRelationParam;
 import com.orangeforms.common.core.object.ResponseResult;

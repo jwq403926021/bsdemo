@@ -14,6 +14,22 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.anji-plus</groupId>
+            <artifactId>spring-boot-starter-captcha</artifactId>
+            <version>${ajcaptcha.version}</version>
+        </dependency>
+        <!-- aj-captcha 依赖data-redis作为缓存 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- 业务组件依赖 -->
         <dependency>
             <groupId>com.orangeforms</groupId>

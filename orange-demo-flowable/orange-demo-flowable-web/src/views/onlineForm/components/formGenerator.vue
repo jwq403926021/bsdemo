@@ -24,7 +24,7 @@
               <span :title="table.tag.datasourceName || table.tag.relationName">
                 {{table.tag.datasourceName || table.tag.relationName}}
               </span>
-              <el-tag v-if="getMasterTable !== table" size="mini" style="margin-left: 5px;" effect="dark" :type="getTableTagType(table.relationType)">{{getTableRelationName(table.relationType)}}</el-tag>
+              <el-tag v-if="getMasterTable !== table" :size="defaultFormItemSize" style="margin-left: 5px;" effect="dark" :type="getTableTagType(table.relationType)">{{getTableRelationName(table.relationType)}}</el-tag>
             </div>
             <Draggable class="card-item-box" draggable=".card-item" :list="getTableColumnList(table)"
               :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
@@ -67,7 +67,7 @@
             <div @click="onFormClick" :style="{'min-height': height - 50 + 'px'}">
               <template v-if="formConfig.formType === SysOnlineFormType.QUERY || formConfig.formType === SysOnlineFormType.WORK_ORDER">
                 <div style="position: relative;">
-                  <el-form :label-width="formConfig.labelWidth + 'px'" size="mini" :label-position="formConfig.labelPosition" @submit.native.prevent>
+                  <el-form :label-width="formConfig.labelWidth + 'px'" :size="defaultFormItemSize" :label-position="formConfig.labelPosition" @submit.native.prevent>
                     <DraggableFilterBox :list="formWidgetList" :itemWidth="formConfig.labelWidth + 272"
                       :style="{'min-height': '50px'}" style="padding: 20px 20px 0px 20px; overflow: hidden; display: flex; justify-content: space-between;"
                     >
@@ -79,10 +79,10 @@
                           @delete="onWidgetDeleteClick"
                         />
                         <div slot="operator" style="padding: 13px 10px;" v-if="Array.isArray(formWidgetList) && formWidgetList.length > 0">
-                          <el-button type="primary" :plain="true" size="mini">查询</el-button>
+                          <el-button type="primary" :plain="true" :size="defaultFormItemSize">查询</el-button>
                         </div>
                         <div slot="operator" style="padding: 13px 10px;" v-for="operation in getTableOperation(false)" :key="operation.id">
-                          <el-button size="mini"
+                          <el-button :size="defaultFormItemSize"
                             :plain="operation.plain"
                             :type="operation.btnType"
                             @click.stop="">
@@ -100,10 +100,10 @@
                             format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" />
                         </el-form-item>
                         <div slot="operator" style="padding: 13px 10px;">
-                          <el-button type="primary" :plain="true" size="mini">查询</el-button>
+                          <el-button type="primary" :plain="true" :size="defaultFormItemSize">查询</el-button>
                         </div>
                         <div slot="operator" style="padding: 13px 10px;">
-                          <el-button type="primary" size="mini">新建</el-button>
+                          <el-button type="primary" :size="defaultFormItemSize">新建</el-button>
                         </div>
                       </template>
                     </DraggableFilterBox>
@@ -120,7 +120,7 @@
                 </div>
               </template>
               <el-row v-else :gutter="formConfig.gutter">
-                <el-form class="full-width-input" size="mini" :label-width="formConfig.labelWidth + 'px'" :label-position="formConfig.labelPosition">
+                <el-form class="full-width-input" :size="defaultFormItemSize" :label-width="formConfig.labelWidth + 'px'" :label-position="formConfig.labelPosition">
                   <Draggable draggable=".draggable-item" :list="formWidgetList" group="componentsGroup"
                     :style="{'min-height': height - 50 + 'px'}" style="padding: 20px; overflow: hidden;"
                   >
@@ -508,7 +508,7 @@
                     </el-table-column>
                     <el-table-column label="操作类型" prop="type" width="90px">
                       <template slot-scope="scope">
-                        <el-tag size="mini" effect="dark" :type="scope.row.rowOperation ? 'success' : 'warning'">
+                        <el-tag :size="defaultFormItemSize" effect="dark" :type="scope.row.rowOperation ? 'success' : 'warning'">
                           {{scope.row.rowOperation ? '行内操作' : '表格操作'}}
                         </el-tag>
                       </template>
@@ -534,7 +534,7 @@
                     </el-table-column>
                     <el-table-column label="参数名称" width="120px">
                       <template slot-scope="scope">
-                        <el-tag size="mini" effect="dark" :type="scope.row.table.relationType == null ? 'success' : 'primary'">
+                        <el-tag :size="defaultFormItemSize" effect="dark" :type="scope.row.table.relationType == null ? 'success' : 'primary'">
                           {{scope.row.column.columnName}}
                         </el-tag>
                       </template>
@@ -583,8 +583,8 @@
                   <el-table-column label="参数名" prop="columnName" />
                   <el-table-column label="参数类型" width="100px">
                     <template slot-scope="scope">
-                      <el-tag v-if="scope.row.primaryKey" size="mini" type="warning">主键</el-tag>
-                      <el-tag v-if="scope.row.slaveColumn" size="mini" type="primary">关联字段</el-tag>
+                      <el-tag v-if="scope.row.primaryKey" :size="defaultFormItemSize" type="warning">主键</el-tag>
+                      <el-tag v-if="scope.row.slaveColumn" :size="defaultFormItemSize" type="primary">关联字段</el-tag>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -698,6 +698,10 @@ export default {
       }).catch(e => {});
     },
     onPreview () {
+      if (this.formConfig.formType === this.SysOnlineFormType.WORK_ORDER || this.formConfig.formType === this.SysOnlineFormType.FLOW) {
+        this.$message.warning('流程页面表单不能预览！');
+        return;
+      }
       this.onSave().then(res => {
         let dialogPos = {
           area: this.formConfig.formType === this.SysOnlineFormType.QUERY ? ['70vw', '80vh'] : this.formConfig.width + 'px',

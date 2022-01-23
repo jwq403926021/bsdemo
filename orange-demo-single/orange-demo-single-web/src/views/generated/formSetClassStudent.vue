@@ -1,8 +1,10 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSetClassStudentFilter" :model="formSetClassStudent" :size="defaultFormItemSize"
+      label-width="100px" label-position="right" @submit.native.prevent
+    >
       <filter-box :item-width="350">
-        <el-form-item label="所属校区">
+        <el-form-item label="所属校区" prop="formFilter.schoolId">
           <el-select class="filter-item" v-model="formSetClassStudent.formFilter.schoolId" :clearable="true" filterable
             placeholder="所属校区" :loading="formSetClassStudent.schoolId.impl.loading"
             @visible-change="formSetClassStudent.schoolId.impl.onVisibleChange"
@@ -10,8 +12,9 @@
             <el-option v-for="item in formSetClassStudent.schoolId.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSetClassStudent(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSetClassStudent:formSetClassStudent:addClassStudent')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onResetFormSetClassStudent">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSetClassStudent(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSetClassStudent:formSetClassStudent:addClassStudent')"
           @click="onAddClassStudentClick()">
           添加
         </el-button>
@@ -19,7 +22,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSetClassStudent.Student.impl.dataList" size="mini"
+        <el-table :data="formSetClassStudent.Student.impl.dataList" :size="defaultFormItemSize"
           @sort-change="formSetClassStudent.Student.impl.onSortChange"
           @selection-change="onStudentSelectionChange"
           header-cell-class-name="table-header-gray">
@@ -114,6 +117,10 @@ export default {
       this.refreshParentCachedPage = isSuccess;
       this.$router.go(-1);
     },
+    onResetFormSetClassStudent () {
+      this.$refs.formSetClassStudentFilter.resetFields();
+      this.refreshFormSetClassStudent(true);
+    },
     onStudentSelectionChange (values) {
       this.tableSelectRowList = values;
     },
@@ -121,12 +128,6 @@ export default {
      * 班级学生数据获取函数，返回Promise
      */
     loadStudentWidgetData (params) {
-      if (
-        this.classId == null
-      ) {
-        this.formSetClassStudent.Student.impl.clearTable();
-        return Promise.reject();
-      }
       if (params == null) params = {};
       params = {
         ...params,

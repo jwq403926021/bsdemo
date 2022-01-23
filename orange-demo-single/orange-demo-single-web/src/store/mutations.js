@@ -158,10 +158,14 @@ export default {
     if (setObjectToSessionStorage('currentColumnId', columnId)) state.currentColumnId = columnId;
     if (setObjectToSessionStorage('currentMenuId', null)) state.currentMenuId = null;
   },
+  setHeadImage: (state, imageHeaderUrl) => {
+    if (state.userInfo) state.userInfo.headImageUrl = imageHeaderUrl;
+  },
   setMessageTimer: (state, timerHandler) => {
     state.messageTimer = timerHandler;
   },
-  setMessageList: (state, messageList) => {
-    state.messageList = messageList;
+  setMessageCount: (state, messageCount) => {
+    if (messageCount) messageCount.totalCount = messageCount.copyMessageCount + messageCount.remindingMessageCount;
+    state.messageCount = messageCount;
   }
 }

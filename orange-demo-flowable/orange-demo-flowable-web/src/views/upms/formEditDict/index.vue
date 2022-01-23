@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="rules" label-width="80px" size="mini" label-position="right" @submit.native.prevent>
+  <el-form ref="form" :model="formData" :rules="rules" label-width="80px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
     <el-row :gutter="20">
       <el-form-item v-if="dictInfo.treeFlag" label="父字典">
         <el-cascader style="width: 100%;"
@@ -14,8 +14,8 @@
       </el-form-item>
     </el-row>
     <el-row type="flex" justify="end" class="dialog-btn-layer">
-      <el-button size="mini" @click="onCancel(false)" >取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit">确定</el-button>
+      <el-button :size="defaultFormItemSize" @click="onCancel(false)" >取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit">确定</el-button>
     </el-row>
   </el-form>
 </template>

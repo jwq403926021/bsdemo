@@ -100,7 +100,7 @@
               <el-table-column label="变量标识" prop="variableName" />
               <el-table-column label="变量类型">
                 <template slot-scope="scope">
-                  <el-tag size="mini" effect="dark"
+                  <el-tag :size="defaultFormItemSize" effect="dark"
                     :type="scope.row.variableType === SysFlowVariableType.TASK ? 'primary' : 'success'">
                     {{SysFlowVariableType.getValue(scope.row.variableType)}}
                   </el-tag>
@@ -108,15 +108,15 @@
               </el-table-column>
               <el-table-column label="内置变量">
                 <template slot-scope="scope">
-                  <el-tag size="mini" effect="dark" :type="scope.row.builtIn ? 'success' : 'danger'">
+                  <el-tag :size="defaultFormItemSize" effect="dark" :type="scope.row.builtIn ? 'success' : 'danger'">
                     {{scope.row.builtIn ? '是' : '否'}}
                   </el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="100px">
                 <template slot-scope="scope">
-                  <el-button class="table-btn success" size="mini" type="text" :disabled="scope.row.builtin" @click="editEntryVariable(scope.row)">编辑</el-button>
-                  <el-button class="table-btn delete" size="mini" type="text" :disabled="scope.row.builtin" @click="deleteEntryVariable(scope.row)">删除</el-button>
+                  <el-button class="table-btn success" :size="defaultFormItemSize" type="text" :disabled="scope.row.builtin" @click="editEntryVariable(scope.row)">编辑</el-button>
+                  <el-button class="table-btn delete" :size="defaultFormItemSize" type="text" :disabled="scope.row.builtin" @click="deleteEntryVariable(scope.row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>

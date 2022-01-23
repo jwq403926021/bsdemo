@@ -16,12 +16,12 @@
             :highlight-current="true" @node-expand="onModuleNodeExpand" @node-collapse="onModuleNodeCollapse">
             <div class="module-node-item" slot-scope="{ data }">
               <div class="module-node-menu" :class="{group: data.moduleType === SysPermModuleType.GROUP}" v-if="!data.isAll">
-                <el-button type="text" size="mini" @click.stop="onEditpermModuleClick(data)" icon="el-icon-edit-outline"
+                <el-button type="text" :size="defaultFormItemSize" @click.stop="onEditpermModuleClick(data)" icon="el-icon-edit-outline"
                   :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:updatePermModule')"></el-button>
-                <el-button type="text" size="mini" v-show="data.moduleType === SysPermModuleType.GROUP"
+                <el-button type="text" :size="defaultFormItemSize" v-show="data.moduleType === SysPermModuleType.GROUP"
                   :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:addPermModule')" icon="el-icon-circle-plus-outline"
                   @click.stop="onAddChildPermModuleClick(data)"></el-button>
-                <el-button type="text" size="mini" @click.stop="onDeleteModuleClick(data)" icon="el-icon-delete"
+                <el-button type="text" :size="defaultFormItemSize" @click.stop="onDeleteModuleClick(data)" icon="el-icon-delete"
                   :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:deletePermModule')"></el-button>
               </div>
               <div class="module-node-text" :class="{group: data.moduleType === SysPermModuleType.GROUP}">
@@ -33,14 +33,15 @@
       </el-card>
     </el-aside>
     <el-main style="margin-left: 15px; background-color: white; padding: 20px;">
-      <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+      <el-form ref="formPerm" :model="formPerm" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
         <filter-box :item-width="350">
-          <el-form-item label="关联URL">
+          <el-form-item label="关联URL" prop="formFilter.url">
             <el-input class="filter-item" placeholder="URL模糊搜索" v-model="formPerm.formFilter.url"
-              size="mini" clearable />
+              :size="defaultFormItemSize" clearable />
           </el-form-item>
-          <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormPerm(true)">查询</el-button>
-          <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:addPerm')"
+          <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+          <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormPerm(true)">查询</el-button>
+          <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:addPerm')"
             @click="onCreatePermClick()">
             新建
           </el-button>
@@ -48,7 +49,7 @@
       </el-form>
       <el-row>
         <el-col :span="24">
-          <el-table :data="formPerm.SysPerm.impl.dataList" size="mini" @sort-change="formPerm.SysPerm.impl.onSortChange"
+          <el-table :data="formPerm.SysPerm.impl.dataList" :size="defaultFormItemSize" @sort-change="formPerm.SysPerm.impl.onSortChange"
             header-cell-class-name="table-header-gray" :height="(getMainContextHeight - 132) + 'px'">
             <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="formPerm.SysPerm.impl.getTableIndex" />
             <el-table-column label="权限名称" prop="permName" width="150px">
@@ -59,15 +60,15 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="150px">
               <template slot-scope="scope">
-                <el-button @click="onEditPermModuleClick(scope.row)" type="text" size="mini"
+                <el-button @click="onEditPermModuleClick(scope.row)" type="text" :size="defaultFormItemSize"
                   :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:updatePerm')">
                   编辑
                 </el-button>
-                <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+                <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                   :disabled="!checkPermCodeExist('formSysPerm:fragmentSysPerm:deletePerm')">
                   删除
                 </el-button>
-                <el-button class="btn-table-primary" type="text" size="mini"
+                <el-button class="btn-table-primary" type="text" :size="defaultFormItemSize"
                   v-if="checkPermCodeExist('formSysPerm:fragmentSysPerm:listSysPermPermDetail')"
                   @click="onSysPermDetailClick(scope.row)">
                   权限详情
@@ -135,6 +136,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formPerm.resetFields();
+      this.refreshFormPerm(true);
+    },
     /**
      * 权限数据获取函数，返回Primise
      */

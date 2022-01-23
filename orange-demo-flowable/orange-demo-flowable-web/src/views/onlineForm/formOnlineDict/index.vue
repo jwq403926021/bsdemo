@@ -1,13 +1,14 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formOnlineDict" :model="formOnlineDict" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="字典名称">
+        <el-form-item label="字典名称" prop="formFilter.dictName">
           <el-input class="filter-item" v-model="formOnlineDict.formFilter.dictName"
             :clearable="true" placeholder="字典名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshOnlineDict(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshOnlineDict(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize"
           @click="onFormCreateDictClick()">
           新建
         </el-button>
@@ -15,30 +16,30 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="class" :data="formOnlineDict.dict.impl.dataList" size="mini" @sort-change="formOnlineDict.dict.impl.onSortChange"
+        <el-table ref="class" :data="formOnlineDict.dict.impl.dataList" :size="defaultFormItemSize" @sort-change="formOnlineDict.dict.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formOnlineDict.dict.impl.getTableIndex" />
           <el-table-column label="字典名称" prop="dictName" />
           <el-table-column label="字典类型" prop="dictTypeDictMap.name">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getDictTypeTagType(scope.row.dictType)">
+              <el-tag :size="defaultFormItemSize" :type="getDictTypeTagType(scope.row.dictType)">
                 {{scope.row.dictTypeDictMap.name}}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="是否树字典">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.treeFlag ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" :type="scope.row.treeFlag ? 'success' : 'danger'">
                 {{scope.row.treeFlag ? '是' : '否'}}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="150px">
             <template slot-scope="scope">
-              <el-button class="table-btn success" @click.stop="onFormEditDictClick(scope.row)" type="text" size="mini">
+              <el-button class="table-btn success" @click.stop="onFormEditDictClick(scope.row)" type="text" :size="defaultFormItemSize">
                 编辑
               </el-button>
-              <el-button class="table-btn delete" @click.stop="onFormDeleteDictClick(scope.row)" type="text" size="mini">
+              <el-button class="table-btn delete" @click.stop="onFormDeleteDictClick(scope.row)" type="text" :size="defaultFormItemSize">
                 删除
               </el-button>
             </template>
@@ -92,6 +93,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formOnlineDict.resetFields();
+      this.refreshOnlineDict(true);
+    },
     getDictTypeTagType (type) {
       switch (type) {
         case this.SysOnlineDictType.TABLE: return 'success';

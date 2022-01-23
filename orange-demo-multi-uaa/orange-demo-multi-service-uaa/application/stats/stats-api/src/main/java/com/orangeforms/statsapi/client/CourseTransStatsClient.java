@@ -164,6 +164,16 @@ public interface CourseTransStatsClient extends BaseClient<CourseTransStatsDto, 
     @PostMapping("/courseTransStats/aggregateBy")
     ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam);
 
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。
+     *
+     * @param queryParam 查询参数。
+     * @return filterSet中，在从表中不存在的数据集合。
+     */
+    @Override
+    @PostMapping("/courseTransStats/notExist")
+    ResponseResult<List<?>> notExist(@RequestBody MyQueryParam queryParam);
+
     @Component("StatsCourseTransStatsClientFallbackFactory")
     @Slf4j
     class CourseTransStatsClientFallbackFactory

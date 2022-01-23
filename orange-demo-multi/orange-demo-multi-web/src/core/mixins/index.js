@@ -191,6 +191,7 @@ const statsDateRangeMixin = {
      */
     formatDateByStatsType (date, statsType = 'day', format = 'yyyy-MM-dd') {
       if (date == null) return undefined;
+      if (statsType == null) return date;
       statsType = allowStatsType.indexOf(statsType) === -1 ? 'day' : statsType;
       if (statsType === 'datetime') format = 'yyyy-MM-dd HH:mm:ss';
       

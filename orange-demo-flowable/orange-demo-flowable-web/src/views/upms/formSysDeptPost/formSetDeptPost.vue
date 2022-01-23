@@ -1,13 +1,14 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSetDeptPost" :model="formSetDeptPost" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="岗位名称">
+        <el-form-item label="岗位名称" prop="formFilter.postName">
           <el-input class="filter-item" v-model="formSetDeptPost.formFilter.postName"
             :clearable="true" placeholder="岗位名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSetDeptPost(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSetDeptPost(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize"
           :disabled="tableSelectRowList.length <= 0 || !checkPermCodeExist('formSysDept:fragmentSysDept:editPost')"
           @click="onAddSysDeptPostClick()">
           添加岗位
@@ -16,7 +17,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSetDeptPost.SysPost.impl.dataList" size="mini" @sort-change="formSetDeptPost.SysPost.impl.onSortChange"
+        <el-table :data="formSetDeptPost.SysPost.impl.dataList" :size="defaultFormItemSize" @sort-change="formSetDeptPost.SysPost.impl.onSortChange"
           @selection-change="onSysPostSelectionChange" header-cell-class-name="table-header-gray">
           <el-table-column label="序号" type="index" header-align="center" align="center" width="55px" :index="formSetDeptPost.SysPost.impl.getTableIndex" />
           <el-table-column type="selection" header-align="center" align="center" width="55px" />
@@ -26,7 +27,7 @@
           </el-table-column>
           <el-table-column label="领导岗位" prop="leaderPost" sortable="custom">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.leaderPost ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" :type="scope.row.leaderPost ? 'success' : 'danger'">
                 {{scope.row.leaderPost ? '是' : '否'}}
               </el-tag>
             </template>
@@ -86,6 +87,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSetDeptPost.resetFields();
+      this.refreshFormSetDeptPost(true);
+    },
     onCancel (isSuccess) {
       if (this.observer != null) {
         this.observer.cancel(isSuccess);

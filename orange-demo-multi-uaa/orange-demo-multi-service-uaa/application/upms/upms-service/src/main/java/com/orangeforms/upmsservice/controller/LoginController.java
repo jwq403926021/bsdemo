@@ -1,6 +1,12 @@
 package com.orangeforms.upmsservice.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +15,14 @@ import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.constant.ApplicationConstant;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.*;
+import com.orangeforms.common.core.upload.*;
 import com.orangeforms.common.redis.cache.SessionCacheHelper;
 import com.orangeforms.common.log.annotation.OperationLog;
 import com.orangeforms.common.log.model.constant.SysOperationLogType;
 import com.orangeforms.upmsapi.constant.SysUserStatus;
 import com.orangeforms.upmsapi.constant.SysUserType;
 import com.orangeforms.upmsservice.config.UaaConfig;
+import com.orangeforms.upmsservice.config.ApplicationConfig;
 import com.orangeforms.upmsservice.model.*;
 import com.orangeforms.upmsservice.service.*;
 import org.apache.commons.codec.binary.Base64;
@@ -27,7 +35,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -69,6 +79,12 @@ public class LoginController {
     private RestTemplate restTemplate;
     @Autowired
     private UaaConfig uaaConfig;
+    @Autowired
+    private ApplicationConfig appConfig;
+    @Autowired
+    private CaptchaService captchaService;
+    @Autowired
+    private UpDownloaderFactory upDownloaderFactory;
 
     /**
      * 获取UAA登录验证URL。
@@ -130,16 +146,35 @@ public class LoginController {
     /**
      * 本地登录接口，仍然使用OAuth2的password模式进行用户身份验证。
      *
-     * @param loginName 登录名。
-     * @param password  密码。
+     * @param loginName           登录名。
+     * @param password            密码。
+     * @param captchaVerification 验证码。
      * @return 应答结果对象，其中包括JWT的Token数据，以及菜单列表。
      */
     @OperationLog(type = SysOperationLogType.LOGIN, saveResponse = false)
     @PostMapping("/doLogin")
     public ResponseResult<JSONObject> doLogin(
-            @MyRequestBody String loginName, @MyRequestBody String password) throws Exception {
+            @MyRequestBody String loginName,
+            @MyRequestBody String password,
+            @MyRequestBody String captchaVerification) throws Exception {
         if (MyCommonUtil.existBlankArgument(loginName, password)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
+        }
+        String errorMessage;
+        CaptchaVO captchaVO = new CaptchaVO();
+        captchaVO.setCaptchaVerification(captchaVerification);
+        ResponseModel response = captchaService.verification(captchaVO);
+        if (!response.isSuccess()) {
+            //验证码校验失败，返回信息告诉前端
+            //repCode  0000  无异常，代表成功
+            //repCode  9999  服务器内部异常
+            //repCode  0011  参数不能为空
+            //repCode  6110  验证码已失效，请重新获取
+            //repCode  6111  验证失败
+            //repCode  6112  获取验证码失败,请联系管理员
+            errorMessage = String.format("数据验证失败，验证码错误，错误码 [%s] 错误信息 [%s]",
+            response.getRepCode(), response.getRepMsg());
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
         ResponseEntity<String> responseEntity = this.getAccessTokenByUsernameAndPassword(loginName, password);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -151,7 +186,6 @@ public class LoginController {
         if (user == null) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_USERNAME_PASSWORD);
         }
-        String errorMessage;
         if (user.getUserStatus() == SysUserStatus.STATUS_LOCKED) {
             errorMessage = "登录失败，用户账号被锁定！";
             return ResponseResult.error(ErrorCodeEnum.INVALID_USER_STATUS, errorMessage);
@@ -192,6 +226,9 @@ public class LoginController {
         JSONObject jsonData = new JSONObject();
         jsonData.put("showName", tokenData.getShowName());
         jsonData.put("isAdmin", tokenData.getIsAdmin());
+        if (StrUtil.isNotBlank(tokenData.getHeadImageUrl())) {
+            jsonData.put("headImageUrl", tokenData.getHeadImageUrl());
+        }
         Collection<SysMenu> menuList;
         Collection<String> permCodeList;
         if (tokenData.getIsAdmin()) {
@@ -235,7 +272,6 @@ public class LoginController {
                 + "&username=" + user.getLoginName()
                 + "&oldPass=" + oldPass
                 + "&newPass=" + newPass;
-        @SuppressWarnings("all")
         ResponseEntity<ResponseResult> responseEntity = restTemplate.getForEntity(url, ResponseResult.class);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_ACCESS_TOKEN);
@@ -244,9 +280,71 @@ public class LoginController {
         return result.isSuccess() ? ResponseResult.success() : ResponseResult.errorFrom(result);
     }
 
+    /**
+     * 上传并修改用户头像。
+     *
+     * @param uploadFile 上传的头像文件。
+     */
+    @PostMapping("/changeHeadImage")
+    public void changeHeadImage(
+            @RequestParam("uploadFile") MultipartFile uploadFile) throws Exception {
+        String fieldName = "headImageUrl";
+        UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+        BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+        UploadResponseInfo responseInfo = upDownloader.doUpload(null,
+                appConfig.getUploadFileBaseDir(), SysUser.class.getSimpleName(), fieldName, true, uploadFile);
+        if (responseInfo.getUploadFailed()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.UPLOAD_FAILED, responseInfo.getErrorMessage()));
+            return;
+        }
+        responseInfo.setDownloadUri("/admin/upms/login/downloadHeadImage");
+        String newHeadImage = JSONArray.toJSONString(CollUtil.newArrayList(responseInfo));
+        if (!sysUserService.changeHeadImage(TokenData.takeFromRequest().getUserId(), newHeadImage)) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST));
+            return;
+        }
+        ResponseResult.output(ResponseResult.success(responseInfo));
+    }
+
+    /**
+     * 下载用户头像。
+     *
+     * @param filename 文件名。如果没有提供该参数，就从当前记录的指定字段中读取。
+     * @param response Http 应答对象。
+     */
+    @GetMapping("/downloadHeadImage")
+    public void downloadHeadImage(String filename, HttpServletResponse response) {
+        try {
+            SysUser user = sysUserService.getById(TokenData.takeFromRequest().getUserId());
+            if (user == null) {
+                ResponseResult.output(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (StrUtil.isBlank(user.getHeadImageUrl())) {
+                ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            if (!BaseUpDownloader.containFile(user.getHeadImageUrl(), filename)) {
+                ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            String fieldName = "headImageUrl";
+            UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+            BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+            upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
+                    SysUser.class.getSimpleName(), fieldName, filename, true, response);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            log.error(e.getMessage(), e);
+        }
+    }
+
     private JSONObject buildLoginData(SysUser user, String accessToken) {
         int deviceType = MyCommonUtil.getDeviceType();
         boolean isAdmin = user.getUserType() == SysUserType.TYPE_ADMIN;
+        String headImageUrl = user.getHeadImageUrl();
         TokenData tokenData = new TokenData();
         String sessionId = user.getLoginName() + "_" + deviceType + "_" + MyCommonUtil.generateUuid();
         tokenData.setUserId(user.getUserId());
@@ -258,6 +356,9 @@ public class LoginController {
         tokenData.setLoginIp(IpUtil.getRemoteIpAddress(ContextUtil.getHttpRequest()));
         tokenData.setLoginTime(new Date());
         tokenData.setDeviceType(deviceType);
+        if (StrUtil.isNotBlank(headImageUrl)) {
+            tokenData.setHeadImageUrl(headImageUrl);
+        }
         List<SysUserRole> userRoleList = sysRoleService.getSysUserRoleListByUserId(user.getUserId());
         if (CollectionUtils.isNotEmpty(userRoleList)) {
             Set<Long> userRoleIdSet = userRoleList.stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
@@ -272,6 +373,9 @@ public class LoginController {
         jsonData.put(TokenData.REQUEST_ATTRIBUTE_NAME, tokenData);
         jsonData.put("showName", user.getShowName());
         jsonData.put("isAdmin", isAdmin);
+        if (StrUtil.isNotBlank(headImageUrl)) {
+            jsonData.put("headImageUrl", headImageUrl);
+        }
         Collection<SysMenu> menuList;
         Collection<String> permCodeList;
         if (isAdmin) {

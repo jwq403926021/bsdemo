@@ -56,11 +56,18 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         String url = request.getURI().getPath();
-        // 判断是否为白名单请求，以及一些内置不需要验证的请求。(登录请求也包含其中)。
-        if (this.shouldNotFilter(url)) {
-            return chain.filter(exchange);
-        }
         String token = this.getTokenFromRequest(request);
+        boolean noLoginUrl = false;
+        // 判断是否为白名单请求，以及一些内置不需要验证的请求。(登录请求也包含其中)。
+        // 如果当前请求中包含token令牌不为空的时候，也会继续验证Token的合法性，这样就能保证
+        // Token中的用户信息被业务接口正常访问到了。而如果当token为空的时候，白名单的接口可以
+        // 被网关直接转发，无需登录验证。当然被转发的接口，也无法获取到用户的token身份数据了。
+        if (this.shouldNotFilter(url)) {
+            noLoginUrl = true;
+            if (StringUtils.isBlank(token)) {
+                return chain.filter(exchange);
+            }
+        }
         Claims c = JwtUtil.parseToken(token, appConfig.getTokenSigningKey());
         if (JwtUtil.isNullOrExpired(c)) {
             log.warn("EXPIRED request [{}] from REMOTE-IP [{}].", url, IpUtil.getRemoteIpAddress(request));
@@ -111,7 +118,7 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
             log.error("Failed to call AuthenticationPreFilter.filter.", e);
         }
         boolean isAdmin = tokenData.getBoolean("isAdmin");
-        if (Boolean.FALSE.equals(isAdmin) && !this.hasPermission(redissonClient, sessionId, url)) {
+        if (!noLoginUrl && Boolean.FALSE.equals(isAdmin) && !this.hasPermission(redissonClient, sessionId, url)) {
             log.warn("FORBIDDEN request [{}] from REMOTE-IP [{}] for USER [{} -- {}] no perm!",
                     url, IpUtil.getRemoteIpAddress(request), userId, showName);
             response.setStatusCode(HttpStatus.FORBIDDEN);
@@ -166,7 +173,7 @@ public class AuthenticationPreFilter implements GlobalFilter, Ordered {
         if (url.endsWith("/v2/api-docs") || url.endsWith("/v2/api-docs-ext")) {
             return true;
         }
-        if (url.equals(GatewayConstant.ADMIN_LOGIN_URL)) {
+        if (url.equals(GatewayConstant.ADMIN_LOGIN_URL) || url.startsWith("/captcha")) {
             return true;
         }
         // 先过滤直接匹配的白名单url。

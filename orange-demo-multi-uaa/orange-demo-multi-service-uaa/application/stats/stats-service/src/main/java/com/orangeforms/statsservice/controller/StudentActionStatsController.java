@@ -277,4 +277,18 @@ public class StudentActionStatsController extends BaseController<StudentActionSt
     public ResponseResult<List<Map<String, Object>>> aggregateBy(@RequestBody MyAggregationParam aggregationParam) {
         return super.baseAggregateBy(aggregationParam);
     }
+
+    /**
+     * 根据过滤字段和过滤集合，返回不存在的数据。主要用于微服务间远程过程调用。
+     *
+     * @param queryParam 查询参数。
+     * @return 不存在的数据集合。
+     */
+    @ApiOperation(hidden = true, value = "notExist")
+    @PostMapping("/notExist")
+    public ResponseResult<List<?>> notExist(@RequestBody MyQueryParam queryParam) {
+        List<?> notExistIdSet = service().notExist(
+                queryParam.getInFilterField(), queryParam.getInFilterValues(), true);
+        return ResponseResult.success(notExistIdSet);
+    }
 }

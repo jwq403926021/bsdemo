@@ -1,6 +1,6 @@
 package com.orangeforms.upmsservice.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.*;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.upmsservice.service.*;
 import com.orangeforms.upmsservice.dao.*;

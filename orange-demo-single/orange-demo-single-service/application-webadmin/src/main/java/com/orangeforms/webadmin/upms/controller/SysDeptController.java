@@ -113,27 +113,7 @@ public class SysDeptController {
         if (MyCommonUtil.existBlankArgument(deptId)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
         }
-        // 验证关联Id的数据合法性
-        SysDept originalSysDept = sysDeptService.getById(deptId);
-        if (originalSysDept == null) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        if (sysDeptService.hasChildren(deptId)) {
-            // NOTE: 修改下面方括号中的话述
-            errorMessage = "数据验证失败，当前 [对象存在子对象] ，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.HAS_CHILDREN_DATA, errorMessage);
-        }
-        if (sysDeptService.hasChildrenUser(deptId)) {
-            errorMessage = "数据验证失败，请先移除部门用户数据后，再删除当前部门！";
-            return ResponseResult.error(ErrorCodeEnum.HAS_CHILDREN_DATA, errorMessage);
-        }
-        if (!sysDeptService.remove(deptId)) {
-            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
-        }
-        return ResponseResult.success();
+        return this.doDelete(deptId);
     }
 
     /**
@@ -217,5 +197,30 @@ public class SysDeptController {
         List<SysDept> resultList = sysDeptService.getListByParentId("parentId", parentId);
         return ResponseResult.success(BeanQuery.select(
                 "parentId as parentId", "deptId as id", "deptName as name").executeFrom(resultList));
+    }
+
+    private ResponseResult<Void> doDelete(Long deptId) {
+        String errorMessage;
+        // 验证关联Id的数据合法性
+        SysDept originalSysDept = sysDeptService.getById(deptId);
+        if (originalSysDept == null) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象] 并不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        if (sysDeptService.hasChildren(deptId)) {
+            // NOTE: 修改下面方括号中的话述
+            errorMessage = "数据验证失败，当前 [对象存在子对象] ，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.HAS_CHILDREN_DATA, errorMessage);
+        }
+        if (sysDeptService.hasChildrenUser(deptId)) {
+            errorMessage = "数据验证失败，请先移除部门用户数据后，再删除当前部门！";
+            return ResponseResult.error(ErrorCodeEnum.HAS_CHILDREN_DATA, errorMessage);
+        }
+        if (!sysDeptService.remove(deptId)) {
+            errorMessage = "数据操作失败，删除的对象不存在，请刷新后重试！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage);
+        }
+        return ResponseResult.success();
     }
 }

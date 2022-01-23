@@ -1,19 +1,19 @@
 <template>
   <div>
-    <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
         <el-form-item label="关联URL">
           <el-input class="filter-item" v-model="formMenuPerm.formFilter.url"
             :clearable="true" placeholder="权限字名称" />
         </el-form-item>
-        <el-button slot="operator" type="primary" size="mini" :plain="true" @click="refreshFormMenuPerm(true)">
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :plain="true" @click="refreshFormMenuPerm(true)">
           查询
         </el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="getPermList" size="mini" height="459px"
+        <el-table :data="getPermList" :size="defaultFormItemSize" height="459px"
           @sort-change="formMenuPerm.SysPerm.impl.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="formMenuPerm.SysPerm.impl.getTableIndex" />
@@ -21,7 +21,7 @@
           </el-table-column>
           <el-table-column label="权限字类型" width="100px">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getPermCodeType(scope.row.permCodeType)">
+              <el-tag :size="defaultFormItemSize" :type="getPermCodeType(scope.row.permCodeType)">
                 {{SysPermCodeType.getValue(scope.row.permCodeType)}}
               </el-tag>
             </template>

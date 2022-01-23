@@ -23,6 +23,10 @@ spring:
           enabled: false
           lower-case-service-id: true
       routes:
+      - id: upms-captcha
+        uri: lb://upms
+        predicates:
+        - Path=/captcha/**
       - id: upms
         uri: lb://upms
         predicates:

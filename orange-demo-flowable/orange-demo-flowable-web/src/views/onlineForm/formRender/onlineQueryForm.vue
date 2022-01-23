@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <el-form :label-width="formConfig.labelWidth + 'px'" size="mini" :label-position="formConfig.labelPosition" @submit.native.prevent>
+    <el-form ref="filterForm" :model="formData" :label-width="formConfig.labelWidth + 'px'" :size="defaultFormItemSize" :label-position="formConfig.labelPosition" @submit.native.prevent>
       <filter-box :item-width="formConfig.labelWidth + 250" v-if="!isLoading">
         <CustomFilterWidget v-for="widget in formConfig.formWidgetList" :key="widget.id"
           :ref="widget.variableName"
@@ -9,11 +9,15 @@
           v-model="formData.formFilter[widget.column.columnName]"
         />
         <el-button v-if="Array.isArray(formConfig.formWidgetList) && formConfig.formWidgetList.length > 0"
-          slot="operator" type="primary" :plain="true" size="mini" @click="onSearch">
+          slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">
+          重置
+        </el-button>
+        <el-button v-if="Array.isArray(formConfig.formWidgetList) && formConfig.formWidgetList.length > 0"
+          slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="onSearch">
           查询
         </el-button>
         <el-button v-for="operation in getTableOperation(false)" :key="operation.id"
-          slot="operator" size="mini"
+          slot="operator" :size="defaultFormItemSize"
           :plain="operation.plain"
           :type="operation.btnType"
           :disabled="!checkPermCodeExist(getPermCode(formConfig.formQueryTable, operation))"
@@ -92,6 +96,14 @@ export default {
         ...this.formData.formFilter
       }
       this.$refs[this.formConfig.formQueryTable.variableName].refresh();
+    },
+    onReset () {
+      if (this.$refs.filterForm) {
+        this.$refs.filterForm.resetFields();
+        this.$nextTick(() => {
+          this.onSearch();
+        });
+      }
     },
     getDropdownParams (widget) {
       if (Array.isArray(widget.dictParamList)) {

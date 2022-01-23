@@ -166,6 +166,7 @@ public class MybatisDataFilterInterceptor implements Interceptor {
         // 通过注解解析与Mapper关联的Model，并获取与数据权限关联的信息，并将结果缓存。
         ModelDataPermInfo info = new ModelDataPermInfo();
         info.setMainTableName(MyModelUtil.mapToTableName(modelClazz));
+        info.setMustIncludeUserRule(rule.mustIncludeUserRule());
         info.setExcludeMethodNameSet(excludeMethodNameSet);
         if (userFilterField != null) {
             info.setUserFilterColumn(MyModelUtil.mapToColumnName(userFilterField, modelClazz));
@@ -276,10 +277,11 @@ public class MybatisDataFilterInterceptor implements Interceptor {
             return;
         }
         String dataPermSessionKey = RedisKeyUtil.makeSessionDataPermIdKey(tokenData.getSessionId());
-        String dataPermData = redissonClient.getBucket(dataPermSessionKey).get().toString();
-        if (StringUtils.isBlank(dataPermData)) {
+        Object cachedData = redissonClient.getBucket(dataPermSessionKey).get();
+        if (cachedData == null) {
             throw new NoDataPermException("No Related DataPerm found for SQL_ID [ " + sqlId + " ].");
         }
+        String dataPermData = cachedData.toString();
         Map<Integer, String> dataPermMap = new HashMap<>(8);
         for (Map.Entry<String, Object> entry : JSON.parseObject(dataPermData).entrySet()) {
             dataPermMap.put(Integer.valueOf(entry.getKey()), entry.getValue().toString());
@@ -289,6 +291,12 @@ public class MybatisDataFilterInterceptor implements Interceptor {
         }
         if (dataPermMap.containsKey(DataPermRuleType.TYPE_ALL)) {
             return;
+        }
+        // 如果当前过滤注解中mustIncludeUserRule参数为true，同时当前用户的数据权限中，不包含TYPE_USER_ONLY，
+        // 这里就需要自动添加该数据权限。
+        if (info.getMustIncludeUserRule()
+                && !dataPermMap.containsKey(DataPermRuleType.TYPE_USER_ONLY)) {
+            dataPermMap.put(DataPermRuleType.TYPE_USER_ONLY, null);
         }
         this.processDataPerm(info, dataPermMap, boundSql, commandType, statement);
     }
@@ -457,6 +465,7 @@ public class MybatisDataFilterInterceptor implements Interceptor {
         private String userFilterColumn;
         private String deptFilterColumn;
         private String mainTableName;
+        private Boolean mustIncludeUserRule;
     }
 
     @Data

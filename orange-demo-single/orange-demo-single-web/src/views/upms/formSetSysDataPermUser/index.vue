@@ -1,26 +1,27 @@
 <template>
   <div>
-    <el-form label-width="75px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formSysUser" :model="formSysUser" label-width="75px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="325">
-        <el-form-item label="用户状态">
+        <el-form-item label="用户状态" prop="formFilter.sysUserStatus">
           <el-select class="filter-item" v-model="formSysUser.formFilter.sysUserStatus" :clearable="true"
             placeholder="用户状态" :loading="formSysUser.sysUserStatus.impl.loading"
             @visible-change="onSysUserStatusVisibleChange">
             <el-option v-for="item in formSysUser.sysUserStatus.impl.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" prop="formFilter.sysUserLoginName">
           <el-input class="filter-item" v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true" placeholder="用户名" />
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormSysUser(true)">查询</el-button>
-        <el-button slot="operator" size="mini" type="primary" :plain="false" @click="onSetUser"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormSysUser(true)">查询</el-button>
+        <el-button slot="operator" :size="defaultFormItemSize" type="primary" :plain="false" @click="onSetUser"
           :disabled="selectUsers == null || selectUsers.length <= 0">授权人员</el-button>
       </filter-box>
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSysUser.SysUser.impl.dataList" size="mini" row-key="userId" ref="userTable"
+        <el-table :data="formSysUser.SysUser.impl.dataList" :size="defaultFormItemSize" row-key="userId" ref="userTable"
           header-cell-class-name="table-header-gray" height="395px" @selection-change="onTableSelectionChange">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="50px" :index="formSysUser.SysUser.impl.getTableIndex" />
           <el-table-column header-align="center" align="center" type="selection" width="50px" :reserve-selection="true" />
@@ -35,7 +36,7 @@
           </el-table-column>
           <el-table-column label="状态">
             <template slot-scope="scope">
-              <el-tag :type="getUserStatusType(scope.row.userStatus)" size="mini">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
+              <el-tag :type="getUserStatusType(scope.row.userStatus)" :size="defaultFormItemSize">{{SysUserStatus.getValue(scope.row.userStatus)}}</el-tag>
             </template>
           </el-table-column>
         </el-table>
@@ -97,6 +98,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formSysUser.resetFields();
+      this.refreshFormSysUser(true);
+    },
     /**
      * 用户状态下拉数据获取函数
      */

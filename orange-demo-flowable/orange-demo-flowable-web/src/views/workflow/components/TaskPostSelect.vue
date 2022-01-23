@@ -4,19 +4,19 @@
       <el-card class="base-card" shadow="never" :body-style="{ padding: '0px' }" style="border: none;">
         <div slot="header" class="base-card-header">
           <el-row type="flex" align="middle">
-            <el-radio-group v-model="formData.deptType" size="mini" @change="formData.deptId = undefined">
+            <el-radio-group v-model="formData.deptType" :size="defaultFormItemSize" @change="formData.deptId = undefined">
               <el-radio-button label="allDeptPost">全部</el-radio-button>
               <el-radio-button label="selfDeptPost">本部门</el-radio-button>
               <el-radio-button label="upDeptPost">上级部门</el-radio-button>
               <el-radio-button label="deptPost">指定部门</el-radio-button>
             </el-radio-group>
             <el-cascader v-model="formData.deptId" :clearable="true"
-              size="mini" placeholder="选择部门" v-show="formData.deptType === 'deptPost'"
+              :size="defaultFormItemSize" placeholder="选择部门" v-show="formData.deptType === 'deptPost'"
               :props="{value: 'id', label: 'name', checkStrictly: true}"
               :options="deptList">
             </el-cascader>
             <!--
-            <el-select v-model="formData.deptId" size="mini" placeholder="选择部门" v-show="formData.deptType === 'deptPost'" style="margin-left: 10px;">
+            <el-select v-model="formData.deptId" :size="defaultFormItemSize" placeholder="选择部门" v-show="formData.deptType === 'deptPost'" style="margin-left: 10px;">
               <el-option v-for="item in deptList" :key="item.id"
                 :label="item.name" :value="item.id"
               />
@@ -24,7 +24,7 @@
             -->
           </el-row>
           <div class="base-card-operation">
-            <el-button type="primary" size="mini"
+            <el-button type="primary" :size="defaultFormItemSize"
               :disabled="selectPost.length <= 0"
               @click="onAddPostClick()"
             >
@@ -32,7 +32,7 @@
             </el-button>
           </div>
         </div>
-        <el-table :data="getValidDeptPostList" size="mini" height="500px"
+        <el-table :data="getValidDeptPostList" :size="defaultFormItemSize" height="500px"
           header-cell-class-name="table-header-gray"
           row-key="deptPostId"
           @selection-change="handleSelectionChange"
@@ -45,7 +45,7 @@
           </el-table-column>
           <el-table-column label="领导岗位">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.leaderPost ? 'success' : 'danger'">
+              <el-tag :size="defaultFormItemSize" :type="scope.row.leaderPost ? 'success' : 'danger'">
                 {{scope.row.leaderPost ? '是' : '否'}}
               </el-tag>
             </template>

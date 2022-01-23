@@ -5,7 +5,7 @@
       <div class="title">
         <span>{{tableName}}</span>
         <el-dropdown trigger="click" @command="onAddNewColumn">
-          <el-button class="table-btn success" size="mini" type="text"
+          <el-button class="table-btn success" :size="defaultFormItemSize" type="text"
             icon="el-icon-circle-plus-outline" :disabled="getNewColumnList.length <= 0"
           >
             新增
@@ -26,16 +26,16 @@
         >
           <div>
             <span style="margin-right: 10px;">{{column.columnName}}</span>
-            <el-tag v-if="column.deletedFlag" size="mini" type="danger">已删除</el-tag>
+            <el-tag v-if="column.deletedFlag" :size="defaultFormItemSize" type="danger">已删除</el-tag>
           </div>
           <div class="refresh" style="margin-left: 10px;">
-            <el-button class="table-btn success" size="mini" type="text" v-if="getNewColumnList.length <= 0"
+            <el-button class="table-btn success" :size="defaultFormItemSize" type="text" v-if="getNewColumnList.length <= 0"
               @click.stop="onRefreshOnlineColumn(column, column)"
             >
               刷新
             </el-button>
             <el-dropdown v-else trigger="click" @command="onRefreshNewColumn">
-              <el-button class="table-btn success" size="mini" type="text" @click.stop="() => {}">
+              <el-button class="table-btn success" :size="defaultFormItemSize" type="text" @click.stop="() => {}">
                 刷新
               </el-button>
               <el-dropdown-menu slot="dropdown">
@@ -45,7 +45,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-if="column.deletedFlag" class="table-btn delete" size="mini" type="text" style="margin-left: 10px;"
+            <el-button v-if="column.deletedFlag" class="table-btn delete" :size="defaultFormItemSize" type="text" style="margin-left: 10px;"
               @click.stop="onDeleteColumn(column)"
             >
               删除
@@ -69,13 +69,13 @@
           <el-col class="attribute-item">
             <el-form-item label="字段名：">
               <span :title="currentColumn.columnComment">{{currentColumn.columnName}}</span>
-              <el-tag size="mini" type="warning" v-if="currentColumn.primaryKey" style="margin-left: 20px;">主键</el-tag>
+              <el-tag :size="defaultFormItemSize" type="warning" v-if="currentColumn.primaryKey" style="margin-left: 20px;">主键</el-tag>
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
             <el-form-item label="字段类型：">
               <span>{{currentColumn.fullColumnType}}</span>
-              <el-tag size="mini" type="success" effect="dark" style="margin-left: 10px;">{{currentColumn.tag.objectFieldType}}</el-tag>
+              <el-tag :size="defaultFormItemSize" type="success" effect="dark" style="margin-left: 10px;">{{currentColumn.tag.objectFieldType}}</el-tag>
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
@@ -140,7 +140,7 @@
       </el-row>
       <el-row style="margin-top: 15px;">
         <el-col :span="24" style="border-top: 1px solid #EBEEF5;">
-          <el-table size="mini" :data="columnRuleList" :show-header="false" empty-text="请添加验证规则">
+          <el-table :size="defaultFormItemSize" :data="columnRuleList" :show-header="false" empty-text="请添加验证规则">
             <el-table-column type="index" width="45px" />
             <el-table-column label="规则名称" prop="ruleName" width="150px" />
             <el-table-column label="校验错误信息" prop="columnRuleInfo.message" />

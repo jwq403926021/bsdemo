@@ -1,6 +1,6 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row type="flex" justify="space-between">
         <el-form-item label="登录名称">
           <el-input class="filter-item" v-model="formSysUser.formFilter.sysUserLoginName"
@@ -8,15 +8,15 @@
             :clearable="true" placeholder="登录名称" />
         </el-form-item>
         <div>
-          <el-input v-if="!multiple" size="mini" v-model="assignee" placeholder="自定义用户" style="width: 200px; margin: 0px 10px;">
+          <el-input v-if="!multiple" :size="defaultFormItemSize" v-model="assignee" placeholder="自定义用户" style="width: 200px; margin: 0px 10px;">
           </el-input>
-          <el-button type="primary" size="mini" @click="setStartUser">
+          <el-button type="primary" :size="defaultFormItemSize" @click="setStartUser">
             流程发起人
           </el-button>
-          <el-button v-if="showAssignee" type="primary" size="mini" @click="useAppointedAssignee">
+          <el-button v-if="showAssignee" type="primary" :size="defaultFormItemSize" @click="useAppointedAssignee">
             使用指定审批人
           </el-button>
-          <el-button type="primary" size="mini" @click="onSubmit" :disabled="!canCommit">
+          <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit" :disabled="!canCommit">
             添加用户
           </el-button>
         </div>
@@ -25,7 +25,7 @@
     <el-row>
       <el-col :span="24">
         <el-radio-group class="radio-table" v-model="selectUserId" style="width: 100%;">
-          <el-table :data="formSysUser.sysUserWidget.dataList" size="mini" height="410px"
+          <el-table :data="formSysUser.sysUserWidget.dataList" :size="defaultFormItemSize" height="410px"
             header-cell-class-name="table-header-gray"
             row-key="userId"
             @sort-change="formSysUser.sysUserWidget.onSortChange"

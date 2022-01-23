@@ -1,8 +1,14 @@
 package com.orangeforms.webadmin.upms.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +25,7 @@ import com.orangeforms.common.core.constant.ApplicationConstant;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.*;
+import com.orangeforms.common.core.upload.*;
 import com.orangeforms.common.redis.cache.SessionCacheHelper;
 import com.orangeforms.common.log.annotation.OperationLog;
 import com.orangeforms.common.log.model.constant.SysOperationLogType;
@@ -29,7 +36,9 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -69,27 +78,51 @@ public class LoginController {
     private SessionCacheHelper cacheHelper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CaptchaService captchaService;
+    @Autowired
+    private UpDownloaderFactory upDownloaderFactory;
 
     /**
      * 登录接口。
      *
-     * @param loginName 登录名。
-     * @param password  密码。
+     * @param loginName           登录名。
+     * @param password            密码。
+     * @param captchaVerification 验证码。
      * @return 应答结果对象，其中包括JWT的Token数据，以及菜单列表。
      */
     @ApiImplicitParams({
             // 这里包含密码密文，仅用于方便开发期间的接口测试，集成测试和发布阶段，需要将当前注解去掉。
             // 如果您重新生成了公钥和私钥，请替换password的缺省值。
             @ApiImplicitParam(name = "loginName", defaultValue = "admin"),
-            @ApiImplicitParam(name = "password", defaultValue = "IP3ccke3GhH45iGHB5qP9p7iZw6xUyj28Ju10rnBiPKOI35sc%2BjI7%2FdsjOkHWMfUwGYGfz8ik31HC2Ruk%2Fhkd9f6RPULTHj7VpFdNdde2P9M4mQQnFBAiPM7VT9iW3RyCtPlJexQ3nAiA09OqG%2F0sIf1kcyveSrulxembARDbDo%3D")
+            @ApiImplicitParam(name = "password", defaultValue = "IP3ccke3GhH45iGHB5qP9p7iZw6xUyj28Ju10rnBiPKOI35sc%2BjI7%2FdsjOkHWMfUwGYGfz8ik31HC2Ruk%2Fhkd9f6RPULTHj7VpFdNdde2P9M4mQQnFBAiPM7VT9iW3RyCtPlJexQ3nAiA09OqG%2F0sIf1kcyveSrulxembARDbDo%3D"),
+            @ApiImplicitParam(name = "captchaVerification", defaultValue = "为了方便测试，这里可以修改一下代码，hardcode一个每次都ok的验证码")
     })
     @NoAuthInterface
     @OperationLog(type = SysOperationLogType.LOGIN, saveResponse = false)
     @PostMapping("/doLogin")
     public ResponseResult<JSONObject> doLogin(
-            @MyRequestBody String loginName, @MyRequestBody String password) throws Exception {
-        if (MyCommonUtil.existBlankArgument(loginName, password)) {
+            @MyRequestBody String loginName,
+            @MyRequestBody String password,
+            @MyRequestBody String captchaVerification) throws Exception {
+        if (MyCommonUtil.existBlankArgument(loginName, password, captchaVerification)) {
             return ResponseResult.error(ErrorCodeEnum.ARGUMENT_NULL_EXIST);
+        }
+        String errorMessage;
+        CaptchaVO captchaVO = new CaptchaVO();
+        captchaVO.setCaptchaVerification(captchaVerification);
+        ResponseModel response = captchaService.verification(captchaVO);
+        if (!response.isSuccess()) {
+            //验证码校验失败，返回信息告诉前端
+            //repCode  0000  无异常，代表成功
+            //repCode  9999  服务器内部异常
+            //repCode  0011  参数不能为空
+            //repCode  6110  验证码已失效，请重新获取
+            //repCode  6111  验证失败
+            //repCode  6112  获取验证码失败,请联系管理员
+            errorMessage = String.format("数据验证失败，验证码错误，错误码 [%s] 错误信息 [%s]",
+            response.getRepCode(), response.getRepMsg());
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
         }
         SysUser user = sysUserService.getSysUserByLoginName(loginName);
         password = URLDecoder.decode(password, StandardCharsets.UTF_8.name());
@@ -99,7 +132,6 @@ public class LoginController {
         if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             return ResponseResult.error(ErrorCodeEnum.INVALID_USERNAME_PASSWORD);
         }
-        String errorMessage;
         if (user.getUserStatus() == SysUserStatus.STATUS_LOCKED) {
             errorMessage = "登录失败，用户账号被锁定！";
             return ResponseResult.error(ErrorCodeEnum.INVALID_USER_STATUS, errorMessage);
@@ -143,6 +175,9 @@ public class LoginController {
         JSONObject jsonData = new JSONObject();
         jsonData.put("showName", tokenData.getShowName());
         jsonData.put("isAdmin", tokenData.getIsAdmin());
+        if (StrUtil.isNotBlank(tokenData.getHeadImageUrl())) {
+            jsonData.put("headImageUrl", tokenData.getHeadImageUrl());
+        }
         Collection<SysMenu> menuList;
         Collection<String> permCodeList;
         if (tokenData.getIsAdmin()) {
@@ -186,10 +221,72 @@ public class LoginController {
         }
         return ResponseResult.success();
     }
+    
+    /**
+     * 上传并修改用户头像。
+     *
+     * @param uploadFile 上传的头像文件。
+     */
+    @PostMapping("/changeHeadImage")
+    public void changeHeadImage(
+            @RequestParam("uploadFile") MultipartFile uploadFile) throws Exception {
+        String fieldName = "headImageUrl";
+        UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+        BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+        UploadResponseInfo responseInfo = upDownloader.doUpload(null,
+                appConfig.getUploadFileBaseDir(), SysUser.class.getSimpleName(), fieldName, true, uploadFile);
+        if (responseInfo.getUploadFailed()) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.UPLOAD_FAILED, responseInfo.getErrorMessage()));
+            return;
+        }
+        responseInfo.setDownloadUri("/admin/upms/login/downloadHeadImage");
+        String newHeadImage = JSONArray.toJSONString(CollUtil.newArrayList(responseInfo));
+        if (!sysUserService.changeHeadImage(TokenData.takeFromRequest().getUserId(), newHeadImage)) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN,
+                    ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST));
+            return;
+        }
+        ResponseResult.output(ResponseResult.success(responseInfo));
+    }
+
+    /**
+     * 下载用户头像。
+     *
+     * @param filename 文件名。如果没有提供该参数，就从当前记录的指定字段中读取。
+     * @param response Http 应答对象。
+     */
+    @GetMapping("/downloadHeadImage")
+    public void downloadHeadImage(String filename, HttpServletResponse response) {
+        try {
+            SysUser user = sysUserService.getById(TokenData.takeFromRequest().getUserId());
+            if (user == null) {
+                ResponseResult.output(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (StrUtil.isBlank(user.getHeadImageUrl())) {
+                ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            if (!BaseUpDownloader.containFile(user.getHeadImageUrl(), filename)) {
+                ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            String fieldName = "headImageUrl";
+            UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(SysUser.class, fieldName);
+            BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
+            upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
+                    SysUser.class.getSimpleName(), fieldName, filename, true, response);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            log.error(e.getMessage(), e);
+        }
+    }
 
     private JSONObject buildLoginData(SysUser user) {
         int deviceType = MyCommonUtil.getDeviceType();
         boolean isAdmin = user.getUserType() == SysUserType.TYPE_ADMIN;
+        String headImageUrl = user.getHeadImageUrl();
         Map<String, Object> claims = new HashMap<>(3);
         String sessionId = user.getLoginName() + "_" + deviceType + "_" + MyCommonUtil.generateUuid();
         claims.put("sessionId", sessionId);
@@ -198,6 +295,9 @@ public class LoginController {
         jsonData.put(TokenData.REQUEST_ATTRIBUTE_NAME, token);
         jsonData.put("showName", user.getShowName());
         jsonData.put("isAdmin", isAdmin);
+        if (StrUtil.isNotBlank(headImageUrl)) {
+            jsonData.put("headImageUrl", headImageUrl);
+        }
         TokenData tokenData = new TokenData();
         tokenData.setSessionId(sessionId);
         tokenData.setUserId(user.getUserId());
@@ -208,6 +308,9 @@ public class LoginController {
         tokenData.setLoginIp(IpUtil.getRemoteIpAddress(ContextUtil.getHttpRequest()));
         tokenData.setLoginTime(new Date());
         tokenData.setDeviceType(deviceType);
+        if (StrUtil.isNotBlank(headImageUrl)) {
+            tokenData.setHeadImageUrl(headImageUrl);
+        }
         List<SysUserRole> userRoleList = sysRoleService.getSysUserRoleListByUserId(user.getUserId());
         if (CollectionUtils.isNotEmpty(userRoleList)) {
             Set<Long> userRoleIdSet = userRoleList.stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());

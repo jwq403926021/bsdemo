@@ -1,5 +1,7 @@
 -- ----------------------------
--- 该脚本用于删除自动生成的用户权限管理数据。
+-- 该脚本用于删除自动生成的用户权限管理数据。在搭建初始环境的时候，不要执行该脚本。
+-- 再次重新生成项目的时候，如果您在生成器中新增了用户权限相关的数据，而之前已经搭建好的数据库中，也存在了
+-- 您自己手动插入的权限数据时，可以通过执行该脚本，将现有数据库表中，生成器生成的权限数据删除，删除之后，可以再执行新生成的数据库脚本数据。
 -- 数据库链接在橙单生成器中配置信息：
 -- 应用名称：橙单微服务开源版 / OrangeMultiDemo
 -- 链接名称：主数据源 / MAIN
@@ -10,6 +12,9 @@
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+DELETE FROM `zz_data_sync_producer_update_mark` WHERE id = 1;
+
 
 -- ----------------------------
 -- 全部菜单数据
@@ -430,6 +435,8 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1293397261451005952;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293397261451005960;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293397261451005968;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293397261451005970;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661690327086;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036817838125;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293378861102272520;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376760750018568;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293396976896839680;
@@ -439,6 +446,8 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1293396976913616896;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293396976913616905;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293396976913616914;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293396976913616916;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661690327085;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036817838124;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378443812864;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378443812873;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378443812883;
@@ -446,6 +455,8 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378510921728;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378510921731;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378510921734;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1450780378510921736;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661698716018;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036830421028;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635331940352;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635331940365;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635331940379;
@@ -454,6 +465,10 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635357106182;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635357106188;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635357106190;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376635373883392;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661690327084;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036817838123;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376634988007437;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1293376634988007436;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410019;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410020;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410021;
@@ -474,6 +489,10 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1310160477766029312;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1310160477766029321;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1310160477766029324;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1310160477766029335;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661690327087;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483414879405608961;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483414879539826689;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036817838126;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293423774305095680;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293423774330261504;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293423774330261508;
@@ -491,6 +510,8 @@ DELETE FROM `zz_sys_perm` WHERE perm_id = 1293424012151492608;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293424012151492614;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293424012151492620;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1293424012151492622;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1476927661690327088;
+DELETE FROM `zz_sys_perm` WHERE perm_id = 1483415036817838127;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410061;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410062;
 DELETE FROM `zz_sys_perm` WHERE perm_id = 1471382975978410063;
@@ -677,6 +698,34 @@ DELETE FROM `zz_sys_perm_code_perm` WHERE perm_code_id = 1471382975995187244 AND
 DELETE FROM `zz_sys_perm_code_perm` WHERE perm_code_id = 1471382975995187244 AND perm_id = 1450780378443812873;
 DELETE FROM `zz_sys_perm_code_perm` WHERE perm_code_id = 1471382975995187244 AND perm_id = 1450780378510921736;
 DELETE FROM `zz_sys_perm_code_perm` WHERE perm_code_id = 1471382975995187245 AND perm_id = 1450780378443812883;
+COMMIT;
+
+-- ----------------------------
+-- 全部白名单权限资源数据
+-- ----------------------------
+BEGIN;
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/getUaaLogoutUrl';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/getLoginInfo';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/sysRole/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/sysRole/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/areaCode/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/areaCode/listAll';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/areaCode/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/areaCode/listDictByParentId';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/course/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/course/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/grade/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/grade/listAll';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/grade/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/student/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/CourseClass/student/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/sysDept/listDict';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/sysDept/listDictByIds';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/sysDept/listDictByParentId';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/doLogout';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/changePassword';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/changeHeadImage';
+DELETE FROM `zz_sys_perm_whitelist` WHERE perm_url = '/admin/upms/login/downloadHeadImage';
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -81,7 +81,7 @@ public class RedisTreeDictionaryCache<K, V> extends RedisDictionaryCache<K, V> {
             Function<V, K> parentIdGetter) {
         super(redissonClient, dictionaryName, valueClazz, idGetter);
         this.allTreeMap = redissonClient.getListMultimap(
-                dictionaryName + ApplicationConstant.TREE_DICT_CACHE_NAME_SUFFIX);
+                DICT_PREFIX + dictionaryName + ApplicationConstant.TREE_DICT_CACHE_NAME_SUFFIX);
         this.parentIdGetter = parentIdGetter;
     }
 

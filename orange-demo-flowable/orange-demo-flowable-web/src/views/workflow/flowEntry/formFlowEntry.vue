@@ -1,8 +1,8 @@
 <template>
   <div style="position: relative;">
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form ref="formFlowEntry" :model="formFlowEntry" label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-form-item label="流程分类">
+        <el-form-item label="流程分类" prop="formFilter.categoryId">
           <el-select class="filter-item" v-model="formFlowEntry.formFilter.categoryId"
             :clearable="true" filterable placeholder="流程分类"
             :loading="formFlowEntry.categoryIdWidget.loading"
@@ -11,22 +11,23 @@
             <el-option v-for="item in formFlowEntry.categoryIdWidget.dropdownList" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="流程名称">
+        <el-form-item label="流程名称" prop="formFilter.processDefinitionName">
           <el-input class="filter-item" v-model="formFlowEntry.formFilter.processDefinitionName"
             :clearable="true" placeholder="流程名称" />
         </el-form-item>
-        <el-form-item label="流程标识">
+        <el-form-item label="流程标识" prop="formFilter.processDefinitionKey">
           <el-input class="filter-item" v-model="formFlowEntry.formFilter.processDefinitionKey"
             :clearable="true" placeholder="流程标识" />
         </el-form-item>
-        <el-form-item label="发布状态">
+        <el-form-item label="发布状态" prop="formFilter.status">
           <el-select class="filter-item" v-model="formFlowEntry.formFilter.status" :clearable="true" filterable
             placeholder="发布状态">
             <el-option v-for="item in SysFlowEntryPublishedStatus.getList()" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-        <el-button slot="operator" type="primary" :plain="true" size="mini" @click="refreshFormFlowEntry(true)">查询</el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')"
+        <el-button slot="operator" type="default" :plain="true" :size="defaultFormItemSize" @click="onReset">重置</el-button>
+        <el-button slot="operator" type="primary" :plain="true" :size="defaultFormItemSize" @click="refreshFormFlowEntry(true)">查询</el-button>
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')"
           @click="onAddFlowEntryClick()">
           新建
         </el-button>
@@ -34,7 +35,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table ref="flowEntry" :data="formFlowEntry.flowEntryWidget.dataList" size="mini" @sort-change="formFlowEntry.flowEntryWidget.onSortChange"
+        <el-table ref="flowEntry" :data="formFlowEntry.flowEntryWidget.dataList" :size="defaultFormItemSize" @sort-change="formFlowEntry.flowEntryWidget.onSortChange"
           header-cell-class-name="table-header-gray">
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="formFlowEntry.flowEntryWidget.getTableIndex" />
           <el-table-column label="流程名称" prop="processDefinitionName">
@@ -45,45 +46,45 @@
           </el-table-column>
           <el-table-column label="发布状态" prop="status">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.status === SysFlowEntryPublishedStatus.PUBLISHED ? 'success' : 'warning'">
+              <el-tag :size="defaultFormItemSize" :type="scope.row.status === SysFlowEntryPublishedStatus.PUBLISHED ? 'success' : 'warning'">
                 {{SysFlowEntryPublishedStatus.getValue(scope.row.status)}}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="流程主版本" prop="mainFlowEntryPublish" header-align="center" align="center">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.mainFlowEntryPublish" size="mini" type="primary" effect="dark">
+              <el-tag v-if="scope.row.mainFlowEntryPublish" :size="defaultFormItemSize" type="primary" effect="dark">
                 {{'V:' + scope.row.mainFlowEntryPublish.publishVersion}}
               </el-tag>
-              <el-tag v-if="scope.row.mainFlowEntryPublish" size="mini" effect="dark" style="margin-left: 10px"
+              <el-tag v-if="scope.row.mainFlowEntryPublish" :size="defaultFormItemSize" effect="dark" style="margin-left: 10px"
                 :type="scope.row.mainFlowEntryPublish.activeStatus ? 'success' : 'danger'"
               >
                 {{scope.row.mainFlowEntryPublish.activeStatus ? '激活' : '挂起'}}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="最近发布时间" prop="lastestPublishTime" sortable="custom" />
+          <el-table-column label="最近发布时间" prop="latestPublishTime" sortable="custom" />
           <el-table-column label="创建时间" prop="createTime" sortable="custom" />
           <el-table-column label="操作" fixed="right" width="250px">
             <template slot-scope="scope">
-              <el-button class="table-btn success" @click.stop="onStartFlowEntryClick(scope.row)" type="text" size="mini"
+              <el-button class="table-btn success" @click.stop="onStartFlowEntryClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:start') ||
                   !(scope.row.mainFlowEntryPublish && scope.row.mainFlowEntryPublish.activeStatus)">
                 启动
               </el-button>
-              <el-button class="table-btn success" @click.stop="onEditFlowEntryClick(scope.row)" type="text" size="mini"
+              <el-button class="table-btn success" @click.stop="onEditFlowEntryClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')">
                 编辑
               </el-button>
-              <el-button @click.stop="onPublishedClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onPublishedClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')">
                 发布
               </el-button>
-              <el-button @click.stop="onPublishedEntryListClick(scope.row)" type="text" size="mini"
+              <el-button @click.stop="onPublishedEntryListClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')">
                 版本管理
               </el-button>
-              <el-button class="table-btn delete" @click.stop="onDeleteFlowEntryClick(scope.row)" type="text" size="mini"
+              <el-button class="table-btn delete" @click.stop="onDeleteFlowEntryClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formFlowEntry:formFlowEntry:update')">
                 删除
               </el-button>
@@ -150,6 +151,10 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$refs.formFlowEntry.resetFields();
+      this.refreshFormFlowEntry(true);
+    },
     onEditFlowEntryClose () {
       this.showFlowEntryDesign = false;
       this.currentFlowEntry = null;

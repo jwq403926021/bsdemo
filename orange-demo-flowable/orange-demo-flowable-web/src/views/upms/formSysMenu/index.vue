@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-form label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+    <el-form label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <filter-box :item-width="350">
-        <el-button slot="operator" type="primary" size="mini" :plain="true"
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :plain="true"
           @click="refreshFormSysMenu(true)">
           刷新
         </el-button>
-        <el-button slot="operator" type="primary" size="mini" :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
+        <el-button slot="operator" type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
           @click="onCreateSysMenuClick()">
           新建
         </el-button>
@@ -14,7 +14,7 @@
     </el-form>
     <el-row>
       <el-col :span="24">
-        <el-table :data="formSysMenu.SysMenu.impl.dataList" size="mini"
+        <el-table :data="formSysMenu.SysMenu.impl.dataList" :size="defaultFormItemSize"
           header-cell-class-name="table-header-gray" row-key="menuId">
           <el-table-column label="菜单名称" prop="menuName" width="300px">
           </el-table-column>
@@ -27,26 +27,26 @@
           </el-table-column>
           <el-table-column label="菜单类型" prop="menuType" width="100px">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
+              <el-tag :size="defaultFormItemSize" :type="getMenuType(scope.row)">{{SysMenuType.getValue(scope.row.menuType)}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="菜单路由" prop="formRouterName" min-width="250px">
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="200px">
             <template slot-scope="scope">
-              <el-button @click="onEditSysMenuClick(scope.row)" type="text" size="mini"
+              <el-button @click="onEditSysMenuClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:update') || (scope.row.onlineFormId != null && scope.row.menuType === SysMenuType.BUTTON)">
                 编辑
               </el-button>
-              <el-button @click="onAddChildSysMenuClick(scope.row)" type="text" size="mini"
+              <el-button @click="onAddChildSysMenuClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add') || scope.row.menuType === SysMenuType.BUTTON">
                 添加
               </el-button>
-              <el-button @click="onDeleteClick(scope.row)" type="text" size="mini"
+              <el-button @click="onDeleteClick(scope.row)" type="text" :size="defaultFormItemSize"
                 :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:delete') || (scope.row.onlineFormId != null && scope.row.menuType === SysMenuType.BUTTON)">
                 删除
               </el-button>
-              <el-button @click="onShowPermList(scope.row)" type="text" size="mini"
+              <el-button @click="onShowPermList(scope.row)" type="text" :size="defaultFormItemSize"
                 v-if="checkPermCodeExist('formSysMenu:fragmentSysMenu:listSysMenuPermDetail')"
                 :disabled="scope.row.menuType === SysMenuType.DIRECTORY">
                 权限详情

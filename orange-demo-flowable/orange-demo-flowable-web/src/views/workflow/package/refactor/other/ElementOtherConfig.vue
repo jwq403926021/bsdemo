@@ -6,7 +6,7 @@
         <el-input
           type="textarea"
           v-model="documentation"
-          size="mini"
+          :size="defaultFormItemSize"
           resize="vertical"
           :autosize="{ minRows: 2, maxRows: 4 }"
           @input="updateDocumentation"

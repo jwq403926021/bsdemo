@@ -42,15 +42,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String url = request.getRequestURI();
+        String token = request.getHeader(appConfig.getTokenHeaderKey());
+        boolean noLoginUrl = false;
         // 如果接口方法标记NoAuthInterface注解，可以直接跳过Token鉴权验证，这里主要为了测试接口方便
         if (handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
             if (hm.getBeanType().getAnnotation(NoAuthInterface.class) != null
                     || hm.getMethodAnnotation(NoAuthInterface.class) != null) {
-                return true;
+                noLoginUrl = true;
+                if (StringUtils.isBlank(token)) {
+                    return true;
+                }
             }
         }
-        String token = request.getHeader(appConfig.getTokenHeaderKey());
         if (StringUtils.isBlank(token)) {
             token = request.getParameter(appConfig.getTokenHeaderKey());
         }
@@ -73,7 +77,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         TokenData tokenData = JSON.parseObject(tokenString, TokenData.class);
         TokenData.addToRequest(tokenData);
         // 操作员管理的URL接口，只有管理员可以访问。
-        if (!tokenData.getIsAdmin() && StringUtils.startsWithIgnoreCase(url, this.operatorAdminUrlPrefix)) {
+        if (!noLoginUrl && !tokenData.getIsAdmin() && StringUtils.startsWithIgnoreCase(url, this.operatorAdminUrlPrefix)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             this.outputResponseMessage(response,
                     ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION));

@@ -1,5 +1,5 @@
 <template>
-  <el-form-item :label="widgetConfig.showName + '：'" :prop="widgetConfig.variableName">
+  <el-form-item :label="widgetConfig.showName + '：'" :prop="'formFilter.' + widgetConfig.column.columnName">
     <el-input v-if="widgetConfig.widgetType === SysCustomWidgetType.Input"
       class="filter-item" clearable
       :type="widgetConfig.type"

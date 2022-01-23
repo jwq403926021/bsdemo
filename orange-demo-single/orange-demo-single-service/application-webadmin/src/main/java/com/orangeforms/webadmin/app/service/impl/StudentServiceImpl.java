@@ -1,7 +1,7 @@
 package com.orangeforms.webadmin.app.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.*;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.application.common.constant.StudentStatus;
 import com.orangeforms.webadmin.app.service.*;
@@ -159,8 +159,12 @@ public class StudentServiceImpl extends BaseService<Student, Long> implements St
      */
     @Override
     public List<Student> getNotInStudentListByClassId(Long classId, Student filter, String orderBy) {
-        List<Student> resultList =
-                studentMapper.getNotInStudentListByClassId(classId, filter, orderBy);
+        List<Student> resultList;
+        if (classId != null) {
+            resultList = studentMapper.getNotInStudentListByClassId(classId, filter, orderBy);
+        } else {
+            resultList = getStudentList(filter, orderBy);
+        }
         this.buildRelationForDataList(resultList, MyRelationParam.dictOnly());
         return resultList;
     }

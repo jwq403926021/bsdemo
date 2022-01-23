@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="rules" label-width="80px" size="mini" label-position="right" @submit.native.prevent>
+  <el-form ref="form" :model="formData" :rules="rules" label-width="80px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
     <el-row :gutter="20">
       <el-col :span="24">
         <el-form-item label="角色名称" prop="roleName">
@@ -14,7 +14,7 @@
         <el-card shadow="never">
           <div slot="header" class="card-header">
             <span>菜单权限</span>
-            <el-input size="mini" v-model="menuNameFilter" placeholder="输入菜单名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
+            <el-input :size="defaultFormItemSize" v-model="menuNameFilter" placeholder="输入菜单名称过滤" style="width: 250px;" clearable suffix-icon="el-icon-search" />
           </div>
           <el-scrollbar style="height: 230px;" wrap-class="scrollbar_dropdown__wrap">
             <el-tree ref="authTree" :data="authData" :props="treeProps" :check-strictly="false"
@@ -26,8 +26,8 @@
     </el-row>
     <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer" style="margin-top: 20px;">
-      <el-button size="mini" @click="onCancel(false)" >取消</el-button>
-      <el-button type="primary" size="mini" @click="onSubmit"
+      <el-button :size="defaultFormItemSize" @click="onCancel(false)" >取消</el-button>
+      <el-button type="primary" :size="defaultFormItemSize" @click="onSubmit"
         :disabled="!(checkPermCodeExist('formSysRole:fragmentSysRole:update') || checkPermCodeExist('formSysRole:fragmentSysRole:add'))">
         确定
       </el-button>

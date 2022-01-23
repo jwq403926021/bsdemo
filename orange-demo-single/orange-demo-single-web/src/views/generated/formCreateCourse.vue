@@ -1,7 +1,7 @@
 <template>
   <div class="form-single-fragment" style="position: relative;">
     <el-form ref="formCreateCourse" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
-      label-width="100px" size="mini" label-position="right" @submit.native.prevent>
+      label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="课程名称" prop="Course.courseName">
@@ -81,11 +81,11 @@
         </el-col>
         <el-col :span="24">
           <el-row class="no-scroll flex-box" type="flex" justify="end">
-            <el-button type="primary" size="mini" :plain="true"
+            <el-button type="primary" :size="defaultFormItemSize" :plain="true"
               @click="onCancel(false)">
               取消
             </el-button>
-            <el-button type="primary" size="mini" :disabled="!checkPermCodeExist('formCreateCourse:formCreateCourse:add')"
+            <el-button type="primary" :size="defaultFormItemSize" :disabled="!checkPermCodeExist('formCreateCourse:formCreateCourse:add')"
               @click="onAddClick()">
               保存
             </el-button>

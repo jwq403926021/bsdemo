@@ -27,6 +27,22 @@ function initUserInfo (userInfo) {
     userInfo.permCodeSet = new Set(userInfo.permCodeList);
   }
 
+  if (userInfo != null && userInfo.headImageUrl != null && userInfo.headImageUrl !== '') {
+    try {
+      userInfo.headImageUrl = JSON.parse(userInfo.headImageUrl);
+      if (Array.isArray(userInfo.headImageUrl)) {
+        userInfo.headImageUrl = userInfo.headImageUrl[0];
+      } else {
+        userInfo.headImageUrl = null;
+      }
+    } catch (e) {
+      console.error('解析头像数据失败！', e);
+      userInfo.headImageUrl = null;
+    }
+  } else {
+    if (userInfo) userInfo.headImageUrl = null;
+  }
+
   return userInfo;
 }
 

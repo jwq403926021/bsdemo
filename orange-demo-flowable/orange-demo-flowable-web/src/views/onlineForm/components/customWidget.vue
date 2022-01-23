@@ -12,7 +12,8 @@
           >
             {{value}}
           </span>
-          <span v-else-if="widgetConfig.widgetType === SysCustomWidgetType.Select">{{getDictValue(value)}}</span>
+          <span v-else-if="widgetConfig.widgetType === SysCustomWidgetType.Select">{{dropdownShowName}}</span>
+          <span v-else-if="widgetConfig.widgetType === SysCustomWidgetType.Cascader">{{dropdownShowName}}</span>
           <div v-else-if="widgetConfig.widgetType === SysCustomWidgetType.RichEditor" v-html="value" />
           <span v-else-if="widgetConfig.widgetType === SysCustomWidgetType.Switch">{{value ? '是' : '否'}}</span>
         </el-form-item>
@@ -107,7 +108,7 @@
 <script>
 import { DropdownWidget } from '@/utils/widget.js';
 import { getDictDataList } from '../utils';
-import { findItemFromList, findTreeNodePath } from '@/utils';
+import { findItemFromList, findTreeNodePath, findTreeNodeObjectPath } from '@/utils';
 import CustomText from './customText.vue';
 import CustomImage from './customImage.vue';
 
@@ -213,12 +214,39 @@ export default {
     getDictValue (id) {
       if (this.dropdownWidget && Array.isArray(this.dropdownWidget.dropdownList)) {
         return (findItemFromList(this.dropdownWidget.dropdownList, id, 'id') || {}).name;
-      } else {
-        return '';
       }
+
+      return id;
+    },
+    getTreeDictValue (id) {
+      console.log(this.dropdownWidget.dropdownList);
+      if (this.dropdownWidget && Array.isArray(this.dropdownWidget.dropdownList)) {
+        let nodePath = findTreeNodeObjectPath(this.dropdownWidget.dropdownList, id, 'id');
+        console.log(nodePath);
+        if (Array.isArray(nodePath)) {
+          return nodePath.map(item => item.name).join(' / ');
+        }
+      }
+
+      return id;
+    }
+  },
+  computed: {
+    dropdownShowName () {
+      console.log((this.dropdownWidget || {}).dropdownList, this.value);
+      if (this.dropdownWidget && Array.isArray(this.dropdownWidget.dropdownList)) {
+        if (this.widgetConfig.widgetType === this.SysCustomWidgetType.Select) {
+          return this.getDictValue(this.value);
+        } else if (this.widgetConfig.widgetType === this.SysCustomWidgetType.Cascader) {
+          return this.getTreeDictValue(this.value);
+        }
+      }
+
+      return this.value;
     }
   },
   mounted () {
+    this.onVisibleChange();
   }
 }
 </script>

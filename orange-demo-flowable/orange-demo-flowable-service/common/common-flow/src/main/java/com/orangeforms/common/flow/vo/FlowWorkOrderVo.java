@@ -109,6 +109,12 @@ public class FlowWorkOrderVo {
     private Map<String, Object> flowStatusDictMap;
 
     /**
+     * 用户的显示名。
+     */
+    @ApiModelProperty(value = "用户的显示名")
+    private String userShowName;
+
+    /**
      * FlowEntryPublish对象中的同名字段。
      */
     @ApiModelProperty(value = "FlowEntryPublish对象中的同名字段")

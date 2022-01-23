@@ -3,7 +3,7 @@ package com.orangeforms.common.flow.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.Page;
 import com.orangeforms.common.flow.object.FlowTaskPostCandidateGroup;
@@ -147,7 +147,7 @@ public class FlowEntryServiceImpl extends BaseService<FlowEntry, Long> implement
                 } else if (StrUtil.equals(t.getGroupType(), FlowConstant.GROUP_TYPE_POST)) {
                     Assert.notNull(t.getDeptPostListJson());
                     List<FlowTaskPostCandidateGroup> groupDataList =
-                            JSONArray.parseArray(t.getDeptPostListJson(), FlowTaskPostCandidateGroup.class);
+                            JSON.parseArray(t.getDeptPostListJson(), FlowTaskPostCandidateGroup.class);
                     List<String> candidateGroupList =
                             FlowTaskPostCandidateGroup.buildCandidateGroupList(groupDataList);
                     userTask.setCandidateGroups(candidateGroupList);
@@ -176,7 +176,7 @@ public class FlowEntryServiceImpl extends BaseService<FlowEntry, Long> implement
         FlowEntry updatedFlowEntry = new FlowEntry();
         updatedFlowEntry.setEntryId(flowEntry.getEntryId());
         updatedFlowEntry.setStatus(FlowEntryStatus.PUBLISHED);
-        updatedFlowEntry.setLastestPublishTime(new Date());
+        updatedFlowEntry.setLatestPublishTime(new Date());
         // 对于从未发布过的工作，第一次发布的时候会将本地发布置位主版本。
         if (flowEntry.getStatus().equals(FlowEntryStatus.UNPUBLISHED)) {
             updatedFlowEntry.setMainEntryPublishId(flowEntryPublish.getEntryPublishId());

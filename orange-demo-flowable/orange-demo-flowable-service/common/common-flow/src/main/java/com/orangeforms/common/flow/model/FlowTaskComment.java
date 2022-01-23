@@ -71,10 +71,22 @@ public class FlowTaskComment {
     private String delegateAssginee;
 
     /**
+     * 自定义数据。开发者可自行扩展，推荐使用JSON格式数据。
+     */
+    @TableField(value = "custom_business_data")
+    private String customBusinessData;
+
+    /**
      * 创建者Id。
      */
     @TableField(value = "create_user_id")
     private Long createUserId;
+
+    /**
+     * 创建者登录名。
+     */
+    @TableField(value = "create_login_name")
+    private String createLoginName;
 
     /**
      * 创建者显示名。

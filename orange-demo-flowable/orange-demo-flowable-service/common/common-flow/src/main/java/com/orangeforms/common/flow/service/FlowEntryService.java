@@ -1,7 +1,6 @@
 package com.orangeforms.common.flow.service;
 
 import com.orangeforms.common.core.base.service.IBaseService;
-import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.flow.model.*;
 
 import javax.xml.stream.XMLStreamException;

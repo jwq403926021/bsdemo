@@ -3,6 +3,7 @@ package com.orangeforms.webadmin.upms.model;
 import com.baomidou.mybatisplus.annotation.*;
 import com.orangeforms.webadmin.upms.model.constant.SysUserType;
 import com.orangeforms.webadmin.upms.model.constant.SysUserStatus;
+import com.orangeforms.common.core.upload.UploadStoreTypeEnum;
 import com.orangeforms.common.core.annotation.*;
 import com.orangeforms.common.core.base.mapper.BaseModelMapper;
 import com.orangeforms.webadmin.upms.vo.SysUserVo;
@@ -62,6 +63,7 @@ public class SysUser {
     /**
      * 用户头像的Url。
      */
+    @UploadFlagColumn(storeType = UploadStoreTypeEnum.LOCAL_SYSTEM)
     @TableField(value = "head_image_url")
     private String headImageUrl;
 

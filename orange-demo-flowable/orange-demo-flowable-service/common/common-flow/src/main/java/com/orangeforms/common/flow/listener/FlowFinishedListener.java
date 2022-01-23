@@ -35,7 +35,7 @@ public class FlowFinishedListener implements ExecutionListener {
         flowWorkOrderService.updateFlowStatusByProcessInstanceId(processInstanceId, FlowTaskStatus.FINISHED);
         String businessKey = execution.getProcessInstanceBusinessKey();
         FlowWorkOrder workOrder = flowWorkOrderService.getFlowWorkOrderByProcessInstanceId(processInstanceId);
-        flowCustomExtFactory.getDataSyncExtHelper()
+        flowCustomExtFactory.getBusinessDataExtHelper()
                 .triggerSync(workOrder.getProcessDefinitionKey(), processInstanceId, businessKey);
     }
 }

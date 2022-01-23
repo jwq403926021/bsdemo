@@ -1,9 +1,12 @@
 package com.orangeforms.common.flow.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.constant.GlobalDeletedFlag;
+import com.orangeforms.common.core.object.GlobalThreadLocal;
 import com.orangeforms.common.core.object.MyRelationParam;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.base.service.BaseService;
@@ -11,6 +14,9 @@ import com.orangeforms.common.flow.constant.FlowTaskStatus;
 import com.orangeforms.common.flow.dao.FlowWorkOrderMapper;
 import com.orangeforms.common.flow.model.FlowWorkOrder;
 import com.orangeforms.common.flow.service.FlowWorkOrderService;
+import com.orangeforms.common.flow.util.BaseFlowIdentityExtHelper;
+import com.orangeforms.common.flow.util.FlowCustomExtFactory;
+import com.orangeforms.common.flow.vo.FlowWorkOrderVo;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -19,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 工作流工单表数据操作服务类。
@@ -34,6 +41,8 @@ public class FlowWorkOrderServiceImpl extends BaseService<FlowWorkOrder, Long> i
     private FlowWorkOrderMapper flowWorkOrderMapper;
     @Autowired
     private IdGeneratorWrapper idGenerator;
+    @Autowired
+    private FlowCustomExtFactory flowCustomExtFactory;
 
     /**
      * 返回当前Service的主表Mapper对象。
@@ -143,5 +152,37 @@ public class FlowWorkOrderServiceImpl extends BaseService<FlowWorkOrder, Long> i
         LambdaQueryWrapper<FlowWorkOrder> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FlowWorkOrder::getProcessInstanceId, processInstanceId);
         flowWorkOrderMapper.update(flowWorkOrder, queryWrapper);
+    }
+
+    @Override
+    public boolean hasDataPermOnFlowWorkOrder(String processInstanceId) {
+        // 开启数据权限，并进行验证。
+        boolean originalFlag = GlobalThreadLocal.setDataFilter(true);
+        int count;
+        try {
+            FlowWorkOrder filter = new FlowWorkOrder();
+            filter.setProcessInstanceId(processInstanceId);
+            count = flowWorkOrderMapper.selectCount(new QueryWrapper<>(filter));
+        } finally {
+            // 恢复之前的数据权限标记
+            GlobalThreadLocal.setDataFilter(originalFlag);
+        }
+        return count > 0;
+    }
+
+    @Override
+    public void fillUserShowNameByLoginName(List<FlowWorkOrderVo> dataList) {
+        BaseFlowIdentityExtHelper identityExtHelper = flowCustomExtFactory.getFlowIdentityExtHelper();
+        Set<String> loginNameSet = dataList.stream()
+                .map(FlowWorkOrderVo::getSubmitUsername).collect(Collectors.toSet());
+        if (CollUtil.isEmpty(loginNameSet)) {
+            return;
+        }
+        Map<String, String> userNameMap = identityExtHelper.mapUserShowNameByLoginName(loginNameSet);
+        dataList.forEach(workOrder -> {
+            if (StrUtil.isNotBlank(workOrder.getSubmitUsername())) {
+                workOrder.setUserShowName(userNameMap.get(workOrder.getSubmitUsername()));
+            }
+        });
     }
 }

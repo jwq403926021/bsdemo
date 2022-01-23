@@ -402,12 +402,13 @@ public interface FlowApiService {
     BpmnModel convertToBpmnModel(String bpmnXml) throws XMLStreamException;
 
     /**
-     * 回退到上一个用户任务节点。
+     * 回退到上一个用户任务节点。如果没有指定，则回退到上一个任务。
      *
      * @param task      当前活动任务。
+     * @param targetKey 指定回退到的任务标识。如果为null，则回退到上一个任务。
      * @param forReject true表示驳回，false为撤回。
      * @param reason    驳回或者撤销的原因。
      * @return 回退结果。
      */
-    CallResult backToLastRuntimeTask(Task task, boolean forReject, String reason);
+    CallResult backToRuntimeTask(Task task, String targetKey, boolean forReject, String reason);
 }

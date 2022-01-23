@@ -213,9 +213,19 @@ public class OnlineOperationHelper {
             List<List<ColumnData>> relationDataList = new LinkedList<>();
             relationDataMap.put(relation, relationDataList);
             OnlineTable slaveTable = relation.getSlaveTable();
-            JSONArray slaveObjectArray = slaveData.getJSONArray(key);
-            for (int i = 0; i < slaveObjectArray.size(); i++) {
-                JSONObject slaveObject = slaveObjectArray.getJSONObject(i);
+            if (relation.getRelationType().equals(RelationType.ONE_TO_MANY)) {
+                JSONArray slaveObjectArray = slaveData.getJSONArray(key);
+                for (int i = 0; i < slaveObjectArray.size(); i++) {
+                    JSONObject slaveObject = slaveObjectArray.getJSONObject(i);
+                    ResponseResult<List<ColumnData>> slaveColumnDataListResult =
+                            this.buildTableData(slaveTable, slaveObject, false, relation.getSlaveColumnId());
+                    if (!slaveColumnDataListResult.isSuccess()) {
+                        return ResponseResult.errorFrom(slaveColumnDataListResult);
+                    }
+                    relationDataList.add(slaveColumnDataListResult.getData());
+                }
+            } else if (relation.getRelationType().equals(RelationType.ONE_TO_ONE)) {
+                JSONObject slaveObject = slaveData.getJSONObject(key);
                 ResponseResult<List<ColumnData>> slaveColumnDataListResult =
                         this.buildTableData(slaveTable, slaveObject, false, relation.getSlaveColumnId());
                 if (!slaveColumnDataListResult.isSuccess()) {

@@ -54,8 +54,8 @@ public class FlowEntry {
     /**
      * 最新发布时间。
      */
-    @TableField(value = "lastest_publish_time")
-    private Date lastestPublishTime;
+    @TableField(value = "latest_publish_time")
+    private Date latestPublishTime;
 
     /**
      * 流程状态。

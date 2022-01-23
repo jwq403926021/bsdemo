@@ -13,7 +13,7 @@ public class FlowCustomExtFactory {
 
     private BaseFlowIdentityExtHelper flowIdentityExtHelper;
 
-    private BaseDataSyncExtHelper dataSyncExtHelper = new BaseDataSyncExtHelper();
+    private BaseBusinessDataExtHelper businessDataExtHelper = new BaseBusinessDataExtHelper();
 
     /**
      * 获取业务模块自行实现的用户身份相关的扩展帮助实现类。
@@ -34,11 +34,11 @@ public class FlowCustomExtFactory {
     }
 
     /**
-     * 获取流程结束后数据同步的帮助实现类。
+     * 获取有关业务数据的扩展帮助实现类。
      *
-     * @return 流程结束后数据同步的帮助实现类。
+     * @return 有关业务数据的扩展帮助实现类。
      */
-    public BaseDataSyncExtHelper getDataSyncExtHelper() {
-        return dataSyncExtHelper;
+    public BaseBusinessDataExtHelper getBusinessDataExtHelper() {
+        return businessDataExtHelper;
     }
 }

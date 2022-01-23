@@ -1,7 +1,6 @@
 package com.orangeforms.webadmin.upms.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.*;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.webadmin.upms.service.*;
 import com.orangeforms.webadmin.upms.dao.*;

@@ -3,7 +3,6 @@ package com.orangeforms.common.flow.controller;
 import io.swagger.annotations.Api;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -15,8 +14,10 @@ import com.orangeforms.common.core.util.MyPageUtil;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
 import com.orangeforms.common.flow.constant.FlowConstant;
 import com.orangeforms.common.flow.constant.FlowTaskStatus;
+import com.orangeforms.common.flow.model.constant.FlowMessageType;
 import com.orangeforms.common.flow.model.*;
 import com.orangeforms.common.flow.service.*;
+import com.orangeforms.common.flow.util.FlowCustomExtFactory;
 import com.orangeforms.common.flow.util.FlowOperationHelper;
 import com.orangeforms.common.flow.vo.FlowTaskCommentVo;
 import com.orangeforms.common.flow.vo.FlowTaskVo;
@@ -29,6 +30,7 @@ import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,8 @@ public class FlowOperationController {
     private FlowMessageService flowMessageService;
     @Autowired
     private FlowOperationHelper flowOperationHelper;
+    @Autowired
+    private FlowCustomExtFactory flowCustomExtFactory;
 
     /**
      * 根据指定流程的主版本，发起一个流程实例。
@@ -199,10 +203,6 @@ public class FlowOperationController {
             return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
         }
         FlowTaskComment taskComment = taskCommentList.get(0);
-        if (ObjectUtil.notEqual(taskComment.getCreateUserId(), TokenData.takeFromRequest().getUserId())) {
-            errorMessage = "数据验证失败，当前流程发起人与当前用户不匹配！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
-        }
         HistoricTaskInstance task = flowApiService.getHistoricTaskInstance(processInstanceId, taskComment.getTaskId());
         if (StrUtil.isBlank(task.getFormKey())) {
             errorMessage = "数据验证失败，指定任务的formKey属性不存在，请重新修改流程图！";
@@ -211,6 +211,59 @@ public class FlowOperationController {
         TaskInfoVo taskInfo = JSON.parseObject(task.getFormKey(), TaskInfoVo.class);
         taskInfo.setTaskKey(task.getTaskDefinitionKey());
         return ResponseResult.success(taskInfo);
+    }
+
+    /**
+     * 根据消息Id，获取流程Id关联的业务数据。
+     * NOTE：白名单接口。
+     *
+     * @param messageId 抄送消息Id。
+     * @param snapshot  是否获取抄送或传阅时任务的业务快照数据。如果为true，后续任务导致的业务数据修改，将不会返回给前端。
+     * @return 抄送消息关联的流程实例业务数据。
+     */
+    @DisableDataFilter
+    @GetMapping("/viewCopyBusinessData")
+    public ResponseResult<JSONObject> viewCopyBusinessData(
+            @RequestParam Long messageId, @RequestParam(required = false) Boolean snapshot) {
+        String errorMessage;
+        // 验证流程任务的合法性。
+        FlowMessage flowMessage = flowMessageService.getById(messageId);
+        if (flowMessage == null) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+        }
+        if (flowMessage.getMessageType() != FlowMessageType.COPY_TYPE) {
+            errorMessage = "数据验证失败，当前消息不是抄送类型消息！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        if (flowMessage.getOnlineFormData() == null || flowMessage.getOnlineFormData()) {
+            errorMessage = "数据验证失败，当前消息为在线表单数据，不能通过该接口获取！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        if (!flowMessageService.isCandidateIdentityOnMessage(messageId)) {
+            errorMessage = "数据验证失败，当前用户没有权限访问该消息！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        JSONObject businessObject = null;
+        if (snapshot != null && snapshot) {
+            if (StrUtil.isNotBlank(flowMessage.getBusinessDataShot())) {
+                businessObject = JSON.parseObject(flowMessage.getBusinessDataShot());
+            }
+            return ResponseResult.success(businessObject);
+        }
+        ProcessInstance instance = flowApiService.getProcessInstance(flowMessage.getProcessInstanceId());
+        // 如果业务主数据为空，则直接返回。
+        if (StrUtil.isBlank(instance.getBusinessKey())) {
+            errorMessage = "数据验证失败，当前消息为所属流程实例没有包含业务主键Id！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        String businessData = flowCustomExtFactory.getBusinessDataExtHelper().getBusinessData(
+                flowMessage.getProcessDefinitionKey(), flowMessage.getProcessInstanceId(), instance.getBusinessKey());
+        if (StrUtil.isNotBlank(businessData)) {
+            businessObject = JSON.parseObject(businessData);
+        }
+        // 将当前消息更新为已读
+        flowMessageService.readCopyTask(messageId);
+        return ResponseResult.success(businessObject);
     }
 
     /**
@@ -293,6 +346,34 @@ public class FlowOperationController {
     }
 
     /**
+     * 主动驳回当前的待办任务到开始节点，只用当前待办任务的指派人或者候选者才能完成该操作。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @param taskId            待办任务Id。
+     * @param comment           驳回备注。
+     * @return 操作应答结果。
+     */
+    @PostMapping("/rejectToStartUserTask")
+    public ResponseResult<Void> rejectToStartUserTask(
+            @MyRequestBody(required = true) String processInstanceId,
+            @MyRequestBody(required = true) String taskId,
+            @MyRequestBody(required = true) String comment) {
+        String errorMessage;
+        ResponseResult<Task> taskResult =
+                flowOperationHelper.verifySubmitAndGetTask(processInstanceId, taskId, null);
+        if (!taskResult.isSuccess()) {
+            return ResponseResult.errorFrom(taskResult);
+        }
+        FlowTaskComment firstTaskComment = flowTaskCommentService.getFirstFlowTaskComment(processInstanceId);
+        CallResult result = flowApiService.backToRuntimeTask(
+                taskResult.getData(), firstTaskComment.getTaskKey(), true, comment);
+        if (!result.isSuccess()) {
+            return ResponseResult.errorFrom(result);
+        }
+        return ResponseResult.success();
+    }
+
+    /**
      * 主动驳回当前的待办任务，只用当前待办任务的指派人或者候选者才能完成该操作。
      *
      * @param processInstanceId 流程实例Id。
@@ -311,7 +392,7 @@ public class FlowOperationController {
         if (!taskResult.isSuccess()) {
             return ResponseResult.errorFrom(taskResult);
         }
-        CallResult result = flowApiService.backToLastRuntimeTask(taskResult.getData(), true, comment);
+        CallResult result = flowApiService.backToRuntimeTask(taskResult.getData(), null, true, comment);
         if (!result.isSuccess()) {
             return ResponseResult.errorFrom(result);
         }
@@ -368,8 +449,8 @@ public class FlowOperationController {
             Task task = activeTaskList.get(0);
             task.setAssignee(TokenData.takeFromRequest().getLoginName());
         } else {
-            CallResult result = flowApiService
-                    .backToLastRuntimeTask(activeTaskList.get(0), false, comment);
+            CallResult result =
+                    flowApiService.backToRuntimeTask(activeTaskList.get(0), null, false, comment);
             if (!result.isSuccess()) {
                 return ResponseResult.errorFrom(result);
             }
@@ -432,14 +513,17 @@ public class FlowOperationController {
         //获取流程实例的历史节点(全部执行过的节点，被拒绝的任务节点将会出现多次)
         List<HistoricActivityInstance> activityInstanceList =
                 flowApiService.getHistoricActivityInstanceList(processInstanceId);
+        List<String> activityInstanceTask = activityInstanceList.stream()
+                .filter(s -> !StrUtil.equals(s.getActivityType(), "sequenceFlow"))
+                .map(HistoricActivityInstance::getActivityId).collect(Collectors.toList());
         Set<String> finishedTaskSequenceSet = new LinkedHashSet<>();
-        for (int i = 0; i < activityInstanceList.size(); i++) {
-            HistoricActivityInstance current = activityInstanceList.get(i);
-            if (i != activityInstanceList.size() - 1) {
-                HistoricActivityInstance next = activityInstanceList.get(i + 1);
-                finishedTaskSequenceSet.add(current.getActivityId() + next.getActivityId());
+        for (int i = 0; i < activityInstanceTask.size(); i++) {
+            String current = activityInstanceTask.get(i);
+            if (i != activityInstanceTask.size() - 1) {
+                String next = activityInstanceTask.get(i + 1);
+                finishedTaskSequenceSet.add(current + next);
             }
-            finishedTaskSet.add(current.getActivityId());
+            finishedTaskSet.add(current);
         }
         Set<String> finishedSequenceFlowSet = new HashSet<>();
         finishedTaskSequenceSet.forEach(s -> finishedSequenceFlowSet.add(allSequenceFlowMap.get(s)));

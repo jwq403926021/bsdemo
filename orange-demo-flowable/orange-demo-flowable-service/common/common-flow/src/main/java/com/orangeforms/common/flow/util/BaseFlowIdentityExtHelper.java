@@ -4,6 +4,7 @@ import com.orangeforms.common.flow.listener.DeptPostLeaderListener;
 import com.orangeforms.common.flow.listener.UpDeptPostLeaderListener;
 import org.flowable.engine.delegate.TaskListener;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -138,6 +139,25 @@ public interface BaseFlowIdentityExtHelper {
      */
     default Set<String> getUsernameListByDeptPostIds(Set<String> deptPostIdSet) {
         return null;
+    }
+
+    /**
+     * 当前服务是否支持数据权限。
+     *
+     * @return true表示支持，否则false。
+     */
+    default Boolean supprtDataPerm() {
+        return false;
+    }
+
+    /**
+     * 映射用户的登录名到用户的显示名。
+     *
+     * @param loginNameSet 用户登录名集合。
+     * @return 用户登录名和显示名的Map，key为登录名，value是显示名。
+     */
+    default Map<String, String> mapUserShowNameByLoginName(Set<String> loginNameSet) {
+        return new HashMap<>(1);
     }
 
     /**

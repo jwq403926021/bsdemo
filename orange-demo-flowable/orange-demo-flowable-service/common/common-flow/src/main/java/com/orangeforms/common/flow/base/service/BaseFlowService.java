@@ -1,7 +1,10 @@
 package com.orangeforms.common.flow.base.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.orangeforms.common.core.base.service.BaseService;
+import com.orangeforms.common.core.object.MyRelationParam;
+import com.orangeforms.common.core.util.MyDateUtil;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
 import com.orangeforms.common.flow.constant.FlowTaskStatus;
 import com.orangeforms.common.flow.model.FlowTaskComment;
@@ -51,12 +54,43 @@ public abstract class BaseFlowService<M, K extends Serializable> extends BaseSer
     }
 
     /**
+     * 是否支持业务数据同步。每个子类需要根据实际情况判断是否需要支持。
+     *
+     * @return true支持，否则false。
+     */
+    public boolean supportSyncBusinessData() {
+        return false;
+    }
+
+    /**
      * 在流程实例审批结束后，需要进行审批表到发布表数据同步的服务实现子类，需要实现该方法。
      *
      * @param processInstanceId 流程实例Id。
      * @param businessKey       业务主键Id。如果与实际主键值类型不同，需要在子类中自行完成类型转换。
      */
-    public void doSyncBusinessData(String processInstanceId, String businessKey) {
+    public void syncBusinessData(String processInstanceId, String businessKey) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * 获取业务详情数据。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @param businessKey       业务主键Id。如果与实际主键值类型不同，需要在子类中自行完成类型转换。
+     * @return 业务主表数据，以及关联从表数据。
+     */
+    @SuppressWarnings("unchecked")
+    public String getBusinessData(String processInstanceId, String businessKey) {
+        M data;
+        if (idFieldClass.equals(Long.class)) {
+            Long dataId = Long.valueOf(businessKey);
+            data = this.getByIdWithRelation((K) dataId, MyRelationParam.full());
+        } else if (idFieldClass.equals(Integer.class)) {
+            Integer dataId = Integer.valueOf(businessKey);
+            data = this.getByIdWithRelation((K) dataId, MyRelationParam.full());
+        } else {
+            data = this.getByIdWithRelation((K) businessKey, MyRelationParam.full());
+        }
+        return JSON.toJSONStringWithDateFormat(data, MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
     }
 }

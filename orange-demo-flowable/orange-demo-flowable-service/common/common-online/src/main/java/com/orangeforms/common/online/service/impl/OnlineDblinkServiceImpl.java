@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -129,7 +127,6 @@ public class OnlineDblinkServiceImpl extends BaseService<OnlineDblink, Long> imp
     }
 
     /**
-     * X
      * 获取指定DBLink下，指定表名的数据表对象，及其关联字段列表。
      *
      * @param dblink    数据库链接对象。

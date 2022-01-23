@@ -126,6 +126,22 @@ public class FlowIdentityExtHelper implements BaseFlowIdentityExtHelper {
         return usernameSet;
     }
 
+    @Override
+    public Boolean supprtDataPerm() {
+        return true;
+    }
+
+    @Override
+    public Map<String, String> mapUserShowNameByLoginName(Set<String> loginNameSet) {
+        if (CollUtil.isEmpty(loginNameSet)) {
+            return new HashMap<>(1);
+        }
+        Map<String, String> resultMap = new HashMap<>(loginNameSet.size());
+        List<SysUser> userList = sysUserService.getInList("loginName", loginNameSet);
+        userList.forEach(user -> resultMap.put(user.getLoginName(), user.getShowName()));
+        return resultMap;
+    }
+
     private void extractAndAppendUsernameList(Set<String> resultUsernameList, List<SysUser> userList) {
         List<String> usernameList = userList.stream().map(SysUser::getLoginName).collect(Collectors.toList());
         if (CollUtil.isNotEmpty(usernameList)) {

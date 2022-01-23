@@ -2,6 +2,7 @@ package com.orangeforms.common.flow.service;
 
 import com.orangeforms.common.core.base.service.IBaseService;
 import com.orangeforms.common.flow.model.FlowWorkOrder;
+import com.orangeforms.common.flow.vo.FlowWorkOrderVo;
 import org.flowable.engine.runtime.ProcessInstance;
 
 import java.util.*;
@@ -83,4 +84,19 @@ public interface FlowWorkOrderService extends IBaseService<FlowWorkOrder, Long> 
      * @param flowStatus        新的流程状态值。
      */
     void updateFlowStatusByProcessInstanceId(String processInstanceId, int flowStatus);
+
+    /**
+     * 是否有查看该工单的数据权限。
+     * @param processInstanceId 流程实例Id。
+     * @return 存在返回true，否则false。
+     */
+    boolean hasDataPermOnFlowWorkOrder(String processInstanceId);
+
+    /**
+     * 根据工单列表中的submitUserName，找到映射的userShowName，并会写到Vo中指定字段。
+     * 同时这也是一个如何通过插件方法，将loginName映射到showName的示例，
+     *
+     * @param dataList 工单Vo对象列表。
+     */
+    void fillUserShowNameByLoginName(List<FlowWorkOrderVo> dataList);
 }

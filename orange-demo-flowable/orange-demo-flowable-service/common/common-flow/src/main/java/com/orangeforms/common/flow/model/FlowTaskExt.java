@@ -72,4 +72,10 @@ public class FlowTaskExt {
      */
     @TableField(value = "candidate_usernames")
     private String candidateUsernames;
+
+    /**
+    * 抄送相关的数据。
+    */
+    @TableField(value = "copy_list_json")
+    private String copyListJson;
 }

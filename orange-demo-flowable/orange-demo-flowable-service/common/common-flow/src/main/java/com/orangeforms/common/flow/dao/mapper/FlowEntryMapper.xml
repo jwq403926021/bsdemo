@@ -7,7 +7,7 @@
         <result column="process_definition_key" jdbcType="VARCHAR" property="processDefinitionKey"/>
         <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
         <result column="main_entry_publish_id" jdbcType="BIGINT" property="mainEntryPublishId"/>
-        <result column="lastest_publish_time" jdbcType="TIMESTAMP" property="lastestPublishTime"/>
+        <result column="latest_publish_time" jdbcType="TIMESTAMP" property="latestPublishTime"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="bpmn_xml" jdbcType="LONGVARCHAR" property="bpmnXml"/>
         <result column="bind_form_type" jdbcType="INTEGER" property="bindFormType"/>
@@ -51,7 +51,7 @@
             process_definition_key,
             category_id,
             main_entry_publish_id,
-            lastest_publish_time,
+            latest_publish_time,
             status,
             bind_form_type,
             page_id,

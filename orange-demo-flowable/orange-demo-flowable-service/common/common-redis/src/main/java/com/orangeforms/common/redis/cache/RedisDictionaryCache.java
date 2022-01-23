@@ -29,6 +29,10 @@ import java.util.stream.Collectors;
 public class RedisDictionaryCache<K, V> implements DictionaryCache<K, V> {
 
     /**
+     * 字典数据前缀，便于Redis工具分组显示。
+     */
+    protected static final String DICT_PREFIX = "DICT-TABLE:";
+    /**
      * redisson客户端。
      */
     protected final RedissonClient redissonClient;
@@ -89,7 +93,8 @@ public class RedisDictionaryCache<K, V> implements DictionaryCache<K, V> {
             Class<V> valueClazz,
             Function<V, K> idGetter) {
         this.redissonClient = redissonClient;
-        this.dataMap = redissonClient.getMap(dictionaryName + ApplicationConstant.DICT_CACHE_NAME_SUFFIX);
+        this.dataMap = redissonClient.getMap(
+                DICT_PREFIX + dictionaryName + ApplicationConstant.DICT_CACHE_NAME_SUFFIX);
         this.lock = new ReentrantReadWriteLock();
         this.valueClazz = valueClazz;
         this.idGetter = idGetter;

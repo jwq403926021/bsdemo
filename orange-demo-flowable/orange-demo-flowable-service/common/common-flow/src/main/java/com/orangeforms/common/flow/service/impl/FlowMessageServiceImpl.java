@@ -3,26 +3,31 @@ package com.orangeforms.common.flow.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.flow.constant.FlowConstant;
+import com.orangeforms.common.flow.model.*;
+import com.orangeforms.common.flow.model.constant.FlowMessageOperationType;
 import com.orangeforms.common.flow.model.constant.FlowMessageType;
+import com.orangeforms.common.flow.dao.FlowMessageIdentityOperationMapper;
 import com.orangeforms.common.flow.dao.FlowMessageCandidateIdentityMapper;
 import com.orangeforms.common.flow.dao.FlowMessageMapper;
-import com.orangeforms.common.flow.model.FlowMessage;
-import com.orangeforms.common.flow.model.FlowMessageCandidateIdentity;
-import com.orangeforms.common.flow.model.FlowTaskExt;
-import com.orangeforms.common.flow.model.FlowWorkOrder;
 import com.orangeforms.common.flow.object.FlowTaskPostCandidateGroup;
 import com.orangeforms.common.flow.service.FlowApiService;
 import com.orangeforms.common.flow.service.FlowMessageService;
 import com.orangeforms.common.flow.service.FlowTaskExtService;
+import com.orangeforms.common.flow.util.FlowCustomExtFactory;
+import com.orangeforms.common.flow.util.BaseBusinessDataExtHelper;
+import com.orangeforms.common.flow.vo.TaskInfoVo;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +50,13 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
     @Autowired
     private FlowMessageCandidateIdentityMapper flowMessageCandidateIdentityMapper;
     @Autowired
+    private FlowMessageIdentityOperationMapper flowMessageIdentityOperationMapper;
+    @Autowired
     private FlowTaskExtService flowTaskExtService;
     @Autowired
     private FlowApiService flowApiService;
+    @Autowired
+    private FlowCustomExtFactory flowCustomExtFactory;
     @Autowired
     private IdGeneratorWrapper idGenerator;
 
@@ -111,9 +120,51 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
             FlowTaskExt flowTaskExt = flowTaskExtService.getByProcessDefinitionIdAndTaskId(
                     flowWorkOrder.getProcessDefinitionId(), task.getTaskDefinitionKey());
             if (flowTaskExt != null) {
+                // 插入与当前消息关联任务的候选人
                 this.saveMessageCandidateIdentityWithMessage(
                         flowWorkOrder.getProcessInstanceId(), flowTaskExt, flowMessage.getMessageId());
             }
+            // 插入与当前消息关联任务的指派人。
+            if (StrUtil.isNotBlank(task.getAssignee())) {
+                this.saveMessageCandidateIdentity(
+                        flowMessage.getMessageId(), FlowConstant.GROUP_TYPE_USER_VAR, task.getAssignee());
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveNewCopyMessage(Task task, JSONObject copyDataJson) {
+        ProcessInstance instance = flowApiService.getProcessInstance(task.getProcessInstanceId());
+        BaseBusinessDataExtHelper helper = flowCustomExtFactory.getBusinessDataExtHelper();
+        // 在线表单中，这个值为空。
+        String businessShotData = helper.getBusinessData(
+                instance.getProcessDefinitionKey(), instance.getProcessInstanceId(), instance.getBusinessKey());
+        FlowMessage flowMessage = new FlowMessage();
+        flowMessage.setMessageType(FlowMessageType.COPY_TYPE);
+        flowMessage.setRemindCount(0);
+        flowMessage.setProcessDefinitionId(instance.getProcessDefinitionId());
+        flowMessage.setProcessDefinitionKey(instance.getProcessDefinitionKey());
+        flowMessage.setProcessDefinitionName(instance.getProcessDefinitionName());
+        flowMessage.setProcessInstanceId(instance.getProcessInstanceId());
+        flowMessage.setProcessInstanceInitiator(instance.getStartUserId());
+        flowMessage.setTaskId(task.getId());
+        flowMessage.setTaskDefinitionKey(task.getTaskDefinitionKey());
+        flowMessage.setTaskName(task.getName());
+        flowMessage.setTaskStartTime(task.getCreateTime());
+        flowMessage.setTaskAssignee(task.getAssignee());
+        flowMessage.setTaskFinished(false);
+        flowMessage.setBusinessDataShot(businessShotData);
+        flowMessage.setOnlineFormData(businessShotData == null);
+        // 如果是在线表单，这里就保存关联的在线表单Id，便于在线表单业务数据的查找。
+        if (flowMessage.getOnlineFormData()) {
+            TaskInfoVo taskInfo = JSON.parseObject(task.getFormKey(), TaskInfoVo.class);
+            flowMessage.setBusinessDataShot(taskInfo.getFormId().toString());
+        }
+        this.saveNew(flowMessage);
+        for (Map.Entry<String, Object> entries : copyDataJson.entrySet()) {
+            this.saveMessageCandidateIdentityList(
+                    flowMessage.getMessageId(), entries.getKey(), entries.getValue().toString());
         }
     }
 
@@ -139,6 +190,59 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
 
     @Override
     public List<FlowMessage> getRemindingMessageListByUser() {
+        return flowMessageMapper.getRemindingMessageListByUser(
+                TokenData.takeFromRequest().getLoginName(), buildGroupIdSet());
+    }
+
+    @Override
+    public List<FlowMessage> getCopyMessageListByUser(Boolean read) {
+        return flowMessageMapper.getCopyMessageListByUser(
+                TokenData.takeFromRequest().getLoginName(), buildGroupIdSet(), read);
+    }
+
+    @Override
+    public boolean isCandidateIdentityOnMessage(Long messageId) {
+        LambdaQueryWrapper<FlowMessageCandidateIdentity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowMessageCandidateIdentity::getMessageId, messageId);
+        queryWrapper.in(FlowMessageCandidateIdentity::getCandidateId, buildGroupIdSet());
+        return flowMessageCandidateIdentityMapper.selectCount(queryWrapper) > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void readCopyTask(Long messageId) {
+        FlowMessageIdentityOperation operation = new FlowMessageIdentityOperation();
+        operation.setId(idGenerator.nextLongId());
+        operation.setMessageId(messageId);
+        operation.setLoginName(TokenData.takeFromRequest().getLoginName());
+        operation.setOperationType(FlowMessageOperationType.READ_FINISHED);
+        operation.setOperationTime(new Date());
+        flowMessageIdentityOperationMapper.insert(operation);
+    }
+
+    @Override
+    public int countRemindingMessageListByUser() {
+        return flowMessageMapper.countRemindingMessageListByUser(
+                TokenData.takeFromRequest().getLoginName(), buildGroupIdSet());
+    }
+
+    @Override
+    public int countCopyMessageByUser() {
+        return flowMessageMapper.countCopyMessageListByUser(
+                TokenData.takeFromRequest().getLoginName(), buildGroupIdSet());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void removeByProcessInstanceId(String processInstanceId) {
+        flowMessageCandidateIdentityMapper.deleteByProcessInstanceId(processInstanceId);
+        flowMessageIdentityOperationMapper.deleteByProcessInstanceId(processInstanceId);
+        LambdaQueryWrapper<FlowMessage> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowMessage::getProcessInstanceId, processInstanceId);
+        flowMessageMapper.delete(queryWrapper);
+    }
+
+    private Set<String> buildGroupIdSet() {
         TokenData tokenData = TokenData.takeFromRequest();
         Set<String> groupIdSet = new HashSet<>(1);
         groupIdSet.add(tokenData.getLoginName());
@@ -148,7 +252,7 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
         if (tokenData.getDeptId() != null) {
             groupIdSet.add(tokenData.getDeptId().toString());
         }
-        return flowMessageMapper.getRemindingMessageListByUser(tokenData.getLoginName(), groupIdSet);
+        return groupIdSet;
     }
 
     private void parseAndAddIdArray(Set<String> groupIdSet, String idArray) {
@@ -163,11 +267,11 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
     private void saveMessageCandidateIdentityWithMessage(
             String processInstanceId, FlowTaskExt flowTaskExt, Long messageId) {
         this.saveMessageCandidateIdentityList(
-                messageId, "username", flowTaskExt.getCandidateUsernames());
+                messageId, FlowConstant.GROUP_TYPE_USER_VAR, flowTaskExt.getCandidateUsernames());
         this.saveMessageCandidateIdentityList(
-                messageId, "role", flowTaskExt.getRoleIds());
+                messageId, FlowConstant.GROUP_TYPE_ROLE_VAR, flowTaskExt.getRoleIds());
         this.saveMessageCandidateIdentityList(
-                messageId, "dept", flowTaskExt.getDeptIds());
+                messageId, FlowConstant.GROUP_TYPE_DEPT_VAR, flowTaskExt.getDeptIds());
         if (StrUtil.equals(flowTaskExt.getGroupType(), FlowConstant.GROUP_TYPE_UP_DEPT_POST_LEADER)) {
             Object v = flowApiService.getProcessInstanceVariable(
                     processInstanceId, FlowConstant.GROUP_TYPE_UP_DEPT_POST_LEADER_VAR);
@@ -227,7 +331,7 @@ public class FlowMessageServiceImpl extends BaseService<FlowMessage, Long> imple
         FlowMessageCandidateIdentity candidateIdentity = new FlowMessageCandidateIdentity();
         candidateIdentity.setId(idGenerator.nextLongId());
         candidateIdentity.setMessageId(messageId);
-        candidateIdentity.setCandidateType(FlowConstant.GROUP_TYPE_UP_DEPT_POST_LEADER_VAR);
+        candidateIdentity.setCandidateType(candidateType);
         candidateIdentity.setCandidateId(candidateId);
         flowMessageCandidateIdentityMapper.insert(candidateIdentity);
     }

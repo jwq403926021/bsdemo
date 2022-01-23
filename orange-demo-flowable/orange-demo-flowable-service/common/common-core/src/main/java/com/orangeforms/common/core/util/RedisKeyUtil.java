@@ -14,7 +14,7 @@ public class RedisKeyUtil {
      * @return session缓存的键前缀。
      */
     public static String getSessionIdPrefix() {
-        return "SESSIONID__";
+        return "SESSIONID:";
     }
 
     /**
@@ -24,7 +24,7 @@ public class RedisKeyUtil {
      * @return session缓存的键前缀。
      */
     public static String getSessionIdPrefix(String loginName) {
-        return "SESSIONID__" + loginName + "_";
+        return "SESSIONID:" + loginName + "_";
     }
 
     /**
@@ -35,7 +35,7 @@ public class RedisKeyUtil {
      * @return session缓存的键前缀。
      */
     public static String getSessionIdPrefix(String loginName, int deviceType) {
-        return "SESSIONID__" + loginName + "_" + deviceType + "_";
+        return "SESSIONID:" + loginName + "_" + deviceType + "_";
     }
 
     /**
@@ -45,7 +45,7 @@ public class RedisKeyUtil {
      * @return 会话存储于Redis中的键值。
      */
     public static String makeSessionIdKey(String sessionId) {
-        return "SESSIONID__" + sessionId;
+        return "SESSIONID:" + sessionId;
     }
 
     /**
@@ -55,7 +55,7 @@ public class RedisKeyUtil {
      * @return 会话关联的权限数据存储于Redis中的键值。
      */
     public static String makeSessionPermIdKey(String sessionId) {
-        return "PERM__" + sessionId;
+        return "PERM:" + sessionId;
     }
 
     /**
@@ -65,7 +65,7 @@ public class RedisKeyUtil {
      * @return 会话关联的数据权限数据存储于Redis中的键值。
      */
     public static String makeSessionDataPermIdKey(String sessionId) {
-        return "DATA_PERM__" + sessionId;
+        return "DATA_PERM:" + sessionId;
     }
 
     /**
@@ -75,7 +75,7 @@ public class RedisKeyUtil {
      * @return 会话关联的数据权限数据存储于Redis中的键值。
      */
     public static String makeOnlineTableKey(Long tableId) {
-        return "ONLINE_TABLE_" + tableId;
+        return "ONLINE_TABLE:" + tableId;
     }
 
     /**

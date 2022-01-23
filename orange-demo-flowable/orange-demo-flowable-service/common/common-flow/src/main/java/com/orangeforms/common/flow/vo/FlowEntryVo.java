@@ -52,7 +52,7 @@ public class FlowEntryVo {
      * 最新发布时间。
      */
     @ApiModelProperty(value = "最新发布时间")
-    private Date lastestPublishTime;
+    private Date latestPublishTime;
 
     /**
      * 流程状态。

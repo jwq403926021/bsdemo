@@ -65,10 +65,22 @@ public class FlowTaskCommentVo {
     private String delegateAssginee;
 
     /**
+     * 自定义数据。开发者可自行扩展，推荐使用JSON格式数据。
+     */
+    @ApiModelProperty(value = "自定义数据s")
+    private String customBusinessData;
+
+    /**
      * 创建者Id。
      */
     @ApiModelProperty(value = "创建者Id")
     private Long createUserId;
+
+    /**
+     * 创建者登录名。
+     */
+    @ApiModelProperty(value = "创建者登录名")
+    private String createLoginName;
 
     /**
      * 创建者显示名。

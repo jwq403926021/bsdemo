@@ -1,6 +1,7 @@
 package com.orangeforms.common.core.base.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -45,6 +46,7 @@ import static java.util.stream.Collectors.*;
  */
 @Slf4j
 public abstract class BaseService<M, K extends Serializable> extends ServiceImpl<BaseDaoMapper<M>, M> implements IBaseService<M, K> {
+
     /**
      * 当前Service关联的主Model实体对象的Class。
      */
@@ -435,6 +437,53 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
         return mapper().selectCount(new QueryWrapper<M>().in(column, inFilterValues)) == inFilterValues.size();
     }
 
+    @Override
+    public <R> List<R> notExist(String filterField, Set<R> filterSet, boolean findFirst) {
+        List<R> notExistIdList = new LinkedList<>();
+        String columnName = this.safeMapToColumnName(filterField);
+        int start = 0;
+        int count = 1000;
+        if (filterSet.size() > count) {
+            outloop:
+            do {
+                int end = Math.min(filterSet.size(), start + count);
+                List<R> subFilterList = CollUtil.sub(filterSet, start, end);
+                QueryWrapper<M> queryWrapper = new QueryWrapper<>();
+                queryWrapper.in(columnName, subFilterList);
+                queryWrapper.select(columnName);
+                Set<Object> existIdSet = mapper().selectList(queryWrapper).stream()
+                        .map(c -> ReflectUtil.getFieldValue(c, filterField)).collect(toSet());
+                for (R filterData : subFilterList) {
+                    if (!existIdSet.contains(filterData)) {
+                        notExistIdList.add(filterData);
+                        if (findFirst) {
+                            break outloop;
+                        }
+                    }
+                }
+                if (end == filterSet.size()) {
+                    break;
+                }
+                start += count;
+            } while (true);
+        } else {
+            QueryWrapper<M> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in(columnName, filterSet);
+            queryWrapper.select(columnName);
+            Set<Object> existIdSet = mapper().selectList(queryWrapper).stream()
+                    .map(c -> ReflectUtil.getFieldValue(c, filterField)).collect(toSet());
+            for (R filterData : filterSet) {
+                if (!existIdSet.contains(filterData)) {
+                    notExistIdList.add(filterData);
+                    if (findFirst) {
+                        break;
+                    }
+                }
+            }
+        }
+        return notExistIdList;
+    }
+
     /**
      * 返回符合主键 in (idValues) 条件的所有数据。
      *
@@ -639,6 +688,23 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
 
     @SuppressWarnings("unchecked")
     @Override
+    public CallResult verifyRelatedData(M data) {
+        if (data == null) {
+            return CallResult.ok();
+        }
+        Object id = ReflectUtil.getFieldValue(data, idFieldName);
+        if (id == null) {
+            return this.verifyRelatedData(data, null);
+        }
+        M originalData = this.getById((K) id);
+        if (originalData == null) {
+            return CallResult.error("数据验证失败，源数据不存在！");
+        }
+        return this.verifyRelatedData(data, originalData);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public CallResult verifyRelatedData(List<M> dataList) {
         if (CollUtil.isEmpty(dataList)) {
             return CallResult.ok();
@@ -668,6 +734,130 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
                 if (!result.isSuccess()) {
                     return result;
                 }
+            }
+        }
+        return CallResult.ok();
+    }
+
+    @Override
+    public  <R> CallResult verifyImportForConstDict(List<M> dataList, String fieldName, Function<M, R> idGetter) {
+        if (CollUtil.isEmpty(dataList)) {
+            return CallResult.ok();
+        }
+        // 这里均为内部调用方法，因此出现任何错误均为代码BUG，所以我们会及时抛出异常。
+        Field field = ReflectUtil.getField(modelClass, fieldName);
+        if (field == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't exist.");
+        }
+        RelationConstDict relationConstDict = field.getAnnotation(RelationConstDict.class);
+        if (relationConstDict == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't have RelationConstDict.");
+        }
+        Method m = ReflectUtil.getMethodByName(relationConstDict.constantDictClass(), "isValid");
+        for (M data : dataList) {
+            R id = idGetter.apply(data);
+            if (id != null) {
+                boolean ok = ReflectUtil.invokeStatic(m, id);
+                if (!ok) {
+                    String errorMessage = String.format("数据验证失败，字段 [%s] 存在无效的常量字典值 [%s]！",
+                            relationConstDict.masterIdField(), id);
+                    return CallResult.error(errorMessage, data);
+                }
+            }
+        }
+        return CallResult.ok();
+    }
+
+    @Override
+    public <R> CallResult verifyImportForDict(List<M> dataList, String fieldName, Function<M, R> idGetter) {
+        if (CollUtil.isEmpty(dataList)) {
+            return CallResult.ok();
+        }
+        // 这里均为内部调用方法，因此出现任何错误均为代码BUG，所以我们会及时抛出异常。
+        Field field = ReflectUtil.getField(modelClass, fieldName);
+        if (field == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't exist.");
+        }
+        RelationDict relationDict = field.getAnnotation(RelationDict.class);
+        if (relationDict == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't have RelationDict.");
+        }
+        BaseService<Object, Serializable> service = ApplicationContextHolder.getBean(
+                StringUtils.uncapitalize(relationDict.slaveServiceName()));
+        Set<Object> dictIdSet = service.getAllList().stream()
+                .map(c -> ReflectUtil.getFieldValue(c, relationDict.slaveIdField())).collect(toSet());
+        for (M data : dataList) {
+            R id = idGetter.apply(data);
+            if (id != null && !dictIdSet.contains(id)) {
+                String errorMessage = String.format("数据验证失败，字段 [%s] 存在无效的字典表字典值 [%s]！",
+                        relationDict.masterIdField(), id);
+                return CallResult.error(errorMessage, data);
+            }
+        }
+        return CallResult.ok();
+    }
+
+    @Override
+    public <R> CallResult verifyImportForDatasourceDict(List<M> dataList, String fieldName, Function<M, R> idGetter) {
+        if (CollUtil.isEmpty(dataList)) {
+            return CallResult.ok();
+        }
+        // 这里均为内部调用方法，因此出现任何错误均为代码BUG，所以我们会及时抛出异常。
+        Field field = ReflectUtil.getField(modelClass, fieldName);
+        if (field == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't exist.");
+        }
+        RelationDict relationDict = field.getAnnotation(RelationDict.class);
+        if (relationDict == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't have RelationDict.");
+        }
+        // 验证数据源字典Id，由于被依赖的数据表，可能包含大量业务数据，因此还是分批做存在性比对更为高效。
+        Set<R> idSet = dataList.stream()
+                .filter(c -> idGetter.apply(c) != null).map(idGetter).collect(toSet());
+        if (CollUtil.isNotEmpty(idSet)) {
+            BaseService<Object, Serializable> slaveService = ApplicationContextHolder.getBean(
+                    StringUtils.uncapitalize(relationDict.slaveServiceName()));
+            List<R> notExistIdList = slaveService.notExist(relationDict.slaveIdField(), idSet, true);
+            if (CollUtil.isNotEmpty(notExistIdList)) {
+                R notExistId = notExistIdList.get(0);
+                String errorMessage = String.format("数据验证失败，字段 [%s] 存在无效的数据源表字典值 [%s]！",
+                        relationDict.masterIdField(), notExistId);
+                M data = dataList.stream()
+                        .filter(c -> ObjectUtil.equals(idGetter.apply(c), notExistId)).findFirst().orElse(null);
+                return CallResult.error(errorMessage, data);
+            }
+        }
+        return CallResult.ok();
+    }
+
+    @Override
+    public <R> CallResult verifyImportForOneToOneRelation(List<M> dataList, String fieldName, Function<M, R> idGetter) {
+        if (CollUtil.isEmpty(dataList)) {
+            return CallResult.ok();
+        }
+        // 这里均为内部调用方法，因此出现任何错误均为代码BUG，所以我们会及时抛出异常。
+        Field field = ReflectUtil.getField(modelClass, fieldName);
+        if (field == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't exist.");
+        }
+        RelationOneToOne relationOneToOne = field.getAnnotation(RelationOneToOne.class);
+        if (relationOneToOne == null) {
+            throw new MyRuntimeException("FieldName [" + fieldName + "] doesn't have RelationOneToOne.");
+        }
+        // 验证一对一关联Id，由于被依赖的数据表，可能包含大量业务数据，因此还是分批做存在性比对更为高效。
+        Set<R> idSet = dataList.stream()
+                .filter(c -> idGetter.apply(c) != null).map(idGetter).collect(toSet());
+        if (CollUtil.isNotEmpty(idSet)) {
+            BaseService<Object, Serializable> slaveService = ApplicationContextHolder.getBean(
+                    StringUtils.uncapitalize(relationOneToOne.slaveServiceName()));
+            List<R> notExistIdList = slaveService.notExist(relationOneToOne.slaveIdField(), idSet, true);
+            if (CollUtil.isNotEmpty(notExistIdList)) {
+                R notExistId = notExistIdList.get(0);
+                String errorMessage = String.format("数据验证失败，字段 [%s] 存在无效的一对一关联值 [%s]！",
+                        relationOneToOne.masterIdField(), notExistId);
+                M data = dataList.stream()
+                        .filter(c -> ObjectUtil.equals(idGetter.apply(c), notExistId)).findFirst().orElse(null);
+                return CallResult.error(errorMessage, data);
             }
         }
         return CallResult.ok();
@@ -1585,6 +1775,7 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
         RelationConstDict relationConstDict = f.getAnnotation(RelationConstDict.class);
         if (relationConstDict != null) {
             RelationStruct relationStruct = new RelationStruct();
+            relationStruct.relationConstDict = relationConstDict;
             relationStruct.relationField = f;
             relationStruct.masterIdField = ReflectUtil.getField(modelClass, relationConstDict.masterIdField());
             Field dictMapField = ReflectUtil.getField(relationConstDict.constantDictClass(), "DICT_MAP");
@@ -1806,6 +1997,7 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
         private BaseService<Object, Serializable> service;
         private BaseDaoMapper<Object> manyToManyMapper;
         private Map<Object, String> dictMap;
+        private RelationConstDict relationConstDict;
         private RelationDict relationDict;
         private RelationOneToOne relationOneToOne;
         private RelationOneToMany relationOneToMany;

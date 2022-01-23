@@ -29,11 +29,13 @@ import com.orangeforms.common.online.service.OnlineOperationService;
 import com.orangeforms.common.online.service.OnlineTableService;
 import com.orangeforms.common.online.util.OnlineOperationHelper;
 import com.orangeforms.common.flow.online.service.FlowOnlineOperationService;
+import com.orangeforms.common.flow.constant.FlowConstant;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
-import com.orangeforms.common.flow.util.FlowOperationHelper;
 import com.orangeforms.common.flow.constant.FlowTaskStatus;
+import com.orangeforms.common.flow.util.FlowOperationHelper;
 import com.orangeforms.common.flow.dto.FlowTaskCommentDto;
 import com.orangeforms.common.flow.exception.FlowOperationException;
+import com.orangeforms.common.flow.model.constant.FlowMessageType;
 import com.orangeforms.common.flow.model.*;
 import com.orangeforms.common.flow.service.*;
 import com.orangeforms.common.flow.vo.TaskInfoVo;
@@ -73,6 +75,8 @@ public class FlowOnlineOperationController {
     @Autowired
     private FlowWorkOrderService flowWorkOrderService;
     @Autowired
+    private FlowMessageService flowMessageService;
+    @Autowired
     private OnlineFormService onlineFormService;
     @Autowired
     private OnlinePageService onlinePageService;
@@ -92,6 +96,7 @@ public class FlowOnlineOperationController {
      * @param taskVariableData     流程任务变量数据。
      * @param masterData           流程审批相关的主表数据。
      * @param slaveData            流程审批相关的多个从表数据。
+     * @param copyData             传阅数据，格式为type和id，type的值参考FlowConstant中的常量值。
      * @return 应答结果对象。
      */
     @DisableDataFilter
@@ -101,7 +106,8 @@ public class FlowOnlineOperationController {
             @MyRequestBody(required = true) FlowTaskCommentDto flowTaskCommentDto,
             @MyRequestBody JSONObject taskVariableData,
             @MyRequestBody(required = true) JSONObject masterData,
-            @MyRequestBody JSONObject slaveData) {
+            @MyRequestBody JSONObject slaveData,
+            @MyRequestBody JSONObject copyData) {
         String errorMessage;
         // 1. 验证流程数据的合法性。
         ResponseResult<FlowEntry> flowEntryResult = flowOperationHelper.verifyAndGetFlowEntry(processDefinitionKey);
@@ -132,6 +138,13 @@ public class FlowOnlineOperationController {
                 onlineOperationHelper.buildTableData(masterTable, masterData, false, null);
         if (!columnDataListResult.isSuccess()) {
             return ResponseResult.errorFrom(columnDataListResult);
+        }
+        // 这里把传阅数据放到任务变量中，是为了避免给流程数据操作方法增加额外的方法调用参数。
+        if (MapUtil.isNotEmpty(copyData)) {
+            if (taskVariableData == null) {
+                taskVariableData = new JSONObject();
+            }
+            taskVariableData.put(FlowConstant.COPY_DATA_KEY, copyData);
         }
         FlowTaskComment flowTaskComment = BeanUtil.copyProperties(flowTaskCommentDto, FlowTaskComment.class);
         // 5. 保存在线表单提交的数据，同时启动流程和自动完成第一个用户任务。
@@ -170,6 +183,7 @@ public class FlowOnlineOperationController {
      * @param taskVariableData   流程任务变量数据。
      * @param masterData         流程审批相关的主表数据。
      * @param slaveData          流程审批相关的多个从表数据。
+     * @param copyData           传阅数据，格式为type和id，type的值参考FlowConstant中的常量值。
      * @return 应答结果对象。
      */
     @DisableDataFilter
@@ -180,7 +194,8 @@ public class FlowOnlineOperationController {
             @MyRequestBody(required = true) FlowTaskCommentDto flowTaskCommentDto,
             @MyRequestBody JSONObject taskVariableData,
             @MyRequestBody JSONObject masterData,
-            @MyRequestBody JSONObject slaveData) {
+            @MyRequestBody JSONObject slaveData,
+            @MyRequestBody JSONObject copyData) {
         String errorMessage;
         // 验证流程任务的合法性。
         Task task = flowApiService.getProcessInstanceActiveTask(processInstanceId, taskId);
@@ -203,6 +218,13 @@ public class FlowOnlineOperationController {
         Long datasourceId = datasource.getDatasourceId();
         ProcessInstance instance = flowApiService.getProcessInstance(processInstanceId);
         String dataId = instance.getBusinessKey();
+        // 这里把传阅数据放到任务变量中，是为了避免给流程数据操作方法增加额外的方法调用参数。
+        if (MapUtil.isNotEmpty(copyData)) {
+            if (taskVariableData == null) {
+                taskVariableData = new JSONObject();
+            }
+            taskVariableData.put(FlowConstant.COPY_DATA_KEY, copyData);
+        }
         FlowTaskComment flowTaskComment = BeanUtil.copyProperties(flowTaskCommentDto, FlowTaskComment.class);
         if (StrUtil.isBlank(dataId)) {
             return this.submitNewTask(processInstanceId, taskId,
@@ -286,8 +308,10 @@ public class FlowOnlineOperationController {
         String loginName = TokenData.takeFromRequest().getLoginName();
         if (StrUtil.isBlank(taskId)) {
             if (!StrUtil.equals(loginName, instance.getStartUserId())) {
-                errorMessage = "数据验证失败，指定历史流程的发起人与当前用户不匹配！";
-                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                if (!flowWorkOrderService.hasDataPermOnFlowWorkOrder(processInstanceId)) {
+                    errorMessage = "数据验证失败，指定历史流程的发起人与当前用户不匹配，或者没有查看该工单详情的数据权限！";
+                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                }
             }
         } else {
             HistoricTaskInstance taskInstance = flowApiService.getHistoricTaskInstance(processInstanceId, taskId);
@@ -296,8 +320,10 @@ public class FlowOnlineOperationController {
                 return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
             }
             if (!StrUtil.equals(loginName, taskInstance.getAssignee())) {
-                errorMessage = "数据验证失败，历史任务的指派人与当前用户不匹配！";
-                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                if (!flowWorkOrderService.hasDataPermOnFlowWorkOrder(processInstanceId)) {
+                    errorMessage = "数据验证失败，历史任务的指派人与当前用户不匹配，或者没有查看该工单详情的数据权限！";
+                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                }
             }
         }
         if (StrUtil.isBlank(instance.getBusinessKey())) {
@@ -324,6 +350,59 @@ public class FlowOnlineOperationController {
     }
 
     /**
+     * 根据消息Id，获取流程Id关联的业务数据。
+     * NOTE：白名单接口。
+     *
+     * @param messageId 抄送消息Id。
+     * @return 抄送消息关联的流程实例业务数据。
+     */
+    @DisableDataFilter
+    @GetMapping("/viewCopyBusinessData")
+    public ResponseResult<JSONObject> viewCopyBusinessData(@RequestParam Long messageId) {
+        String errorMessage;
+        // 验证流程任务的合法性。
+        FlowMessage flowMessage = flowMessageService.getById(messageId);
+        if (flowMessage == null) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+        }
+        if (flowMessage.getMessageType() != FlowMessageType.COPY_TYPE) {
+            errorMessage = "数据验证失败，当前消息不是抄送类型消息！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        if (flowMessage.getOnlineFormData() == null || !flowMessage.getOnlineFormData()) {
+            errorMessage = "数据验证失败，当前消息为静态路由表单数据，不能通过该接口获取！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        if (!flowMessageService.isCandidateIdentityOnMessage(messageId)) {
+            errorMessage = "数据验证失败，当前用户没有权限访问该消息！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        ProcessInstance instance = flowApiService.getProcessInstance(flowMessage.getProcessInstanceId());
+        // 如果业务主数据为空，则直接返回。
+        if (StrUtil.isBlank(instance.getBusinessKey())) {
+            errorMessage = "数据验证失败，当前消息为所属流程实例没有包含业务主键Id！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        Long formId = Long.valueOf(flowMessage.getBusinessDataShot());
+        // 验证在线表单及其关联数据源的合法性。
+        ResponseResult<OnlineDatasource> datasourceResult = this.verifyAndGetOnlineDatasource(formId);
+        if (!datasourceResult.isSuccess()) {
+            return ResponseResult.errorFrom(datasourceResult);
+        }
+        OnlineDatasource datasource = datasourceResult.getData();
+        ResponseResult<List<OnlineDatasourceRelation>> relationListResult =
+                onlineOperationHelper.verifyAndGetRelationList(datasource.getDatasourceId(), null);
+        if (!relationListResult.isSuccess()) {
+            return ResponseResult.errorFrom(relationListResult);
+        }
+        JSONObject jsonData = this.buildUserTaskData(
+                instance.getBusinessKey(), datasource.getMasterTable(), relationListResult.getData());
+        // 将当前消息更新为已读
+        flowMessageService.readCopyTask(messageId);
+        return ResponseResult.success(jsonData);
+    }
+
+    /**
      * 工作流工单列表。
      *
      * @param processDefinitionKey   流程标识名。
@@ -344,9 +423,13 @@ public class FlowOnlineOperationController {
         MyOrderParam orderParam = new MyOrderParam();
         orderParam.add(new MyOrderParam.OrderInfo("workOrderId", false, null));
         String orderBy = MyOrderParam.buildOrderBy(orderParam, FlowWorkOrder.class);
-        List<FlowWorkOrder> flowWorkOrderList = flowWorkOrderService.getFlowWorkOrderList(flowWorkOrderFilter, orderBy);
+        List<FlowWorkOrder> flowWorkOrderList =
+                flowWorkOrderService.getFlowWorkOrderList(flowWorkOrderFilter, orderBy);
         MyPageData<FlowWorkOrderVo> resultData =
                 MyPageUtil.makeResponseData(flowWorkOrderList, FlowWorkOrder.INSTANCE);
+        // 根据工单的提交用户名获取用户的显示名称，便于前端显示。
+        // 同时这也是一个如何通过插件方法，将loginName映射到showName的示例，
+        flowWorkOrderService.fillUserShowNameByLoginName(resultData.getDataList());
         // 工单自身的查询中可以受到数据权限的过滤，但是工单集成业务数据时，则无需再对业务数据进行数据权限过滤了。
         GlobalThreadLocal.setDataFilter(false);
         ResponseResult<Void> responseResult = this.makeWorkOrderTaskInfo(resultData.getDataList());

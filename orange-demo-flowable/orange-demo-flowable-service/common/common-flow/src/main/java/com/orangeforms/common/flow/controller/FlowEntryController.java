@@ -18,8 +18,10 @@ import com.orangeforms.common.core.util.MyCommonUtil;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.util.MyPageUtil;
 import com.orangeforms.common.core.validator.UpdateGroup;
+import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.flow.object.FlowTaskMultiSignAssign;
 import com.orangeforms.common.flow.constant.FlowTaskType;
+import com.orangeforms.common.flow.constant.FlowConstant;
 import com.orangeforms.common.flow.dto.*;
 import com.orangeforms.common.flow.model.*;
 import com.orangeforms.common.flow.model.constant.FlowEntryStatus;
@@ -371,6 +373,10 @@ public class FlowEntryController {
             if (deptPostList != null) {
                 flowTaskExt.setDeptPostListJson(JSON.toJSONString(deptPostList));
             }
+            List<JSONObject> copyList = this.buildCopyListExtensionElement(extensionMap);
+            if (copyList != null) {
+                flowTaskExt.setCopyListJson(JSON.toJSONString(copyList));
+            }
             JSONObject candidateGroupObject = this.buildUserCandidateGroupsExtensionElement(extensionMap);
             if (candidateGroupObject != null) {
                 String type = candidateGroupObject.getString("type");
@@ -568,6 +574,37 @@ public class FlowEntryController {
                 deptPostJsonData.put("deptPostId", deptPostId);
             }
             resultList.add(deptPostJsonData);
+        }
+        return resultList;
+    }
+
+    private List<JSONObject> buildCopyListExtensionElement(Map<String, List<ExtensionElement>> extensionMap) {
+        List<ExtensionElement> copyElements =
+                this.getMyExtensionElementList(extensionMap, "copyItemList", "copyItem");
+        if (CollUtil.isEmpty(copyElements)) {
+            return null;
+        }
+        List<JSONObject> resultList = new LinkedList<>();
+        for (ExtensionElement e : copyElements) {
+            JSONObject copyJsonData = new JSONObject();
+            String type = e.getAttributeValue(null, "type");
+            copyJsonData.put("type", type);
+            if (!StrUtil.equalsAny(type, FlowConstant.GROUP_TYPE_DEPT_POST_LEADER_VAR,
+                    FlowConstant.GROUP_TYPE_UP_DEPT_POST_LEADER_VAR,
+                    FlowConstant.GROUP_TYPE_USER_VAR,
+                    FlowConstant.GROUP_TYPE_ROLE_VAR,
+                    FlowConstant.GROUP_TYPE_DEPT_VAR,
+                    FlowConstant.GROUP_TYPE_DEPT_POST_VAR,
+                    FlowConstant.GROUP_TYPE_ALL_DEPT_POST_VAR,
+                    FlowConstant.GROUP_TYPE_SELF_DEPT_POST_VAR,
+                    FlowConstant.GROUP_TYPE_UP_DEPT_POST_VAR)) {
+                throw new MyRuntimeException("Invalid TYPE [" + type + " ] for CopyItenList Extension!");
+            }
+            String id = e.getAttributeValue(null, "id");
+            if (StrUtil.isNotBlank(id)) {
+                copyJsonData.put("id", id);
+            }
+            resultList.add(copyJsonData);
         }
         return resultList;
     }

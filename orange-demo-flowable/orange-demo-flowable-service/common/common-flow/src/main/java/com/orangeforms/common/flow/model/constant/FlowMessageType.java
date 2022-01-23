@@ -16,9 +16,15 @@ public final class FlowMessageType {
      */
     public static final int REMIND_TYPE = 0;
 
+    /**
+     * 抄送消息。
+     */
+    public static final int COPY_TYPE = 1;
+
     private static final Map<Object, String> DICT_MAP = new HashMap<>(2);
     static {
         DICT_MAP.put(REMIND_TYPE, "催办消息");
+        DICT_MAP.put(COPY_TYPE, "抄送消息");
     }
 
     /**

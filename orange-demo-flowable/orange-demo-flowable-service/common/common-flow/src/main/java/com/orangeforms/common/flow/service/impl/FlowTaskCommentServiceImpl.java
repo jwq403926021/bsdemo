@@ -55,6 +55,7 @@ public class FlowTaskCommentServiceImpl extends BaseService<FlowTaskComment, Lon
         flowTaskComment.setId(idGenerator.nextLongId());
         TokenData tokenData = TokenData.takeFromRequest();
         flowTaskComment.setCreateUserId(tokenData.getUserId());
+        flowTaskComment.setCreateLoginName(tokenData.getLoginName());
         flowTaskComment.setCreateUsername(tokenData.getShowName());
         flowTaskComment.setCreateTime(new Date());
         flowTaskCommentMapper.insert(flowTaskComment);
@@ -69,8 +70,8 @@ public class FlowTaskCommentServiceImpl extends BaseService<FlowTaskComment, Lon
      */
     @Override
     public List<FlowTaskComment> getFlowTaskCommentList(String processInstanceId) {
-        LambdaQueryWrapper<FlowTaskComment> queryWrapper =
-                new LambdaQueryWrapper<FlowTaskComment>().eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
+        LambdaQueryWrapper<FlowTaskComment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
         queryWrapper.orderByAsc(FlowTaskComment::getId);
         return flowTaskCommentMapper.selectList(queryWrapper);
     }
@@ -85,9 +86,28 @@ public class FlowTaskCommentServiceImpl extends BaseService<FlowTaskComment, Lon
 
     @Override
     public FlowTaskComment getLatestFlowTaskComment(String processInstanceId) {
-        LambdaQueryWrapper<FlowTaskComment> queryWrapper =
-                new LambdaQueryWrapper<FlowTaskComment>().eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
+        LambdaQueryWrapper<FlowTaskComment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
         queryWrapper.orderByDesc(FlowTaskComment::getId);
+        IPage<FlowTaskComment> pageData = flowTaskCommentMapper.selectPage(new Page<>(1, 1), queryWrapper);
+        return CollUtil.isEmpty(pageData.getRecords()) ? null : pageData.getRecords().get(0);
+    }
+
+    @Override
+    public FlowTaskComment getLatestFlowTaskComment(String processInstanceId, String taskDefinitionKey) {
+        LambdaQueryWrapper<FlowTaskComment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
+        queryWrapper.eq(FlowTaskComment::getTaskKey, taskDefinitionKey);
+        queryWrapper.orderByDesc(FlowTaskComment::getId);
+        IPage<FlowTaskComment> pageData = flowTaskCommentMapper.selectPage(new Page<>(1, 1), queryWrapper);
+        return CollUtil.isEmpty(pageData.getRecords()) ? null : pageData.getRecords().get(0);
+    }
+
+    @Override
+    public FlowTaskComment getFirstFlowTaskComment(String processInstanceId) {
+        LambdaQueryWrapper<FlowTaskComment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FlowTaskComment::getProcessInstanceId, processInstanceId);
+        queryWrapper.orderByAsc(FlowTaskComment::getId);
         IPage<FlowTaskComment> pageData = flowTaskCommentMapper.selectPage(new Page<>(1, 1), queryWrapper);
         return CollUtil.isEmpty(pageData.getRecords()) ? null : pageData.getRecords().get(0);
     }

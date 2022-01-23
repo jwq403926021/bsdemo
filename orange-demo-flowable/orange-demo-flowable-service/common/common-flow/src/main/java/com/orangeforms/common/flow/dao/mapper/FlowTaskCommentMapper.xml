@@ -9,8 +9,10 @@
         <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
         <result column="approval_type" jdbcType="VARCHAR" property="approvalType"/>
         <result column="delegate_assignee" jdbcType="VARCHAR" property="delegateAssginee"/>
+        <result column="custom_business_data" jdbcType="LONGVARCHAR" property="customBusinessData"/>
         <result column="comment" jdbcType="VARCHAR" property="comment"/>
         <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="create_login_name" jdbcType="VARCHAR" property="createLoginName"/>
         <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>

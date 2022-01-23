@@ -42,7 +42,7 @@ public interface OnlineDblinkMapper extends BaseDaoMapper<OnlineDblink> {
         + "WHERE "
         + "    table_schema = (SELECT database()) "
         + "    <if test=\"prefix != null and prefix != ''\">"
-        + "        AND table_name like '${prefix}%'"
+        + "        AND table_name LIKE '${prefix}%'"
         + "    </if>"
         + "</script>")
     List<Map<String, Object>> getTableListWithPrefix(@Param("prefix") String prefix);
@@ -59,7 +59,9 @@ public interface OnlineDblinkMapper extends BaseDaoMapper<OnlineDblink> {
             "  create_time createTime \n" +
             "FROM \n" +
             "  information_schema.tables \n" +
-            "WHERE table_schema = (SELECT database()) AND table_name = #{tableName}")
+            "WHERE \n" +
+            "  table_schema = (SELECT database()) \n" +
+            "  AND table_name = #{tableName}")
     Map<String, Object> getTableByName(@Param("tableName") String tableName);
 
     /**
@@ -80,9 +82,13 @@ public interface OnlineDblinkMapper extends BaseDaoMapper<OnlineDblink> {
             "  CHARACTER_MAXIMUM_LENGTH stringPrecision, \n" +
             "  numeric_precision numericPrecision, \n" +
             "  COLUMN_DEFAULT columnDefault \n" +
-            "FROM information_schema.columns \n" +
-            "WHERE table_name = #{tableName} \n" +
-            "  AND table_schema = (SELECT database()) ORDER BY ordinal_position")
+            "FROM \n" +
+            "  information_schema.columns \n" +
+            "WHERE \n" +
+            "  table_name = #{tableName} \n" +
+            "  AND table_schema = (SELECT database()) \n" +
+            "ORDER BY \n" +
+            "  ordinal_position")
     List<Map<String, Object>> getTableColumnList(@Param("tableName") String tableName);
 
     /**
@@ -104,10 +110,12 @@ public interface OnlineDblinkMapper extends BaseDaoMapper<OnlineDblink> {
             "  CHARACTER_MAXIMUM_LENGTH stringPrecision, \n" +
             "  numeric_precision numericPrecision, \n" +
             "  COLUMN_DEFAULT columnDefault \n" +
-            "FROM information_schema.columns \n" +
-            "WHERE table_name = #{tableName} \n" +
+            "FROM \n" +
+            "  information_schema.columns \n" +
+            "WHERE \n" +
+            "  table_name = #{tableName} \n" +
             "  AND column_name = #{columnName} \n" +
-            "  AND table_schema = (SELECT database()) ORDER BY ordinal_position")
+            "  AND table_schema = (SELECT database())")
     Map<String, Object> getTableColumnByName(
             @Param("tableName") String tableName, @Param("columnName") String columnName);
 }

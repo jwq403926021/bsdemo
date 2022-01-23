@@ -66,20 +66,34 @@ public class MyModelUtil {
     private static final Map<String, Tuple2<String, Integer>> CACHED_COLUMNINFO_MAP = new ConcurrentHashMap<>();
 
     /**
-     * 将bean的数据列表转换为Map列表。
+     * 将Bean的数据列表转换为Map列表。
      *
-     * @param dataList bean数据列表。
-     * @param <T>      bean对象类型。
+     * @param dataList Bean数据列表。
+     * @param <T>      Bean对象类型。
      * @return 转换后的Map列表。
      */
     public static <T> List<Map<String, Object>> beanToMapList(List<T> dataList) {
         if (CollectionUtils.isEmpty(dataList)) {
-            return null;
+            return new LinkedList<>();
         }
         List<Map<String, Object>> resultList = new LinkedList<>();
-        for (T data : dataList) {
-            resultList.add(BeanUtil.beanToMap(data));
+        dataList.forEach(data -> resultList.add(BeanUtil.beanToMap(data)));
+        return resultList;
+    }
+
+    /**
+     * 将Map的数据列表转换为Bean列表。
+     *
+     * @param dataList Map数据列表。
+     * @param <T>      Bean对象类型。
+     * @return 转换后的Bean对象列表。
+     */
+    public static <T> List<T> mapToBeanList(List<Map<String, Object>> dataList, Class<T> clazz) {
+        if (CollectionUtils.isEmpty(dataList)) {
+            return new LinkedList<>();
         }
+        List<T> resultList = new LinkedList<>();
+        dataList.forEach(data -> resultList.add(BeanUtil.toBeanIgnoreError(data, clazz)));
         return resultList;
     }
 
@@ -742,10 +756,10 @@ public class MyModelUtil {
      * @return 当前数据对象中，所有上传文件字段中，文件名属性的集合。
      */
     public static <M> Set<String> extractDownloadFileName(List<M> dataList, Class<M> clazz) {
-        if (CollectionUtils.isEmpty(dataList)) {
-            return null;
-        }
         Set<String> resultSet = new HashSet<>();
+        if (CollectionUtils.isEmpty(dataList)) {
+            return resultSet;
+        }
         dataList.forEach(data -> resultSet.addAll(extractDownloadFileName(data, clazz)));
         return resultSet;
     }

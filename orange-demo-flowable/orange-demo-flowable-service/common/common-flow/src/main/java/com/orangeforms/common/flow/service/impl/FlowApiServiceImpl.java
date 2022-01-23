@@ -15,6 +15,7 @@ import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.core.object.MyPageData;
 import com.orangeforms.common.core.object.MyPageParam;
 import com.orangeforms.common.core.object.TokenData;
+import com.orangeforms.common.core.util.MyDateUtil;
 import com.orangeforms.common.flow.constant.FlowConstant;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
 import com.orangeforms.common.flow.constant.FlowTaskStatus;
@@ -38,6 +39,7 @@ import org.flowable.engine.history.*;
 import org.flowable.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
 import org.flowable.engine.impl.bpmn.behavior.SequentialMultiInstanceBehavior;
 import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.runtime.ChangeActivityStateBuilder;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -90,9 +92,14 @@ public class FlowApiServiceImpl implements FlowApiService {
     @Override
     public ProcessInstance start(String processDefinitionId, Object dataId) {
         String loginName = TokenData.takeFromRequest().getLoginName();
-        Map<String, Object> variableMap = new HashMap<>(4);
-        variableMap.put(FlowConstant.PROC_INSTANCE_INITIATOR_VAR, loginName);
-        variableMap.put(FlowConstant.PROC_INSTANCE_START_USER_NAME_VAR, loginName);
+        Map<String, Object> variableMap;
+        if (dataId == null) {
+            variableMap = new HashMap<>(2);
+            variableMap.put(FlowConstant.PROC_INSTANCE_INITIATOR_VAR, loginName);
+            variableMap.put(FlowConstant.PROC_INSTANCE_START_USER_NAME_VAR, loginName);
+        } else {
+            variableMap = this.initAndGetProcessInstanceVariables(processDefinitionId);
+        }
         Authentication.setAuthenticatedUserId(loginName);
         String businessKey = dataId == null ? null : dataId.toString();
         return runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variableMap);
@@ -133,8 +140,8 @@ public class FlowApiServiceImpl implements FlowApiService {
         FlowTaskComment flowTaskComment = new FlowTaskComment();
         flowTaskComment.fillWith(startTaskInstance);
         flowTaskComment.setApprovalType(FlowApprovalType.MULTI_CONSIGN);
-        String loginName = TokenData.takeFromRequest().getLoginName();
-        String comment = String.format("用户 [%s] 加签 [%s]。", loginName, newAssignees);
+        String showName = TokenData.takeFromRequest().getLoginName();
+        String comment = String.format("用户 [%s] 加签 [%s]。", showName, newAssignees);
         flowTaskComment.setComment(comment);
         flowTaskCommentService.saveNew(flowTaskComment);
         return;
@@ -143,6 +150,10 @@ public class FlowApiServiceImpl implements FlowApiService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void completeTask(Task task, FlowTaskComment flowTaskComment, JSONObject taskVariableData) {
+        JSONObject passCopyData = null;
+        if (taskVariableData != null) {
+            passCopyData = (JSONObject) taskVariableData.remove(FlowConstant.COPY_DATA_KEY);
+        }
         if (flowTaskComment != null) {
             // 这里处理多实例会签逻辑。
             if (flowTaskComment.getApprovalType().equals(FlowApprovalType.MULTI_SIGN)) {
@@ -183,11 +194,78 @@ public class FlowApiServiceImpl implements FlowApiService {
             taskVariableData.put(FlowConstant.OPERATION_TYPE_VAR, flowTaskComment.getApprovalType());
             flowTaskComment.fillWith(task);
             flowTaskCommentService.saveNew(flowTaskComment);
-            taskService.complete(task.getId(), taskVariableData);
-        } else {
-            taskService.complete(task.getId(), taskVariableData);
         }
+        // 判断当前完成执行的任务，是否存在抄送设置。
+        Object copyData = runtimeService.getVariable(
+                task.getProcessInstanceId(), FlowConstant.COPY_DATA_MAP_PREFIX + task.getTaskDefinitionKey());
+        if (copyData != null || passCopyData != null) {
+            JSONObject copyDataJson = this.mergeCopyData(copyData, passCopyData);
+            flowMessageService.saveNewCopyMessage(task, copyDataJson);
+        }
+        taskService.complete(task.getId(), taskVariableData);
         flowMessageService.updateFinishedStatusByTaskId(task.getId());
+    }
+
+    private JSONObject mergeCopyData(Object copyData, JSONObject passCopyData) {
+        TokenData tokenData = TokenData.takeFromRequest();
+        // passCopyData是传阅数据，copyData是抄送数据。
+        JSONObject resultCopyDataJson = passCopyData;
+        if (resultCopyDataJson == null) {
+            resultCopyDataJson = JSON.parseObject(copyData.toString());
+        } else if (copyData != null) {
+            JSONObject copyDataJson = JSON.parseObject(copyData.toString());
+            for (Map.Entry<String, Object> entry : copyDataJson.entrySet()) {
+                String value = resultCopyDataJson.getString(entry.getKey());
+                if (value == null) {
+                    resultCopyDataJson.put(entry.getKey(), entry.getValue());
+                } else {
+                    List<String> list1 = StrUtil.split(value, ",");
+                    List<String> list2 = StrUtil.split(entry.getValue().toString(), ",");
+                    Set<String> valueSet = new HashSet<>(list1);
+                    valueSet.addAll(list2);
+                    resultCopyDataJson.put(entry.getKey(), StrUtil.join(",", valueSet));
+                }
+            }
+        }
+        BaseFlowIdentityExtHelper flowIdentityExtHelper = flowCustomExtFactory.getFlowIdentityExtHelper();
+        for (Map.Entry<String, Object> entry : resultCopyDataJson.entrySet()) {
+            String type = entry.getKey();
+            switch (type) {
+                case FlowConstant.GROUP_TYPE_UP_DEPT_POST_LEADER_VAR:
+                    Object upLeaderDeptPostId =
+                            flowIdentityExtHelper.getUpLeaderDeptPostId(tokenData.getDeptId());
+                    entry.setValue(upLeaderDeptPostId);
+                    break;
+                case FlowConstant.GROUP_TYPE_DEPT_POST_LEADER_VAR:
+                    Object leaderDeptPostId =
+                            flowIdentityExtHelper.getLeaderDeptPostId(tokenData.getDeptId());
+                    entry.setValue(leaderDeptPostId);
+                    break;
+                case FlowConstant.GROUP_TYPE_SELF_DEPT_POST_VAR:
+                    Set<String> selfPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), ","));
+                    Map<String, String> deptPostIdMap =
+                            flowIdentityExtHelper.getDeptPostIdMap(tokenData.getDeptId(), selfPostIdSet);
+                    String deptPostIdValues = "";
+                    if (deptPostIdMap != null) {
+                        deptPostIdValues = StrUtil.join(",", deptPostIdMap.values());
+                    }
+                    entry.setValue(deptPostIdValues);
+                    break;
+                case FlowConstant.GROUP_TYPE_UP_DEPT_POST_VAR:
+                    Set<String> upPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), ","));
+                    Map<String, String> upDeptPostIdMap =
+                            flowIdentityExtHelper.getUpDeptPostIdMap(tokenData.getDeptId(), upPostIdSet);
+                    String upDeptPostIdValues = "";
+                    if (upDeptPostIdMap != null) {
+                        upDeptPostIdValues = StrUtil.join(",", upDeptPostIdMap.values());
+                    }
+                    entry.setValue(upDeptPostIdValues);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return resultCopyDataJson;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -257,7 +335,25 @@ public class FlowApiServiceImpl implements FlowApiService {
                     this.buildPostCandidateGroupData(flowIdentityExtHelper, flowTaskExtList);
             variableMap.putAll(postGroupDataMap);
         }
+        this.buildCopyData(flowTaskExtList, variableMap);
         return variableMap;
+    }
+
+    private void buildCopyData(List<FlowTaskExt> flowTaskExtList, Map<String, Object> variableMap) {
+        TokenData tokenData = TokenData.takeFromRequest();
+        for (FlowTaskExt flowTaskExt : flowTaskExtList) {
+            if (StrUtil.isBlank(flowTaskExt.getCopyListJson())) {
+                continue;
+            }
+            List<JSONObject> copyDataList = JSON.parseArray(flowTaskExt.getCopyListJson(), JSONObject.class);
+            Map<String, Object> copyDataMap = new HashMap<>(copyDataList.size());
+            for (JSONObject copyData : copyDataList) {
+                String type = copyData.getString("type");
+                String id = copyData.getString("id");
+                copyDataMap.put(type, id == null ? "" : id);
+            }
+            variableMap.put(FlowConstant.COPY_DATA_MAP_PREFIX + flowTaskExt.getTaskId(), JSON.toJSONString(copyDataMap));
+        }
     }
 
     private Map<String, Object> buildPostCandidateGroupData(
@@ -534,11 +630,11 @@ public class FlowApiServiceImpl implements FlowApiService {
             query.startedBy(startUser);
         }
         if (StrUtil.isNotBlank(beginDate)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
             query.startedAfter(sdf.parse(beginDate));
         }
         if (StrUtil.isNotBlank(endDate)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
             query.startedBefore(sdf.parse(endDate));
         }
         if (finishedOnly) {
@@ -565,11 +661,11 @@ public class FlowApiServiceImpl implements FlowApiService {
             query.processDefinitionName(processDefinitionName);
         }
         if (StrUtil.isNotBlank(beginDate)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
             query.taskCompletedAfter(sdf.parse(beginDate));
         }
         if (StrUtil.isNotBlank(endDate)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
             query.taskCompletedBefore(sdf.parse(endDate));
         }
         query.orderByHistoricTaskInstanceEndTime().desc();
@@ -664,6 +760,7 @@ public class FlowApiServiceImpl implements FlowApiService {
     public void deleteProcessInstance(String processInstanceId) {
         historyService.deleteHistoricProcessInstance(processInstanceId);
         flowWorkOrderService.removeByProcessInstanceId(processInstanceId);
+        flowMessageService.removeByProcessInstanceId(processInstanceId);
     }
 
     @Override
@@ -681,80 +778,95 @@ public class FlowApiServiceImpl implements FlowApiService {
 
     @Transactional
     @Override
-    public CallResult backToLastRuntimeTask(Task task, boolean forReject, String reason) {
+    public CallResult backToRuntimeTask(Task task, String targetKey, boolean forReject, String reason) {
         String errorMessage;
         ProcessDefinition processDefinition = this.getProcessDefinitionById(task.getProcessDefinitionId());
         Collection<FlowElement> allElements = this.getProcessAllElements(processDefinition.getId());
         FlowElement source = null;
+        // 获取跳转的节点元素
+        FlowElement target = null;
         for (FlowElement flowElement : allElements) {
             if (flowElement.getId().equals(task.getTaskDefinitionKey())) {
                 source = flowElement;
-                break;
+                if (StrUtil.isBlank(targetKey)) {
+                    break;
+                }
+            }
+            if (StrUtil.isNotBlank(targetKey)) {
+                if (flowElement.getId().equals(targetKey)) {
+                    target = flowElement;
+                }
             }
         }
-        List<UserTask> parentUserTaskList =
-                this.getParentUserTaskList(source, null, null);
-        if (CollUtil.isEmpty(parentUserTaskList)) {
-            errorMessage = "数据验证失败，当前节点为初始任务节点，不能驳回！";
+        if (targetKey != null && target == null) {
+            errorMessage = "数据验证失败，被驳回的指定目标节点不存在！";
             return CallResult.error(errorMessage);
         }
-        // 获取活动ID, 即节点Key
-        Set<String> parentUserTaskKeySet = new HashSet<>();
-        parentUserTaskList.forEach(item -> parentUserTaskKeySet.add(item.getId()));
-        List<HistoricActivityInstance> historicActivityIdList =
-                this.getHistoricActivityInstanceListOrderByStartTime(task.getProcessInstanceId());
-        // 数据清洗，将回滚导致的脏数据清洗掉
-        List<String> lastHistoricTaskInstanceList =
-                this.cleanHistoricTaskInstance(allElements, historicActivityIdList);
-        // 此时历史任务实例为倒序，获取最后走的节点
-        List<String> targetIds = new ArrayList<>();
-        // 循环结束标识，遇到当前目标节点的次数
-        int number = 0;
-        StringBuilder parentHistoricTaskKey = new StringBuilder();
-        for (String historicTaskInstanceKey : lastHistoricTaskInstanceList) {
-            // 当会签时候会出现特殊的，连续都是同一个节点历史数据的情况，这种时候跳过
-            if (parentHistoricTaskKey.toString().equals(historicTaskInstanceKey)) {
-                continue;
+        UserTask oneUserTask = null;
+        List<String> targetIds = null;
+        if (target == null) {
+            List<UserTask> parentUserTaskList =
+                    this.getParentUserTaskList(source, null, null);
+            if (CollUtil.isEmpty(parentUserTaskList)) {
+                errorMessage = "数据验证失败，当前节点为初始任务节点，不能驳回！";
+                return CallResult.error(errorMessage);
             }
-            parentHistoricTaskKey = new StringBuilder(historicTaskInstanceKey);
-            if (historicTaskInstanceKey.equals(task.getTaskDefinitionKey())) {
-                number++;
+            // 获取活动ID, 即节点Key
+            Set<String> parentUserTaskKeySet = new HashSet<>();
+            parentUserTaskList.forEach(item -> parentUserTaskKeySet.add(item.getId()));
+            List<HistoricActivityInstance> historicActivityIdList =
+                    this.getHistoricActivityInstanceListOrderByStartTime(task.getProcessInstanceId());
+            // 数据清洗，将回滚导致的脏数据清洗掉
+            List<String> lastHistoricTaskInstanceList =
+                    this.cleanHistoricTaskInstance(allElements, historicActivityIdList);
+            // 此时历史任务实例为倒序，获取最后走的节点
+            targetIds = new ArrayList<>();
+            // 循环结束标识，遇到当前目标节点的次数
+            int number = 0;
+            StringBuilder parentHistoricTaskKey = new StringBuilder();
+            for (String historicTaskInstanceKey : lastHistoricTaskInstanceList) {
+                // 当会签时候会出现特殊的，连续都是同一个节点历史数据的情况，这种时候跳过
+                if (parentHistoricTaskKey.toString().equals(historicTaskInstanceKey)) {
+                    continue;
+                }
+                parentHistoricTaskKey = new StringBuilder(historicTaskInstanceKey);
+                if (historicTaskInstanceKey.equals(task.getTaskDefinitionKey())) {
+                    number++;
+                }
+                if (number == 2) {
+                    break;
+                }
+                // 如果当前历史节点，属于父级的节点，说明最后一次经过了这个点，需要退回这个点
+                if (parentUserTaskKeySet.contains(historicTaskInstanceKey)) {
+                    targetIds.add(historicTaskInstanceKey);
+                }
             }
-            if (number == 2) {
-                break;
-            }
-            // 如果当前历史节点，属于父级的节点，说明最后一次经过了这个点，需要退回这个点
-            if (parentUserTaskKeySet.contains(historicTaskInstanceKey)) {
-                targetIds.add(historicTaskInstanceKey);
-            }
+            // 目的获取所有需要被跳转的节点 currentIds
+            // 取其中一个父级任务，因为后续要么存在公共网关，要么就是串行公共线路
+            oneUserTask = parentUserTaskList.get(0);
         }
-        // 目的获取所有需要被跳转的节点 currentIds
-        // 取其中一个父级任务，因为后续要么存在公共网关，要么就是串行公共线路
-        UserTask oneUserTask = parentUserTaskList.get(0);
         // 获取所有正常进行的执行任务的活动节点ID，这些任务不能直接使用，需要找出其中需要撤回的任务
         List<Execution> runExecutionList =
                 runtimeService.createExecutionQuery().processInstanceId(task.getProcessInstanceId()).list();
-
-        List<String> runActivityIdList = new ArrayList<>();
-        runExecutionList.forEach(item -> {
-            if (StrUtil.isNotBlank(item.getActivityId())) {
-                runActivityIdList.add(item.getActivityId());
-            }
-        });
+        List<String> runActivityIdList = runExecutionList.stream()
+                .filter(c -> StrUtil.isNotBlank(c.getActivityId()))
+                .map(Execution::getActivityId).collect(Collectors.toList());
         // 需驳回任务列表
         List<String> currentIds = new ArrayList<>();
         // 通过父级网关的出口连线，结合 runExecutionList 比对，获取需要撤回的任务
-        List<FlowElement> currentFlowElementList =
-                this.getChildUserTaskList(oneUserTask, runActivityIdList, null, null);
+        List<FlowElement> currentFlowElementList = this.getChildUserTaskList(
+                target != null ? target : oneUserTask, runActivityIdList, null, null);
         currentFlowElementList.forEach(item -> currentIds.add(item.getId()));
-        // 规定：并行网关之前节点必须需存在唯一用户任务节点，如果出现多个任务节点，则并行网关节点默认为结束节点，原因为不考虑多对多情况
-        if (targetIds.size() > 1 && currentIds.size() > 1) {
-            errorMessage = "数据验证失败，任务出现多对多情况，无法撤回！";
-            return CallResult.error(errorMessage);
+        if (target == null) {
+            // 规定：并行网关之前节点必须需存在唯一用户任务节点，如果出现多个任务节点，则并行网关节点默认为结束节点，原因为不考虑多对多情况
+            if (targetIds.size() > 1 && currentIds.size() > 1) {
+                errorMessage = "数据验证失败，任务出现多对多情况，无法撤回！";
+                return CallResult.error(errorMessage);
+            }
         }
         AtomicReference<List<HistoricActivityInstance>> tmp = new AtomicReference<>();
         // 用于下面新增网关删除信息时使用
-        String targetTmp = String.join(",", targetIds);
+        String targetTmp = targetKey != null ? targetKey : String.join(",", targetIds);
         // currentIds 为活动ID列表
         // currentExecutionIds 为执行任务ID列表
         // 需要通过执行任务ID来设置驳回信息，活动ID不行
@@ -778,19 +890,43 @@ public class FlowApiServiceImpl implements FlowApiService {
             }
         }));
         try {
-            // 如果父级任务多于 1 个，说明当前节点不是并行节点，原因为不考虑多对多情况
-            if (targetIds.size() > 1) {
-                // 1 对 多任务跳转，currentIds 当前节点(1)，targetIds 跳转到的节点(多)
+            if (StrUtil.isNotBlank(targetKey)) {
                 runtimeService.createChangeActivityStateBuilder()
                         .processInstanceId(task.getProcessInstanceId())
-                        .moveSingleActivityIdToActivityIds(currentIds.get(0), targetIds).changeState();
-            }
-            // 如果父级任务只有一个，因此当前任务可能为网关中的任务
-            if (targetIds.size() == 1) {
-                // 1 对 1 或 多 对 1 情况，currentIds 当前要跳转的节点列表(1或多)，targetIds.get(0) 跳转到的节点(1)
-                runtimeService.createChangeActivityStateBuilder()
-                        .processInstanceId(task.getProcessInstanceId())
-                        .moveActivityIdsToSingleActivityId(currentIds, targetIds.get(0)).changeState();
+                        .moveActivityIdsToSingleActivityId(currentIds, targetKey).changeState();
+            } else {
+                // 如果父级任务多于 1 个，说明当前节点不是并行节点，原因为不考虑多对多情况
+                if (targetIds.size() > 1) {
+                    // 1 对 多任务跳转，currentIds 当前节点(1)，targetIds 跳转到的节点(多)
+                    ChangeActivityStateBuilder builder = runtimeService.createChangeActivityStateBuilder()
+                            .processInstanceId(task.getProcessInstanceId())
+                            .moveSingleActivityIdToActivityIds(currentIds.get(0), targetIds);
+                    for (String targetId : targetIds) {
+                        FlowTaskComment taskComment =
+                                flowTaskCommentService.getLatestFlowTaskComment(task.getProcessInstanceId(), targetId);
+                        // 如果驳回后的目标任务包含指定人，则直接通过变量回抄，如果没有则自动忽略该变量，不会给流程带来任何影响。
+                        String submitLoginName = taskComment.getCreateLoginName();
+                        if (StrUtil.isNotBlank(submitLoginName)) {
+                            builder.localVariable(targetId, FlowConstant.TASK_APPOINTED_ASSIGNEE_VAR, submitLoginName);
+                        }
+                    }
+                    builder.changeState();
+                }
+                // 如果父级任务只有一个，因此当前任务可能为网关中的任务
+                if (targetIds.size() == 1) {
+                    // 1 对 1 或 多 对 1 情况，currentIds 当前要跳转的节点列表(1或多)，targetIds.get(0) 跳转到的节点(1)
+                    // 如果驳回后的目标任务包含指定人，则直接通过变量回抄，如果没有则自动忽略该变量，不会给流程带来任何影响。
+                    ChangeActivityStateBuilder builder = runtimeService.createChangeActivityStateBuilder()
+                            .processInstanceId(task.getProcessInstanceId())
+                            .moveActivityIdsToSingleActivityId(currentIds, targetIds.get(0));
+                    FlowTaskComment taskComment =
+                            flowTaskCommentService.getLatestFlowTaskComment(task.getProcessInstanceId(), targetIds.get(0));
+                    String submitLoginName = taskComment.getCreateLoginName();
+                    if (StrUtil.isNotBlank(submitLoginName)) {
+                        builder.localVariable(targetIds.get(0), FlowConstant.TASK_APPOINTED_ASSIGNEE_VAR, submitLoginName);
+                    }
+                    builder.changeState();
+                }
             }
             FlowTaskComment comment = new FlowTaskComment();
             comment.setTaskId(task.getId());
@@ -1091,15 +1227,15 @@ public class FlowApiServiceImpl implements FlowApiService {
         }
         String roleIds = tokenData.getRoleIds();
         if (StrUtil.isNotBlank(tokenData.getRoleIds())) {
-            groupIdSet.addAll(Arrays.asList(StrUtil.split(roleIds, ",")));
+            groupIdSet.addAll(StrUtil.split(roleIds, ","));
         }
         String postIds = tokenData.getPostIds();
         if (StrUtil.isNotBlank(tokenData.getPostIds())) {
-            groupIdSet.addAll(Arrays.asList(StrUtil.split(postIds, ",")));
+            groupIdSet.addAll(StrUtil.split(postIds, ","));
         }
         String deptPostIds = tokenData.getDeptPostIds();
         if (StrUtil.isNotBlank(deptPostIds)) {
-            groupIdSet.addAll(Arrays.asList(StrUtil.split(deptPostIds, ",")));
+            groupIdSet.addAll(StrUtil.split(deptPostIds, ","));
         }
         if (CollUtil.isNotEmpty(groupIdSet)) {
             query.or().taskCandidateGroupIn(groupIdSet).taskCandidateOrAssigned(loginName).endOr();

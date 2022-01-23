@@ -12,6 +12,7 @@
         <result column="role_ids" jdbcType="VARCHAR" property="roleIds"/>
         <result column="dept_ids" jdbcType="VARCHAR" property="deptIds"/>
         <result column="candidate_usernames" jdbcType="VARCHAR" property="candidateUsernames"/>
+        <result column="copy_list_json" jdbcType="VARCHAR" property="copyListJson"/>
     </resultMap>
 
     <insert id="insertList">
@@ -26,7 +27,8 @@
             #{item.deptPostListJson},
             #{item.roleIds},
             #{item.deptIds},
-            #{item.candidateUsernames})
+            #{item.candidateUsernames},
+            #{item.copyListJson})
         </foreach>
     </insert>
 </mapper>

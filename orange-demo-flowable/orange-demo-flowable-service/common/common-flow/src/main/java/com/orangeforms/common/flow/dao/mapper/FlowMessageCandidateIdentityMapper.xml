@@ -7,4 +7,10 @@
         <result column="candidate_type" jdbcType="VARCHAR" property="candidateType"/>
         <result column="candidate_id" jdbcType="VARCHAR" property="candidateId"/>
     </resultMap>
+
+    <delete id="deleteByProcessInstanceId">
+        DELETE FROM zz_flow_message_candicate_identity a
+        WHERE EXISTS (SELECT * FROM zz_flow_message b
+            WHERE a.message_id = b.message_id AND b.process_instance_id = #{processInstanceId})
+    </delete>
 </mapper>

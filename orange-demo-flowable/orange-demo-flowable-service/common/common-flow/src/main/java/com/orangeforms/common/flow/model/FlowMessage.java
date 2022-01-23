@@ -124,6 +124,12 @@ public class FlowMessage {
     private String businessDataShot;
 
     /**
+     * 是否为在线表单消息数据。
+     */
+    @TableField(value = "online_form_data")
+    private Boolean onlineFormData;
+
+    /**
      * 更新时间。
      */
     @TableField(value = "update_time")

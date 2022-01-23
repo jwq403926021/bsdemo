@@ -62,15 +62,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String url = request.getRequestURI();
+        String token = request.getHeader(appConfig.getTokenHeaderKey());
+        boolean noLoginUrl = false;
         // 如果接口方法标记NoAuthInterface注解，可以直接跳过Token鉴权验证，这里主要为了测试接口方便
         if (handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
             if (hm.getBeanType().getAnnotation(NoAuthInterface.class) != null
                     || hm.getMethodAnnotation(NoAuthInterface.class) != null) {
-                return true;
+                noLoginUrl = true;
+                if (StringUtils.isBlank(token)) {
+                    return true;
+                }
             }
         }
-        String token = request.getHeader(appConfig.getTokenHeaderKey());
         if (StringUtils.isBlank(token)) {
             token = request.getParameter(appConfig.getTokenHeaderKey());
         }
@@ -95,8 +99,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
         TokenData.addToRequest(tokenData);
-        // 如果url在权限资源白名单中，则不需要进行鉴权操作
-        if (Boolean.FALSE.equals(tokenData.getIsAdmin()) && !whitelistPermSet.contains(url)) {
+        // 如果url是免登陆、白名单中，则不需要进行鉴权操作
+        if (!noLoginUrl && Boolean.FALSE.equals(tokenData.getIsAdmin()) && !whitelistPermSet.contains(url)) {
             RSet<String> permSet = redissonClient.getSet(RedisKeyUtil.makeSessionPermIdKey(sessionId));
             if (!permSet.contains(url)) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);

@@ -7,6 +7,7 @@ import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.orangeforms.common.core.annotation.MyDataSourceResolver;
+import com.orangeforms.common.core.config.CoreProperties;
 import com.orangeforms.common.core.constant.AggregationType;
 import com.orangeforms.common.core.exception.NoDataPermException;
 import com.orangeforms.common.core.constant.GlobalDeletedFlag;
@@ -16,6 +17,7 @@ import com.orangeforms.common.core.object.Tuple2;
 import com.orangeforms.common.core.util.RedisKeyUtil;
 import com.orangeforms.common.datafilter.constant.DataPermRuleType;
 import com.orangeforms.common.datafilter.config.DataFilterProperties;
+import com.orangeforms.common.online.config.OnlineProperties;
 import com.orangeforms.common.online.model.constant.*;
 import com.orangeforms.common.online.service.OnlineVirtualColumnService;
 import com.orangeforms.common.online.util.OnlineOperationHelper;
@@ -68,6 +70,8 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
     private RedissonClient redissonClient;
     @Autowired
     private DataFilterProperties dataFilterProperties;
+    @Autowired
+    private OnlineProperties onlineProperties;
 
     /**
      * 聚合返回数据中，聚合键的常量字段名。
@@ -108,7 +112,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             List<ColumnData> columnDataList,
             Map<OnlineDatasourceRelation, List<List<ColumnData>>> slaveDataListMap) {
         Object id = this.saveNew(masterTable, columnDataList);
-        // 迭代多个一对多关联。
+        // 迭代多个关联列表。
         for (Map.Entry<OnlineDatasourceRelation, List<List<ColumnData>>> entry : slaveDataListMap.entrySet()) {
             Long masterColumnId = entry.getKey().getMasterColumnId();
             ColumnData masterColumnData = null;
@@ -119,9 +123,9 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                 }
             }
             Long slaveColumnId = entry.getKey().getSlaveColumnId();
-            // 迭代一对多关联中的数据集合
+            // 迭代关联中的数据集合
             for (List<ColumnData> slaveColumnDataList : entry.getValue()) {
-                // 迭代一对多关联记录的字段列表。
+                // 迭代关联记录的字段列表。
                 for (ColumnData slaveColumnData : slaveColumnDataList) {
                     if (slaveColumnData.getColumn().getColumnId().equals(slaveColumnId)) {
                         slaveColumnData.setColumnValue(masterColumnData.getColumnValue());
@@ -642,6 +646,10 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
 
     private String makeSelectFields(OnlineTable slaveTable, String relationVariableName) {
         StringBuilder selectFieldBuider = new StringBuilder(512);
+        String intString = "SIGNED";
+        if (onlineProperties.getDatabaseType().equals(CoreProperties.POSTGRESQL_TYPE)) {
+            intString = "INT8";
+        }
         // 拼装主表的select fields字段。
         for (OnlineColumn column : slaveTable.getColumnMap().values()) {
             OnlineColumn deletedColumn = slaveTable.getLogicDeleteColumn();
@@ -654,7 +662,20 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                         .append(slaveTable.getTableName())
                         .append(".")
                         .append(column.getColumnName())
-                        .append(" AS SIGNED) ")
+                        .append(" AS ")
+                        .append(intString)
+                        .append(") ")
+                        .append(relationVariableName)
+                        .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
+                        .append(column.getColumnName())
+                        .append(",");
+            } else if ("date".equals(column.getColumnType())) {
+                selectFieldBuider
+                        .append("CAST(")
+                        .append(slaveTable.getTableName())
+                        .append(".")
+                        .append(column.getColumnName())
+                        .append(" AS CHAR(10)) ")
                         .append(relationVariableName)
                         .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                         .append(column.getColumnName())
@@ -676,6 +697,10 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
 
     private String makeSelectFields(OnlineTable masterTable, List<OnlineDatasourceRelation> relationList) {
         StringBuilder selectFieldBuider = new StringBuilder(512);
+        String intString = "SIGNED";
+        if (onlineProperties.getDatabaseType().equals(CoreProperties.POSTGRESQL_TYPE)) {
+            intString = "INT8";
+        }
         if (CollUtil.isNotEmpty(relationList)) {
             for (OnlineDatasourceRelation relation : relationList) {
                 OnlineTable slaveTable = relation.getSlaveTable();
@@ -691,7 +716,20 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                                 .append(slaveTable.getTableName())
                                 .append(".")
                                 .append(column.getColumnName())
-                                .append(" AS SIGNED) ")
+                                .append(" AS ")
+                                .append(intString)
+                                .append(") ")
+                                .append(relation.getVariableName())
+                                .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
+                                .append(column.getColumnName())
+                                .append(",");
+                    } else if ("date".equals(column.getColumnType())) {
+                        selectFieldBuider
+                                .append("CAST(")
+                                .append(slaveTable.getTableName())
+                                .append(".")
+                                .append(column.getColumnName())
+                                .append(" AS CHAR(10)) ")
                                 .append(relation.getVariableName())
                                 .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                                 .append(column.getColumnName())
@@ -722,7 +760,18 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                         .append(masterTable.getTableName())
                         .append(".")
                         .append(column.getColumnName())
-                        .append(" AS SIGNED) ")
+                        .append(" AS ")
+                        .append(intString)
+                        .append(") ")
+                        .append(column.getColumnName())
+                        .append(",");
+            } else if ("date".equals(column.getColumnType())) {
+                selectFieldBuider
+                        .append("CAST(")
+                        .append(masterTable.getTableName())
+                        .append(".")
+                        .append(column.getColumnName())
+                        .append(" AS CHAR(10)) ")
                         .append(column.getColumnName())
                         .append(",");
             } else {

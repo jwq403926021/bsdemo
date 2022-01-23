@@ -44,4 +44,21 @@ public interface FlowTaskCommentService extends IBaseService<FlowTaskComment, Lo
      * @return 查询结果。
      */
     FlowTaskComment getLatestFlowTaskComment(String processInstanceId);
+
+    /**
+     * 获取指定流程实例和任务定义标识的最后一条审批任务。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @param taskDefinitionKey 任务定义标识。
+     * @return 查询结果。
+     */
+    FlowTaskComment getLatestFlowTaskComment(String processInstanceId, String taskDefinitionKey);
+
+    /**
+     * 获取指定流程实例的第一条审批任务。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @return 查询结果。
+     */
+    FlowTaskComment getFirstFlowTaskComment(String processInstanceId);
 }

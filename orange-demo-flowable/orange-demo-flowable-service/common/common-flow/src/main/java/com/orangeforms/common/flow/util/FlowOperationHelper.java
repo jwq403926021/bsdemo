@@ -22,6 +22,7 @@ import com.orangeforms.common.flow.model.FlowWorkOrder;
 import com.orangeforms.common.flow.model.constant.FlowEntryStatus;
 import com.orangeforms.common.flow.service.FlowApiService;
 import com.orangeforms.common.flow.service.FlowEntryService;
+import com.orangeforms.common.flow.service.FlowWorkOrderService;
 import com.orangeforms.common.flow.vo.FlowWorkOrderVo;
 import com.orangeforms.common.flow.vo.TaskInfoVo;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,10 @@ public class FlowOperationHelper {
     private FlowEntryService flowEntryService;
     @Autowired
     private FlowApiService flowApiService;
+    @Autowired
+    private FlowWorkOrderService flowWorkOrderService;
+    @Autowired
+    private FlowCustomExtFactory flowCustomExtFactory;
 
     /**
      * 验证并获取流程对象。
@@ -157,8 +162,10 @@ public class FlowOperationHelper {
         String loginName = TokenData.takeFromRequest().getLoginName();
         if (StrUtil.isBlank(taskId)) {
             if (!StrUtil.equals(loginName, instance.getStartUserId())) {
-                errorMessage = "数据验证失败，指定历史流程的发起人与当前用户不匹配！";
-                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                if (!flowWorkOrderService.hasDataPermOnFlowWorkOrder(processInstanceId)) {
+                    errorMessage = "数据验证失败，指定历史流程的发起人与当前用户不匹配，或者没有查看该工单详情的数据权限！";
+                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                }
             }
         } else {
             HistoricTaskInstance taskInstance = flowApiService.getHistoricTaskInstance(processInstanceId, taskId);
@@ -167,8 +174,10 @@ public class FlowOperationHelper {
                 return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
             }
             if (!StrUtil.equals(loginName, taskInstance.getAssignee())) {
-                errorMessage = "数据验证失败，历史任务的指派人与当前用户不匹配！";
-                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                if (!flowWorkOrderService.hasDataPermOnFlowWorkOrder(processInstanceId)) {
+                    errorMessage = "数据验证失败，历史任务的指派人与当前用户不匹配，或者没有查看该工单详情的数据权限！";
+                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                }
             }
         }
         return ResponseResult.success(instance);
@@ -269,7 +278,13 @@ public class FlowOperationHelper {
             filter = new FlowWorkOrder();
         }
         filter.setProcessDefinitionKey(processDefinitionKey);
-        filter.setCreateUserId(TokenData.takeFromRequest().getUserId());
+        // 下面的方法会帮助构建工单的数据权限过滤条件，和业务希望相比，如果当前系统没有支持数据权限，
+        // 用户则只能看到自己发起的工单，否则按照数据权限过滤。然而需要特殊处理的是，如果用户的数据
+        // 权限中，没有包含能看自己，这里也需要自动给加上。
+        BaseFlowIdentityExtHelper flowIdentityExtHelper = flowCustomExtFactory.getFlowIdentityExtHelper();
+        if (!flowIdentityExtHelper.supprtDataPerm()) {
+            filter.setCreateUserId(TokenData.takeFromRequest().getUserId());
+        }
         return filter;
     }
 

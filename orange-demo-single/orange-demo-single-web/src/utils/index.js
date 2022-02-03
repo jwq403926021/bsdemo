@@ -116,7 +116,7 @@ export function findTreeNodeObjectPath (treeRoot, id, idKey = 'id', childKey = '
 }
 
 export function findTreeNodePath (treeRoot, id, idKey = 'id', childKey = 'children') {
-  return (this.findTreeNodeObjectPath(treeRoot, id, idKey, childKey) || []).map(item => item[idKey]);
+  return (findTreeNodeObjectPath(treeRoot, id, idKey, childKey) || []).map(item => item[idKey]);
 }
 
 /**

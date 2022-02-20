@@ -14,7 +14,7 @@
         <div class="header-menu" style="flex-grow: 1;">
           <el-dropdown trigger="click" style="margin-right: 10px;" @command="handleMessage">
             <el-badge is-dot :hidden="(getMessageCount || {}).totalCount == null || (getMessageCount || {}).totalCount <= 0"
-              style="height: 180x; line-height: 18px; cursor: pointer;">
+              style="height: 18px; line-height: 18px; cursor: pointer;">
               <i class="el-icon-bell" style="font-size: 18px;" />
             </el-badge>
             <el-dropdown-menu slot="dropdown" style="min-width: 130px;">

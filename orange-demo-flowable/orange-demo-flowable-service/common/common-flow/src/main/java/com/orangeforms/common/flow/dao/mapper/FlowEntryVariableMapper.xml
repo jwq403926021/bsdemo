@@ -10,7 +10,7 @@
         <result column="bind_datasource_id" jdbcType="BIGINT" property="bindDatasourceId"/>
         <result column="bind_relation_id" jdbcType="BIGINT" property="bindRelationId"/>
         <result column="bind_column_id" jdbcType="BIGINT" property="bindColumnId"/>
-        <result column="builtin" jdbcType="BIT" property="builtin"/>
+        <result column="builtin" jdbcType="BOOLEAN" property="builtin"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
 

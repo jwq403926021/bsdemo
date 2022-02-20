@@ -216,7 +216,7 @@ const SysOnlineRuleType = new DictionaryBase('验证规则类型', [
     symbol: 'MOBILE'
   },
   {
-    id: 7,
+    id: 100,
     name: '自定义验证',
     symbol: 'CUSTOM'
   }
@@ -380,6 +380,11 @@ const SysCustomWidgetOperationType = new DictionaryBase('操作类型', [
     id: 3,
     name: '导出',
     symbol: 'EXPORT'
+  },
+  {
+    id: 10,
+    name: '批量删除',
+    symbol: 'BATCH_DELETE'
   },
   {
     id: 20,

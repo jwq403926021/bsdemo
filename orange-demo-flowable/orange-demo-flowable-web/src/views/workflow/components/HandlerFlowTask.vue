@@ -8,7 +8,7 @@
       </div>
     </div>
     <el-row type="flex" justify="space-between" style="margin-bottom: 15px;">
-      <el-radio-group size="small" v-model="currentPage" style="min-width: 350px;">
+      <el-radio-group size="small" v-model="currentPage" style="min-width: 400px;">
         <el-radio-button label="formInfo">表单信息</el-radio-button>
         <el-radio-button v-if="processInstanceId == null || isRuntime || isRuntime === 'true'" label="copyInfo">抄送设置</el-radio-button>
         <el-radio-button v-if="processInstanceId != null" label="flowProcess">流程图</el-radio-button>

@@ -19,13 +19,13 @@ public class MyAggregationParam {
      * 聚合返回数据中，聚合键的常量字段名。
      * 如select groupColumn groupedKey, max(aggregationColumn) aggregatedValue。
      */
-    public static final String KEY_NAME = "groupedKey";
+    public static final String KEY_NAME = "grouped_key";
 
     /**
      * 聚合返回数据中，聚合值的常量字段名。
      * 如select groupColumn groupedKey, max(aggregationColumn) aggregatedValue。
      */
-    public static final String VALUE_NAME = "aggregatedValue";
+    public static final String VALUE_NAME = "aggregated_value";
 
     /**
      * 聚合计算是否使用数据权限进行过滤。true表示数据过滤将产生作用，否则SQL中不会包含数据过滤。

@@ -26,7 +26,7 @@ public interface SysDeptRelationMapper extends BaseDaoMapper<SysDeptRelation> {
     /**
      * 批量插入部门关联数据。
      * 由于目前版本(3.4.1)的Mybatis Plus没有提供真正的批量插入，为了保证效率需要自己实现。
-     * 目前我们仅仅给出MySQL的insert list实现作为参考，其他数据库需要自行修改。
+     * 目前我们仅仅给出MySQL和PostgresSQL的insert list实现作为参考，其他数据库需要自行修改。
      *
      * @param deptRelationList 部门关联关系数据列表。
      */

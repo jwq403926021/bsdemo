@@ -487,8 +487,10 @@
                     <el-input-number v-model="currentWidgetItem.tableInfo.optionColumnWidth" placeholder="请输入表格高度，单位px" />
                   </el-form-item>
                 </el-col>
-                <el-col :span="24" style="border-top: 1px solid #EBEEF5;">
-                  <el-table :data="currentWidgetItem.operationList" :show-header="false">
+                <el-col v-if="formConfig.formType !== this.SysOnlineFormType.WORK_ORDER"
+                  :span="24" style="border-top: 1px solid #EBEEF5;"
+                >
+                  <el-table :data="getCurrentWidgetOperationList" :show-header="false">
                     <el-table-column label="操作" width="45px">
                       <template slot-scope="scope">
                         <el-button class="table-btn delete" type="text" icon="el-icon-remove-outline"
@@ -503,7 +505,7 @@
                     </el-table-column>
                     <el-table-column label="是否启动" prop="enabled" width="70px">
                       <template slot-scope="scope">
-                        <el-switch v-model="scope.row.enabled" />
+                        <el-switch v-model="scope.row.enabled" @change="onTableOperationEnableChange(scope.row)" />
                       </template>
                     </el-table-column>
                     <el-table-column label="操作类型" prop="type" width="90px">
@@ -973,12 +975,23 @@ export default {
         });
       }).catch(e => {});
     },
+    onTableOperationEnableChange (row) {
+      let operation = findItemFromList(this.currentWidgetItem.operationList, row.type, 'type');
+      this.currentWidgetItem.operationList = this.currentWidgetItem.operationList.map(item => {
+        return (item.id === row.id) ? row : item;
+      });
+      if (operation == null) {
+        this.currentWidgetItem.operationList.unshift(row);
+      }
+    },
     onAddTableOperation (operation) {
       this.$dialog.show(operation ? '编辑操作' : '新建操作', EditWidgetTableOperation, {
-        area: '600px'
+        area: '900px',
+        offset: '100px'
       }, {
         rowData: operation,
-        formList: this.formList.filter(item => item.formId !== this.form.formId)
+        formList: this.formList.filter(item => item.formId !== this.form.formId),
+        tableList: this.getWidgetColumnTableList(this.currentWidgetItem.table)
       }).then(res => {
         if (operation == null) {
           let maxId = 0;
@@ -1383,6 +1396,30 @@ export default {
   computed: {
     getMasterTable () {
       return this.tableList[0];
+    },
+    getCurrentWidgetOperationList () {
+      if (this.currentWidgetItem == null) return [];
+      // 非内置操作
+      let otherOperation = (this.currentWidgetItem.operationList || []).filter(item => {
+        let operation = findItemFromList(defaultWidgetAttributes.table.operationList, item.type, 'type');
+        return operation == null;
+      }).map(item => {
+        return {
+          ...item
+        }
+      });
+      // 内置操作
+      let operationList = (defaultWidgetAttributes.table.operationList || []).filter(item => {
+        return this.formConfig.formType === this.SysOnlineFormType.FLOW ? item.type !== this.SysCustomWidgetOperationType.EXPORT : true;
+      }).map(item => {
+        let operation = findItemFromList(this.currentWidgetItem.operationList, item.type, 'type');
+        if (operation == null) operation = item;
+        operation.id = item.id;
+        return {
+          ...operation
+        }
+      });
+      return operationList.concat(otherOperation);
     },
     getFormParameterList () {
       if (this.getMasterTable != null) {

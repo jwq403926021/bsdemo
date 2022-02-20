@@ -42,7 +42,7 @@ spring:
 
 # feign 配置
 feign:
-  hystrix:
+  sentinel:
     enabled: true
   httpclient:
     enabled: true
@@ -66,22 +66,9 @@ feign:
     response:
       enabled: true
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          strategy: SEMAPHORE
-          thread:
-            timeoutInMilliseconds: 30000
-  shareSecurityContext: true
-
-#请求处理的超时时间
-ribbon:
-  ReadTimeout: 7000
-  ConnectTimeout: 3000
-  MaxAutoRetries: 1
-  MaxAutoRetriesNextServer: 1
+common-core:
+  # 可选值为 mysql / postgresql
+  databaseType: mysql
 
 swagger:
   # 当enabled为false的时候，则可禁用swagger。
@@ -116,8 +103,7 @@ management:
       # keys-to-sanitize:
       keys-to-sanitize: password
   server:
-    servlet:
-      context-path: "/"
+    base-path: "/"
 
 # 存储session数据的Redis，所有服务均需要，因此放到公共配置中。
 # 根据实际情况，该Redis也可以用于存储其他数据。

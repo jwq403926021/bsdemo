@@ -154,22 +154,19 @@ public class OnlineColumnController {
      * 列出符合过滤条件的字段数据列表。
      *
      * @param onlineColumnDtoFilter 过滤对象。
-     * @param orderParam            排序参数。
      * @param pageParam             分页参数。
      * @return 应答结果对象，包含查询结果集。
      */
     @PostMapping("/list")
     public ResponseResult<MyPageData<OnlineColumnVo>> list(
             @MyRequestBody OnlineColumnDto onlineColumnDtoFilter,
-            @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
         if (pageParam != null) {
             PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize());
         }
         OnlineColumn onlineColumnFilter = MyModelUtil.copyTo(onlineColumnDtoFilter, OnlineColumn.class);
-        String orderBy = MyOrderParam.buildOrderBy(orderParam, OnlineColumn.class);
         List<OnlineColumn> onlineColumnList =
-                onlineColumnService.getOnlineColumnListWithRelation(onlineColumnFilter, orderBy);
+                onlineColumnService.getOnlineColumnListWithRelation(onlineColumnFilter);
         return ResponseResult.success(MyPageUtil.makeResponseData(onlineColumnList, OnlineColumn.INSTANCE));
     }
 

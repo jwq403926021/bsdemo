@@ -8,8 +8,10 @@ import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.core.object.MyRelationParam;
+import com.orangeforms.common.core.config.CoreProperties;
 import com.orangeforms.common.core.util.RedisKeyUtil;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
+import com.orangeforms.common.online.config.OnlineProperties;
 import com.orangeforms.common.online.dao.OnlineColumnMapper;
 import com.orangeforms.common.online.dao.OnlineColumnRuleMapper;
 import com.orangeforms.common.online.model.OnlineColumn;
@@ -51,6 +53,8 @@ public class OnlineColumnServiceImpl extends BaseService<OnlineColumn, Long> imp
     private IdGeneratorWrapper idGenerator;
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private OnlineProperties onlineProperties;
 
     /**
      * 返回当前Service的主表Mapper对象。
@@ -168,13 +172,12 @@ public class OnlineColumnServiceImpl extends BaseService<OnlineColumn, Long> imp
      * 获取单表查询结果。由于没有关联数据查询，因此在仅仅获取单表数据的场景下，效率更高。
      * 如果需要同时获取关联数据，请移步(getOnlineColumnListWithRelation)方法。
      *
-     * @param filter  过滤对象。
-     * @param orderBy 排序参数。
+     * @param filter 过滤对象。
      * @return 查询结果集。
      */
     @Override
-    public List<OnlineColumn> getOnlineColumnList(OnlineColumn filter, String orderBy) {
-        return onlineColumnMapper.getOnlineColumnList(filter, orderBy);
+    public List<OnlineColumn> getOnlineColumnList(OnlineColumn filter) {
+        return onlineColumnMapper.getOnlineColumnList(filter);
     }
 
     /**
@@ -182,13 +185,12 @@ public class OnlineColumnServiceImpl extends BaseService<OnlineColumn, Long> imp
      * 该查询会涉及到一对一从表的关联过滤，或一对多从表的嵌套关联过滤，因此性能不如单表过滤。
      * 如果仅仅需要获取主表数据，请移步(getOnlineColumnList)，以便获取更好的查询性能。
      *
-     * @param filter  主表过滤对象。
-     * @param orderBy 排序参数。
+     * @param filter 主表过滤对象。
      * @return 查询结果集。
      */
     @Override
-    public List<OnlineColumn> getOnlineColumnListWithRelation(OnlineColumn filter, String orderBy) {
-        List<OnlineColumn> resultList = onlineColumnMapper.getOnlineColumnList(filter, orderBy);
+    public List<OnlineColumn> getOnlineColumnListWithRelation(OnlineColumn filter) {
+        List<OnlineColumn> resultList = onlineColumnMapper.getOnlineColumnList(filter);
         // 在缺省生成的代码中，如果查询结果resultList不是Page对象，说明没有分页，那么就很可能是数据导出接口调用了当前方法。
         // 为了避免一次性的大量数据关联，规避因此而造成的系统运行性能冲击，这里手动进行了分批次读取，开发者可按需修改该值。
         int batchSize = resultList instanceof Page ? 0 : 1000;
@@ -325,41 +327,75 @@ public class OnlineColumnServiceImpl extends BaseService<OnlineColumn, Long> imp
     }
 
     private String convertToJavaType(String columnType) {
-        if ("varchar".equals(columnType)
-                || "char".equals(columnType)
-                || "text".equals(columnType)
-                || "longtext".equals(columnType)
-                || "mediumtext".equals(columnType)
-                || "tinytext".equals(columnType)) {
-            return "String";
-        }
-        if ("int".equals(columnType)
-                || "mediumint".equals(columnType)
-                || "smallint".equals(columnType)
-                || "tinyint".equals(columnType)) {
-            return "Integer";
-        }
-        if ("bit".equals(columnType)) {
-            return "Boolean";
-        }
-        if ("bigint".equals(columnType)) {
-            return "Long";
-        }
-        if ("decimal".equals(columnType)) {
-            return "BigDecimal";
-        }
-        if ("float".equals(columnType)
-                || "double".equals(columnType)) {
-            return "Double";
-        }
-        if ("date".equals(columnType)
-                || "datetime".equals(columnType)
-                || "timestamp".equals(columnType)
-                || "time".equals(columnType)) {
-            return "Date";
-        }
-        if ("blob".equals(columnType)) {
-            return "byte[]";
+        if (onlineProperties.getDatabaseType().equals(CoreProperties.MYSQL_TYPE)) {
+            if ("varchar".equals(columnType)
+                    || "char".equals(columnType)
+                    || "text".equals(columnType)
+                    || "longtext".equals(columnType)
+                    || "mediumtext".equals(columnType)
+                    || "tinytext".equals(columnType)) {
+                return "String";
+            }
+            if ("int".equals(columnType)
+                    || "mediumint".equals(columnType)
+                    || "smallint".equals(columnType)
+                    || "tinyint".equals(columnType)) {
+                return "Integer";
+            }
+            if ("bit".equals(columnType)) {
+                return "Boolean";
+            }
+            if ("bigint".equals(columnType)) {
+                return "Long";
+            }
+            if ("decimal".equals(columnType)) {
+                return "BigDecimal";
+            }
+            if ("float".equals(columnType)
+                    || "double".equals(columnType)) {
+                return "Double";
+            }
+            if ("date".equals(columnType)
+                    || "datetime".equals(columnType)
+                    || "timestamp".equals(columnType)
+                    || "time".equals(columnType)) {
+                return "Date";
+            }
+            if ("blob".equals(columnType)) {
+                return "byte[]";
+            }
+        } else if (onlineProperties.getDatabaseType().equals(CoreProperties.POSTGRESQL_TYPE)) {
+            if ("varchar".equals(columnType)
+                    || "char".equals(columnType)
+                    || "text".equals(columnType)) {
+                return "String";
+            }
+            if ("int4".equals(columnType)
+                    || "int2".equals(columnType)
+                    || "bit".equals(columnType)) {
+                return "Integer";
+            }
+            if ("bool".equals(columnType)) {
+                return "Boolean";
+            }
+            if ("int8".equals(columnType)) {
+                return "Long";
+            }
+            if ("numeric".equals(columnType)) {
+                return "BigDecimal";
+            }
+            if ("float4".equals(columnType)
+                    || "float8".equals(columnType)) {
+                return "Double";
+            }
+            if ("date".equals(columnType)
+                    || "timestamp".equals(columnType)
+                    || "time".equals(columnType)) {
+                return "Date";
+            }
+            if ("bytea".equals(columnType)) {
+                return "byte[]";
+            }
         }
         throw new RuntimeException("Unsupported Data Type");
     }

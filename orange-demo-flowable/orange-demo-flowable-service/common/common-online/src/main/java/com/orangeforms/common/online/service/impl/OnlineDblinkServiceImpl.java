@@ -1,8 +1,11 @@
 package com.orangeforms.common.online.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.util.StrUtil;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.base.service.BaseService;
+import com.orangeforms.common.core.config.CoreProperties;
 import com.orangeforms.common.core.config.DataSourceContextHolder;
 import com.orangeforms.common.core.object.MyRelationParam;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
@@ -166,7 +169,16 @@ public class OnlineDblinkServiceImpl extends BaseService<OnlineDblink, Long> imp
             resultList.forEach(r -> {
                 SqlTableColumn sqlTableColumn =
                         BeanUtil.mapToBean(r, SqlTableColumn.class, false, null);
-                sqlTableColumn.setAutoIncrement("auto_increment".equals(sqlTableColumn.getExtra()));
+                if (onlineProperties.getDatabaseType().equals(CoreProperties.POSTGRESQL_TYPE)) {
+                    if (StrUtil.equalsAny(sqlTableColumn.getColumnType(), "char", "varchar")) {
+                        sqlTableColumn.setFullColumnType(
+                                sqlTableColumn.getColumnType() + "(" + sqlTableColumn.getStringPrecision() + ")");
+                    } else {
+                        sqlTableColumn.setFullColumnType(sqlTableColumn.getColumnType());
+                    }
+                } else if (onlineProperties.getDatabaseType().equals(CoreProperties.MYSQL_TYPE)) {
+                    sqlTableColumn.setAutoIncrement("auto_increment".equals(sqlTableColumn.getExtra()));
+                }
                 columnList.add(sqlTableColumn);
             });
             return columnList;
@@ -191,9 +203,18 @@ public class OnlineDblinkServiceImpl extends BaseService<OnlineDblink, Long> imp
             if (result == null) {
                 return null;
             }
-            SqlTableColumn sqlTableColumn =
-                    BeanUtil.mapToBean(result, SqlTableColumn.class, false, null);
-            sqlTableColumn.setAutoIncrement("auto_increment".equals(sqlTableColumn.getExtra()));
+            SqlTableColumn sqlTableColumn = BeanUtil.mapToBean(
+                    result, SqlTableColumn.class, false, CopyOptions.create().ignoreCase());
+            if (onlineProperties.getDatabaseType().equals(CoreProperties.POSTGRESQL_TYPE)) {
+                if (StrUtil.equalsAny(sqlTableColumn.getColumnType(), "char", "varchar")) {
+                    sqlTableColumn.setFullColumnType(
+                            sqlTableColumn.getColumnType() + "(" + sqlTableColumn.getStringPrecision() + ")");
+                } else {
+                    sqlTableColumn.setFullColumnType(sqlTableColumn.getColumnType());
+                }
+            } else if (onlineProperties.getDatabaseType().equals(CoreProperties.MYSQL_TYPE)) {
+                sqlTableColumn.setAutoIncrement("auto_increment".equals(sqlTableColumn.getExtra()));
+            }
             return sqlTableColumn;
         } finally {
             DataSourceContextHolder.unset(originalType);

@@ -33,27 +33,15 @@ spring:
         - Path=/admin/upms/**
         filters:
         - StripPrefix=2
-        - name: Hystrix
-          args:
-            name: default
-            fallbackUri: forward:/fallback
       - id: course-class
         uri: lb://course-class
         predicates:
         - Path=/admin/CourseClass/**
         filters:
         - StripPrefix=2
-        - name: Hystrix
-          args:
-            name: default
-            fallbackUri: forward:/fallback
       - id: stats
         uri: lb://stats
         predicates:
         - Path=/admin/stats/**
         filters:
         - StripPrefix=2
-        - name: Hystrix
-          args:
-            name: default
-            fallbackUri: forward:/fallback

@@ -44,6 +44,12 @@ public class MyDateUtil {
             DateTimeFormat.forPattern(MyDateUtil.COMMON_DATETIME_FORMAT);
 
     /**
+     * 缺省短日期时间格式化器，提前获取提升运行时效率。
+     */
+    private static final DateTimeFormatter DATETIME_SHORT_PARSE_FORMATTER =
+            DateTimeFormat.forPattern(MyDateUtil.COMMON_SHORT_DATETIME_FORMAT);
+
+    /**
      * 获取一天的开始时间的字符串格式，如2019-08-03 00:00:00.000。
      *
      * @param dateTime 待格式化的日期时间对象。
@@ -142,6 +148,16 @@ public class MyDateUtil {
      */
     public static DateTime toDateTime(String dateTimeString) {
         return DATETIME_PARSE_FORMATTER.parseDateTime(dateTimeString);
+    }
+
+    /**
+     * 将缺省格式的(不包含毫秒的)日期时间字符串解析为日期对象。
+     *
+     * @param dateTimeString 待解析的字符串。
+     * @return 解析后的日期对象。
+     */
+    public static DateTime toDateTimeWithoutMs(String dateTimeString) {
+        return DATETIME_SHORT_PARSE_FORMATTER.parseDateTime(dateTimeString);
     }
 
     /**

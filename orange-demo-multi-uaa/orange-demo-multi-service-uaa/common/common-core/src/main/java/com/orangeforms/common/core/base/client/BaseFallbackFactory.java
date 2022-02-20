@@ -2,8 +2,8 @@ package com.orangeforms.common.core.base.client;
 
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
-import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.openfeign.FallbackFactory;
 
 import java.util.*;
 

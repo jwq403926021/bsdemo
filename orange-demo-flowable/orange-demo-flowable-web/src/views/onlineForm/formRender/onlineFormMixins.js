@@ -367,7 +367,7 @@ const OnlineFormMixins = {
             }
             break;
           case this.SysOnlineRuleType.CUSTOM:
-            return { type: 'string', pattern: new RegExp(rule.data.pattern), message: rule.data.message, trigger: 'blur' };
+            return { type: 'string', pattern: new RegExp(rule.onlineRule.pattern), message: rule.data.message, trigger: 'blur' };
         }
       }
     },

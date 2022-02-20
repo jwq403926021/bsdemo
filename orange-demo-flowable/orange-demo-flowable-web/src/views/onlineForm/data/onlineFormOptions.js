@@ -133,20 +133,28 @@ const defaultWidgetAttributes = {
     titleColor: '#409EFF',
     tableColumnList: [],
     operationList: [
-      /**
-       * 暂时去掉导出操作，等支持后再开启
       {
         id: 0,
         type: SysCustomWidgetOperationType.EXPORT,
         name: '导出',
-        enabled: true,
+        enabled: false,
         builtin: true,
         rowOperation: false,
         btnType: 'primary',
         plain: true,
         formId: undefined
       },
-       */
+      {
+        id: 4,
+        type: SysCustomWidgetOperationType.BATCH_DELETE,
+        name: '批量删除',
+        enabled: false,
+        builtin: true,
+        rowOperation: false,
+        btnType: 'danger',
+        plain: true,
+        formId: undefined
+      },
       {
         id: 1,
         type: SysCustomWidgetOperationType.ADD,

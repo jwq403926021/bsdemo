@@ -13,9 +13,6 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-DELETE FROM `zz_data_sync_producer_update_mark` WHERE id = 1;
-
-
 -- ----------------------------
 -- 全部菜单数据
 -- ----------------------------

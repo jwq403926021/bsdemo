@@ -3,7 +3,7 @@
     <el-form ref="dictData" :model="formData" class="full-width-input" :rules="rules" style="width: 100%;"
       label-width="100px" :size="defaultFormItemSize" label-position="right" @submit.native.prevent>
       <el-form-item label="字典键类型">
-        <el-radio-group v-model="formData.type">
+        <el-radio-group v-model="formData.type" :disabled="value != null">
           <el-radio-button label="Integer">整数</el-radio-button>
           <el-radio-button label="String">字符串</el-radio-button>
         </el-radio-group>
@@ -66,6 +66,8 @@ export default {
     onSubmit () {
       this.$refs.dictData.validate(valid => {
         if (!valid) return;
+        if (this.formData.type === 'Integer') this.formData.id = Number.parseInt(this.formData.id);
+        if (this.formData.type === 'String') this.formData.id = this.formData.id.toString();
         this.$emit('save', this.formData, this.value);
         this.isShow = false;
       });

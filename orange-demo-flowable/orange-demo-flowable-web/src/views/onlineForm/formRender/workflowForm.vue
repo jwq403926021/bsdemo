@@ -168,13 +168,11 @@ export default {
           if (!valid) return reject();
           let tempObj = {};
           let that = this;
+          let oneToOneRelationObj = {};
+          let hasMasterData = false;
           function getFlowWidgetData (widget) {
             if (widget == null || widget.readOnly || widget.disabled) return;
-            if (widget.relation == null) {
-              if (tempObj.masterData == null) tempObj.masterData = {};
-              tempObj.masterData[widget.column.columnName] = that.formData[that.getWidgetFieldName(widget)];
-              tempObj.masterData.__maasterTable__ = widget.table;
-            } else {
+            if (widget.relation != null) {
               if (tempObj.slaveData == null) tempObj.slaveData = {};
               if (widget.widgetType === that.SysCustomWidgetType.Table) {
                 let tableData = that.getRelationTableData(widget);
@@ -182,13 +180,10 @@ export default {
                   tempObj.slaveData[widget.relation.relationId] = tableData;
                 }
               } else {
-                let value = that.formData[that.getWidgetFieldName(widget)];
-                if (value != null && widget.column != null) {
-                  if (tempObj.slaveData[widget.relation.relationId] == null) tempObj.slaveData[widget.relation.relationId] = {};
-                  tempObj.slaveData[widget.relation.relationId][widget.column.columnName] = value;
-                  if (tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] == null) tempObj.slaveData[widget.relation.relationId]['__slaveWidget__'] = widget;
-                }
+                oneToOneRelationObj[widget.relation.relationId] = widget.relation;
               }
+            } else {
+              hasMasterData = true;
             }
 
             if (Array.isArray(widget.childWidgetList)) {
@@ -197,44 +192,30 @@ export default {
               });
             }
           }
-
+          // 一对多关联数据
           if (Array.isArray(this.formConfig.formWidgetList)) {
             this.formConfig.formWidgetList.forEach(widget => {
               getFlowWidgetData(widget);
             });
           }
-
-          if (tempObj.masterData != null && tempObj.masterData.__maasterTable__ != null) {
-            let primaryColumn = null;
-            if (Array.isArray(tempObj.masterData.__maasterTable__.columnList)) {
-              primaryColumn = tempObj.masterData.__maasterTable__.columnList.filter(column => {
-                return column.primaryKey;
-              })[0];
-            }
-            if (primaryColumn != null && this.formData[primaryColumn.columnName] != null) {
-              tempObj.masterData[primaryColumn.columnName] = this.formData[primaryColumn.columnName];
-            }
-            delete tempObj.masterData.__maasterTable__;
-          }
-
-          if (tempObj.slaveData != null) {
-            Object.keys(tempObj.slaveData).map(key => {
-              let slaveObj = tempObj.slaveData[key];
-              let primaryColumn = null;
-              if (slaveObj != null && slaveObj.__slaveWidget__ != null && slaveObj.__slaveWidget__.table != null) {
-                if (Array.isArray(slaveObj.__slaveWidget__.table.columnList)) {
-                  primaryColumn = slaveObj.__slaveWidget__.table.columnList.filter(column => {
-                    return column.primaryKey;
-                  })[0];
-                }
-                let widget = slaveObj.__slaveWidget__;
-                if (primaryColumn != null && this.formData[widget.relation.variableName + '__' + (widget.column || {}).columnName] != null) {
-                  slaveObj[primaryColumn.columnName] = this.formData[widget.relation.variableName + '__' + (widget.column || {}).columnName]
-                }
-                delete slaveObj.__slaveWidget__;
-              }
+          // 主表数据
+          if (hasMasterData && this.masterTable) {
+            this.masterTable.columnList.forEach(column => {
+              if (tempObj.masterData == null) tempObj.masterData = {};
+              tempObj.masterData[column.columnName] = this.formData[column.columnName];
             });
           }
+          // 一对一关联数据
+          Object.keys(oneToOneRelationObj).forEach(relationId => {
+            let relation = oneToOneRelationObj[relationId];
+            if (relation && relation.slaveTable && Array.isArray(relation.slaveTable.columnList)) {
+              relation.slaveTable.columnList.forEach(column => {
+                let value = that.formData[relation.variableName + '__' + (column || {}).columnName];
+                if (tempObj.slaveData[relationId] == null) tempObj.slaveData[relationId] = {};
+                tempObj.slaveData[relationId][column.columnName] = value;
+              });
+            }
+          });
 
           resolve(tempObj);
         });

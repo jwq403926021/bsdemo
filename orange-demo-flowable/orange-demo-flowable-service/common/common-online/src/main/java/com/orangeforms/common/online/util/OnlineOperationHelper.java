@@ -1,6 +1,7 @@
 package com.orangeforms.common.online.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -114,10 +115,6 @@ public class OnlineOperationHelper {
         if (relation == null || !relation.getDatasourceId().equals(datasourceId)) {
             return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
         }
-        if (!relation.getRelationType().equals(RelationType.ONE_TO_MANY)) {
-            errorMessage = "数据验证失败，数据源关联 [" + relation.getRelationName() + " ] 不是一对多关联，不能调用该接口！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
-        }
         OnlineTable slaveTable = onlineTableService.getOnlineTableFromCache(relation.getSlaveTableId());
         if (slaveTable == null) {
             errorMessage = "数据验证失败，数据源关联 [" + relation.getRelationName() + " ] 引用的从表不存在！";
@@ -173,6 +170,13 @@ public class OnlineOperationHelper {
                 continue;
             }
             Object value = tableData.get(column.getColumnName());
+            if (value != null) {
+                if ("Long".equals(column.getObjectFieldType())) {
+                    value = Long.valueOf(value.toString());
+                } else if ("Date".equals(column.getObjectFieldType())) {
+                    value = Convert.toDate(value);
+                }
+            }
             // 对于主键数据的处理。
             if (column.getPrimaryKey()) {
                 // 如果是更新则必须包含主键参数。

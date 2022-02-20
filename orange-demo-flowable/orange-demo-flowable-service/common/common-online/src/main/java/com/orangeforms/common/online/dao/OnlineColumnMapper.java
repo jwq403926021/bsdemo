@@ -18,9 +18,7 @@ public interface OnlineColumnMapper extends BaseDaoMapper<OnlineColumn> {
      * 获取过滤后的对象列表。
      *
      * @param onlineColumnFilter 主表过滤对象。
-     * @param orderBy            排序字符串，order by从句的参数。
      * @return 对象列表。
      */
-    List<OnlineColumn> getOnlineColumnList(
-            @Param("onlineColumnFilter") OnlineColumn onlineColumnFilter, @Param("orderBy") String orderBy);
+    List<OnlineColumn> getOnlineColumnList(@Param("onlineColumnFilter") OnlineColumn onlineColumnFilter);
 }

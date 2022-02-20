@@ -156,8 +156,8 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
      */
     private final TableModelInfo tableModelInfo = new TableModelInfo();
 
-    private static final String GROUPED_KEY = "groupedKey";
-    private static final String AGGREGATED_VALUE = "aggregatedValue";
+    private static final String GROUPED_KEY = "grouped_key";
+    private static final String AGGREGATED_VALUE = "aggregated_value";
     private static final String AND_OP = " AND ";
 
     @Override

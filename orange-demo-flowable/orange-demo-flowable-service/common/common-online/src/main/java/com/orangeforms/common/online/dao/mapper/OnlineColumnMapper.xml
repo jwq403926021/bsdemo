@@ -7,18 +7,18 @@
         <result column="table_id" jdbcType="BIGINT" property="tableId"/>
         <result column="column_type" jdbcType="VARCHAR" property="columnType"/>
         <result column="full_column_type" jdbcType="VARCHAR" property="fullColumnType"/>
-        <result column="primary_key" jdbcType="BIT" property="primaryKey"/>
-        <result column="auto_increment" jdbcType="BIT" property="autoIncrement"/>
-        <result column="nullable" jdbcType="BIT" property="nullable"/>
+        <result column="primary_key" jdbcType="BOOLEAN" property="primaryKey"/>
+        <result column="auto_increment" jdbcType="BOOLEAN" property="autoIncrement"/>
+        <result column="nullable" jdbcType="BOOLEAN" property="nullable"/>
         <result column="column_default" jdbcType="VARCHAR" property="columnDefault"/>
         <result column="column_show_order" jdbcType="INTEGER" property="columnShowOrder"/>
         <result column="column_comment" jdbcType="VARCHAR" property="columnComment"/>
         <result column="object_field_name" jdbcType="VARCHAR" property="objectFieldName"/>
         <result column="object_field_type" jdbcType="VARCHAR" property="objectFieldType"/>
         <result column="filter_type" jdbcType="INTEGER" property="filterType"/>
-        <result column="parent_key" jdbcType="BIT" property="parentKey"/>
-        <result column="dept_filter" jdbcType="BIT" property="deptFilter"/>
-        <result column="user_filter" jdbcType="BIT" property="userFilter"/>
+        <result column="parent_key" jdbcType="BOOLEAN" property="parentKey"/>
+        <result column="dept_filter" jdbcType="BOOLEAN" property="deptFilter"/>
+        <result column="user_filter" jdbcType="BOOLEAN" property="userFilter"/>
         <result column="field_kind" jdbcType="INTEGER" property="fieldKind"/>
         <result column="max_file_count" jdbcType="INTEGER" property="maxFileCount"/>
         <result column="dict_id" jdbcType="BIGINT" property="dictId"/>
@@ -49,8 +49,6 @@
         <where>
             <include refid="filterRef"/>
         </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
-        </if>
+        ORDER BY column_show_order
     </select>
 </mapper>

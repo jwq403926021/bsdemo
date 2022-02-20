@@ -10,8 +10,8 @@
         <result column="master_column_id" jdbcType="BIGINT" property="masterColumnId"/>
         <result column="slave_table_id" jdbcType="BIGINT" property="slaveTableId"/>
         <result column="slave_column_id" jdbcType="BIGINT" property="slaveColumnId"/>
-        <result column="cascade_delete" jdbcType="BIT" property="cascadeDelete"/>
-        <result column="left_join" jdbcType="BIT" property="leftJoin"/>
+        <result column="cascade_delete" jdbcType="BOOLEAN" property="cascadeDelete"/>
+        <result column="left_join" jdbcType="BOOLEAN" property="leftJoin"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>

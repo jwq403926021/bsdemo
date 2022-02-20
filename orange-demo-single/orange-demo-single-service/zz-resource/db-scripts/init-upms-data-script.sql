@@ -8,15 +8,6 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- 管理员账号数据
--- ----------------------------
-BEGIN;
-INSERT INTO `zz_sys_dept` VALUES(1309065501174927363,NULL,'公司总部',1,1309065501170733056,CURDATE(),1309065501170733056,CURDATE(),1);
-INSERT INTO `zz_sys_user` VALUES(1309065501170733056,'admin','$2a$10$XnwBKjb3jIBoUAUo2nFf/eSegue8KoVhU87.Z2ufCYluIJNlaMiWi','管理员',1309065501174927363,0,NULL,0,1309065501170733056,CURDATE(),1309065501170733056,CURDATE(),1);
-INSERT INTO `zz_sys_dept_relation` VALUES(1309065501174927363,1309065501174927363);
-COMMIT;
-
--- ----------------------------
 -- 全部菜单数据
 -- ----------------------------
 BEGIN;

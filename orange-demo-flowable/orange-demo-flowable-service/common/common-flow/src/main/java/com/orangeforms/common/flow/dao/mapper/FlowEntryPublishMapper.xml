@@ -7,8 +7,8 @@
         <result column="deploy_id" jdbcType="VARCHAR" property="deployId"/>
         <result column="process_definition_id" jdbcType="VARCHAR" property="processDefinitionId"/>
         <result column="publish_version" jdbcType="INTEGER" property="publishVersion"/>
-        <result column="active_status" jdbcType="BIT" property="activeStatus"/>
-        <result column="main_version" jdbcType="BIT" property="mainVersion"/>
+        <result column="active_status" jdbcType="BOOLEAN" property="activeStatus"/>
+        <result column="main_version" jdbcType="BOOLEAN" property="mainVersion"/>
         <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
         <result column="init_task_info" jdbcType="VARCHAR" property="initTaskInfo"/>

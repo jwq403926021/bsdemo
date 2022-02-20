@@ -7,7 +7,7 @@
         <result column="page_name" jdbcType="VARCHAR" property="pageName"/>
         <result column="page_type" jdbcType="INTEGER" property="pageType"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="published" jdbcType="BIT" property="published"/>
+        <result column="published" jdbcType="BOOLEAN" property="published"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>

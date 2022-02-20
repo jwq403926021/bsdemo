@@ -5,6 +5,7 @@ import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.util.ContextUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FeignConfig implements RequestInterceptor {
 
+    @SneakyThrows
     @Override
     public void apply(RequestTemplate requestTemplate) {
         // 对于非servlet请求发起的远程调用，由于无法获取到标识用户身份的TokenData，因此需要略过下面的HEADER注入。

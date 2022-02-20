@@ -3,9 +3,11 @@ package com.orangeforms.common.core.base.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.*;
 import com.orangeforms.common.core.base.mapper.BaseModelMapper;
 import com.orangeforms.common.core.base.service.IBaseService;
+import com.orangeforms.common.core.config.CoreProperties;
 import com.orangeforms.common.core.constant.AggregationKind;
 import com.orangeforms.common.core.constant.AggregationType;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -42,6 +45,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class BaseController<M, V, K extends Serializable> {
 
+    @Autowired
+    private CoreProperties coreProperties;
     /**
      * 当前Service关联的主Model实体对象的Class。
      */
@@ -245,7 +250,42 @@ public abstract class BaseController<M, V, K extends Serializable> {
             }
         }
         M filter = queryParam.getFilterDto(modelClass);
+        if (StrUtil.isNotBlank(queryParam.getInFilterField())
+                && CollUtil.isNotEmpty(queryParam.getInFilterValues())) {
+            if (queryParam.getCriteriaList() == null) {
+                queryParam.setCriteriaList(new LinkedList<>());
+            }
+            MyWhereCriteria whereCriteria = new MyWhereCriteria();
+            whereCriteria.setFieldName(queryParam.getInFilterField());
+            whereCriteria.setOperatorType(MyWhereCriteria.OPERATOR_IN);
+            whereCriteria.setValue(queryParam.getInFilterValues());
+            queryParam.getCriteriaList().add(whereCriteria);
+        }
         String whereClause = MyWhereCriteria.makeCriteriaString(queryParam.getCriteriaList(), modelClass);
+        if (CollUtil.isNotEmpty(queryParam.getSearchStringFieldList())
+                && StrUtil.isNotBlank(queryParam.getSearchStringValue())) {
+            String tableName = MyModelUtil.mapToTableName(modelClass);
+            StringBuilder sb = new StringBuilder(128);
+            if (StrUtil.isNotBlank(whereClause)) {
+                sb.append(" AND ");
+            }
+            sb.append(" CONCAT(");
+            for (int i = 0; i < queryParam.getSearchStringFieldList().size(); i++) {
+                String fieldName = queryParam.getSearchStringFieldList().get(i);
+                String columnName = MyModelUtil.mapToColumnInfo(fieldName, modelClass).getFirst();
+                if (coreProperties.isMySql()) {
+                    sb.append("IFNULL(");
+                } else if (coreProperties.isPostgresql()) {
+                    sb.append("COALESCE(");
+                }
+                sb.append(tableName).append(".").append(columnName).append(", '')");
+                if (i != queryParam.getSearchStringFieldList().size() - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(") LIKE ").append("'").append(queryParam.getSearchStringValue()).append("'");
+            whereClause = whereClause + sb.toString();
+        }
         String orderBy = MyOrderParam.buildOrderBy(queryParam.getOrderParam(), modelClass);
         MyPageParam pageParam = queryParam.getPageParam();
         if (pageParam != null) {
@@ -364,9 +404,9 @@ public abstract class BaseController<M, V, K extends Serializable> {
             for (Map.Entry<Object, Set<Object>> entry : param.getGroupedInFilterValues().entrySet()) {
                 StringBuilder groupedSelectList = new StringBuilder(64);
                 if (stringKey) {
-                    groupedSelectList.append("'").append(entry.getKey()).append("' ");
+                    groupedSelectList.append("'").append(entry.getKey()).append("' as ");
                 } else {
-                    groupedSelectList.append(entry.getKey()).append(" ");
+                    groupedSelectList.append(entry.getKey()).append(" as ");
                 }
                 groupedSelectList.append(MyAggregationParam.KEY_NAME).append(", ").append(selectList);
                 MyWhereCriteria criteria = new MyWhereCriteria();

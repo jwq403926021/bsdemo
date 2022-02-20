@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-form-item label="上级菜单">
           <el-cascader :options="menuTree" v-model="parentMenuPath" :props="menuProps" placeholder="选择父菜单"
-            :disabled="!canEditParent || isEdit" :clearable="true" :change-on-select="true" :size="defaultFormItemSize"
+            :clearable="true" :change-on-select="true" :size="defaultFormItemSize"
             @change="onParentMenuChange" />
         </el-form-item>
       </el-col>
@@ -143,12 +143,13 @@ export default {
       }
     },
     onParentMenuChange (value, isInit) {
-      if (!isInit) this.formData.menuType = undefined;
       this.parentMenuType = undefined;
       if (Array.isArray(value) && value.length > 0) {
         let node = findTreeNode(this.menuTree, value[value.length - 1], 'menuId');
         if (node) this.parentMenuType = node.menuType;
       }
+      // 父菜单切换后判断可用菜单类型是否改变，如果改变则清空
+      if (!isInit && this.getValidMenuType.map(item => item.id).indexOf(this.formData.menuType) === -1) this.formData.menuType = undefined;
     },
     onCancel (isSuccess) {
       if (this.observer != null) {

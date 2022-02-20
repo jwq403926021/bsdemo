@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.orangeforms.common.core.annotation.MyDataSourceResolver;
 import com.orangeforms.common.core.config.CoreProperties;
@@ -19,6 +20,7 @@ import com.orangeforms.common.datafilter.constant.DataPermRuleType;
 import com.orangeforms.common.datafilter.config.DataFilterProperties;
 import com.orangeforms.common.online.config.OnlineProperties;
 import com.orangeforms.common.online.model.constant.*;
+import com.orangeforms.common.online.object.ConstDictInfo;
 import com.orangeforms.common.online.service.OnlineVirtualColumnService;
 import com.orangeforms.common.online.util.OnlineOperationHelper;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
@@ -75,14 +77,14 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
 
     /**
      * 聚合返回数据中，聚合键的常量字段名。
-     * 如select groupColumn groupedKey, max(aggregationColumn) aggregatedValue。
+     * 如select groupColumn grouped_key, max(aggregationColumn) aggregated_value。
      */
-    private static final String KEY_NAME = "groupedKey";
+    private static final String KEY_NAME = "grouped_key";
     /**
      * 聚合返回数据中，聚合值的常量字段名。
-     * 如select groupColumn groupedKey, max(aggregationColumn) aggregatedValue。
+     * 如select groupColumn grouped_key, max(aggregationColumn) aggregated_value。
      */
-    private static final String VALUE_NAME = "aggregatedValue";
+    private static final String VALUE_NAME = "aggregated_value";
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -556,8 +558,10 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
         if (CollUtil.isEmpty(dictIdSet)) {
             return;
         }
-        List<OnlineDict> dictList = onlineDictService.getOnlineDictList(dictIdSet)
-                .stream().filter(d -> d.getDictType() == DictType.TABLE).collect(Collectors.toList());
+        List<OnlineDict> allDictList = onlineDictService.getOnlineDictList(dictIdSet);
+        List<OnlineDict> dictList = allDictList.stream()
+                .filter(d -> d.getDictType() == DictType.TABLE || d.getDictType() == DictType.CUSTOM)
+                .collect(Collectors.toList());
         for (OnlineDict dict : dictList) {
             Collection<String> columnNameList = dictColumnMap.get(dict.getDictId());
             for (String columnName : columnNameList) {
@@ -571,27 +575,38 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                 if (CollUtil.isEmpty(dictIdDataSet)) {
                     continue;
                 }
-                String selectFields = this.makeDictSelectFields(dict, true);
-                List<OnlineFilterDto> filterList = new LinkedList<>();
-                if (StrUtil.isNotBlank(dict.getDeletedColumnName())) {
-                    OnlineFilterDto filter = new OnlineFilterDto();
-                    filter.setColumnName(dict.getDeletedColumnName());
-                    filter.setColumnValue(GlobalDeletedFlag.NORMAL);
-                    filterList.add(filter);
-                }
-                OnlineFilterDto inlistFilter = new OnlineFilterDto();
-                inlistFilter.setColumnName(dict.getKeyColumnName());
-                inlistFilter.setColumnValueList(dictIdDataSet);
-                inlistFilter.setFilterType(FieldFilterType.IN_LIST_FILTER);
-                filterList.add(inlistFilter);
-                List<Map<String, Object>> dictResultList =
-                        onlineOperationMapper.getDictList(dict.getTableName(), selectFields, filterList, null);
-                if (CollUtil.isEmpty(dictResultList)) {
-                    continue;
-                }
-                Map<Object, Object> dictResultMap = new HashMap<>(dictResultList.size());
-                for (Map<String, Object> dictResult : dictResultList) {
-                    dictResultMap.put(dictResult.get("id"), dictResult.get("name"));
+                Map<Object, Object> dictResultMap;
+                if (dict.getDictType().equals(DictType.CUSTOM)) {
+                    ConstDictInfo dictInfo =
+                            JSONObject.parseObject(dict.getDictDataJson(), ConstDictInfo.class);
+                    List<ConstDictInfo.ConstDictData> dictDataList = dictInfo.getDictData();
+                    dictResultMap = new HashMap<>(dictDataList.size());
+                    for (ConstDictInfo.ConstDictData dictData : dictDataList) {
+                        dictResultMap.put(dictData.getId(), dictData.getName());
+                    }
+                } else {
+                    String selectFields = this.makeDictSelectFields(dict, true);
+                    List<OnlineFilterDto> filterList = new LinkedList<>();
+                    if (StrUtil.isNotBlank(dict.getDeletedColumnName())) {
+                        OnlineFilterDto filter = new OnlineFilterDto();
+                        filter.setColumnName(dict.getDeletedColumnName());
+                        filter.setColumnValue(GlobalDeletedFlag.NORMAL);
+                        filterList.add(filter);
+                    }
+                    OnlineFilterDto inlistFilter = new OnlineFilterDto();
+                    inlistFilter.setColumnName(dict.getKeyColumnName());
+                    inlistFilter.setColumnValueList(dictIdDataSet);
+                    inlistFilter.setFilterType(FieldFilterType.IN_LIST_FILTER);
+                    filterList.add(inlistFilter);
+                    List<Map<String, Object>> dictResultList =
+                            onlineOperationMapper.getDictList(dict.getTableName(), selectFields, filterList, null);
+                    if (CollUtil.isEmpty(dictResultList)) {
+                        continue;
+                    }
+                    dictResultMap = new HashMap<>(dictResultList.size());
+                    for (Map<String, Object> dictResult : dictResultList) {
+                        dictResultMap.put(dictResult.get("id"), dictResult.get("name"));
+                    }
                 }
                 String dictKeyName = columnName + "__DictMap";
                 for (Map<String, Object> result : resultList) {
@@ -664,32 +679,32 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                         .append(column.getColumnName())
                         .append(" AS ")
                         .append(intString)
-                        .append(") ")
+                        .append(") \"")
                         .append(relationVariableName)
                         .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                         .append(column.getColumnName())
-                        .append(",");
+                        .append("\",");
             } else if ("date".equals(column.getColumnType())) {
                 selectFieldBuider
                         .append("CAST(")
                         .append(slaveTable.getTableName())
                         .append(".")
                         .append(column.getColumnName())
-                        .append(" AS CHAR(10)) ")
+                        .append(" AS CHAR(10)) \"")
                         .append(relationVariableName)
                         .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                         .append(column.getColumnName())
-                        .append(",");
+                        .append("\",");
             } else {
                 selectFieldBuider
                         .append(slaveTable.getTableName())
                         .append(".")
                         .append(column.getColumnName())
-                        .append(" ")
+                        .append(" \"")
                         .append(relationVariableName)
                         .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                         .append(column.getColumnName())
-                        .append(",");
+                        .append("\",");
             }
         }
         return selectFieldBuider.substring(0, selectFieldBuider.length() - 1);
@@ -718,32 +733,32 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                                 .append(column.getColumnName())
                                 .append(" AS ")
                                 .append(intString)
-                                .append(") ")
+                                .append(") \"")
                                 .append(relation.getVariableName())
                                 .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                                 .append(column.getColumnName())
-                                .append(",");
+                                .append("\",");
                     } else if ("date".equals(column.getColumnType())) {
                         selectFieldBuider
                                 .append("CAST(")
                                 .append(slaveTable.getTableName())
                                 .append(".")
                                 .append(column.getColumnName())
-                                .append(" AS CHAR(10)) ")
+                                .append(" AS CHAR(10)) \"")
                                 .append(relation.getVariableName())
                                 .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                                 .append(column.getColumnName())
-                                .append(",");
+                                .append("\",");
                     } else {
                         selectFieldBuider
                                 .append(slaveTable.getTableName())
                                 .append(".")
                                 .append(column.getColumnName())
-                                .append(" ")
+                                .append(" \"")
                                 .append(relation.getVariableName())
                                 .append(OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR)
                                 .append(column.getColumnName())
-                                .append(",");
+                                .append("\",");
                     }
                 }
             }
@@ -762,18 +777,18 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                         .append(column.getColumnName())
                         .append(" AS ")
                         .append(intString)
-                        .append(") ")
+                        .append(") \"")
                         .append(column.getColumnName())
-                        .append(",");
+                        .append("\",");
             } else if ("date".equals(column.getColumnType())) {
                 selectFieldBuider
                         .append("CAST(")
                         .append(masterTable.getTableName())
                         .append(".")
                         .append(column.getColumnName())
-                        .append(" AS CHAR(10)) ")
+                        .append(" AS CHAR(10)) \"")
                         .append(column.getColumnName())
-                        .append(",");
+                        .append("\",");
             } else {
                 selectFieldBuider
                         .append(masterTable.getTableName())
@@ -787,10 +802,10 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
 
     private String makeDictSelectFields(OnlineDict onlineDict, boolean ignoreParentId) {
         StringBuilder sb = new StringBuilder(128);
-        sb.append(onlineDict.getKeyColumnName()).append(" id, ");
-        sb.append(onlineDict.getValueColumnName()).append(" name");
+        sb.append(onlineDict.getKeyColumnName()).append(" \"id\", ");
+        sb.append(onlineDict.getValueColumnName()).append(" \"name\"");
         if (!ignoreParentId && onlineDict.getTreeFlag()) {
-            sb.append(", ").append(onlineDict.getParentKeyColumnName()).append(" parentId");
+            sb.append(", ").append(onlineDict.getParentKeyColumnName()).append(" \"parentId\"");
         }
         return sb.toString();
     }

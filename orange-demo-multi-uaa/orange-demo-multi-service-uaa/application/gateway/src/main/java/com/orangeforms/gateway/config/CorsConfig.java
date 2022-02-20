@@ -22,10 +22,14 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         CorsConfiguration config = new CorsConfiguration();
         if (StringUtils.isNotBlank(appConfig.getCredentialIpList())) {
-            String[] credentialIpList = StringUtils.split(appConfig.getCredentialIpList(), ",");
-            if (credentialIpList.length > 0) {
-                for (String ip : credentialIpList) {
-                    config.addAllowedOrigin(ip);
+            if ("*".equals(appConfig.getCredentialIpList())) {
+                config.addAllowedOriginPattern("*");
+            } else {
+                String[] credentialIpList = StringUtils.split(appConfig.getCredentialIpList(), ",");
+                if (credentialIpList.length > 0) {
+                    for (String ip : credentialIpList) {
+                        config.addAllowedOrigin(ip);
+                    }
                 }
             }
             config.addAllowedHeader("*");

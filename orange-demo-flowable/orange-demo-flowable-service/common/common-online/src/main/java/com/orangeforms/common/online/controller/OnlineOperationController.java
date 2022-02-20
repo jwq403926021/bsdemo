@@ -1,6 +1,7 @@
 package com.orangeforms.common.online.controller;
 
 import io.swagger.annotations.Api;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
@@ -8,9 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
 import com.orangeforms.common.core.object.*;
-import com.orangeforms.common.core.util.ContextUtil;
-import com.orangeforms.common.core.util.MyCommonUtil;
-import com.orangeforms.common.core.util.MyPageUtil;
+import com.orangeforms.common.core.util.*;
 import com.orangeforms.common.online.util.OnlineOperationHelper;
 import com.orangeforms.common.online.dto.OnlineFilterDto;
 import com.orangeforms.common.online.model.*;
@@ -20,7 +19,9 @@ import com.orangeforms.common.online.object.ColumnData;
 import com.orangeforms.common.online.service.*;
 import com.orangeforms.common.online.util.OnlineConstant;
 import com.github.pagehelper.page.PageMethod;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,8 @@ public class OnlineOperationController {
     private OnlineTableService onlineTableService;
     @Autowired
     private OnlineOperationHelper onlineOperationHelper;
+    @Autowired
+    private OnlineVirtualColumnService onlineVirtualColumnService;
 
     /**
      * 新增数据接口。
@@ -237,28 +240,23 @@ public class OnlineOperationController {
             @PathVariable("datasourceVariableName") String datasourceVariableName,
             @MyRequestBody(required = true) Long datasourceId,
             @MyRequestBody(required = true) String dataId) {
-        String errorMessage;
-        ResponseResult<OnlineDatasource> datasourceResult =
-                onlineOperationHelper.verifyAndGetDatasource(datasourceId);
-        if (!datasourceResult.isSuccess()) {
-            return ResponseResult.errorFrom(datasourceResult);
-        }
-        OnlineDatasource datasource = datasourceResult.getData();
-        if (!datasource.getVariableName().equals(datasourceVariableName)) {
-            ContextUtil.getHttpResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
-        }
-        OnlineTable masterTable = datasource.getMasterTable();
-        ResponseResult<List<OnlineDatasourceRelation>> relationListResult =
-                onlineOperationHelper.verifyAndGetRelationList(datasourceId, RelationType.ONE_TO_MANY);
-        if (!relationListResult.isSuccess()) {
-            return ResponseResult.errorFrom(relationListResult);
-        }
-        List<OnlineDatasourceRelation> relationList = relationListResult.getData();
-        if (!onlineOperationService.delete(masterTable, relationList, dataId)) {
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
-        }
-        return ResponseResult.success();
+        return this.doDelete(datasourceVariableName, datasourceId, CollUtil.newArrayList(dataId));
+    }
+
+    /**
+     * 批量删除主数据接口。
+     *
+     * @param datasourceVariableName 数据源名称。
+     * @param datasourceId           主表数据源Id。
+     * @param dataIdList             待删除的数据表主键Id列表。
+     * @return 应该结果。
+     */
+    @PostMapping("/deleteBatchDatasource/{datasourceVariableName}")
+    public ResponseResult<Void> deleteBatchDatasource(
+            @PathVariable("datasourceVariableName") String datasourceVariableName,
+            @MyRequestBody(required = true) Long datasourceId,
+            @MyRequestBody(required = true, elementType = String.class) List<String> dataIdList) {
+        return this.doDelete(datasourceVariableName, datasourceId, dataIdList);
     }
 
     /**
@@ -276,26 +274,25 @@ public class OnlineOperationController {
             @MyRequestBody(required = true) Long datasourceId,
             @MyRequestBody(required = true) Long relationId,
             @MyRequestBody(required = true) String dataId) {
-        String errorMessage;
-        OnlineDatasource datasource = onlineDatasourceService.getById(datasourceId);
-        if (datasource == null) {
-            errorMessage = "数据验证失败，数据源Id并不存在！";
-            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
-        }
-        if (!datasource.getVariableName().equals(datasourceVariableName)) {
-            ContextUtil.getHttpResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
-        }
-        ResponseResult<OnlineDatasourceRelation> relationResult =
-                onlineOperationHelper.verifyAndGetOneToManyRelation(datasourceId, relationId);
-        if (!relationResult.isSuccess()) {
-            return ResponseResult.errorFrom(relationResult);
-        }
-        OnlineDatasourceRelation relation = relationResult.getData();
-        if (!onlineOperationService.delete(relation.getSlaveTable(), null, dataId)) {
-            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
-        }
-        return ResponseResult.success();
+        return this.doDelete(datasourceVariableName, datasourceId, relationId, CollUtil.newArrayList(dataId));
+    }
+
+    /**
+     * 批量删除一对多关联表单条数据接口。
+     *
+     * @param datasourceVariableName 数据源名称。
+     * @param datasourceId           主表数据源Id。
+     * @param relationId             一对多关联Id。
+     * @param dataIdList             一对多关联表主键Id列表。
+     * @return 应该结果。
+     */
+    @PostMapping("/deleteBatchOneToManyRelation/{datasourceVariableName}")
+    public ResponseResult<Void> deleteBatchOneToManyRelation(
+            @PathVariable("datasourceVariableName") String datasourceVariableName,
+            @MyRequestBody(required = true) Long datasourceId,
+            @MyRequestBody(required = true) Long relationId,
+            @MyRequestBody(required = true, elementType = String.class) List<String> dataIdList) {
+        return this.doDelete(datasourceVariableName, datasourceId, relationId, dataIdList);
     }
 
     /**
@@ -594,6 +591,66 @@ public class OnlineOperationController {
     }
 
     /**
+     * 根据数据源Id，以及接口参数，为动态表单导出数据列表。
+     *
+     * @param datasourceVariableName 数据源名称。
+     * @param datasourceId           数据源Id。
+     * @param filterDtoList          多虑数据对象列表。
+     * @param orderParam             排序对象。
+     * @param exportInfoList         导出字段信息列表。
+     */
+    @PostMapping("/exportByDatasourceId/{datasourceVariableName}")
+    public void exportByDatasourceId(
+            @PathVariable("datasourceVariableName") String datasourceVariableName,
+            @MyRequestBody(required = true) Long datasourceId,
+            @MyRequestBody(elementType = OnlineFilterDto.class) List<OnlineFilterDto> filterDtoList,
+            @MyRequestBody MyOrderParam orderParam,
+            @MyRequestBody(elementType = ExportInfo.class, required = true) List<ExportInfo> exportInfoList) throws IOException {
+        // 1. 验证数据源及其关联
+        ResponseResult<OnlineDatasource> datasourceResult =
+                onlineOperationHelper.verifyAndGetDatasource(datasourceId);
+        if (!datasourceResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, datasourceResult);
+        }
+        OnlineDatasource datasource = datasourceResult.getData();
+        if (!datasource.getVariableName().equals(datasourceVariableName)) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+        }
+        OnlineTable masterTable = datasource.getMasterTable();
+        ResponseResult<List<OnlineDatasourceRelation>> relationListResult =
+                onlineOperationHelper.verifyAndGetRelationList(datasourceId, null);
+        if (!relationListResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, relationListResult);
+        }
+        List<OnlineDatasourceRelation> allRelationList = relationListResult.getData();
+        // 2. 验证数据过滤对象中的表名和字段，确保没有sql注入。
+        ResponseResult<Void> filterDtoListResult = this.verifyFilterDtoList(filterDtoList);
+        if (!filterDtoListResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, filterDtoListResult);
+        }
+        // 3. 解析排序参数，同时确保没有sql注入。
+        Map<String, OnlineTable> tableMap = new HashMap<>(4);
+        tableMap.put(masterTable.getTableName(), masterTable);
+        List<OnlineDatasourceRelation> oneToOneRelationList = relationListResult.getData().stream()
+                .filter(r -> r.getRelationType().equals(RelationType.ONE_TO_ONE)).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(oneToOneRelationList)) {
+            Map<String, OnlineTable> relationTableMap = oneToOneRelationList.stream()
+                    .map(OnlineDatasourceRelation::getSlaveTable).collect(Collectors.toMap(OnlineTable::getTableName, c -> c));
+            tableMap.putAll(relationTableMap);
+        }
+        ResponseResult<String> orderByResult = this.makeOrderBy(orderParam, masterTable, tableMap);
+        if (!orderByResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, orderByResult);
+        }
+        String orderBy = orderByResult.getData();
+        List<Map<String, Object>> resultList = onlineOperationService.getMasterDataList(
+                masterTable, oneToOneRelationList, allRelationList, filterDtoList, orderBy);
+        Map<String, String> headerMap = this.makeExportHeaderMap(masterTable, allRelationList, exportInfoList);
+        String filename = datasourceVariableName + "-" + MyDateUtil.toDateTimeString(DateTime.now()) + ".xlsx";
+        ExportUtil.doExport(resultList, headerMap, filename);
+    }
+
+    /**
      * 根据数据源Id和数据源关联Id，以及接口参数，为动态表单查询该一对多关联的数据列表。
      *
      * @param datasourceVariableName 数据源名称。
@@ -655,6 +712,68 @@ public class OnlineOperationController {
                 onlineOperationService.getSlaveDataList(relation, filterDtoList, orderBy);
         return ResponseResult.success(MyPageUtil.makeResponseData(resultList));
     }
+    
+    /**
+     * 根据数据源Id和数据源关联Id，以及接口参数，为动态表单查询该一对多关联的数据列表。
+     *
+     * @param datasourceVariableName 数据源名称。
+     * @param datasourceId           数据源Id。
+     * @param relationId             数据源的一对多关联Id。
+     * @param filterDtoList          多虑数据对象列表。
+     * @param orderParam             排序对象。
+     * @param exportInfoList         导出字段信息列表。
+     */
+    @PostMapping("/exportByOneToManyRelationId/{datasourceVariableName}")
+    public void exportByOneToManyRelationId(
+            @PathVariable("datasourceVariableName") String datasourceVariableName,
+            @MyRequestBody(required = true) Long datasourceId,
+            @MyRequestBody(required = true) Long relationId,
+            @MyRequestBody(elementType = OnlineFilterDto.class) List<OnlineFilterDto> filterDtoList,
+            @MyRequestBody MyOrderParam orderParam,
+            @MyRequestBody(elementType = ExportInfo.class, required = true) List<ExportInfo> exportInfoList) throws IOException {
+        String errorMessage;
+        OnlineDatasource datasource = onlineDatasourceService.getById(datasourceId);
+        if (datasource == null) {
+            errorMessage = "数据验证失败，数据源Id并不存在！";
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST,
+                    ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST, errorMessage));
+        }
+        if (!datasource.getVariableName().equals(datasourceVariableName)) {
+            ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
+        }
+        ResponseResult<OnlineDatasourceRelation> relationResult =
+                onlineOperationHelper.verifyAndGetOneToManyRelation(datasourceId, relationId);
+        if (!relationResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, relationResult);
+        }
+        OnlineDatasourceRelation relation = relationResult.getData();
+        OnlineTable slaveTable = relation.getSlaveTable();
+        // 验证数据过滤对象中的表名和字段，确保没有sql注入。
+        ResponseResult<Void> filterDtoListResult = this.verifyFilterDtoList(filterDtoList);
+        if (!filterDtoListResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, filterDtoListResult);
+        }
+        Map<String, OnlineTable> tableMap = new HashMap<>(1);
+        tableMap.put(slaveTable.getTableName(), slaveTable);
+        if (CollUtil.isNotEmpty(orderParam)) {
+            for (MyOrderParam.OrderInfo orderInfo : orderParam) {
+                orderInfo.setFieldName(StrUtil.removePrefix(orderInfo.getFieldName(),
+                        relation.getVariableName() + OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR));
+            }
+        }
+        ResponseResult<String> orderByResult = this.makeOrderBy(orderParam, slaveTable, tableMap);
+        if (!orderByResult.isSuccess()) {
+            ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, orderByResult);
+        }
+        String orderBy = orderByResult.getData();
+        List<Map<String, Object>> resultList =
+                onlineOperationService.getSlaveDataList(relation, filterDtoList, orderBy);
+        Map<String, String> headerMap = this.makeExportHeaderMap(
+                null, CollUtil.newArrayList(relation), exportInfoList);
+        String filename = datasourceVariableName + "-relation-"
+                + MyDateUtil.toDateTimeString(DateTime.now()) + ".xlsx";
+        ExportUtil.doExport(resultList, headerMap, filename);
+    }
 
     /**
      * 查询字典数据，并以字典的约定方式，返回数据结果集。
@@ -688,6 +807,60 @@ public class OnlineOperationController {
         }
         List<Map<String, Object>> resultList = onlineOperationService.getDictDataList(dict, filterDtoList);
         return ResponseResult.success(resultList);
+    }
+
+    private ResponseResult<Void> doDelete(
+            String datasourceVariableName, Long datasourceId, List<String> dataIdList) {
+        String errorMessage;
+        ResponseResult<OnlineDatasource> datasourceResult =
+                onlineOperationHelper.verifyAndGetDatasource(datasourceId);
+        if (!datasourceResult.isSuccess()) {
+            return ResponseResult.errorFrom(datasourceResult);
+        }
+        OnlineDatasource datasource = datasourceResult.getData();
+        if (!datasource.getVariableName().equals(datasourceVariableName)) {
+            ContextUtil.getHttpResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
+        }
+        OnlineTable masterTable = datasource.getMasterTable();
+        ResponseResult<List<OnlineDatasourceRelation>> relationListResult =
+                onlineOperationHelper.verifyAndGetRelationList(datasourceId, RelationType.ONE_TO_MANY);
+        if (!relationListResult.isSuccess()) {
+            return ResponseResult.errorFrom(relationListResult);
+        }
+        List<OnlineDatasourceRelation> relationList = relationListResult.getData();
+        for (String dataId : dataIdList) {
+            if (!onlineOperationService.delete(masterTable, relationList, dataId)) {
+                return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+            }
+        }
+        return ResponseResult.success();
+    }
+
+    private ResponseResult<Void> doDelete(
+            String datasourceVariableName, Long datasourceId, Long relationId, List<String> dataIdList) {
+        String errorMessage;
+        OnlineDatasource datasource = onlineDatasourceService.getById(datasourceId);
+        if (datasource == null) {
+            errorMessage = "数据验证失败，数据源Id并不存在！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        if (!datasource.getVariableName().equals(datasourceVariableName)) {
+            ContextUtil.getHttpResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
+        }
+        ResponseResult<OnlineDatasourceRelation> relationResult =
+                onlineOperationHelper.verifyAndGetOneToManyRelation(datasourceId, relationId);
+        if (!relationResult.isSuccess()) {
+            return ResponseResult.errorFrom(relationResult);
+        }
+        OnlineDatasourceRelation relation = relationResult.getData();
+        for (String dataId : dataIdList) {
+            if (!onlineOperationService.delete(relation.getSlaveTable(), null, dataId)) {
+                return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+            }
+        }
+        return ResponseResult.success();
     }
 
     private ResponseResult<Void> verifyFilterDtoList(List<OnlineFilterDto> filterDtoList) {
@@ -784,5 +957,58 @@ public class OnlineOperationController {
             }
         }
         return ResponseResult.success(sb.toString());
+    }
+
+    private Map<String, String> makeExportHeaderMap(
+            OnlineTable masterTable,
+            List<OnlineDatasourceRelation> allRelationList,
+            List<ExportInfo> exportInfoList) {
+        Map<String, String> headerMap = new LinkedHashMap<>(16);
+        Map<Long, OnlineDatasourceRelation> allRelationMap = null;
+        if (CollUtil.isNotEmpty(allRelationList)) {
+            allRelationMap = allRelationList.stream()
+                    .collect(Collectors.toMap(OnlineDatasourceRelation::getSlaveTableId, r -> r));
+        }
+        for (ExportInfo exportInfo : exportInfoList) {
+            if (masterTable != null && exportInfo.getTableId().equals(masterTable.getTableId())) {
+                if (exportInfo.getVirtualColumnId() != null) {
+                    OnlineVirtualColumn virtualColumn =
+                            onlineVirtualColumnService.getById(exportInfo.getVirtualColumnId());
+                    if (virtualColumn != null) {
+                        headerMap.put(virtualColumn.getObjectFieldName(), exportInfo.showName);
+                    }
+                } else {
+                    OnlineColumn column = masterTable.getColumnMap().get(exportInfo.getColumnId());
+                    if (column.getDictId() != null) {
+                        headerMap.put(column.getColumnName() + "__DictMap.name", exportInfo.getShowName());
+                    } else {
+                        headerMap.put(column.getColumnName(), exportInfo.getShowName());
+                    }
+                }
+            } else {
+                if (MapUtil.isEmpty(allRelationMap)) {
+                    continue;
+                }
+                OnlineDatasourceRelation relation = allRelationMap.get(exportInfo.getTableId());
+                if (relation != null) {
+                    OnlineColumn column = relation.getSlaveTable().getColumnMap().get(exportInfo.getColumnId());
+                    String columnName = relation.getVariableName()
+                            + OnlineConstant.RELATION_TABLE_COLUMN_SEPARATOR + column.getColumnName();
+                    if (column.getDictId() != null) {
+                        columnName = columnName + "__DictMap.name";
+                    }
+                    headerMap.put(columnName, exportInfo.getShowName());
+                }
+            }
+        }
+        return headerMap;
+    }
+
+    @Data
+    public static class ExportInfo {
+        private Long tableId;
+        private Long columnId;
+        private Long virtualColumnId;
+        private String showName;
     }
 }

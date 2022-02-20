@@ -1,7 +1,6 @@
 package com.orangeforms.common.online.service;
 
 import com.orangeforms.common.core.base.service.IBaseService;
-import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.online.model.OnlineColumn;
 import com.orangeforms.common.online.model.OnlineColumnRule;
 import com.orangeforms.common.online.object.SqlTableColumn;
@@ -105,22 +104,20 @@ public interface OnlineColumnService extends IBaseService<OnlineColumn, Long> {
      * 获取单表查询结果。由于没有关联数据查询，因此在仅仅获取单表数据的场景下，效率更高。
      * 如果需要同时获取关联数据，请移步(getOnlineColumnListWithRelation)方法。
      *
-     * @param filter  过滤对象。
-     * @param orderBy 排序参数。
+     * @param filter 过滤对象。
      * @return 查询结果集。
      */
-    List<OnlineColumn> getOnlineColumnList(OnlineColumn filter, String orderBy);
+    List<OnlineColumn> getOnlineColumnList(OnlineColumn filter);
 
     /**
      * 获取主表的查询结果，以及主表关联的字典数据和一对一从表数据，以及一对一从表的字典数据。
      * 该查询会涉及到一对一从表的关联过滤，或一对多从表的嵌套关联过滤，因此性能不如单表过滤。
      * 如果仅仅需要获取主表数据，请移步(getOnlineColumnList)，以便获取更好的查询性能。
      *
-     * @param filter  主表过滤对象。
-     * @param orderBy 排序参数。
+     * @param filter 主表过滤对象。
      * @return 查询结果集。
      */
-    List<OnlineColumn> getOnlineColumnListWithRelation(OnlineColumn filter, String orderBy);
+    List<OnlineColumn> getOnlineColumnListWithRelation(OnlineColumn filter);
 
     /**
      * 获取指定数据表Id集合的字段对象列表。

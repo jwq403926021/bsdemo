@@ -119,7 +119,13 @@ export default {
       }
     },
     onTableOperationClick (operation, row, widget) {
-      this.handlerOperation(operation, row, widget);
+      if (operation.type === this.SysCustomWidgetOperationType.BATCH_DELETE) {
+        this.$refs[this.formConfig.formQueryTable.variableName].batchDelete();
+      } else if (operation.type === this.SysCustomWidgetOperationType.EXPORT) {
+        this.$refs[this.formConfig.formQueryTable.variableName].export(operation);
+      } else {
+        this.handlerOperation(operation, row, widget);
+      }
     },
     onResume () {
       let key = this.$route.fullPath;

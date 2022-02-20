@@ -11,7 +11,8 @@
               v-for="operation in getTableOperation(false)" :key="operation.id"
               :plain="operation.plain"
               :type="operation.btnType"
-              @click.stop="onOperationClick(operation)">
+              @click.stop="onOperationClick(operation)"
+            >
               {{operation.name}}
             </el-button>
           </div>
@@ -22,7 +23,8 @@
           :style="{height: (widgetConfig.tableInfo.height != null && widgetConfig.tableInfo.height !== '') ? widgetConfig.tableInfo.height + 'px' : undefined}"
           :height="(widgetConfig.tableInfo.height != null && widgetConfig.tableInfo.height !== '') ? widgetConfig.tableInfo.height + 'px' : undefined"
           :data="tableWidget.dataList" :row-key="primaryColumnName"
-          @sort-change="tableWidget.onSortChange">
+          @sort-change="tableWidget.onSortChange" @selection-change="onTableSelectionChange">
+          <el-table-column v-if="hasBatchDelete" header-align="center" align="center" type="selection" width="55px" />
           <el-table-column label="序号" header-align="center" align="center" type="index" width="55px" :index="tableWidget.getTableIndex" />
           <template v-for="tableColumn in widgetConfig.tableColumnList">
             <!-- Boolean类型的字段，使用el-tag去显示 -->
@@ -187,10 +189,14 @@ export default {
         false,
         this.widgetConfig.tableInfo.orderFieldName,
         this.widgetConfig.tableInfo.ascending
-      )
+      ),
+      selectRows: []
     }
   },
   methods: {
+    onTableSelectionChange (values) {
+      this.selectRows = values;
+    },
     onViewWorkOrder (row) {
       this.$emit('viewWOrkOrder', row, this.widgetConfig);
     },
@@ -206,6 +212,39 @@ export default {
     getTableWidget () {
       return this.tableWidget;
     },
+    batchDelete () {
+      if (!Array.isArray(this.selectRows) || this.selectRows.length <= 0) {
+        this.$message.error('请选择要删除的数据！');
+        return;
+      }
+      this.$confirm('是否删除选中数据？').then(res => {
+        if (this.formType === this.SysOnlineFormType.FLOW) { // 工作流表单页面批量删除
+          let selectIdList = this.selectRows.map(item => item.__cascade_add_id__);
+          this.tableWidget.dataList = this.tableWidget.dataList.filter(item => {
+            return selectIdList.indexOf(item.__cascade_add_id__) === -1;
+          });
+        } else {
+          let params = {
+            datasourceId: this.widgetConfig.datasource.datasourceId,
+            relationId: this.widgetConfig.relation ? this.widgetConfig.relation.relationId : undefined,
+            dataIdList: this.selectRows.map(item => {
+              return item[this.primaryColumnName];
+            })
+          }
+
+          let httpCall;
+          if (params.relationId) {
+            httpCall = this.doUrl('/admin/online/onlineOperation/deleteBatchOneToManyRelation/' + this.widgetConfig.datasource.variableName, 'post', params);
+          } else {
+            httpCall = this.doUrl('/admin/online/onlineOperation/deleteBatchDatasource/' + this.widgetConfig.datasource.variableName, 'post', params);
+          }
+          httpCall.then(res => {
+            this.tableWidget.refreshTable();
+          }).catch(e => {
+          });
+        }
+      }).catch(e => {});
+    },
     setTableWidget (tableWidget) {
       // 如果正在读取数据，等待读取完毕再刷新
       let timer = setInterval(() => {
@@ -219,7 +258,43 @@ export default {
       }, 30);
     },
     onOperationClick (operation, row) {
-      this.$emit('operationClick', operation, row, this.widgetConfig);
+      if (operation.type === this.SysCustomWidgetOperationType.BATCH_DELETE) {
+        this.batchDelete();
+      } else if (operation.type === this.SysCustomWidgetOperationType.EXPORT) {
+        this.export(operation);
+      } else {
+        this.$emit('operationClick', operation, row, this.widgetConfig);
+      }
+    },
+    export (operation) {
+      this.$confirm('是否导出表格数据？').then(res => {
+        if (this.formType === this.SysOnlineFormType.FLOW) {
+          this.$message.error('工作流不支持导出！');
+        } else {
+          let queryParams = this.getTableQueryParams ? this.getTableQueryParams(this.widgetConfig) : undefined;
+
+          let params = {
+            datasourceId: this.widgetConfig.datasource.datasourceId,
+            relationId: this.widgetConfig.relation ? this.widgetConfig.relation.relationId : undefined,
+            filterDtoList: queryParams,
+            exportInfoList: (operation.exportColumnList || []).sort((val1, val2) => {
+              return val1.showOrder - val2.showOrder;
+            })
+          }
+          console.log(params);
+          let httpCall;
+          if (params.relationId) {
+            httpCall = this.download('/admin/online/onlineOperation/exportByOneToManyRelationId/' + this.widgetConfig.datasource.variableName, params, this.widgetConfig.showName + '.xls');
+          } else {
+            httpCall = this.download('/admin/online/onlineOperation/exportByDatasourceId/' + this.widgetConfig.datasource.variableName, params, this.widgetConfig.showName + '.xls');
+          }
+          httpCall.then(res => {
+            this.$message.success('导出成功！');
+          }).catch(e => {
+            this.$message.error(e);
+          });
+        }
+      }).catch(e => {});
     },
     loadTableDictValue (tableData) {
       return new Promise((resolve, reject) => {
@@ -496,6 +571,14 @@ export default {
     }
   },
   computed: {
+    hasBatchDelete () {
+      for (let i = 0; i < this.widgetConfig.operationList.length; i++) {
+        if (this.widgetConfig.operationList[i].type === this.SysCustomWidgetOperationType.BATCH_DELETE && this.widgetConfig.operationList[i].enabled) {
+          return true;
+        }
+      }
+      return false;
+    },
     buildFlowParam () {
       let flowParam = {};
       if (this.flowData) {

@@ -28,10 +28,14 @@ public class FilterConfig {
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         if (StringUtils.isNotBlank(applicationConfig.getCredentialIpList())) {
-            String[] credentialIpList = StringUtils.split(applicationConfig.getCredentialIpList(), ",");
-            if (credentialIpList.length > 0) {
-                for (String ip : credentialIpList) {
-                    corsConfiguration.addAllowedOrigin(ip);
+            if ("*".equals(applicationConfig.getCredentialIpList())) {
+                corsConfiguration.addAllowedOriginPattern("*");
+            } else {
+                String[] credentialIpList = StringUtils.split(applicationConfig.getCredentialIpList(), ",");
+                if (credentialIpList.length > 0) {
+                    for (String ip : credentialIpList) {
+                        corsConfiguration.addAllowedOrigin(ip);
+                    }
                 }
             }
             corsConfiguration.addAllowedHeader("*");

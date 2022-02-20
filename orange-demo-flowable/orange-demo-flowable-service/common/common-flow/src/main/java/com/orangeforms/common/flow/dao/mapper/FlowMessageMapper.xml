@@ -17,9 +17,9 @@
         <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
         <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime"/>
         <result column="task_assignee" jdbcType="VARCHAR" property="taskAssignee"/>
-        <result column="task_finished" jdbcType="BIT" property="taskFinished"/>
+        <result column="task_finished" jdbcType="BOOLEAN" property="taskFinished"/>
         <result column="business_data_shot" jdbcType="LONGVARCHAR" property="businessDataShot"/>
-        <result column="online_form_data" jdbcType="BIT" property="onlineFormData"/>
+        <result column="online_form_data" jdbcType="BOOLEAN" property="onlineFormData"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -30,7 +30,7 @@
     <select id="getRemindingMessageListByUser" resultMap="BaseResultMap">
         SELECT a.* FROM zz_flow_message a
         <where>
-            a.task_finished = 0
+            a.task_finished = false
             AND a.message_type = 0
             AND (a.task_assignee = #{loginName} OR EXISTS (SELECT * FROM zz_flow_message_candicate_identity b
                 WHERE a.message_id = b.message_id AND b.candidate_id in
@@ -65,7 +65,7 @@
     <select id="countRemindingMessageListByUser" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM zz_flow_message a
         <where>
-            a.task_finished = 0
+            a.task_finished = false
             AND a.message_type = 0
             AND (a.task_assignee = #{loginName} OR EXISTS (SELECT * FROM zz_flow_message_candicate_identity b
                 WHERE a.message_id = b.message_id AND b.candidate_id in

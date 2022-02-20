@@ -14,7 +14,7 @@
         <result column="user_filter_column_name" jdbcType="VARCHAR" property="userFilterColumnName"/>
         <result column="dept_filter_column_name" jdbcType="VARCHAR" property="deptFilterColumnName"/>
         <result column="tenant_filter_column_name" jdbcType="VARCHAR" property="tenantFilterColumnName"/>
-        <result column="tree_flag" jdbcType="BIT" property="treeFlag"/>
+        <result column="tree_flag" jdbcType="BOOLEAN" property="treeFlag"/>
         <result column="dict_list_url" jdbcType="VARCHAR" property="dictListUrl"/>
         <result column="dict_ids_url" jdbcType="VARCHAR" property="dictIdsUrl"/>
         <result column="dict_data_json" jdbcType="LONGVARCHAR" property="dictDataJson"/>

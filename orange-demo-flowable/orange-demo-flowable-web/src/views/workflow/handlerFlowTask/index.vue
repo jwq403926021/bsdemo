@@ -180,7 +180,7 @@ export default {
           this.getMasterData(operation.type, (res || {}).assignee).then(formData => {
             FlowOperationController.startAndTakeUserTask(this, {
               processDefinitionKey: this.processDefinitionKey,
-              masterData: formData.masterData,
+              masterData: formData.masterData || {},
               slaveData: formData.slaveData,
               taskVariableData: formData.taskVariableData,
               flowTaskCommentDto: {

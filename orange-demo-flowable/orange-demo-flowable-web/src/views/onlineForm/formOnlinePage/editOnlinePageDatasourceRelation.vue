@@ -5,7 +5,12 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form-item label="关联名称" prop="relationName">
-            <el-input class="input-item" v-model="formData.relationName" />
+            <el-input class="input-item" v-model="formData.relationName" :clearable="true" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="关联标识" prop="variableName">
+            <el-input class="input-item" v-model="formData.variableName" :clearable="true" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -51,7 +56,8 @@
           <el-form-item label="从表关联字段" prop="slaveColumnId">
             <el-select class="input-item" v-model="formData.slaveColumnId" :clearable="true" filterable
               placeholder="关联从表" :loading="slaveColumnIdWidget.loading"
-              @visible-change="slaveColumnIdWidget.onVisibleChange">
+              @visible-change="slaveColumnIdWidget.onVisibleChange"
+            >
               <el-option v-for="item in slaveColumnIdWidget.dropdownList" :key="item.columnId" :value="item.columnId" :label="item.columnName">
                 <span>{{item.columnName}}</span>
               </el-option>
@@ -135,6 +141,9 @@ export default {
       rules: {
         relationName: [
           {required: true, message: '请输入关联名称', trigger: 'blur'}
+        ],
+        variableName: [
+          {required: true, message: '请输入关联标识', trigger: 'blur'}
         ]
       }
     }
@@ -148,11 +157,6 @@ export default {
     onSubmit () {
       this.$refs.formEditOnlinePageDatasourceRelation.validate((valid) => {
         if (!valid) return;
-        let masterColumn = findItemFromList(this.masterColumnIdWidget.dropdownList, this.formData.masterColumnId, 'columnId');
-        let slaveTable = findItemFromList(this.slaveTableIdWidget.dropdownList, this.formData.slaveTableId, 'id');
-        let slaveColumn = findItemFromList(this.slaveColumnIdWidget.dropdownList, this.formData.slaveColumnId, 'columnId');
-        if (!this.isEdit) this.formData.variableName = masterColumn.columnName + '_' + slaveTable.name + '_' + slaveColumn.columnName + 'Relation';
-
         let params = {
           onlineDatasourceRelationDto: {
             datasourceId: this.datasource.datasourceId,
@@ -326,6 +330,19 @@ export default {
           reject(e);
         });
       });
+    },
+    buildRelationVariableName () {
+      console.log(this.formData.variableName);
+      if (this.formData.variableName == null || this.formData.variableName === '') {
+        let masterColumn = findItemFromList(this.masterColumnIdWidget.dropdownList, this.formData.masterColumnId, 'columnId');
+        let slaveTable = findItemFromList(this.slaveTableIdWidget.dropdownList, this.formData.slaveTableId, 'id');
+        let slaveColumn = findItemFromList(this.slaveColumnIdWidget.dropdownList, this.formData.slaveColumnId, 'columnId');
+        console.log(masterColumn, slaveTable, slaveColumn);
+        if (masterColumn && slaveTable && slaveColumn) {
+          this.formData.variableName = masterColumn.columnName + '_' + slaveTable.name + '_' + slaveColumn.columnName;
+          console.log(this.formData.variableName);
+        }
+      }
     }
   },
   computed: {
@@ -334,6 +351,14 @@ export default {
     },
     getValidTableList () {
       return this.datasource.validTableList;
+    }
+  },
+  watch: {
+    'formData.slaveColumnId': {
+      handler (newValue) {
+        console.log(newValue);
+        this.buildRelationVariableName();
+      }
     }
   },
   mounted () {

@@ -1,8 +1,8 @@
 package com.orangeforms.uaaadmin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.base.service.BaseService;
+import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.object.MyRelationParam;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
@@ -54,6 +54,7 @@ public class SysUaaUserServiceImpl extends BaseService<SysUaaUser, Long> impleme
         sysUaaUser.setUserId(idGenerator.nextLongId());
         sysUaaUser.setPassword(passwordEncoder.encode(sysUaaUser.getPassword()));
         MyModelUtil.fillCommonsForInsert(sysUaaUser);
+        sysUaaUser.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysUaaUserMapper.insert(sysUaaUser);
         return sysUaaUser;
     }

@@ -6,7 +6,6 @@ import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.webadmin.upms.dao.SysRoleMapper;
 import com.orangeforms.webadmin.upms.dao.SysRoleMenuMapper;
@@ -68,7 +67,6 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     public SysRole saveNew(SysRole role, Set<Long> menuIdSet) {
         role.setRoleId(idGenerator.nextLongId());
         MyModelUtil.fillCommonsForInsert(role);
-        role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysRoleMapper.insert(role);
         if (menuIdSet != null) {
             for (Long menuId : menuIdSet) {

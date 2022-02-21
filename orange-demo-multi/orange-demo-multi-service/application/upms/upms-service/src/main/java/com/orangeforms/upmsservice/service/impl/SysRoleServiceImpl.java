@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.upmsservice.dao.SysRoleMapper;
@@ -67,7 +66,6 @@ public class SysRoleServiceImpl extends BaseService<SysRole, Long> implements Sy
     @Override
     public SysRole saveNew(SysRole role, Set<Long> menuIdSet) {
         role.setRoleId(idGenerator.nextLongId());
-        role.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         MyModelUtil.fillCommonsForInsert(role);
         sysRoleMapper.insert(role);
         if (menuIdSet != null) {

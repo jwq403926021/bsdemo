@@ -48,13 +48,6 @@ public class SysPerm extends BaseModel {
     @TableField(value = "show_order")
     private Integer showOrder;
 
-    /**
-     * 逻辑删除标记字段(1: 正常 -1: 已删除)。
-     */
-    @TableLogic
-    @TableField(value = "deleted_flag")
-    private Integer deletedFlag;
-
     @RelationDict(
             masterIdField = "moduleId",
             slaveServiceName = "SysPermModuleService",

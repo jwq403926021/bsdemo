@@ -8,7 +8,6 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="deleted_flag" jdbcType="INTEGER" property="deletedFlag"/>
     </resultMap>
 
     <sql id="filterRef">
@@ -18,7 +17,6 @@
                 AND role_name LIKE #{safeRoleName}
             </if>
         </if>
-        AND deleted_flag = ${@com.orangeforms.common.core.constant.GlobalDeletedFlag@NORMAL}
     </sql>
 
     <select id="getSysRoleList" resultMap="BaseResultMap" parameterType="com.orangeforms.webadmin.upms.model.SysRole">

@@ -3,7 +3,6 @@ package com.orangeforms.upmsservice.service.impl;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.upmsservice.dao.SysPermModuleMapper;
 import com.orangeforms.upmsservice.model.SysPerm;
@@ -55,7 +54,6 @@ public class SysPermModuleServiceImpl extends BaseService<SysPermModule, Long> i
     public SysPermModule saveNew(SysPermModule sysPermModule) {
         sysPermModule.setModuleId(idGenerator.nextLongId());
         MyModelUtil.fillCommonsForInsert(sysPermModule);
-        sysPermModule.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysPermModuleMapper.insert(sysPermModule);
         return sysPermModule;
     }

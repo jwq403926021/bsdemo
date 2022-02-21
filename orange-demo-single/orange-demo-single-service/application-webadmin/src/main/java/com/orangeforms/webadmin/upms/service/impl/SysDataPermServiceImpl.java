@@ -8,7 +8,6 @@ import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.datafilter.constant.DataPermRuleType;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.util.RedisKeyUtil;
@@ -79,7 +78,6 @@ public class SysDataPermServiceImpl extends BaseService<SysDataPerm, Long> imple
     public SysDataPerm saveNew(SysDataPerm dataPerm, Set<Long> deptIdSet) {
         dataPerm.setDataPermId(idGenerator.nextLongId());
         MyModelUtil.fillCommonsForInsert(dataPerm);
-        dataPerm.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysDataPermMapper.insert(dataPerm);
         this.insertRelationData(dataPerm, deptIdSet);
         return dataPerm;

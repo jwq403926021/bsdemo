@@ -12,7 +12,6 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="deleted_flag" jdbcType="INTEGER" property="deletedFlag"/>
     </resultMap>
 
     <select id="getPermCodeListByUserId" resultType="java.lang.String">

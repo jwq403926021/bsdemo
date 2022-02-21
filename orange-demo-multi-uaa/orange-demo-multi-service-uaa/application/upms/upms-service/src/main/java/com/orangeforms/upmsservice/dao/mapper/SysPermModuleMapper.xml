@@ -11,7 +11,6 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="deleted_flag" jdbcType="INTEGER" property="deletedFlag"/>
     </resultMap>
 
     <resultMap id="BaseResultMapEx" type="com.orangeforms.upmsservice.model.SysPermModule" extends="BaseResultMap">
@@ -34,10 +33,7 @@
         FROM
             zz_sys_perm_module pm
         LEFT JOIN
-            zz_sys_perm p ON pm.module_id = p.module_id AND p.deleted_flag = ${@com.orangeforms.common.core.constant.GlobalDeletedFlag@NORMAL}
-        <where>
-            AND pm.deleted_flag = ${@com.orangeforms.common.core.constant.GlobalDeletedFlag@NORMAL}
-        </where>
+            zz_sys_perm p ON pm.module_id = p.module_id
         ORDER BY
             pm.show_order, p.show_order
     </select>

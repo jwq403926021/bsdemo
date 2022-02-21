@@ -36,13 +36,6 @@ public class SysRole extends BaseModel {
     @TableField(value = "role_name")
     private String roleName;
 
-    /**
-     * 逻辑删除标记字段(1: 正常 -1: 已删除)。
-     */
-    @TableLogic
-    @TableField(value = "deleted_flag")
-    private Integer deletedFlag;
-
     @RelationManyToMany(
             relationMapperName = "sysRoleMenuMapper",
             relationMasterIdField = "roleId",

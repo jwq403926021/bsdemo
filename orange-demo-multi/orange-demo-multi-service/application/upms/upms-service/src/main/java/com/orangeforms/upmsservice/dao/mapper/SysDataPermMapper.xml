@@ -9,7 +9,6 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="deleted_flag" jdbcType="INTEGER" property="deletedFlag"/>
     </resultMap>
 
     <resultMap id="BaseResultMapEx" type="com.orangeforms.upmsservice.model.SysDataPerm" extends="BaseResultMap">
@@ -29,7 +28,6 @@
                 AND IFNULL(zz_sys_data_perm.data_perm_name, '') LIKE #{safeSearchString}
             </if>
         </if>
-        AND zz_sys_data_perm.deleted_flag = ${@com.orangeforms.common.core.constant.GlobalDeletedFlag@NORMAL}
     </sql>
 
     <select id="getSysDataPermList" resultMap="BaseResultMap" parameterType="com.orangeforms.upmsservice.model.SysDataPerm">

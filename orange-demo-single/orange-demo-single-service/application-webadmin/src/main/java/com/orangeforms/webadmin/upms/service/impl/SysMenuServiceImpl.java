@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.webadmin.upms.dao.SysMenuMapper;
@@ -73,7 +72,6 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
     public SysMenu saveNew(SysMenu sysMenu, Set<Long> permCodeIdSet) {
         sysMenu.setMenuId(idGenerator.nextLongId());
         MyModelUtil.fillCommonsForInsert(sysMenu);
-        sysMenu.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysMenuMapper.insert(sysMenu);
         if (permCodeIdSet != null) {
             for (Long permCodeId : permCodeIdSet) {
@@ -93,7 +91,6 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
             viewSubMenu.setShowOrder(0);
             viewSubMenu.setOnlineFormId(sysMenu.getOnlineFormId());
             viewSubMenu.setOnlineMenuPermType(SysOnlineMenuPermType.TYPE_VIEW);
-            viewSubMenu.setDeletedFlag(GlobalDeletedFlag.NORMAL);
             MyModelUtil.fillCommonsForInsert(viewSubMenu);
             sysMenuMapper.insert(viewSubMenu);
             SysMenu editSubMenu = new SysMenu();
@@ -104,7 +101,6 @@ public class SysMenuServiceImpl extends BaseService<SysMenu, Long> implements Sy
             editSubMenu.setShowOrder(1);
             editSubMenu.setOnlineFormId(sysMenu.getOnlineFormId());
             editSubMenu.setOnlineMenuPermType(SysOnlineMenuPermType.TYPE_EDIT);
-            editSubMenu.setDeletedFlag(GlobalDeletedFlag.NORMAL);
             MyModelUtil.fillCommonsForInsert(editSubMenu);
             sysMenuMapper.insert(editSubMenu);
         }

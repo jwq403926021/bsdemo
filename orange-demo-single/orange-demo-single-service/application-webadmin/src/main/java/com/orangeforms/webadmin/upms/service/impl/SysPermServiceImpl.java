@@ -6,7 +6,6 @@ import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
 import com.orangeforms.common.core.object.MyRelationParam;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.util.RedisKeyUtil;
@@ -75,7 +74,6 @@ public class SysPermServiceImpl extends BaseService<SysPerm, Long> implements Sy
     public SysPerm saveNew(SysPerm perm) {
         perm.setPermId(idGenerator.nextLongId());
         MyModelUtil.fillCommonsForInsert(perm);
-        perm.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         sysPermMapper.insert(perm);
         return perm;
     }

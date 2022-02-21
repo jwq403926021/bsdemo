@@ -64,13 +64,6 @@ public class SysDataPerm {
     @TableField(value = "update_time")
     private Date updateTime;
 
-    /**
-     * 逻辑删除标记字段(1: 正常 -1: 已删除)。
-     */
-    @TableLogic
-    @TableField(value = "deleted_flag")
-    private Integer deletedFlag;
-
     @TableField(exist = false)
     private String deptIdListString;
 

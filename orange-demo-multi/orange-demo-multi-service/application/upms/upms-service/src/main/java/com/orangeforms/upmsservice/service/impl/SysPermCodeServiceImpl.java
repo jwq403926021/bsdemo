@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.orangeforms.common.core.base.service.BaseService;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.core.base.dao.BaseDaoMapper;
-import com.orangeforms.common.core.constant.GlobalDeletedFlag;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.object.CallResult;
 import com.orangeforms.upmsservice.dao.SysMenuPermCodeMapper;
@@ -91,7 +90,6 @@ public class SysPermCodeServiceImpl extends BaseService<SysPermCode, Long> imple
     @Override
     public SysPermCode saveNew(SysPermCode sysPermCode, Set<Long> permIdSet) {
         sysPermCode.setPermCodeId(idGenerator.nextLongId());
-        sysPermCode.setDeletedFlag(GlobalDeletedFlag.NORMAL);
         MyModelUtil.fillCommonsForInsert(sysPermCode);
         sysPermCodeMapper.insert(sysPermCode);
         if (permIdSet != null) {

@@ -1,5 +1,18 @@
-CREATE DATABASE `zzdemo-multi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-USE `zzdemo-multi`;
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80027
+ Source Host           : localhost:3306
+ Source Schema         : zzdemo-multi-2
+
+ Target Server Type    : MySQL
+ Target Server Version : 80027
+ File Encoding         : 65001
+
+ Date: 27/02/2022 09:08:42
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -9,27 +22,27 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `undo_log`;
 CREATE TABLE `undo_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'increment id',
-  `branch_id` bigint(20) NOT NULL COMMENT 'branch transaction id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'increment id',
+  `branch_id` bigint NOT NULL COMMENT 'branch transaction id',
   `xid` varchar(100) NOT NULL COMMENT 'global transaction id',
   `context` varchar(128) NOT NULL COMMENT 'undo_log context,such as serialization',
   `rollback_info` longblob NOT NULL COMMENT 'rollback info',
-  `log_status` int(11) NOT NULL COMMENT '0:normal status,1:defense status',
+  `log_status` int NOT NULL COMMENT '0:normal status,1:defense status',
   `log_created` datetime NOT NULL COMMENT 'create datetime',
   `log_modified` datetime NOT NULL COMMENT 'modify datetime',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='AT transaction mode undo table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='AT transaction mode undo table';
 
 -- ----------------------------
 -- Table structure for zz_area_code
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_area_code`;
 CREATE TABLE `zz_area_code` (
-  `area_id` bigint(20) unsigned NOT NULL COMMENT '行政区划主键Id',
-  `area_name` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '行政区划名称',
-  `area_level` int(11) NOT NULL COMMENT '行政区划级别 (1: 省级别 2: 市级别 3: 区级别)',
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父级行政区划Id',
+  `area_id` bigint unsigned NOT NULL COMMENT '行政区划主键Id',
+  `area_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '行政区划名称',
+  `area_level` int NOT NULL COMMENT '行政区划级别 (1: 省级别 2: 市级别 3: 区级别)',
+  `parent_id` bigint DEFAULT NULL COMMENT '父级行政区划Id',
   PRIMARY KEY (`area_id`) USING BTREE,
   KEY `idx_level` (`area_level`) USING BTREE,
   KEY `idx_area_name` (`area_name`) USING BTREE,
@@ -3709,17 +3722,17 @@ CREATE TABLE `zz_auth_client_details` (
   `client_desc` varchar(128) DEFAULT '' COMMENT '应用名称',
   `authorized_grant_types` varchar(256) DEFAULT NULL COMMENT '5种oauth授权方式(authorization_code,password,refresh_token,client_credentials)',
   `web_server_redirect_uri` varchar(256) DEFAULT NULL COMMENT 'UAA回调前端服务器的地址',
-  `access_token_validity` int(11) DEFAULT NULL COMMENT 'access_token有效期',
-  `refresh_token_validity` int(11) DEFAULT NULL COMMENT 'refresh_token有效期',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者Id',
+  `access_token_validity` int DEFAULT NULL COMMENT 'access_token有效期',
+  `refresh_token_validity` int DEFAULT NULL COMMENT 'refresh_token有效期',
+  `create_user_id` bigint NOT NULL COMMENT '创建者Id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted_flag` int(11) NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
+  `deleted_flag` int NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
   PRIMARY KEY (`client_id`) USING BTREE,
   KEY `idx_create_time` (`create_time`) USING BTREE,
   KEY `idx_deleted_flag` (`deleted_flag`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of zz_auth_client_details
@@ -3733,15 +3746,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_class`;
 CREATE TABLE `zz_class` (
-  `class_id` bigint(20) NOT NULL COMMENT '班级Id',
-  `class_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '班级名称',
-  `school_id` bigint(20) NOT NULL COMMENT '学校Id',
-  `leader_id` bigint(20) NOT NULL COMMENT '学生班长Id',
-  `finish_class_hour` int(11) NOT NULL DEFAULT '0' COMMENT '已完成课时数量',
-  `class_level` tinyint(4) NOT NULL COMMENT '班级级别(0: 初级班 1: 培优班 2: 冲刺提分班 3: 竞赛班)',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户',
+  `class_id` bigint NOT NULL COMMENT '班级Id',
+  `class_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '班级名称',
+  `school_id` bigint NOT NULL COMMENT '学校Id',
+  `leader_id` bigint NOT NULL COMMENT '学生班长Id',
+  `finish_class_hour` int NOT NULL DEFAULT '0' COMMENT '已完成课时数量',
+  `class_level` tinyint NOT NULL COMMENT '班级级别(0: 初级班 1: 培优班 2: 冲刺提分班 3: 竞赛班)',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户',
   `create_time` datetime NOT NULL COMMENT '班级创建时间',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '班级状态(0: 正常 1: 解散)',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '班级状态(0: 正常 1: 解散)',
   PRIMARY KEY (`class_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -3770,9 +3783,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_class_course`;
 CREATE TABLE `zz_class_course` (
-  `class_id` bigint(20) NOT NULL COMMENT '班级Id',
-  `course_id` bigint(20) NOT NULL COMMENT '课程Id',
-  `course_order` tinyint(4) NOT NULL DEFAULT '0' COMMENT '课程顺序(数值越小越靠前)',
+  `class_id` bigint NOT NULL COMMENT '班级Id',
+  `course_id` bigint NOT NULL COMMENT '课程Id',
+  `course_order` tinyint NOT NULL DEFAULT '0' COMMENT '课程顺序(数值越小越靠前)',
   PRIMARY KEY (`class_id`,`course_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -3797,8 +3810,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_class_student`;
 CREATE TABLE `zz_class_student` (
-  `class_id` bigint(20) NOT NULL COMMENT '班级Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
+  `class_id` bigint NOT NULL COMMENT '班级Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
   PRIMARY KEY (`class_id`,`student_id`) USING BTREE,
   KEY `idx_student_id` (`student_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -3820,25 +3833,25 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_coin_stats`;
 CREATE TABLE `zz_coin_stats` (
-  `stats_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date DEFAULT NULL COMMENT '统计月份',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `province_id` bigint(20) NOT NULL COMMENT '学生所属省Id',
-  `city_id` bigint(20) NOT NULL COMMENT '学生所属城市Id',
-  `recharge_amount` int(11) NOT NULL COMMENT '学币充值量',
-  `recharge_count` int(11) NOT NULL COMMENT '学币充值人数',
-  `given_amount` int(11) NOT NULL COMMENT '学币赠送量',
-  `given_count` int(11) NOT NULL COMMENT '赠与次数',
-  `award_amount` int(11) NOT NULL COMMENT '奖励总数量',
-  `buy_course_amount` int(11) NOT NULL COMMENT '购买课程总数量',
-  `buy_course_count` int(11) NOT NULL COMMENT '购买课程次数',
-  `buy_video_amount` int(11) NOT NULL COMMENT '购买视频总数量',
-  `buy_video_count` int(11) NOT NULL COMMENT '购买视频次数',
-  `buy_paper_amount` int(11) NOT NULL COMMENT '购买作业总数量',
-  `buy_paper_count` int(11) NOT NULL COMMENT '购买作业次数',
-  `buy_flower_amount` int(11) NOT NULL COMMENT '献花消费总数量',
-  `buy_flower_count` int(11) NOT NULL COMMENT '购买消费次数',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `province_id` bigint NOT NULL COMMENT '学生所属省Id',
+  `city_id` bigint NOT NULL COMMENT '学生所属城市Id',
+  `recharge_amount` int NOT NULL COMMENT '学币充值量',
+  `recharge_count` int NOT NULL COMMENT '学币充值人数',
+  `given_amount` int NOT NULL COMMENT '学币赠送量',
+  `given_count` int NOT NULL COMMENT '赠与次数',
+  `award_amount` int NOT NULL COMMENT '奖励总数量',
+  `buy_course_amount` int NOT NULL COMMENT '购买课程总数量',
+  `buy_course_count` int NOT NULL COMMENT '购买课程次数',
+  `buy_video_amount` int NOT NULL COMMENT '购买视频总数量',
+  `buy_video_count` int NOT NULL COMMENT '购买视频次数',
+  `buy_paper_amount` int NOT NULL COMMENT '购买作业总数量',
+  `buy_paper_count` int NOT NULL COMMENT '购买作业次数',
+  `buy_flower_amount` int NOT NULL COMMENT '献花消费总数量',
+  `buy_flower_count` int NOT NULL COMMENT '购买消费次数',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_grade_id_region_id` (`stats_date`,`grade_id`,`province_id`,`city_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -3870,20 +3883,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_course`;
 CREATE TABLE `zz_course` (
-  `course_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `course_id` bigint NOT NULL COMMENT '主键Id',
   `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '课程名称',
   `price` decimal(10,2) NOT NULL COMMENT '课程价格',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '课程描述',
-  `teacher_id` bigint(20) NOT NULL COMMENT '主讲老师Id',
-  `difficulty` int(11) NOT NULL COMMENT '课程难度(0: 容易 1: 普通 2: 很难)',
+  `teacher_id` bigint NOT NULL COMMENT '主讲老师Id',
+  `difficulty` int NOT NULL COMMENT '课程难度(0: 容易 1: 普通 2: 很难)',
   `online` bit(1) NOT NULL COMMENT '是否上架(0: 没有上架 1: 上架)',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `subject_id` tinyint(4) NOT NULL COMMENT '学科Id',
-  `category_id` int(11) NOT NULL COMMENT '课程分类Id',
-  `class_hour` int(11) NOT NULL COMMENT '课时数量',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `subject_id` tinyint NOT NULL COMMENT '学科Id',
+  `category_id` int NOT NULL COMMENT '课程分类Id',
+  `class_hour` int NOT NULL COMMENT '课时数量',
   `picture_url` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '多张课程图片地址',
-  `school_id` bigint(20) DEFAULT NULL COMMENT '所属校区',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户Id',
+  `school_id` bigint DEFAULT NULL COMMENT '所属校区',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '最后修改时间',
   PRIMARY KEY (`course_id`) USING BTREE
@@ -3927,9 +3940,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_course_category`;
 CREATE TABLE `zz_course_category` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `category_id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `category_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '课程类别名称',
-  `status` int(11) NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
+  `status` int NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
   PRIMARY KEY (`category_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -3952,13 +3965,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_course_section`;
 CREATE TABLE `zz_course_section` (
-  `section_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `section_id` bigint NOT NULL COMMENT '主键Id',
   `section_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '章节名称',
-  `show_order` int(11) NOT NULL COMMENT '显示顺序',
-  `course_id` bigint(20) NOT NULL COMMENT '课程Id',
-  `class_hour` tinyint(4) NOT NULL COMMENT '课时数量',
-  `attachment_url` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '课程附件地址',
-  `create_user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `show_order` int NOT NULL COMMENT '显示顺序',
+  `course_id` bigint NOT NULL COMMENT '课程Id',
+  `class_hour` tinyint NOT NULL COMMENT '课时数量',
+  `attachment_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '课程附件地址',
+  `create_user_id` bigint NOT NULL COMMENT '用户Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`section_id`) USING BTREE
@@ -4035,8 +4048,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_course_section_paper`;
 CREATE TABLE `zz_course_section_paper` (
-  `course_section_id` bigint(20) NOT NULL COMMENT '课程Id',
-  `paper_id` bigint(20) NOT NULL COMMENT '作业Id',
+  `course_section_id` bigint NOT NULL COMMENT '课程Id',
+  `paper_id` bigint NOT NULL COMMENT '作业Id',
   PRIMARY KEY (`course_section_id`,`paper_id`) USING BTREE,
   KEY `idx_paper_id` (`paper_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -4054,16 +4067,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_course_trans_stats`;
 CREATE TABLE `zz_course_trans_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
-  `subject_id` tinyint(4) NOT NULL COMMENT '科目Id',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `grade_name` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '年级名称',
-  `course_id` bigint(20) NOT NULL COMMENT '课程Id',
-  `course_name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '课程名称',
-  `student_attend_count` int(11) NOT NULL COMMENT '学生上课次数',
-  `student_flower_amount` int(11) NOT NULL COMMENT '学生献花数量',
-  `student_flower_count` int(11) NOT NULL COMMENT '学生献花次数',
+  `subject_id` tinyint NOT NULL COMMENT '科目Id',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `grade_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '年级名称',
+  `course_id` bigint NOT NULL COMMENT '课程Id',
+  `course_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '课程名称',
+  `student_attend_count` int NOT NULL COMMENT '学生上课次数',
+  `student_flower_amount` int NOT NULL COMMENT '学生献花数量',
+  `student_flower_count` int NOT NULL COMMENT '学生献花次数',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_subject_id_grade_course_id` (`stats_date`,`grade_id`,`course_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -4085,25 +4098,11 @@ INSERT INTO `zz_course_trans_stats` VALUES (8, '2020-01-11', 0, 4, NULL, 1016917
 COMMIT;
 
 -- ----------------------------
--- 事务型消息的生产者发送数据流水表
--- ----------------------------
-DROP TABLE IF EXISTS `zz_transaction_message_producer_trans`;
-CREATE TABLE `zz_transaction_message_producer_trans` (
-  `trans_id` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT '消息事务Id',
-  `message_type` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '消息类型',
-  `command_type` varchar(64) COLLATE utf8mb4_bin COMMENT '命令类型',
-  `message_topic` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '消息主题',
-  `producer_trace_id` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '生产者traceId',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`trans_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用于事务型消息的生产者发送数据流水表';
-
--- ----------------------------
 -- Table structure for zz_data_sync_consumer_trans
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_data_sync_consumer_trans`;
 CREATE TABLE `zz_data_sync_consumer_trans` (
-  `trans_id` char(80) COLLATE utf8mb4_bin NOT NULL COMMENT '同步事务Id',
+  `trans_id` char(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '同步事务Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`trans_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -4113,14 +4112,14 @@ CREATE TABLE `zz_data_sync_consumer_trans` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_data_sync_producer_trans`;
 CREATE TABLE `zz_data_sync_producer_trans` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `trans_id` char(80) COLLATE utf8mb4_bin NOT NULL COMMENT '同步事务Id',
-  `message_type` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '消息类型',
-  `message_command` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '消息的命令类型',
-  `message_data` mediumtext COLLATE utf8mb4_bin NOT NULL COMMENT '消息数据',
-  `message_topic` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '消息主题',
-  `message_queue_selector_key` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '计算消息队列选择器的Key值',
-  `producer_trace_id` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '生产者traceId',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `trans_id` char(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '同步事务Id',
+  `message_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息类型',
+  `message_command` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息的命令类型',
+  `message_data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息数据',
+  `message_topic` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息主题',
+  `message_queue_selector_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '计算消息队列选择器的Key值',
+  `producer_trace_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '生产者traceId',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `sent_status` bit(1) NOT NULL DEFAULT b'0' COMMENT '发送状态',
@@ -4133,8 +4132,8 @@ CREATE TABLE `zz_data_sync_producer_trans` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_data_sync_producer_update_mark`;
 CREATE TABLE `zz_data_sync_producer_update_mark` (
-  `id` int(11) NOT NULL COMMENT '主键Id',
-  `max_update_id` bigint(20) NOT NULL COMMENT '生产者读取的最大更新同步事务Id',
+  `id` int NOT NULL COMMENT '主键Id',
+  `max_update_id` bigint NOT NULL COMMENT '生产者读取的最大更新同步事务Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -4143,7 +4142,7 @@ CREATE TABLE `zz_data_sync_producer_update_mark` (
 -- Records of zz_data_sync_producer_update_mark
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_data_sync_producer_update_mark` VALUES (1,0,CURDATE());
+INSERT INTO `zz_data_sync_producer_update_mark` VALUES (1, 0, '2022-02-27 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -4151,16 +4150,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_exercise`;
 CREATE TABLE `zz_exercise` (
-  `exercise_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `exercise_id` bigint NOT NULL COMMENT '主键Id',
   `exercise_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '习题名称',
   `content_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '习题链接地址',
   `explain_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '解题链接地址',
-  `difficulty` int(11) NOT NULL COMMENT '习题难度(0: 容易 1: 普通 2: 很难)',
+  `difficulty` int NOT NULL COMMENT '习题难度(0: 容易 1: 普通 2: 很难)',
   `answer` char(11) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '答案',
-  `knowledge_id` bigint(20) NOT NULL COMMENT '所属知识点Id',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户Id',
+  `knowledge_id` bigint NOT NULL COMMENT '所属知识点Id',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `available` tinyint(4) NOT NULL COMMENT '是否可用(-1: 不可用 1: 可用)',
+  `available` tinyint NOT NULL COMMENT '是否可用(-1: 不可用 1: 可用)',
   PRIMARY KEY (`exercise_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4187,17 +4186,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_exercise_stats`;
 CREATE TABLE `zz_exercise_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
-  `subject_id` tinyint(4) NOT NULL COMMENT '科目Id',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `province_id` bigint(20) NOT NULL COMMENT '所属省Id',
-  `city_id` bigint(20) NOT NULL COMMENT '所属城市Id',
-  `total_count` int(11) NOT NULL COMMENT '答题数量',
-  `correct_count` int(11) NOT NULL COMMENT '正确数量',
-  `consume_coin` int(11) DEFAULT NULL COMMENT '消耗学币',
-  `gain_coin` int(11) DEFAULT NULL COMMENT '奖励学币',
-  `gain_experience` int(11) DEFAULT NULL COMMENT '奖励经验值',
+  `subject_id` tinyint NOT NULL COMMENT '科目Id',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `province_id` bigint NOT NULL COMMENT '所属省Id',
+  `city_id` bigint NOT NULL COMMENT '所属城市Id',
+  `total_count` int NOT NULL COMMENT '答题数量',
+  `correct_count` int NOT NULL COMMENT '正确数量',
+  `consume_coin` int DEFAULT NULL COMMENT '消耗学币',
+  `gain_coin` int DEFAULT NULL COMMENT '奖励学币',
+  `gain_experience` int DEFAULT NULL COMMENT '奖励经验值',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_subject_id_grade_id_region_id` (`stats_date`,`subject_id`,`grade_id`,`province_id`,`city_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -4226,19 +4225,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_exercise_trans_stats`;
 CREATE TABLE `zz_exercise_trans_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date DEFAULT NULL COMMENT '统计月份',
-  `subject_id` tinyint(4) NOT NULL COMMENT '学科Id',
-  `subject_name` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '科目名称',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `grade_name` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '年级名称',
-  `paper_id` bigint(20) NOT NULL COMMENT '作业Id',
-  `paper_name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '作业名称',
-  `exercise_id` bigint(20) NOT NULL COMMENT '习题Id',
-  `exercise_name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '习题名称',
-  `total_count` int(11) NOT NULL DEFAULT '0' COMMENT '做题数量',
-  `correct_count` int(11) NOT NULL DEFAULT '0' COMMENT '做正确数量',
+  `subject_id` tinyint NOT NULL COMMENT '学科Id',
+  `subject_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '科目名称',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `grade_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '年级名称',
+  `paper_id` bigint NOT NULL COMMENT '作业Id',
+  `paper_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '作业名称',
+  `exercise_id` bigint NOT NULL COMMENT '习题Id',
+  `exercise_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '习题名称',
+  `total_count` int NOT NULL DEFAULT '0' COMMENT '做题数量',
+  `correct_count` int NOT NULL DEFAULT '0' COMMENT '做正确数量',
   PRIMARY KEY (`stats_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4263,9 +4262,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_grade`;
 CREATE TABLE `zz_grade` (
-  `grade_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `grade_id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `grade_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '年级名称',
-  `status` int(11) NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
+  `status` int NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
   PRIMARY KEY (`grade_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4292,14 +4291,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_job_update_mark`;
 CREATE TABLE `zz_job_update_mark` (
-  `handler_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `handler_name` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT 'Job处理器的名称',
-  `handler_desc` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Job处理器的描述',
-  `source_database_desc` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '源表数据库的描述',
-  `source_table_name` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT '源数据表名称',
-  `target_table_name` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT '目标数据表名称',
-  `max_numeric_id` bigint(20) DEFAULT NULL COMMENT '最后操作最大数值型Id',
-  `max_string_id` char(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '最后操作最大字符型Id',
+  `handler_id` bigint NOT NULL COMMENT '主键Id',
+  `handler_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Job处理器的名称',
+  `handler_desc` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Job处理器的描述',
+  `source_database_desc` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '源表数据库的描述',
+  `source_table_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '源数据表名称',
+  `target_table_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '目标数据表名称',
+  `max_numeric_id` bigint DEFAULT NULL COMMENT '最后操作最大数值型Id',
+  `max_string_id` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '最后操作最大字符型Id',
   `max_date` date DEFAULT NULL COMMENT '最后更新日期(基于日期范围计算的高水标记字段)',
   `exec_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Job最后执行时间',
   PRIMARY KEY (`handler_id`) USING BTREE
@@ -4324,14 +4323,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_knowledge`;
 CREATE TABLE `zz_knowledge` (
-  `knowledge_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `knowledge_id` bigint NOT NULL COMMENT '主键Id',
   `knowledge_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '知识点名称',
-  `subject_id` int(11) NOT NULL COMMENT '科目Id',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `edition_id` int(11) NOT NULL COMMENT '教材版本',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `subject_id` int NOT NULL COMMENT '科目Id',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `edition_id` int NOT NULL COMMENT '教材版本',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `deleted_flag` int(11) NOT NULL COMMENT '删除标记(1: 正常 -1: 逻辑删除)',
+  `deleted_flag` int NOT NULL COMMENT '删除标记(1: 正常 -1: 逻辑删除)',
   PRIMARY KEY (`knowledge_id`) USING BTREE,
   KEY `idx_subject_id` (`subject_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -4384,9 +4383,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_material_edition`;
 CREATE TABLE `zz_material_edition` (
-  `edition_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `edition_id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `edition_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '教材版本名称',
-  `status` int(11) NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
+  `status` int NOT NULL COMMENT '是否正在使用（0：不是，1：是）',
   PRIMARY KEY (`edition_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4405,15 +4404,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_paper`;
 CREATE TABLE `zz_paper` (
-  `paper_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `paper_id` bigint NOT NULL COMMENT '主键Id',
   `paper_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '作业名称',
-  `subject_id` tinyint(4) NOT NULL COMMENT '科目Id',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `paper_type` int(11) NOT NULL COMMENT '作业类型',
+  `subject_id` tinyint NOT NULL COMMENT '科目Id',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `paper_type` int NOT NULL COMMENT '作业类型',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '作业描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户Id',
-  `deleted_flag` tinyint(4) NOT NULL DEFAULT '1' COMMENT '删除标记(-1: 删除 1: 正常)',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户Id',
+  `deleted_flag` tinyint NOT NULL DEFAULT '1' COMMENT '删除标记(-1: 删除 1: 正常)',
   PRIMARY KEY (`paper_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4462,9 +4461,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_paper_exercise`;
 CREATE TABLE `zz_paper_exercise` (
-  `paper_id` bigint(20) NOT NULL COMMENT '作业Id',
-  `exercise_id` bigint(20) NOT NULL COMMENT '习题Id',
-  `required_flag` tinyint(4) DEFAULT '0' COMMENT '必做习题',
+  `paper_id` bigint NOT NULL COMMENT '作业Id',
+  `exercise_id` bigint NOT NULL COMMENT '习题Id',
+  `required_flag` tinyint DEFAULT '0' COMMENT '必做习题',
   PRIMARY KEY (`paper_id`,`exercise_id`) USING BTREE,
   KEY `idx_exercise_id` (`exercise_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -4506,15 +4505,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_paper_exercise_trans`;
 CREATE TABLE `zz_paper_exercise_trans` (
-  `trans_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
-  `school_id` bigint(20) NOT NULL DEFAULT '19' COMMENT '校区',
-  `paper_id` bigint(20) NOT NULL COMMENT '作业Id',
-  `exercise_id` bigint(20) NOT NULL COMMENT '习题Id',
-  `device_type` tinyint(4) NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
+  `school_id` bigint NOT NULL DEFAULT '19' COMMENT '校区',
+  `paper_id` bigint NOT NULL COMMENT '作业Id',
+  `exercise_id` bigint NOT NULL COMMENT '习题Id',
+  `device_type` tinyint NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
   `correct_flag` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否正确(0: 不正确 1: 正确)',
-  `used_seconds` int(11) NOT NULL COMMENT '所用秒数',
+  `used_seconds` int NOT NULL COMMENT '所用秒数',
   `commit_time` datetime NOT NULL COMMENT '提交时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
   KEY `idx_paper_id` (`paper_id`) USING BTREE,
@@ -4593,8 +4592,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_paper_type`;
 CREATE TABLE `zz_paper_type` (
-  `paper_type_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '作业类型Id',
-  `paper_type_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '作业类型名称',
+  `paper_type_id` int NOT NULL AUTO_INCREMENT COMMENT '作业类型Id',
+  `paper_type_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '作业类型名称',
   PRIMARY KEY (`paper_type_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4611,12 +4610,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_school_info`;
 CREATE TABLE `zz_school_info` (
-  `school_id` bigint(20) NOT NULL COMMENT '学校Id',
-  `school_name` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT '学校名称',
-  `province_id` bigint(20) NOT NULL COMMENT '所在省Id',
-  `province_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '所在省份名称',
-  `city_id` bigint(20) NOT NULL COMMENT '所在城市Id',
-  `city_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '所在省份名称',
+  `school_id` bigint NOT NULL COMMENT '学校Id',
+  `school_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学校名称',
+  `province_id` bigint NOT NULL COMMENT '所在省Id',
+  `province_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '所在省份名称',
+  `city_id` bigint NOT NULL COMMENT '所在城市Id',
+  `city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '所在省份名称',
   PRIMARY KEY (`school_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4635,22 +4634,22 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_school_stats`;
 CREATE TABLE `zz_school_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date NOT NULL COMMENT '统计月份',
-  `province_id` bigint(20) NOT NULL COMMENT '省份Id',
-  `city_id` bigint(20) NOT NULL COMMENT '城市Id',
-  `school_id` bigint(20) NOT NULL COMMENT '学校Id',
-  `new_class_student_count` int(11) NOT NULL DEFAULT '0' COMMENT '新增学生数量',
-  `new_class_student_coin_amount` int(11) NOT NULL DEFAULT '0' COMMENT '班级新增学生学币数量',
-  `new_class_coin_amount` int(11) NOT NULL COMMENT '新增班级学币数量',
-  `new_class_count` int(11) NOT NULL COMMENT '新增班级数量',
-  `watch_video_count` int(11) NOT NULL COMMENT '观看视频数量',
-  `video_coin_amount` int(11) NOT NULL COMMENT '观看视频课程学币数量',
-  `flower_count` int(11) NOT NULL COMMENT '献花次数',
-  `flower_coin_amount` int(11) NOT NULL COMMENT '献花学币数量',
-  `exercise_count` int(11) NOT NULL COMMENT '做题数量',
-  `exercise_coin_amount` int(11) NOT NULL COMMENT '做题学币数量',
+  `province_id` bigint NOT NULL COMMENT '省份Id',
+  `city_id` bigint NOT NULL COMMENT '城市Id',
+  `school_id` bigint NOT NULL COMMENT '学校Id',
+  `new_class_student_count` int NOT NULL DEFAULT '0' COMMENT '新增学生数量',
+  `new_class_student_coin_amount` int NOT NULL DEFAULT '0' COMMENT '班级新增学生学币数量',
+  `new_class_coin_amount` int NOT NULL COMMENT '新增班级学币数量',
+  `new_class_count` int NOT NULL COMMENT '新增班级数量',
+  `watch_video_count` int NOT NULL COMMENT '观看视频数量',
+  `video_coin_amount` int NOT NULL COMMENT '观看视频课程学币数量',
+  `flower_count` int NOT NULL COMMENT '献花次数',
+  `flower_coin_amount` int NOT NULL COMMENT '献花学币数量',
+  `exercise_count` int NOT NULL COMMENT '做题数量',
+  `exercise_coin_amount` int NOT NULL COMMENT '做题学币数量',
   PRIMARY KEY (`stats_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1019195157115699201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -4677,19 +4676,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student`;
 CREATE TABLE `zz_student` (
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `login_mobile` varchar(20) COLLATE utf8mb4_bin NOT NULL COMMENT '登录手机',
-  `student_name` varchar(20) COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
-  `province_id` bigint(20) NOT NULL COMMENT '所在省份Id',
-  `city_id` bigint(20) NOT NULL COMMENT '所在城市Id',
-  `district_id` bigint(20) NOT NULL COMMENT '区县Id',
-  `gender` int(11) NOT NULL COMMENT '学生性别 (0: 女生 1: 男生)',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `login_mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '登录手机',
+  `student_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
+  `province_id` bigint NOT NULL COMMENT '所在省份Id',
+  `city_id` bigint NOT NULL COMMENT '所在城市Id',
+  `district_id` bigint NOT NULL COMMENT '区县Id',
+  `gender` int NOT NULL COMMENT '学生性别 (0: 女生 1: 男生)',
   `birthday` date NOT NULL COMMENT '生日',
-  `experience_level` tinyint(4) NOT NULL COMMENT '经验等级 (0: 初级 1: 中级 2: 高级 3: 资深)',
-  `total_coin` int(11) NOT NULL DEFAULT '0' COMMENT '总共充值学币数量',
-  `left_coin` int(11) NOT NULL COMMENT '可用学币数量',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `school_id` bigint(20) NOT NULL COMMENT '校区Id',
+  `experience_level` tinyint NOT NULL COMMENT '经验等级 (0: 初级 1: 中级 2: 高级 3: 资深)',
+  `total_coin` int NOT NULL DEFAULT '0' COMMENT '总共充值学币数量',
+  `left_coin` int NOT NULL COMMENT '可用学币数量',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `school_id` bigint NOT NULL COMMENT '校区Id',
   `register_time` datetime NOT NULL COMMENT '注册时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '学生状态 (0: 正常 1: 锁定 2: 注销)',
   PRIMARY KEY (`student_id`) USING BTREE,
@@ -4713,27 +4712,27 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_action_stats`;
 CREATE TABLE `zz_student_action_stats` (
-  `stats_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `stats_id` bigint NOT NULL COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date DEFAULT NULL COMMENT '统计小时',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `province_id` bigint(20) NOT NULL COMMENT '学生所在省Id',
-  `city_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '学生所在城市Id',
-  `buy_course_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购课学币数量',
-  `buy_course_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买课程次数',
-  `buy_video_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买视频学币数量',
-  `buy_video_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买视频次数',
-  `buy_paper_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买作业学币数量',
-  `buy_paper_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买作业次数',
-  `buy_flower_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买献花数量',
-  `buy_flower_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买献花次数',
-  `recharge_coin_amount` int(11) NOT NULL DEFAULT '0' COMMENT '充值学币数量',
-  `recharge_coin_count` int(11) NOT NULL DEFAULT '0' COMMENT '充值学币次数',
-  `do_course_count` int(11) NOT NULL COMMENT '线下课程上课次数',
-  `watch_video_count` int(11) NOT NULL DEFAULT '0' COMMENT '观看视频次数',
-  `watch_video_total_second` int(11) NOT NULL COMMENT '购买献花消费学币数量',
-  `do_exercise_count` int(11) NOT NULL DEFAULT '0' COMMENT '做题数量',
-  `do_exercise_correct_count` int(11) NOT NULL DEFAULT '0' COMMENT '做题正确的数量',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `province_id` bigint NOT NULL COMMENT '学生所在省Id',
+  `city_id` bigint NOT NULL DEFAULT '0' COMMENT '学生所在城市Id',
+  `buy_course_amount` int NOT NULL DEFAULT '0' COMMENT '购课学币数量',
+  `buy_course_count` int NOT NULL DEFAULT '0' COMMENT '购买课程次数',
+  `buy_video_amount` int NOT NULL DEFAULT '0' COMMENT '购买视频学币数量',
+  `buy_video_count` int NOT NULL DEFAULT '0' COMMENT '购买视频次数',
+  `buy_paper_amount` int NOT NULL DEFAULT '0' COMMENT '购买作业学币数量',
+  `buy_paper_count` int NOT NULL DEFAULT '0' COMMENT '购买作业次数',
+  `buy_flower_amount` int NOT NULL DEFAULT '0' COMMENT '购买献花数量',
+  `buy_flower_count` int NOT NULL DEFAULT '0' COMMENT '购买献花次数',
+  `recharge_coin_amount` int NOT NULL DEFAULT '0' COMMENT '充值学币数量',
+  `recharge_coin_count` int NOT NULL DEFAULT '0' COMMENT '充值学币次数',
+  `do_course_count` int NOT NULL COMMENT '线下课程上课次数',
+  `watch_video_count` int NOT NULL DEFAULT '0' COMMENT '观看视频次数',
+  `watch_video_total_second` int NOT NULL COMMENT '购买献花消费学币数量',
+  `do_exercise_count` int NOT NULL DEFAULT '0' COMMENT '做题数量',
+  `do_exercise_correct_count` int NOT NULL DEFAULT '0' COMMENT '做题正确的数量',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_grade_id_region_id` (`stats_date`,`grade_id`,`province_id`,`city_id`) USING BTREE,
   KEY `idx_province_id` (`province_id`) USING BTREE,
@@ -4765,20 +4764,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_action_trans`;
 CREATE TABLE `zz_student_action_trans` (
-  `trans_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
-  `school_id` bigint(20) NOT NULL COMMENT '学生校区',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `action_type` tinyint(4) NOT NULL COMMENT '行为类型(0: 充值  1: 购课 2: 上课签到 3: 上课签退 4: 看视频课 5: 做作业 6: 刷题 7: 献花)',
-  `device_type` tinyint(4) NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
-  `watch_video_seconds` int(11) DEFAULT NULL COMMENT '看视频秒数',
-  `flower_count` int(11) DEFAULT NULL COMMENT '购买献花数量',
-  `paper_count` int(11) DEFAULT NULL COMMENT '购买作业数量',
-  `video_count` int(11) DEFAULT NULL COMMENT '购买视频数量',
-  `course_count` int(11) DEFAULT NULL COMMENT '购买课程数量',
-  `coin_count` int(11) DEFAULT NULL COMMENT '充值学币数量',
-  `exercise_correct_flag` tinyint(4) DEFAULT NULL COMMENT '做题是否正确标记',
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
+  `school_id` bigint NOT NULL COMMENT '学生校区',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `action_type` tinyint NOT NULL COMMENT '行为类型(0: 充值  1: 购课 2: 上课签到 3: 上课签退 4: 看视频课 5: 做作业 6: 刷题 7: 献花)',
+  `device_type` tinyint NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
+  `watch_video_seconds` int DEFAULT NULL COMMENT '看视频秒数',
+  `flower_count` int DEFAULT NULL COMMENT '购买献花数量',
+  `paper_count` int DEFAULT NULL COMMENT '购买作业数量',
+  `video_count` int DEFAULT NULL COMMENT '购买视频数量',
+  `course_count` int DEFAULT NULL COMMENT '购买课程数量',
+  `coin_count` int DEFAULT NULL COMMENT '充值学币数量',
+  `exercise_correct_flag` tinyint DEFAULT NULL COMMENT '做题是否正确标记',
   `create_time` datetime NOT NULL COMMENT '发生时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
   KEY `idx_student_id` (`student_id`) USING BTREE,
@@ -5031,18 +5030,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_coin_trans`;
 CREATE TABLE `zz_student_coin_trans` (
-  `trans_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
-  `school_id` bigint(20) NOT NULL COMMENT '学生校区',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `action_type` tinyint(4) NOT NULL COMMENT '充值类型(0: 购买 1: 赠与 2: 奖励 3: 购课 4: 购买视频课程 5: 购买作业 6: 献花)',
-  `device_type` tinyint(4) NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
-  `coin_count` int(11) NOT NULL COMMENT '学币数量',
-  `course_id` bigint(20) DEFAULT NULL COMMENT '线下课程Id',
-  `video_course_id` bigint(20) DEFAULT NULL COMMENT '视频课程Id',
-  `teacher_id` bigint(20) DEFAULT NULL COMMENT '老师Id',
-  `paper_id` bigint(20) DEFAULT NULL COMMENT '作业Id',
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
+  `school_id` bigint NOT NULL COMMENT '学生校区',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `action_type` tinyint NOT NULL COMMENT '充值类型(0: 购买 1: 赠与 2: 奖励 3: 购课 4: 购买视频课程 5: 购买作业 6: 献花)',
+  `device_type` tinyint NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
+  `coin_count` int NOT NULL COMMENT '学币数量',
+  `course_id` bigint DEFAULT NULL COMMENT '线下课程Id',
+  `video_course_id` bigint DEFAULT NULL COMMENT '视频课程Id',
+  `teacher_id` bigint DEFAULT NULL COMMENT '老师Id',
+  `paper_id` bigint DEFAULT NULL COMMENT '作业Id',
   `create_time` datetime NOT NULL COMMENT '发生时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
   KEY `idx_student_id` (`student_id`) USING BTREE,
@@ -5213,8 +5212,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_course`;
 CREATE TABLE `zz_student_course` (
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `course_id` bigint(20) NOT NULL COMMENT '课程Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `course_id` bigint NOT NULL COMMENT '课程Id',
   PRIMARY KEY (`student_id`,`course_id`) USING BTREE,
   KEY `idx_student_id` (`student_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -5224,13 +5223,13 @@ CREATE TABLE `zz_student_course` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_course_trans`;
 CREATE TABLE `zz_student_course_trans` (
-  `trans_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
-  `school_id` bigint(20) NOT NULL COMMENT '学生校区',
-  `action_type` tinyint(4) NOT NULL COMMENT '行为类型(0: 上课签到 1: 下课签退 2: 献花 3: 老师评价)',
-  `course_id` bigint(20) NOT NULL COMMENT '课程Id',
-  `flower_count` int(11) DEFAULT NULL COMMENT '献花数量',
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
+  `school_id` bigint NOT NULL COMMENT '学生校区',
+  `action_type` tinyint NOT NULL COMMENT '行为类型(0: 上课签到 1: 下课签退 2: 献花 3: 老师评价)',
+  `course_id` bigint NOT NULL COMMENT '课程Id',
+  `flower_count` int DEFAULT NULL COMMENT '献花数量',
   `create_time` datetime NOT NULL COMMENT '发生时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
   KEY `idx_course_id` (`student_id`) USING BTREE,
@@ -5290,16 +5289,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_registry_stats`;
 CREATE TABLE `zz_student_registry_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计时间',
   `stats_month` date DEFAULT NULL COMMENT '统计月份',
-  `grade_id` int(11) NOT NULL COMMENT '年级Id',
-  `grade_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '年级名称',
-  `province_id` bigint(20) NOT NULL COMMENT '学生所属省份Id',
-  `city_id` bigint(20) NOT NULL COMMENT '学生所属城市Id',
-  `web_count` int(11) NOT NULL DEFAULT '0' COMMENT 'Web注册人数',
-  `ios_count` int(11) NOT NULL DEFAULT '0' COMMENT 'iOS注册人数',
-  `android_count` int(11) NOT NULL DEFAULT '0' COMMENT 'Android注册人数',
+  `grade_id` int NOT NULL COMMENT '年级Id',
+  `grade_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '年级名称',
+  `province_id` bigint NOT NULL COMMENT '学生所属省份Id',
+  `city_id` bigint NOT NULL COMMENT '学生所属城市Id',
+  `web_count` int NOT NULL DEFAULT '0' COMMENT 'Web注册人数',
+  `ios_count` int NOT NULL DEFAULT '0' COMMENT 'iOS注册人数',
+  `android_count` int NOT NULL DEFAULT '0' COMMENT 'Android注册人数',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_grade_id_region_id` (`stats_date`,`grade_id`,`province_id`,`city_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -5333,11 +5332,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_registry_trans`;
 CREATE TABLE `zz_student_registry_trans` (
-  `trans_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
-  `school_id` bigint(20) NOT NULL COMMENT '学生校区',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
+  `trans_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生姓名',
+  `school_id` bigint NOT NULL COMMENT '学生校区',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
   `device_type` tinyint(1) NOT NULL COMMENT '注册设备类型',
   `create_time` datetime NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
@@ -5399,24 +5398,24 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_student_stats`;
 CREATE TABLE `zz_student_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `buy_course_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购课学币数量',
-  `buy_course_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买课程次数',
-  `buy_video_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买视频学币数量',
-  `buy_video_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买视频次数',
-  `buy_paper_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买作业学币数量',
-  `buy_paper_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买作业次数',
-  `buy_flower_amount` int(11) NOT NULL DEFAULT '0' COMMENT '购买献花数量',
-  `buy_flower_count` int(11) NOT NULL DEFAULT '0' COMMENT '购买献花次数',
-  `recharge_coin_amount` int(11) NOT NULL DEFAULT '0' COMMENT '充值学币数量',
-  `recharge_coin_count` int(11) NOT NULL DEFAULT '0' COMMENT '充值学币次数',
-  `do_course_count` int(11) NOT NULL COMMENT '线下课程上课次数',
-  `watch_video_count` int(11) NOT NULL DEFAULT '0' COMMENT '观看视频次数',
-  `watch_video_total_second` int(11) NOT NULL COMMENT '购买献花消费学币数量',
-  `do_exercise_count` int(11) NOT NULL DEFAULT '0' COMMENT '做题数量',
-  `do_exercise_correct_count` int(11) NOT NULL DEFAULT '0' COMMENT '做题正确的数量',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `buy_course_amount` int NOT NULL DEFAULT '0' COMMENT '购课学币数量',
+  `buy_course_count` int NOT NULL DEFAULT '0' COMMENT '购买课程次数',
+  `buy_video_amount` int NOT NULL DEFAULT '0' COMMENT '购买视频学币数量',
+  `buy_video_count` int NOT NULL DEFAULT '0' COMMENT '购买视频次数',
+  `buy_paper_amount` int NOT NULL DEFAULT '0' COMMENT '购买作业学币数量',
+  `buy_paper_count` int NOT NULL DEFAULT '0' COMMENT '购买作业次数',
+  `buy_flower_amount` int NOT NULL DEFAULT '0' COMMENT '购买献花数量',
+  `buy_flower_count` int NOT NULL DEFAULT '0' COMMENT '购买献花次数',
+  `recharge_coin_amount` int NOT NULL DEFAULT '0' COMMENT '充值学币数量',
+  `recharge_coin_count` int NOT NULL DEFAULT '0' COMMENT '充值学币次数',
+  `do_course_count` int NOT NULL COMMENT '线下课程上课次数',
+  `watch_video_count` int NOT NULL DEFAULT '0' COMMENT '观看视频次数',
+  `watch_video_total_second` int NOT NULL COMMENT '购买献花消费学币数量',
+  `do_exercise_count` int NOT NULL DEFAULT '0' COMMENT '做题数量',
+  `do_exercise_correct_count` int NOT NULL DEFAULT '0' COMMENT '做题正确的数量',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_student_id` (`stats_date`,`student_id`) USING BTREE,
   KEY `idx_student_id` (`student_id`) USING BTREE
@@ -5427,12 +5426,12 @@ CREATE TABLE `zz_student_stats` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_data_perm`;
 CREATE TABLE `zz_sys_data_perm` (
-  `data_perm_id` bigint(20) NOT NULL COMMENT '主键',
-  `data_perm_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '显示名称',
-  `rule_type` tinyint(4) NOT NULL COMMENT '数据权限规则类型(0: 全部可见 1: 只看自己 2: 只看本部门 3: 本部门及子部门 4: 多部门及子部门 5: 自定义部门列表)。',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `data_perm_id` bigint NOT NULL COMMENT '主键',
+  `data_perm_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '显示名称',
+  `rule_type` tinyint NOT NULL COMMENT '数据权限规则类型(0: 全部可见 1: 只看自己 2: 只看本部门 3: 本部门及子部门 4: 多部门及子部门 5: 自定义部门列表)。',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`data_perm_id`) USING BTREE,
   KEY `idx_create_time` (`create_time`) USING BTREE
@@ -5455,8 +5454,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_data_perm_dept`;
 CREATE TABLE `zz_sys_data_perm_dept` (
-  `data_perm_id` bigint(20) NOT NULL COMMENT '数据权限Id',
-  `dept_id` bigint(20) NOT NULL COMMENT '部门Id',
+  `data_perm_id` bigint NOT NULL COMMENT '数据权限Id',
+  `dept_id` bigint NOT NULL COMMENT '部门Id',
   PRIMARY KEY (`data_perm_id`,`dept_id`) USING BTREE,
   KEY `idx_dept_id` (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据权限和部门关联表';
@@ -5479,8 +5478,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_data_perm_user`;
 CREATE TABLE `zz_sys_data_perm_user` (
-  `data_perm_id` bigint(20) NOT NULL COMMENT '数据权限Id',
-  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `data_perm_id` bigint NOT NULL COMMENT '数据权限Id',
+  `user_id` bigint NOT NULL COMMENT '用户Id',
   PRIMARY KEY (`data_perm_id`,`user_id`) USING BTREE,
   KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据权限和用户关联表';
@@ -5511,17 +5510,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_dept`;
 CREATE TABLE `zz_sys_dept` (
-  `dept_id` bigint(20) NOT NULL COMMENT '部门Id',
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父部门Id',
-  `dept_name` varchar(50) COLLATE utf8mb4_bin NOT NULL COMMENT '部门名称',
-  `show_order` int(11) NOT NULL COMMENT '兄弟部分之间的显示顺序，数字越小越靠前',
-  `province_id` bigint(20) NOT NULL COMMENT '所在省Id',
-  `city_id` bigint(20) NOT NULL COMMENT '所属城市Id',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `dept_id` bigint NOT NULL COMMENT '部门Id',
+  `parent_id` bigint DEFAULT NULL COMMENT '父部门Id',
+  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '部门名称',
+  `show_order` int NOT NULL COMMENT '兄弟部分之间的显示顺序，数字越小越靠前',
+  `province_id` bigint NOT NULL COMMENT '所在省Id',
+  `city_id` bigint NOT NULL COMMENT '所属城市Id',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '最后更新时间',
-  `deleted_flag` int(11) NOT NULL DEFAULT '0' COMMENT '删除标记(1: 正常 -1: 已删除)',
+  `deleted_flag` int NOT NULL DEFAULT '0' COMMENT '删除标记(1: 正常 -1: 已删除)',
   PRIMARY KEY (`dept_id`) USING BTREE,
   KEY `idx_parent_id` (`parent_id`) USING BTREE,
   KEY `idx_show_order` (`show_order`) USING BTREE
@@ -5542,8 +5541,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_dept_relation`;
 CREATE TABLE `zz_sys_dept_relation` (
-  `parent_dept_id` bigint(20) NOT NULL COMMENT '父部门Id',
-  `dept_id` bigint(20) NOT NULL COMMENT '部门Id',
+  `parent_dept_id` bigint NOT NULL COMMENT '父部门Id',
+  `dept_id` bigint NOT NULL COMMENT '部门Id',
   PRIMARY KEY (`parent_dept_id`,`dept_id`) USING BTREE,
   KEY `idx_dept_id` (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='部门关联关系表';
@@ -5563,18 +5562,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_menu`;
 CREATE TABLE `zz_sys_menu` (
-  `menu_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父菜单Id，目录菜单的父菜单为null',
-  `menu_name` varchar(50) COLLATE utf8mb4_bin NOT NULL COMMENT '菜单显示名称',
-  `menu_type` int(11) NOT NULL COMMENT '(0: 目录 1: 菜单 2: 按钮 3: UI片段)',
-  `form_router_name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '前端表单路由名称，仅用于menu_type为1的菜单类型',
-  `online_form_id` bigint(20) DEFAULT NULL COMMENT '在线表单主键Id',
-  `online_menu_perm_type` int(11) DEFAULT NULL COMMENT '在线表单菜单的权限控制类型',
-  `show_order` int(11) NOT NULL COMMENT '菜单显示顺序 (值越小，排序越靠前)',
-  `icon` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '菜单图标',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `menu_id` bigint NOT NULL COMMENT '主键Id',
+  `parent_id` bigint DEFAULT NULL COMMENT '父菜单Id，目录菜单的父菜单为null',
+  `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '菜单显示名称',
+  `menu_type` int NOT NULL COMMENT '(0: 目录 1: 菜单 2: 按钮 3: UI片段)',
+  `form_router_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '前端表单路由名称，仅用于menu_type为1的菜单类型',
+  `online_form_id` bigint DEFAULT NULL COMMENT '在线表单主键Id',
+  `online_menu_perm_type` int DEFAULT NULL COMMENT '在线表单菜单的权限控制类型',
+  `show_order` int NOT NULL COMMENT '菜单显示顺序 (值越小，排序越靠前)',
+  `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '菜单图标',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`menu_id`) USING BTREE,
   KEY `idx_show_order` (`show_order`) USING BTREE,
@@ -5585,147 +5584,106 @@ CREATE TABLE `zz_sys_menu` (
 -- Records of zz_sys_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_menu` VALUES (1215454942018408448, NULL, '系统管理', 0, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399680, 1215454942018408448, '用户管理', 1, 'formSysUser', NULL, NULL, 101, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399681, 1215454942018408448, '部门管理', 1, 'formSysDept', NULL, NULL, 102, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399682, 1215454942018408448, '角色管理', 1, 'formSysRole', NULL, NULL, 103, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399684, 1215454942018408448, '数据权限管理', 1, 'formSysDataPerm', NULL, NULL, 105, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399686, 1215454942018408448, '菜单管理', 1, 'formSysMenu', NULL, NULL, 107, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399687, 1215454942018408448, '权限字管理', 1, 'formSysPermCode', NULL, NULL, 108, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399688, 1215454942018408448, '权限管理', 1, 'formSysPerm', NULL, NULL, 109, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1215454943939399689, 1215454942018408448, '字典管理', 1, 'formSysDict', NULL, NULL, 110, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222090917989584896, NULL, '业务管理', 0, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222090978572111872, NULL, '统计管理', 0, NULL, NULL, NULL, 10, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091219459379200, 1222090917989584896, '老师管理', 1, 'formTeacher', NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091293484650496, 1222090917989584896, '学生管理', 1, 'formStudent', NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091471943897088, 1222090917989584896, '知识点管理', 1, 'formKnowledge', NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091556656254976, 1222090917989584896, '习题管理', 1, 'formExercise', NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091646036873216, 1222090917989584896, '作业管理', 1, 'formPaper', NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091738747768832, 1222090917989584896, '课程管理', 1, 'formCourse', NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222091976535445504, 1222090917989584896, '班级管理', 1, 'formClass', NULL, NULL, 7, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092072740196352, 1222090917989584896, '视频课程管理', 1, 'formVideoCourse', NULL, NULL, 9, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092215921152000, 1222090978572111872, '校区统计', 1, 'formStatsSchool', NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092307075960832, 1222090978572111872, '课程统计', 1, 'formStatsCourseTrans', NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092496427814912, 1222090978572111872, '习题统计', 1, 'formStatsPaperExercise', NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092599356035072, 1222090978572111872, '学生统计', 1, 'formStatsStudentAction', NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092687679688704, 1222090978572111872, '注册统计', 1, 'formStatsStudentRegister', NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092781992808448, 1222090978572111872, '学币统计', 1, 'formStatsCoin', NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1222092891405422592, 1222090978572111872, '视频统计', 1, 'formStatsVideoTrans', NULL, NULL, 7, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936169, 1215454943939399680, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936170, 1215454943939399680, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936171, 1215454943939399680, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936172, 1215454943939399680, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936173, 1215454943939399680, '重置密码', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936174, 1215454943939399680, '权限详情', 3, NULL, NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936183, 1215454943939399681, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936184, 1215454943939399681, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936185, 1215454943939399681, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936186, 1215454943939399681, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936193, 1215454943939399682, '角色管理', 2, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936194, 1215454943939399682, '用户授权', 2, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936195, 1330135413678936193, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936196, 1330135413678936193, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936197, 1330135413678936193, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936198, 1330135413678936193, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936199, 1330135413678936193, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936200, 1330135413678936194, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936201, 1330135413678936194, '授权用户', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936202, 1330135413678936194, '移除用户', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936213, 1215454943939399684, '数据权限管理', 2, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936214, 1215454943939399684, '用户授权', 2, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936215, 1330135413678936213, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936216, 1330135413678936213, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936217, 1330135413678936213, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936218, 1330135413678936213, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936219, 1330135413678936214, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936220, 1330135413678936214, '授权用户', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936221, 1330135413678936214, '移除用户', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936231, 1215454943939399686, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936232, 1215454943939399686, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936233, 1215454943939399686, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936234, 1215454943939399686, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936235, 1215454943939399686, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936243, 1215454943939399687, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936244, 1215454943939399687, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936245, 1215454943939399687, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936246, 1215454943939399687, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936247, 1215454943939399687, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936255, 1215454943939399688, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936256, 1215454943939399688, '新增模块', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936257, 1215454943939399688, '编辑模块', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936258, 1215454943939399688, '删除模块', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936259, 1215454943939399688, '新增权限', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936260, 1215454943939399688, '编辑权限', 3, NULL, NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936261, 1215454943939399688, '删除权限', 3, NULL, NULL, NULL, 7, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936262, 1215454943939399688, '权限详情', 3, NULL, NULL, NULL, 8, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936273, 1215454943939399689, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936274, 1215454943939399689, '新增', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936275, 1215454943939399689, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936276, 1215454943939399689, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936277, 1215454943939399689, '同步缓存', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936287, 1222091219459379200, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936288, 1222091219459379200, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936289, 1222091219459379200, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936290, 1222091219459379200, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936291, 1222091219459379200, '统计', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936293, 1222091293484650496, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936294, 1222091293484650496, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936295, 1222091293484650496, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936296, 1222091293484650496, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936297, 1222091293484650496, '班级', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936299, 1222091471943897088, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936300, 1222091471943897088, '知识点信息', 2, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936301, 1222091471943897088, '删除', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936302, 1222091471943897088, '新建', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936304, 1222091556656254976, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936305, 1222091556656254976, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936306, 1222091556656254976, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936307, 1222091556656254976, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936309, 1222091646036873216, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936310, 1222091646036873216, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936311, 1222091646036873216, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936312, 1222091646036873216, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936313, 1222091646036873216, '作业习题', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936315, 1222091738747768832, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936316, 1222091738747768832, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936317, 1222091738747768832, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936318, 1222091738747768832, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936319, 1222091738747768832, '更新价格', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936321, 1222091976535445504, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936322, 1222091976535445504, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936323, 1222091976535445504, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936324, 1222091976535445504, '课程', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936325, 1222091976535445504, '学生', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936326, 1222091976535445504, '删除', 3, NULL, NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936328, 1222092072740196352, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936329, 1222092072740196352, '新建', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936330, 1222092072740196352, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936331, 1222092072740196352, '删除', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936332, 1222092072740196352, '编辑', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936333, 1222092072740196352, '删除', 3, NULL, NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936334, 1222092072740196352, '添加视频', 3, NULL, NULL, NULL, 7, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936336, 1222092215921152000, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936338, 1222092307075960832, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936340, 1222092496427814912, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936341, 1222092496427814912, '详情', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936343, 1222092599356035072, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936344, 1222092599356035072, '购课详情', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936345, 1222092599356035072, '购买视频详情', 3, NULL, NULL, NULL, 3, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936346, 1222092599356035072, '购买鲜花详情', 3, NULL, NULL, NULL, 4, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936347, 1222092599356035072, '充值详情', 3, NULL, NULL, NULL, 5, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936348, 1222092599356035072, '购买作业详情', 3, NULL, NULL, NULL, 6, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936349, 1222092599356035072, '上课详情', 3, NULL, NULL, NULL, 7, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936350, 1222092599356035072, '观看视频详情', 3, NULL, NULL, NULL, 8, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936351, 1222092599356035072, '刷题详情', 3, NULL, NULL, NULL, 9, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936353, 1222092687679688704, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936355, 1222092781992808448, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936356, 1222092781992808448, '导出', 3, NULL, NULL, NULL, 2, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1330135413678936358, 1222092891405422592, '显示', 3, NULL, NULL, NULL, 1, NULL, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_menu` VALUES (1380402889242972160, 1215454942018408448, '操作日志', 1, 'formSysOperationLog', NULL, NULL, 140, NULL, 1034211781408560753, '2021-04-09 14:11:10', 1014065909648330753, '2021-04-10 21:55:02');
-INSERT INTO `zz_sys_menu` VALUES (1380403187302797312, 1380402889242972160, '显示', 3, NULL, NULL, NULL, 1, NULL, 1034211781408560753, '2021-04-09 14:12:21', 1034211781408560753, '2021-04-09 14:12:21');
-INSERT INTO `zz_sys_menu` VALUES (1380403312339193856, 1215454942018408448, '在线用户', 1, 'formSysLoginUser', NULL, NULL, 145, NULL, 1034211781408560753, '2021-04-09 14:12:51', 1014065909648330753, '2021-04-10 21:55:13');
-INSERT INTO `zz_sys_menu` VALUES (1380403435244883968, 1380403312339193856, '显示', 3, NULL, NULL, NULL, 1, NULL, 1034211781408560753, '2021-04-09 14:13:20', 1034211781408560753, '2021-04-09 14:13:20');
-INSERT INTO `zz_sys_menu` VALUES (1380403576978804736, 1380403312339193856, '强制下线', 3, NULL, NULL, NULL, 2, NULL, 1034211781408560753, '2021-04-09 14:13:54', 1034211781408560753, '2021-04-09 14:13:54');
+INSERT INTO `zz_sys_menu` VALUES (1293376634899927040, NULL, '系统管理', 0, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704256, 1293376634899927040, '用户管理', 1, 'formSysUser', NULL, NULL, 100, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704258, 1293376634899927040, '角色管理', 1, 'formSysRole', NULL, NULL, 110, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704259, 1293376634899927040, '菜单管理', 1, 'formSysMenu', NULL, NULL, 120, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704260, 1293376634899927040, '权限字管理', 1, 'formSysPermCode', NULL, NULL, 125, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704261, 1293376634899927040, '权限管理', 1, 'formSysPerm', NULL, NULL, 130, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293376634916704262, 1293376634899927040, '字典管理', 1, 'formSysDict', NULL, NULL, 135, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293478813098840064, NULL, '业务管理', 0, NULL, NULL, NULL, 10, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293478847987060736, NULL, '统计管理', 0, NULL, NULL, NULL, 20, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293479020943380480, 1293478813098840064, '学生管理', 1, 'formStudent', NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293479114610577408, 1293478813098840064, '课程管理', 1, 'formCourse', NULL, NULL, 10, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293479177793572864, 1293478813098840064, '班级管理', 1, 'formClass', NULL, NULL, 15, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293479249499394048, 1293478847987060736, '课程统计', 1, 'formCourseStats', NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1293479313416392704, 1293478847987060736, '学生行为统计', 1, 'formStudentActionStats', NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1381236988534853632, 1293376634899927040, '在线用户', 1, 'formSysLoginUser', NULL, NULL, 145, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1450436351471128576, 1293376634899927040, '操作日志', 1, 'formSysOperationLog', NULL, NULL, 140, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1450780378271846400, 1293376634899927040, '数据权限管理', 1, 'formSysDataPerm', NULL, NULL, 115, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1450780378414452736, 1293376634899927040, '部门管理', 1, 'formSysDept', NULL, NULL, 105, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992966, 1293376634916704256, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992967, 1293376634916704256, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992968, 1293376634916704256, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992969, 1293376634916704256, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992970, 1293376634916704256, '重置密码', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992971, 1293376634916704256, '权限详情', 3, NULL, NULL, NULL, 6, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992980, 1293376634916704258, '角色管理', 2, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992981, 1293376634916704258, '用户授权', 2, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992982, 1471382975990992980, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992983, 1471382975990992980, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992984, 1471382975990992980, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992985, 1471382975990992980, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992986, 1471382975990992980, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992987, 1471382975990992981, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992988, 1471382975990992981, '授权用户', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990992989, 1471382975990992981, '移除用户', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993000, 1293376634916704259, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993001, 1293376634916704259, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993002, 1293376634916704259, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993003, 1293376634916704259, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993004, 1293376634916704259, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993012, 1293376634916704260, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993013, 1293376634916704260, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993014, 1293376634916704260, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993015, 1293376634916704260, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993016, 1293376634916704260, '权限详情', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993024, 1293376634916704261, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993025, 1293376634916704261, '新增模块', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993026, 1293376634916704261, '编辑模块', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993027, 1293376634916704261, '删除模块', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993028, 1293376634916704261, '新增权限', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993029, 1293376634916704261, '编辑权限', 3, NULL, NULL, NULL, 6, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993030, 1293376634916704261, '删除权限', 3, NULL, NULL, NULL, 7, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993031, 1293376634916704261, '权限详情', 3, NULL, NULL, NULL, 8, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993042, 1293376634916704262, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993043, 1293376634916704262, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993044, 1293376634916704262, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993045, 1293376634916704262, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993046, 1293376634916704262, '同步缓存', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993056, 1293479020943380480, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993057, 1293479020943380480, '新建', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993058, 1293479020943380480, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993059, 1293479020943380480, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993061, 1293479114610577408, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993062, 1293479114610577408, '新建', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993063, 1293479114610577408, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993064, 1293479114610577408, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993066, 1293479177793572864, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993067, 1293479177793572864, '设置班级课程', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993068, 1293479177793572864, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993069, 1293479177793572864, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993070, 1293479177793572864, '移除', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993071, 1293479177793572864, '课程顺序', 3, NULL, NULL, NULL, 6, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993072, 1293479177793572864, '移除', 3, NULL, NULL, NULL, 7, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993073, 1293479177793572864, '设置班级学生', 3, NULL, NULL, NULL, 8, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993074, 1293479177793572864, '新建', 3, NULL, NULL, NULL, 9, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993076, 1293479249499394048, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975990993078, 1293479313416392704, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187200, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187201, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187202, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187203, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 5, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187204, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 6, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187205, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 7, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187206, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 8, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187207, 1293479313416392704, '学生行为详情', 3, NULL, NULL, NULL, 9, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187209, 1381236988534853632, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187210, 1381236988534853632, '强制下线', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187215, 1450436351471128576, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187219, 1450780378271846400, '数据权限管理', 2, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187220, 1450780378271846400, '用户授权', 2, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187221, 1471382975995187219, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187222, 1471382975995187219, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187223, 1471382975995187219, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187224, 1471382975995187219, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187225, 1471382975995187220, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187226, 1471382975995187220, '授权用户', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187227, 1471382975995187220, '移除用户', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187237, 1450780378414452736, '显示', 3, NULL, NULL, NULL, 1, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187238, 1450780378414452736, '新增', 3, NULL, NULL, NULL, 2, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187239, 1450780378414452736, '编辑', 3, NULL, NULL, NULL, 3, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_menu` VALUES (1471382975995187240, 1450780378414452736, '删除', 3, NULL, NULL, NULL, 4, NULL, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -5733,8 +5691,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_menu_perm_code`;
 CREATE TABLE `zz_sys_menu_perm_code` (
-  `menu_id` bigint(20) NOT NULL COMMENT '关联菜单Id',
-  `perm_code_id` bigint(20) NOT NULL COMMENT '关联权限字Id',
+  `menu_id` bigint NOT NULL COMMENT '关联菜单Id',
+  `perm_code_id` bigint NOT NULL COMMENT '关联权限字Id',
   PRIMARY KEY (`menu_id`,`perm_code_id`) USING BTREE,
   KEY `idx_perm_code_id` (`perm_code_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='菜单和权限关系表';
@@ -5743,253 +5701,139 @@ CREATE TABLE `zz_sys_menu_perm_code` (
 -- Records of zz_sys_menu_perm_code
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936334, 1330135413674741760);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936334, 1330135413674741761);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936334, 1330135413674741762);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936334, 1330135413674741763);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936330, 1330135413674741764);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936330, 1330135413674741765);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936330, 1330135413674741766);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936330, 1330135413674741767);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936329, 1330135413674741768);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936329, 1330135413674741769);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936329, 1330135413674741770);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936329, 1330135413674741771);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936332, 1330135413674741772);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936332, 1330135413674741773);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936332, 1330135413674741774);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936332, 1330135413674741775);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936293, 1330135413674741777);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936294, 1330135413674741778);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936295, 1330135413674741779);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936296, 1330135413674741780);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936297, 1330135413674741781);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936294, 1330135413674741782);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936294, 1330135413674741783);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936294, 1330135413674741784);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936294, 1330135413674741785);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936295, 1330135413674741786);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936295, 1330135413674741787);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936295, 1330135413674741788);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936295, 1330135413674741789);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936297, 1330135413674741790);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936297, 1330135413674741791);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936287, 1330135413674741793);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936288, 1330135413674741794);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936289, 1330135413674741795);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936290, 1330135413674741796);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936291, 1330135413674741797);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936289, 1330135413674741798);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936289, 1330135413674741799);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936289, 1330135413674741800);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936289, 1330135413674741801);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936288, 1330135413674741802);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936288, 1330135413674741803);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936288, 1330135413674741804);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936288, 1330135413674741805);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936291, 1330135413674741806);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936291, 1330135413674741807);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936302, 1330135413674741808);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936302, 1330135413674741809);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936302, 1330135413674741810);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936302, 1330135413674741811);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936304, 1330135413674741813);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936305, 1330135413674741814);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936306, 1330135413674741815);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936307, 1330135413674741816);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936305, 1330135413674741817);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936305, 1330135413674741818);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936305, 1330135413674741819);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936305, 1330135413674741820);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936306, 1330135413674741821);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936306, 1330135413674741822);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936306, 1330135413674741823);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936306, 1330135413674741824);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936309, 1330135413674741826);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936310, 1330135413674741827);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936311, 1330135413674741828);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936312, 1330135413674741829);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741830);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936310, 1330135413674741831);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936310, 1330135413674741832);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936310, 1330135413674741833);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936310, 1330135413674741834);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936311, 1330135413674741835);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936311, 1330135413674741836);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936311, 1330135413674741837);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936311, 1330135413674741838);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741839);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741840);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741841);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741842);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741843);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741844);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741845);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936313, 1330135413674741846);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413674741852);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413674741853);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936064);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936065);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936066);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936067);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936068);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936069);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936070);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936071);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936072);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936073);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936074);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936075);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936076);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936315, 1330135413678936078);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936316, 1330135413678936079);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936080);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936318, 1330135413678936081);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936319, 1330135413678936082);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936316, 1330135413678936083);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936316, 1330135413678936084);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936316, 1330135413678936085);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936316, 1330135413678936086);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936087);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936088);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936089);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936090);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936091);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936092);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936093);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936317, 1330135413678936094);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936321, 1330135413678936096);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936322, 1330135413678936097);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936323, 1330135413678936098);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936099);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936100);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936326, 1330135413678936101);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936322, 1330135413678936102);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936322, 1330135413678936103);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936322, 1330135413678936104);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936322, 1330135413678936105);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936323, 1330135413678936106);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936323, 1330135413678936107);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936323, 1330135413678936108);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936323, 1330135413678936109);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936110);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936111);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936112);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936113);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936114);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936115);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936116);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936117);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936118);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936119);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936324, 1330135413678936120);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936121);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936122);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936325, 1330135413678936123);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936355, 1330135413678936125);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936356, 1330135413678936126);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936340, 1330135413678936128);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936341, 1330135413678936129);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936341, 1330135413678936130);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936341, 1330135413678936131);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936343, 1330135413678936133);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936344, 1330135413678936134);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936345, 1330135413678936135);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936346, 1330135413678936136);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936347, 1330135413678936137);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936348, 1330135413678936138);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936349, 1330135413678936139);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936350, 1330135413678936140);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936351, 1330135413678936141);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936344, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936345, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936346, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936347, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936348, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936349, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936350, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936351, 1330135413678936142);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936344, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936345, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936346, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936347, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936348, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936349, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936350, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936351, 1330135413678936143);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936353, 1330135413678936145);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936358, 1330135413678936147);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936338, 1330135413678936149);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936336, 1330135413678936151);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936328, 1330135413678936153);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936329, 1330135413678936154);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936330, 1330135413678936155);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936331, 1330135413678936156);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936332, 1330135413678936157);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936333, 1330135413678936158);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936334, 1330135413678936159);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936300, 1330135413678936160);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936300, 1330135413678936161);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936300, 1330135413678936162);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936299, 1330135413678936164);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936301, 1330135413678936165);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936302, 1330135413678936166);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936169, 1330135413678936176);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936170, 1330135413678936177);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936171, 1330135413678936178);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936172, 1330135413678936179);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936173, 1330135413678936180);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936174, 1330135413678936181);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936183, 1330135413678936188);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936184, 1330135413678936189);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936185, 1330135413678936190);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936186, 1330135413678936191);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936195, 1330135413678936204);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936200, 1330135413678936205);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936196, 1330135413678936206);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936197, 1330135413678936207);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936198, 1330135413678936208);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936199, 1330135413678936209);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936201, 1330135413678936210);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936202, 1330135413678936211);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936215, 1330135413678936223);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936219, 1330135413678936224);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936216, 1330135413678936225);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936217, 1330135413678936226);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936218, 1330135413678936227);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936220, 1330135413678936228);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936221, 1330135413678936229);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936231, 1330135413678936237);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936232, 1330135413678936238);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936233, 1330135413678936239);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936234, 1330135413678936240);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936235, 1330135413678936241);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936243, 1330135413678936249);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936244, 1330135413678936250);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936245, 1330135413678936251);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936246, 1330135413678936252);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936247, 1330135413678936253);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936255, 1330135413678936264);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936256, 1330135413678936265);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936257, 1330135413678936266);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936258, 1330135413678936267);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936259, 1330135413678936268);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936260, 1330135413678936269);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936261, 1330135413678936270);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936262, 1330135413678936271);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1215454943939399689, 1330135413678936279);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936273, 1330135413678936279);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1215454943939399689, 1330135413678936280);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936274, 1330135413678936280);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1215454943939399689, 1330135413678936281);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936275, 1330135413678936281);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1215454943939399689, 1330135413678936282);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936276, 1330135413678936282);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1215454943939399689, 1330135413678936283);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1330135413678936277, 1330135413678936283);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1380403187302797312, 1380402116614426624);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1380403435244883968, 1380402356650250240);
-INSERT INTO `zz_sys_menu_perm_code` VALUES (1380403576978804736, 1380402467937718272);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993056, 1293429171069915136);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993057, 1293429267132059648);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993057, 1293429267153031168);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993058, 1293429656866787328);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993058, 1293429656879370240);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993058, 1293434467691532288);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993058, 1293434543608434688);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993057, 1293436368944369664);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993057, 1293436524536270848);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993057, 1293440313007804416);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993058, 1293440371212161024);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993059, 1293440523041771520);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993061, 1293440813111447552);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993062, 1293441007530020864);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993062, 1293441007542603776);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993063, 1293441136060272640);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993063, 1293441136077049856);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993062, 1293441795115454464);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993062, 1293441892486221824);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993063, 1293442667975282688);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993063, 1293442766797279232);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993062, 1293444386415185920);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993063, 1293444441515757568);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993064, 1293444524432953344);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993076, 1293463749092446208);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993078, 1293473829204529152);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187200, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187201, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187202, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187203, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187204, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187205, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187206, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187207, 1293475157104398336);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187200, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187201, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187202, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187203, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187204, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187205, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187206, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187207, 1293475157112786944);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187200, 1293476824138911744);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187201, 1293477488848015360);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187202, 1293477691462258688);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187203, 1293477898908340224);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187204, 1293478093347885056);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187205, 1293478281131069440);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187206, 1293478468947808256);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187207, 1293478698393014272);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993074, 1310160670251028480);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993074, 1310160670297165824);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993068, 1310160774819221504);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993068, 1310160774848581632);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993071, 1310161223228067840);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993071, 1310161223257427968);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993073, 1310161356145561600);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993073, 1310161356158144512);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993067, 1310161474563346432);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993067, 1310161474580123648);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993067, 1310162766899712000);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993073, 1310163498042396672);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993071, 1310164330313945088);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993071, 1310164964761145344);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993068, 1310167306982133760);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993068, 1310167373478629376);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993074, 1310167756917706752);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993074, 1310167812844556288);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993066, 1317447995897155584);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993074, 1317449849376870400);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993067, 1317449931765583872);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993073, 1317449997456773120);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993070, 1317450181515415552);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993071, 1317450267221823488);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993072, 1317450395492028416);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993068, 1317450488903372800);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993069, 1317450579131240448);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992966, 1471382975990992973);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992967, 1471382975990992974);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992968, 1471382975990992975);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992969, 1471382975990992976);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992970, 1471382975990992977);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992971, 1471382975990992978);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992982, 1471382975990992991);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992987, 1471382975990992992);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992983, 1471382975990992993);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992984, 1471382975990992994);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992985, 1471382975990992995);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992986, 1471382975990992996);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992988, 1471382975990992997);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990992989, 1471382975990992998);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993000, 1471382975990993006);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993001, 1471382975990993007);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993002, 1471382975990993008);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993003, 1471382975990993009);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993004, 1471382975990993010);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993012, 1471382975990993018);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993013, 1471382975990993019);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993014, 1471382975990993020);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993015, 1471382975990993021);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993016, 1471382975990993022);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993024, 1471382975990993033);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993025, 1471382975990993034);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993026, 1471382975990993035);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993027, 1471382975990993036);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993028, 1471382975990993037);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993029, 1471382975990993038);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993030, 1471382975990993039);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993031, 1471382975990993040);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1293376634916704262, 1471382975990993048);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993042, 1471382975990993048);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1293376634916704262, 1471382975990993049);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993043, 1471382975990993049);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1293376634916704262, 1471382975990993050);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993044, 1471382975990993050);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1293376634916704262, 1471382975990993051);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993045, 1471382975990993051);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1293376634916704262, 1471382975990993052);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975990993046, 1471382975990993052);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187209, 1471382975995187212);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187210, 1471382975995187213);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187215, 1471382975995187217);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187221, 1471382975995187229);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187225, 1471382975995187230);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187222, 1471382975995187231);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187223, 1471382975995187232);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187224, 1471382975995187233);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187226, 1471382975995187234);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187227, 1471382975995187235);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187237, 1471382975995187242);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187238, 1471382975995187243);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187239, 1471382975995187244);
+INSERT INTO `zz_sys_menu_perm_code` VALUES (1471382975995187240, 1471382975995187245);
 COMMIT;
 
 -- ----------------------------
@@ -5997,25 +5841,25 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_operation_log`;
 CREATE TABLE `zz_sys_operation_log` (
-  `log_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `description` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '日志描述',
-  `operation_type` int(11) DEFAULT NULL COMMENT '操作类型',
-  `service_name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '接口所在服务名称',
-  `api_class` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用的controller全类名',
-  `api_method` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用的controller中的方法',
-  `session_id` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户会话sessionId',
-  `trace_id` char(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '每次请求的Id',
-  `elapse` int(11) DEFAULT NULL COMMENT '调用时长',
-  `request_method` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'HTTP 请求方法，如GET',
-  `request_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'HTTP 请求地址',
-  `request_arguments` varchar(2000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'controller接口参数',
-  `response_result` varchar(2000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'controller应答结果',
-  `request_ip` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求IP',
+  `log_id` bigint NOT NULL COMMENT '主键Id',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '日志描述',
+  `operation_type` int DEFAULT NULL COMMENT '操作类型',
+  `service_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '接口所在服务名称',
+  `api_class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用的controller全类名',
+  `api_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用的controller中的方法',
+  `session_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户会话sessionId',
+  `trace_id` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '每次请求的Id',
+  `elapse` int DEFAULT NULL COMMENT '调用时长',
+  `request_method` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'HTTP 请求方法，如GET',
+  `request_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'HTTP 请求地址',
+  `request_arguments` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'controller接口参数',
+  `response_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'controller应答结果',
+  `request_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求IP',
   `success` bit(1) DEFAULT NULL COMMENT '应答状态',
-  `error_msg` varchar(2000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误信息',
-  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户Id',
-  `operator_id` bigint(20) DEFAULT NULL COMMENT '操作员Id',
-  `operator_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '操作员名称',
+  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误信息',
+  `tenant_id` bigint DEFAULT NULL COMMENT '租户Id',
+  `operator_id` bigint DEFAULT NULL COMMENT '操作员Id',
+  `operator_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '操作员名称',
   `operation_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`log_id`),
   KEY `idx_trace_id_idx` (`trace_id`),
@@ -6030,14 +5874,14 @@ CREATE TABLE `zz_sys_operation_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_perm`;
 CREATE TABLE `zz_sys_perm` (
-  `perm_id` bigint(20) NOT NULL COMMENT '权限id',
-  `module_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '权限所在的权限模块id',
-  `perm_name` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '权限名称',
-  `url` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '关联的url',
-  `show_order` int(11) NOT NULL DEFAULT '0' COMMENT '权限在当前模块下的顺序，由小到大',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `perm_id` bigint NOT NULL COMMENT '权限id',
+  `module_id` bigint NOT NULL DEFAULT '0' COMMENT '权限所在的权限模块id',
+  `perm_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '权限名称',
+  `url` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '关联的url',
+  `show_order` int NOT NULL DEFAULT '0' COMMENT '权限在当前模块下的顺序，由小到大',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`perm_id`) USING BTREE,
   KEY `idx_show_order` (`show_order`) USING BTREE,
@@ -6048,295 +5892,148 @@ CREATE TABLE `zz_sys_perm` (
 -- Records of zz_sys_perm
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827201, 1330135413611827200, '新增', '/admin/upms/sysUser/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827202, 1330135413611827200, '编辑', '/admin/upms/sysUser/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827203, 1330135413611827200, '删除', '/admin/upms/sysUser/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827204, 1330135413611827200, '显示列表', '/admin/upms/sysUser/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827205, 1330135413611827200, '导出', '/admin/upms/sysUser/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827206, 1330135413611827200, '详情', '/admin/upms/sysUser/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827207, 1330135413611827200, '打印', '/admin/upms/sysUser/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827208, 1330135413611827200, '重置密码', '/admin/upms/sysUser/resetPassword', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827209, 1330135413611827200, '用户权限资源分配详情', '/admin/upms/sysUser/listSysPermWithDetail', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827210, 1330135413611827200, '用户权限字分配详情', '/admin/upms/sysUser/listSysPermCodeWithDetail', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827211, 1330135413611827200, '用户菜单分配详情', '/admin/upms/sysUser/listSysMenuWithDetail', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827213, 1330135413611827212, '新增', '/admin/upms/sysDept/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827214, 1330135413611827212, '编辑', '/admin/upms/sysDept/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827215, 1330135413611827212, '删除', '/admin/upms/sysDept/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827216, 1330135413611827212, '显示列表', '/admin/upms/sysDept/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827217, 1330135413611827212, '导出', '/admin/upms/sysDept/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827218, 1330135413611827212, '详情', '/admin/upms/sysDept/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827219, 1330135413611827212, '打印', '/admin/upms/sysDept/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827221, 1330135413611827220, '新增', '/admin/upms/studentClass/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827222, 1330135413611827220, '编辑', '/admin/upms/studentClass/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827223, 1330135413611827220, '删除', '/admin/upms/studentClass/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827224, 1330135413611827220, '显示列表', '/admin/upms/studentClass/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827225, 1330135413611827220, '导出', '/admin/upms/studentClass/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827226, 1330135413611827220, '详情', '/admin/upms/studentClass/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827227, 1330135413611827220, '打印', '/admin/upms/studentClass/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827228, 1330135413611827220, '新增学生数据源', '/admin/upms/studentClass/addClassStudent', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827229, 1330135413611827220, '移除学生数据源', '/admin/upms/studentClass/deleteClassStudent', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827230, 1330135413611827220, '学生数据源列表', '/admin/upms/studentClass/listClassStudent', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827231, 1330135413611827220, '学生数据源未关联列表', '/admin/upms/studentClass/listNotInClassStudent', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827232, 1330135413611827220, '新增课程关联', '/admin/upms/studentClass/addClassCourse', 12, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827233, 1330135413611827220, '编辑课程关联', '/admin/upms/studentClass/updateClassCourse', 13, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827234, 1330135413611827220, '移除课程关联', '/admin/upms/studentClass/deleteClassCourse', 14, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827235, 1330135413611827220, '课程关联列表', '/admin/upms/studentClass/listClassCourse', 15, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827236, 1330135413611827220, '课程关联未关联列表', '/admin/upms/studentClass/listNotInClassCourse', 16, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827238, 1330135413611827237, '新增', '/admin/upms/student/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827239, 1330135413611827237, '编辑', '/admin/upms/student/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827240, 1330135413611827237, '删除', '/admin/upms/student/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827241, 1330135413611827237, '显示列表', '/admin/upms/student/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827242, 1330135413611827237, '导出', '/admin/upms/student/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827243, 1330135413611827237, '详情', '/admin/upms/student/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827244, 1330135413611827237, '打印', '/admin/upms/student/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827245, 1330135413611827237, '新增学生班级', '/admin/upms/student/addClassStudent', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827246, 1330135413611827237, '移除学生班级', '/admin/upms/student/deleteClassStudent', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827247, 1330135413611827237, '学生班级列表', '/admin/upms/student/listClassStudent', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827248, 1330135413611827237, '学生班级未关联列表', '/admin/upms/student/listNotInClassStudent', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827250, 1330135413611827249, '新增', '/admin/upms/teacher/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827251, 1330135413611827249, '编辑', '/admin/upms/teacher/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827252, 1330135413611827249, '删除', '/admin/upms/teacher/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827253, 1330135413611827249, '显示列表', '/admin/upms/teacher/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827254, 1330135413611827249, '导出', '/admin/upms/teacher/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827255, 1330135413611827249, '详情', '/admin/upms/teacher/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827256, 1330135413611827249, '打印', '/admin/upms/teacher/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827258, 1330135413611827257, '新增', '/admin/coursepaper/course/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827259, 1330135413611827257, '编辑', '/admin/coursepaper/course/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827260, 1330135413611827257, '删除', '/admin/coursepaper/course/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827261, 1330135413611827257, '显示列表', '/admin/coursepaper/course/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827262, 1330135413611827257, '导出', '/admin/coursepaper/course/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827263, 1330135413611827257, '详情', '/admin/coursepaper/course/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827264, 1330135413611827257, '打印', '/admin/coursepaper/course/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827265, 1330135413611827257, '更新价格', '/admin/coursepaper/course/updatePrice', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827266, 1330135413611827257, '课程数据源文件上传', '/admin/coursepaper/course/upload', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827267, 1330135413611827257, '课程数据源文件下载', '/admin/coursepaper/course/download', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827269, 1330135413611827268, '新增', '/admin/coursepaper/exercise/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827270, 1330135413611827268, '编辑', '/admin/coursepaper/exercise/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827271, 1330135413611827268, '删除', '/admin/coursepaper/exercise/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827272, 1330135413611827268, '显示列表', '/admin/coursepaper/exercise/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827273, 1330135413611827268, '导出', '/admin/coursepaper/exercise/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827274, 1330135413611827268, '详情', '/admin/coursepaper/exercise/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827275, 1330135413611827268, '打印', '/admin/coursepaper/exercise/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827277, 1330135413611827276, '新增', '/admin/coursepaper/knowledge/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827278, 1330135413611827276, '编辑', '/admin/coursepaper/knowledge/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827279, 1330135413611827276, '删除', '/admin/coursepaper/knowledge/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827280, 1330135413611827276, '显示列表', '/admin/coursepaper/knowledge/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827281, 1330135413611827276, '导出', '/admin/coursepaper/knowledge/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827282, 1330135413611827276, '详情', '/admin/coursepaper/knowledge/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827283, 1330135413611827276, '打印', '/admin/coursepaper/knowledge/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827285, 1330135413611827284, '新增', '/admin/coursepaper/paper/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827286, 1330135413611827284, '编辑', '/admin/coursepaper/paper/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827287, 1330135413611827284, '删除', '/admin/coursepaper/paper/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827288, 1330135413611827284, '显示列表', '/admin/coursepaper/paper/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827289, 1330135413611827284, '导出', '/admin/coursepaper/paper/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827290, 1330135413611827284, '详情', '/admin/coursepaper/paper/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827291, 1330135413611827284, '打印', '/admin/coursepaper/paper/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827292, 1330135413611827284, '新增习题数据源', '/admin/coursepaper/paper/addPaperExercise', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827293, 1330135413611827284, '编辑习题数据源', '/admin/coursepaper/paper/updatePaperExercise', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827294, 1330135413611827284, '移除习题数据源', '/admin/coursepaper/paper/deletePaperExercise', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827295, 1330135413611827284, '习题数据源列表', '/admin/coursepaper/paper/listPaperExercise', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827296, 1330135413611827284, '习题数据源未关联列表', '/admin/coursepaper/paper/listNotInPaperExercise', 12, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827298, 1330135413611827297, '新增', '/admin/coursepaper/video/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827299, 1330135413611827297, '编辑', '/admin/coursepaper/video/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827300, 1330135413611827297, '删除', '/admin/coursepaper/video/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827301, 1330135413611827297, '显示列表', '/admin/coursepaper/video/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827302, 1330135413611827297, '导出', '/admin/coursepaper/video/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827303, 1330135413611827297, '详情', '/admin/coursepaper/video/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827304, 1330135413611827297, '打印', '/admin/coursepaper/video/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827305, 1330135413611827297, '视频数据源文件上传', '/admin/coursepaper/video/upload', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827306, 1330135413611827297, '视频数据源文件下载', '/admin/coursepaper/video/download', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827308, 1330135413611827307, '新增', '/admin/coursepaper/videoCourse/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827309, 1330135413611827307, '编辑', '/admin/coursepaper/videoCourse/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827310, 1330135413611827307, '删除', '/admin/coursepaper/videoCourse/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827311, 1330135413611827307, '显示列表', '/admin/coursepaper/videoCourse/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827312, 1330135413611827307, '导出', '/admin/coursepaper/videoCourse/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827313, 1330135413611827307, '详情', '/admin/coursepaper/videoCourse/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827314, 1330135413611827307, '打印', '/admin/coursepaper/videoCourse/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827316, 1330135413611827315, '新增', '/admin/coursepaper/courseSection/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827317, 1330135413611827315, '编辑', '/admin/coursepaper/courseSection/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827318, 1330135413611827315, '删除', '/admin/coursepaper/courseSection/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827319, 1330135413611827315, '显示列表', '/admin/coursepaper/courseSection/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827320, 1330135413611827315, '导出', '/admin/coursepaper/courseSection/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827321, 1330135413611827315, '详情', '/admin/coursepaper/courseSection/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827322, 1330135413611827315, '打印', '/admin/coursepaper/courseSection/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827323, 1330135413611827315, '新增作业数据源', '/admin/coursepaper/courseSection/addCourseSectionPaper', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827324, 1330135413611827315, '移除作业数据源', '/admin/coursepaper/courseSection/deleteCourseSectionPaper', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827325, 1330135413611827315, '作业数据源列表', '/admin/coursepaper/courseSection/listCourseSectionPaper', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827326, 1330135413611827315, '作业数据源未关联列表', '/admin/coursepaper/courseSection/listNotInCourseSectionPaper', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827327, 1330135413611827315, '课程章节数据源文件上传', '/admin/coursepaper/courseSection/upload', 12, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827328, 1330135413611827315, '课程章节数据源文件下载', '/admin/coursepaper/courseSection/download', 13, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413611827330, 1330135413611827329, '新增', '/admin/busitrans/paperExerciseTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021504, 1330135413611827329, '编辑', '/admin/busitrans/paperExerciseTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021505, 1330135413611827329, '删除', '/admin/busitrans/paperExerciseTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021506, 1330135413611827329, '显示列表', '/admin/busitrans/paperExerciseTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021507, 1330135413611827329, '导出', '/admin/busitrans/paperExerciseTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021508, 1330135413611827329, '详情', '/admin/busitrans/paperExerciseTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021509, 1330135413611827329, '打印', '/admin/busitrans/paperExerciseTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021511, 1330135413616021510, '新增', '/admin/busitrans/studentActionTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021512, 1330135413616021510, '编辑', '/admin/busitrans/studentActionTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021513, 1330135413616021510, '删除', '/admin/busitrans/studentActionTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021514, 1330135413616021510, '显示列表', '/admin/busitrans/studentActionTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021515, 1330135413616021510, '导出', '/admin/busitrans/studentActionTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021516, 1330135413616021510, '详情', '/admin/busitrans/studentActionTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021517, 1330135413616021510, '打印', '/admin/busitrans/studentActionTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021519, 1330135413616021518, '新增', '/admin/busitrans/studentCoinTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021520, 1330135413616021518, '编辑', '/admin/busitrans/studentCoinTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021521, 1330135413616021518, '删除', '/admin/busitrans/studentCoinTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021522, 1330135413616021518, '显示列表', '/admin/busitrans/studentCoinTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021523, 1330135413616021518, '导出', '/admin/busitrans/studentCoinTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021524, 1330135413616021518, '详情', '/admin/busitrans/studentCoinTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021525, 1330135413616021518, '打印', '/admin/busitrans/studentCoinTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021527, 1330135413616021526, '新增', '/admin/busitrans/studentCourseTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021528, 1330135413616021526, '编辑', '/admin/busitrans/studentCourseTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021529, 1330135413616021526, '删除', '/admin/busitrans/studentCourseTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021530, 1330135413616021526, '显示列表', '/admin/busitrans/studentCourseTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021531, 1330135413616021526, '导出', '/admin/busitrans/studentCourseTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021532, 1330135413616021526, '详情', '/admin/busitrans/studentCourseTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021533, 1330135413616021526, '打印', '/admin/busitrans/studentCourseTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021535, 1330135413616021534, '新增', '/admin/busitrans/studentRegistryTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021536, 1330135413616021534, '编辑', '/admin/busitrans/studentRegistryTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021537, 1330135413616021534, '删除', '/admin/busitrans/studentRegistryTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021538, 1330135413616021534, '显示列表', '/admin/busitrans/studentRegistryTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021539, 1330135413616021534, '导出', '/admin/busitrans/studentRegistryTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021540, 1330135413616021534, '详情', '/admin/busitrans/studentRegistryTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021541, 1330135413616021534, '打印', '/admin/busitrans/studentRegistryTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021543, 1330135413616021542, '新增', '/admin/busitrans/videoTrans/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021544, 1330135413616021542, '编辑', '/admin/busitrans/videoTrans/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021545, 1330135413616021542, '删除', '/admin/busitrans/videoTrans/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021546, 1330135413616021542, '显示列表', '/admin/busitrans/videoTrans/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021547, 1330135413616021542, '导出', '/admin/busitrans/videoTrans/export', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021548, 1330135413616021542, '详情', '/admin/busitrans/videoTrans/view', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021549, 1330135413616021542, '打印', '/admin/busitrans/videoTrans/print', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021551, 1330135413616021550, '分组列表', '/admin/bizstats/coinStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021552, 1330135413616021550, '显示列表', '/admin/bizstats/coinStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021553, 1330135413616021550, '导出', '/admin/bizstats/coinStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021554, 1330135413616021550, '详情', '/admin/bizstats/coinStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021555, 1330135413616021550, '打印', '/admin/bizstats/coinStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021557, 1330135413616021556, '分组列表', '/admin/bizstats/courseTransStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021558, 1330135413616021556, '显示列表', '/admin/bizstats/courseTransStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021559, 1330135413616021556, '导出', '/admin/bizstats/courseTransStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021560, 1330135413616021556, '详情', '/admin/bizstats/courseTransStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021561, 1330135413616021556, '打印', '/admin/bizstats/courseTransStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021563, 1330135413616021562, '分组列表', '/admin/bizstats/exerciseStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021564, 1330135413616021562, '显示列表', '/admin/bizstats/exerciseStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021565, 1330135413616021562, '导出', '/admin/bizstats/exerciseStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021566, 1330135413616021562, '详情', '/admin/bizstats/exerciseStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021567, 1330135413616021562, '打印', '/admin/bizstats/exerciseStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021569, 1330135413616021568, '分组列表', '/admin/bizstats/exerciseTransStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021570, 1330135413616021568, '显示列表', '/admin/bizstats/exerciseTransStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021571, 1330135413616021568, '导出', '/admin/bizstats/exerciseTransStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021572, 1330135413616021568, '详情', '/admin/bizstats/exerciseTransStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021573, 1330135413616021568, '打印', '/admin/bizstats/exerciseTransStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021575, 1330135413616021574, '分组列表', '/admin/bizstats/schoolStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021576, 1330135413616021574, '显示列表', '/admin/bizstats/schoolStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021577, 1330135413616021574, '导出', '/admin/bizstats/schoolStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021578, 1330135413616021574, '详情', '/admin/bizstats/schoolStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021579, 1330135413616021574, '打印', '/admin/bizstats/schoolStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021581, 1330135413616021580, '分组列表', '/admin/bizstats/studentActionStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021582, 1330135413616021580, '显示列表', '/admin/bizstats/studentActionStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021583, 1330135413616021580, '导出', '/admin/bizstats/studentActionStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021584, 1330135413616021580, '详情', '/admin/bizstats/studentActionStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021585, 1330135413616021580, '打印', '/admin/bizstats/studentActionStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021587, 1330135413616021586, '分组列表', '/admin/bizstats/studentRegistryStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021588, 1330135413616021586, '显示列表', '/admin/bizstats/studentRegistryStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021589, 1330135413616021586, '导出', '/admin/bizstats/studentRegistryStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021590, 1330135413616021586, '详情', '/admin/bizstats/studentRegistryStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021591, 1330135413616021586, '打印', '/admin/bizstats/studentRegistryStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021593, 1330135413616021592, '分组列表', '/admin/bizstats/studentStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021594, 1330135413616021592, '显示列表', '/admin/bizstats/studentStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021595, 1330135413616021592, '导出', '/admin/bizstats/studentStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021596, 1330135413616021592, '详情', '/admin/bizstats/studentStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021597, 1330135413616021592, '打印', '/admin/bizstats/studentStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021599, 1330135413616021598, '分组列表', '/admin/bizstats/teacherStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021600, 1330135413616021598, '显示列表', '/admin/bizstats/teacherStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021601, 1330135413616021598, '导出', '/admin/bizstats/teacherStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021602, 1330135413616021598, '详情', '/admin/bizstats/teacherStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021603, 1330135413616021598, '打印', '/admin/bizstats/teacherStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021605, 1330135413616021604, '分组列表', '/admin/bizstats/teacherTransStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021606, 1330135413616021604, '显示列表', '/admin/bizstats/teacherTransStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021607, 1330135413616021604, '导出', '/admin/bizstats/teacherTransStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021608, 1330135413616021604, '详情', '/admin/bizstats/teacherTransStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021609, 1330135413616021604, '打印', '/admin/bizstats/teacherTransStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021611, 1330135413616021610, '分组列表', '/admin/bizstats/videoStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021612, 1330135413616021610, '显示列表', '/admin/bizstats/videoStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021613, 1330135413616021610, '导出', '/admin/bizstats/videoStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021614, 1330135413616021610, '详情', '/admin/bizstats/videoStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021615, 1330135413616021610, '打印', '/admin/bizstats/videoStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021617, 1330135413616021616, '分组列表', '/admin/bizstats/videoTransStats/listWithGroup', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021618, 1330135413616021616, '显示列表', '/admin/bizstats/videoTransStats/list', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021619, 1330135413616021616, '导出', '/admin/bizstats/videoTransStats/export', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021620, 1330135413616021616, '详情', '/admin/bizstats/videoTransStats/view', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021621, 1330135413616021616, '打印', '/admin/bizstats/videoTransStats/print', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021623, 1330135413616021622, '新增', '/admin/upms/sysRole/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021624, 1330135413616021622, '编辑', '/admin/upms/sysRole/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021625, 1330135413616021622, '删除', '/admin/upms/sysRole/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021626, 1330135413616021622, '显示列表', '/admin/upms/sysRole/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021627, 1330135413616021622, '详情', '/admin/upms/sysRole/view', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021628, 1330135413616021622, '授权用户', '/admin/upms/sysRole/addUserRole', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021629, 1330135413616021622, '移除用户', '/admin/upms/sysRole/deleteUserRole', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021630, 1330135413616021622, '角色用户列表', '/admin/upms/sysRole/listUserRole', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021631, 1330135413616021622, '角色未添加用户列表', '/admin/upms/sysRole/listNotInUserRole', 9, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021632, 1330135413616021622, '角色权限资源分配详情', '/admin/upms/sysRole/listSysPermWithDetail', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021633, 1330135413616021622, '角色权限字分配详情', '/admin/upms/sysRole/listSysPermCodeWithDetail', 11, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021635, 1330135413616021634, '新增', '/admin/upms/sysDataPerm/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021636, 1330135413616021634, '编辑', '/admin/upms/sysDataPerm/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021637, 1330135413616021634, '删除', '/admin/upms/sysDataPerm/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021638, 1330135413616021634, '显示列表', '/admin/upms/sysDataPerm/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021639, 1330135413616021634, '详情', '/admin/upms/sysDataPerm/view', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021640, 1330135413616021634, '授权用户', '/admin/upms/sysDataPerm/addDataPermUser', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021641, 1330135413616021634, '移除用户', '/admin/upms/sysDataPerm/deleteDataPermUser', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021642, 1330135413616021634, '数据权限用户列表', '/admin/upms/sysDataPerm/listDataPermUser', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021643, 1330135413616021634, '数据权限未添加用户列表', '/admin/upms/sysDataPerm/listNotInDataPermUser', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021645, 1330135413616021644, '新增', '/admin/upms/sysMenu/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021646, 1330135413616021644, '编辑', '/admin/upms/sysMenu/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021647, 1330135413616021644, '删除', '/admin/upms/sysMenu/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021648, 1330135413616021644, '显示列表', '/admin/upms/sysMenu/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021649, 1330135413616021644, '详情', '/admin/upms/sysMenu/view', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021650, 1330135413616021644, '菜单权限资源分配详情', '/admin/upms/sysMenu/listSysPermWithDetail', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021651, 1330135413616021644, '菜单用户分配详情', '/admin/upms/sysMenu/listSysUserWithDetail', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021653, 1330135413616021652, '新增', '/admin/upms/sysPermCode/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021654, 1330135413616021652, '编辑', '/admin/upms/sysPermCode/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021655, 1330135413616021652, '删除', '/admin/upms/sysPermCode/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021656, 1330135413616021652, '显示列表', '/admin/upms/sysPermCode/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021657, 1330135413616021652, '详情', '/admin/upms/sysPermCode/view', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021658, 1330135413616021652, '权限字用户分配详情', '/admin/upms/sysPermCode/listSysUserWithDetail', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021659, 1330135413616021652, '权限字角色分配详情', '/admin/upms/sysPermCode/listSysRoleWithDetail', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021661, 1330135413616021660, '新增', '/admin/upms/sysPermModule/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021662, 1330135413616021660, '编辑', '/admin/upms/sysPermModule/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021663, 1330135413616021660, '删除', '/admin/upms/sysPermModule/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021664, 1330135413616021660, '显示列表', '/admin/upms/sysPermModule/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021665, 1330135413616021660, '显示全部', '/admin/upms/sysPermModule/listAll', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021667, 1330135413616021666, '新增', '/admin/upms/sysPerm/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021668, 1330135413616021666, '编辑', '/admin/upms/sysPerm/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021669, 1330135413616021666, '删除', '/admin/upms/sysPerm/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021670, 1330135413616021666, '显示列表', '/admin/upms/sysPerm/list', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021671, 1330135413616021666, '详情', '/admin/upms/sysPerm/view', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021672, 1330135413616021666, '权限资源用户分配详情', '/admin/upms/sysPerm/listSysUserWithDetail', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021673, 1330135413616021666, '权限资源角色分配详情', '/admin/upms/sysPerm/listSysRoleWithDetail', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021674, 1330135413616021666, '权限资源菜单分配详情', '/admin/upms/sysPerm/listSysMenuWithDetail', 8, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021677, 1330135413616021676, '新增', '/admin/upms/areaCode/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021678, 1330135413616021676, '编辑', '/admin/upms/areaCode/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021679, 1330135413616021676, '删除', '/admin/upms/areaCode/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021680, 1330135413616021676, '同步缓存', '/admin/upms/areaCode/reloadCachedData', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021682, 1330135413616021681, '新增', '/admin/coursepaper/courseCategory/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021683, 1330135413616021681, '编辑', '/admin/coursepaper/courseCategory/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021684, 1330135413616021681, '删除', '/admin/coursepaper/courseCategory/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021685, 1330135413616021681, '同步缓存', '/admin/coursepaper/courseCategory/reloadCachedData', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021687, 1330135413616021686, '新增', '/admin/coursepaper/grade/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021688, 1330135413616021686, '编辑', '/admin/coursepaper/grade/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021689, 1330135413616021686, '删除', '/admin/coursepaper/grade/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021690, 1330135413616021686, '同步缓存', '/admin/coursepaper/grade/reloadCachedData', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021692, 1330135413616021691, '新增', '/admin/coursepaper/materialEdition/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021693, 1330135413616021691, '编辑', '/admin/coursepaper/materialEdition/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021694, 1330135413616021691, '删除', '/admin/coursepaper/materialEdition/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021695, 1330135413616021691, '同步缓存', '/admin/coursepaper/materialEdition/reloadCachedData', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021697, 1330135413616021696, '新增', '/admin/coursepaper/paperType/add', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021698, 1330135413616021696, '编辑', '/admin/coursepaper/paperType/update', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021699, 1330135413616021696, '删除', '/admin/coursepaper/paperType/delete', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1330135413616021700, 1330135413616021696, '同步缓存', '/admin/coursepaper/paperType/reloadCachedData', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm` VALUES (1380401489515646976, 1380401290089074688, '显示列表', '/admin/upms/sysOperationLog/list', 1, 1034211781408560753, '2021-04-09 14:05:36', 1034211781408560753, '2021-04-09 14:05:36');
-INSERT INTO `zz_sys_perm` VALUES (1380401565940060160, 1380401349912432640, '显示列表', '/admin/upms/loginUser/list', 1, 1034211781408560753, '2021-04-09 14:05:55', 1034211781408560753, '2021-04-09 14:05:55');
-INSERT INTO `zz_sys_perm` VALUES (1380401663432462336, 1380401349912432640, '删除', '/admin/upms/loginUser/delete', 1, 1034211781408560753, '2021-04-09 14:06:18', 1034211781408560753, '2021-04-09 14:06:18');
+INSERT INTO `zz_sys_perm` VALUES (1293376634988007436, 1293376635289997312, '用户管理文件下载', '/admin/upms/sysUser/download', 12, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376634988007437, 1293376635289997312, '用户管理文件上传', '/admin/upms/sysUser/upload', 11, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635331940352, 1293376635289997312, '新增', '/admin/upms/sysUser/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635331940365, 1293376635289997312, '编辑', '/admin/upms/sysUser/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635331940379, 1293376635289997312, '删除', '/admin/upms/sysUser/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635357106176, 1293376635289997312, '显示列表', '/admin/upms/sysUser/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635357106182, 1293376635289997312, '导出', '/admin/upms/sysUser/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635357106188, 1293376635289997312, '详情', '/admin/upms/sysUser/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635357106190, 1293376635289997312, '打印', '/admin/upms/sysUser/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376635373883392, 1293376635289997312, '重置密码', '/admin/upms/sysUser/resetPassword', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293376760750018568, 1293397261417451520, '课程数据文件下载', '/admin/CourseClass/course/download', 11, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293378861102272520, 1293397261417451520, '课程数据文件上传', '/admin/CourseClass/course/upload', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976896839680, 1293396976871673856, '新增', '/admin/CourseClass/student/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976896839695, 1293396976871673856, '编辑', '/admin/CourseClass/student/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976896839711, 1293396976871673856, '删除', '/admin/CourseClass/student/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976913616896, 1293396976871673856, '显示列表', '/admin/CourseClass/student/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976913616905, 1293396976871673856, '导出', '/admin/CourseClass/student/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976913616914, 1293396976871673856, '详情', '/admin/CourseClass/student/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293396976913616916, 1293396976871673856, '打印', '/admin/CourseClass/student/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261434228736, 1293397261417451520, '新增', '/admin/CourseClass/course/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261434228748, 1293397261417451520, '编辑', '/admin/CourseClass/course/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261434228761, 1293397261417451520, '删除', '/admin/CourseClass/course/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261451005952, 1293397261417451520, '显示列表', '/admin/CourseClass/course/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261451005960, 1293397261417451520, '导出', '/admin/CourseClass/course/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261451005968, 1293397261417451520, '详情', '/admin/CourseClass/course/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397261451005970, 1293397261417451520, '打印', '/admin/CourseClass/course/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319433064448, 1293397319412092928, '新增', '/admin/CourseClass/studentClass/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319433064457, 1293397319412092928, '编辑', '/admin/CourseClass/studentClass/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319433064467, 1293397319412092928, '删除', '/admin/CourseClass/studentClass/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319449841664, 1293397319412092928, '显示列表', '/admin/CourseClass/studentClass/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319449841668, 1293397319412092928, '导出', '/admin/CourseClass/studentClass/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319449841672, 1293397319412092928, '详情', '/admin/CourseClass/studentClass/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293397319449841674, 1293397319412092928, '打印', '/admin/CourseClass/studentClass/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423774305095680, 1293423774284124160, '分组列表', '/admin/stats/courseTransStats/listWithGroup', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423774330261504, 1293423774284124160, '显示列表', '/admin/stats/courseTransStats/list', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423774330261508, 1293423774284124160, '导出', '/admin/stats/courseTransStats/export', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423774330261512, 1293423774284124160, '详情', '/admin/stats/courseTransStats/view', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423774330261514, 1293423774284124160, '打印', '/admin/stats/courseTransStats/print', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423954664361984, 1293423954643390464, '分组列表', '/admin/stats/studentActionStats/listWithGroup', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423954676944896, 1293423954643390464, '显示列表', '/admin/stats/studentActionStats/list', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423954676944901, 1293423954643390464, '导出', '/admin/stats/studentActionStats/export', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423954676944906, 1293423954643390464, '详情', '/admin/stats/studentActionStats/view', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293423954676944908, 1293423954643390464, '打印', '/admin/stats/studentActionStats/print', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012126326784, 1293424012109549568, '新增', '/admin/stats/studentActionTrans/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012126326799, 1293424012109549568, '编辑', '/admin/stats/studentActionTrans/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012126326815, 1293424012109549568, '删除', '/admin/stats/studentActionTrans/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012151492608, 1293424012109549568, '显示列表', '/admin/stats/studentActionTrans/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012151492614, 1293424012109549568, '导出', '/admin/stats/studentActionTrans/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012151492620, 1293424012109549568, '详情', '/admin/stats/studentActionTrans/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1293424012151492622, 1293424012109549568, '打印', '/admin/stats/studentActionTrans/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510144, 1293397319412092928, '新增班级课程', '/admin/CourseClass/studentClass/addClassCourse', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510147, 1293397319412092928, '详情班级课程', '/admin/CourseClass/studentClass/viewClassCourse', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510150, 1293397319412092928, '编辑班级课程', '/admin/CourseClass/studentClass/updateClassCourse', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510154, 1293397319412092928, '移除班级课程', '/admin/CourseClass/studentClass/deleteClassCourse', 11, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510157, 1293397319412092928, '班级课程列表', '/admin/CourseClass/studentClass/listClassCourse', 12, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160460917510166, 1293397319412092928, '班级课程未关联列表', '/admin/CourseClass/studentClass/listNotInClassCourse', 13, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160477766029312, 1293397319412092928, '新增班级学生', '/admin/CourseClass/studentClass/addClassStudent', 14, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160477766029321, 1293397319412092928, '移除班级学生', '/admin/CourseClass/studentClass/deleteClassStudent', 15, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160477766029324, 1293397319412092928, '班级学生列表', '/admin/CourseClass/studentClass/listClassStudent', 16, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1310160477766029335, 1293397319412092928, '班级学生未关联列表', '/admin/CourseClass/studentClass/listNotInClassStudent', 17, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378443812864, 1450780378422841344, '新增', '/admin/upms/sysDept/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378443812873, 1450780378422841344, '编辑', '/admin/upms/sysDept/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378443812883, 1450780378422841344, '删除', '/admin/upms/sysDept/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378510921728, 1450780378422841344, '显示列表', '/admin/upms/sysDept/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378510921731, 1450780378422841344, '导出', '/admin/upms/sysDept/export', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378510921734, 1450780378422841344, '详情', '/admin/upms/sysDept/view', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1450780378510921736, 1450780378422841344, '打印', '/admin/upms/sysDept/print', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410019, 1293376635289997312, '用户权限资源分配详情', '/admin/upms/sysUser/listSysPermWithDetail', 13, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410020, 1293376635289997312, '用户权限字分配详情', '/admin/upms/sysUser/listSysPermCodeWithDetail', 14, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410021, 1293376635289997312, '用户菜单分配详情', '/admin/upms/sysUser/listSysMenuWithDetail', 15, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410061, 1471382975978410060, '新增', '/admin/upms/sysRole/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410062, 1471382975978410060, '编辑', '/admin/upms/sysRole/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410063, 1471382975978410060, '删除', '/admin/upms/sysRole/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410064, 1471382975978410060, '显示列表', '/admin/upms/sysRole/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410065, 1471382975978410060, '详情', '/admin/upms/sysRole/view', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410066, 1471382975978410060, '授权用户', '/admin/upms/sysRole/addUserRole', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410067, 1471382975978410060, '移除用户', '/admin/upms/sysRole/deleteUserRole', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410068, 1471382975978410060, '角色用户列表', '/admin/upms/sysRole/listUserRole', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410069, 1471382975978410060, '角色未添加用户列表', '/admin/upms/sysRole/listNotInUserRole', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410070, 1471382975978410060, '角色权限资源分配详情', '/admin/upms/sysRole/listSysPermWithDetail', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410071, 1471382975978410060, '角色权限字分配详情', '/admin/upms/sysRole/listSysPermCodeWithDetail', 11, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410073, 1471382975978410072, '新增', '/admin/upms/sysDataPerm/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410074, 1471382975978410072, '编辑', '/admin/upms/sysDataPerm/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410075, 1471382975978410072, '删除', '/admin/upms/sysDataPerm/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410076, 1471382975978410072, '显示列表', '/admin/upms/sysDataPerm/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410077, 1471382975978410072, '详情', '/admin/upms/sysDataPerm/view', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410078, 1471382975978410072, '授权用户', '/admin/upms/sysDataPerm/addDataPermUser', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410079, 1471382975978410072, '移除用户', '/admin/upms/sysDataPerm/deleteDataPermUser', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410080, 1471382975978410072, '数据权限用户列表', '/admin/upms/sysDataPerm/listDataPermUser', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410081, 1471382975978410072, '数据权限未添加用户列表', '/admin/upms/sysDataPerm/listNotInDataPermUser', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410083, 1471382975978410082, '新增', '/admin/upms/sysMenu/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410084, 1471382975978410082, '删除', '/admin/upms/sysMenu/delete', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410085, 1471382975978410082, '编辑', '/admin/upms/sysMenu/update', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410086, 1471382975978410082, '显示列表', '/admin/upms/sysMenu/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410087, 1471382975978410082, '详情', '/admin/upms/sysMenu/view', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410088, 1471382975978410082, '菜单权限资源分配详情', '/admin/upms/sysMenu/listSysPermWithDetail', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410089, 1471382975978410082, '菜单用户分配详情', '/admin/upms/sysMenu/listSysUserWithDetail', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410091, 1471382975978410090, '新增', '/admin/upms/sysPermCode/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410092, 1471382975978410090, '编辑', '/admin/upms/sysPermCode/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410093, 1471382975978410090, '删除', '/admin/upms/sysPermCode/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410094, 1471382975978410090, '显示列表', '/admin/upms/sysPermCode/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410095, 1471382975978410090, '详情', '/admin/upms/sysPermCode/view', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410096, 1471382975978410090, '权限字用户分配详情', '/admin/upms/sysPermCode/listSysUserWithDetail', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410097, 1471382975978410090, '权限字角色分配详情', '/admin/upms/sysPermCode/listSysRoleWithDetail', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410099, 1471382975978410098, '新增', '/admin/upms/sysPermModule/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410100, 1471382975978410098, '编辑', '/admin/upms/sysPermModule/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410101, 1471382975978410098, '删除', '/admin/upms/sysPermModule/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410102, 1471382975978410098, '显示列表', '/admin/upms/sysPermModule/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410103, 1471382975978410098, '显示全部', '/admin/upms/sysPermModule/listAll', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410105, 1471382975978410104, '新增', '/admin/upms/sysPerm/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410106, 1471382975978410104, '编辑', '/admin/upms/sysPerm/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410107, 1471382975978410104, '删除', '/admin/upms/sysPerm/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410108, 1471382975978410104, '显示列表', '/admin/upms/sysPerm/list', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410109, 1471382975978410104, '详情', '/admin/upms/sysPerm/view', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410110, 1471382975978410104, '权限资源用户分配详情', '/admin/upms/sysPerm/listSysUserWithDetail', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410111, 1471382975978410104, '权限资源角色分配详情', '/admin/upms/sysPerm/listSysRoleWithDetail', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410112, 1471382975978410104, '权限资源菜单分配详情', '/admin/upms/sysPerm/listSysMenuWithDetail', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410115, 1293378124750262272, '新增', '/admin/CourseClass/areaCode/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410116, 1293378124750262272, '编辑', '/admin/CourseClass/areaCode/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410117, 1293378124750262272, '删除', '/admin/CourseClass/areaCode/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410118, 1293378124750262272, '同步缓存', '/admin/CourseClass/areaCode/reloadCachedData', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410120, 1293378929620422656, '新增', '/admin/CourseClass/grade/add', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410121, 1293378929620422656, '编辑', '/admin/CourseClass/grade/update', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410122, 1293378929620422656, '删除', '/admin/CourseClass/grade/delete', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410123, 1293378929620422656, '同步缓存', '/admin/CourseClass/grade/reloadCachedData', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410125, 1471382975978410124, '显示列表', '/admin/upms/sysOperationLog/list', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410127, 1471382975978410126, '显示列表', '/admin/upms/loginUser/list', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1471382975978410128, 1471382975978410126, '删除', '/admin/upms/loginUser/delete', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661690327084, 1293376635289997312, '导入', '/admin/upms/sysUser/import', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661690327085, 1293396976871673856, '导入', '/admin/CourseClass/student/import', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661690327086, 1293397261417451520, '导入', '/admin/CourseClass/course/import', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661690327087, 1293397319412092928, '导入', '/admin/CourseClass/studentClass/import', 18, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661690327088, 1293424012109549568, '导入', '/admin/stats/studentActionTrans/import', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1476927661698716018, 1450780378422841344, '导入', '/admin/upms/sysDept/import', 8, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483414879405608961, 1293397319412092928, '批量移除班级课程', '/admin/CourseClass/studentClass/deleteClassCourseList', 19, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483414879539826689, 1293397319412092928, '批量移除班级学生', '/admin/CourseClass/studentClass/deleteClassStudentList', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036817838123, 1293376635289997312, '批量删除', '/admin/upms/sysUser/deleteBatch', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036817838124, 1293396976871673856, '批量删除', '/admin/CourseClass/student/deleteBatch', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036817838125, 1293397261417451520, '批量删除', '/admin/CourseClass/course/deleteBatch', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036817838126, 1293397319412092928, '批量删除', '/admin/CourseClass/studentClass/deleteBatch', 21, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036817838127, 1293424012109549568, '批量删除', '/admin/stats/studentActionTrans/deleteBatch', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm` VALUES (1483415036830421028, 1450780378422841344, '批量删除', '/admin/upms/sysDept/deleteBatch', 9, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -6344,15 +6041,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_perm_code`;
 CREATE TABLE `zz_sys_perm_code` (
-  `perm_code_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '上级权限字Id',
+  `perm_code_id` bigint NOT NULL COMMENT '主键Id',
+  `parent_id` bigint DEFAULT NULL COMMENT '上级权限字Id',
   `perm_code` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '权限字标识(一般为有含义的英文字符串)',
-  `perm_code_type` int(11) NOT NULL COMMENT '类型(0: 表单 1: UI片段 2: 操作)',
+  `perm_code_type` int NOT NULL COMMENT '类型(0: 表单 1: UI片段 2: 操作)',
   `show_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '显示名称',
-  `show_order` int(11) NOT NULL COMMENT '显示顺序(数值越小，越靠前)',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `show_order` int NOT NULL COMMENT '显示顺序(数值越小，越靠前)',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`perm_code_id`) USING BTREE,
   UNIQUE KEY `uk_perm_code` (`perm_code`) USING BTREE,
@@ -6364,264 +6061,135 @@ CREATE TABLE `zz_sys_perm_code` (
 -- Records of zz_sys_perm_code
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741760, NULL, 'formCreateVideo', 0, '新建视频', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741761, 1330135413674741760, 'formCreateVideo:formCreateVideo', 1, '新建视频', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741762, 1330135413674741761, 'formCreateVideo:formCreateVideo:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741763, 1330135413674741761, 'formCreateVideo:formCreateVideo:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741764, NULL, 'formEditVideo', 0, '编辑视频', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741765, 1330135413674741764, 'formEditVideo:formEditVideo', 1, '编辑视频', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741766, 1330135413674741765, 'formEditVideo:formEditVideo:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741767, 1330135413674741765, 'formEditVideo:formEditVideo:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741768, NULL, 'formCreateVideoCourse', 0, '新建视频课程', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741769, 1330135413674741768, 'formCreateVideoCourse:formCreateVideoCourse', 1, '新建视频课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741770, 1330135413674741769, 'formCreateVideoCourse:formCreateVideoCourse:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741771, 1330135413674741769, 'formCreateVideoCourse:formCreateVideoCourse:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741772, NULL, 'formEditVideoCourse', 0, '编辑视频课程', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741773, 1330135413674741772, 'formEditVideoCourse:formEditVideoCourse', 1, '编辑视频课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741774, 1330135413674741773, 'formEditVideoCourse:formEditVideoCourse:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741775, 1330135413674741773, 'formEditVideoCourse:formEditVideoCourse:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741776, NULL, 'formStudent', 0, '学生管理', 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741777, 1330135413674741776, 'formStudent:formStudent', 1, '学生管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741778, 1330135413674741777, 'formStudent:formStudent:formCreateStudent', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741779, 1330135413674741777, 'formStudent:formStudent:formEditStudent', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741780, 1330135413674741777, 'formStudent:formStudent:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741781, 1330135413674741777, 'formStudent:formStudent:formStudentClass', 2, '班级', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741782, NULL, 'formCreateStudent', 0, '新建学生', 50, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741783, 1330135413674741782, 'formCreateStudent:formCreateStudent', 1, '新建学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741784, 1330135413674741783, 'formCreateStudent:formCreateStudent:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741785, 1330135413674741783, 'formCreateStudent:formCreateStudent:add', 2, '新增', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741786, NULL, 'formEditStudent', 0, '编辑学生', 60, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741787, 1330135413674741786, 'formEditStudent:formEditStudent', 1, '编辑学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741788, 1330135413674741787, 'formEditStudent:formEditStudent:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741789, 1330135413674741787, 'formEditStudent:formEditStudent:update', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741790, NULL, 'formStudentClass', 0, '学生班级', 70, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741791, 1330135413674741790, 'formStudentClass:formStudentClass', 1, '学生班级', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741792, NULL, 'formTeacher', 0, '老师管理', 80, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741793, 1330135413674741792, 'formTeacher:formTeacher', 1, '老师管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741794, 1330135413674741793, 'formTeacher:formTeacher:formCreateTeacher', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741795, 1330135413674741793, 'formTeacher:formTeacher:formEditTeacher', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741796, 1330135413674741793, 'formTeacher:formTeacher:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741797, 1330135413674741793, 'formTeacher:formTeacher:formTeacherStats', 2, '统计', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741798, NULL, 'formEditTeacher', 0, '编辑老师', 90, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741799, 1330135413674741798, 'formEditTeacher:formEditTeacher', 1, '编辑老师', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741800, 1330135413674741799, 'formEditTeacher:formEditTeacher:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741801, 1330135413674741799, 'formEditTeacher:formEditTeacher:update', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741802, NULL, 'formCreateTeacher', 0, '新建老师', 100, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741803, 1330135413674741802, 'formCreateTeacher:formCreateTeacher', 1, '新建老师', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741804, 1330135413674741803, 'formCreateTeacher:formCreateTeacher:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741805, 1330135413674741803, 'formCreateTeacher:formCreateTeacher:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741806, NULL, 'formTeacherStats', 0, '老师个人统计', 110, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741807, 1330135413674741806, 'formTeacherStats:formTeacherStats', 1, '老师个人统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741808, NULL, 'formCreateKnowledge', 0, '新建知识点', 120, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741809, 1330135413674741808, 'formCreateKnowledge:formCreateKnowledge', 1, '新建知识点', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741810, 1330135413674741809, 'formCreateKnowledge:formCreateKnowledge:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741811, 1330135413674741809, 'formCreateKnowledge:formCreateKnowledge:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741812, NULL, 'formExercise', 0, '习题管理', 130, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741813, 1330135413674741812, 'formExercise:formExercise', 1, '习题管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741814, 1330135413674741813, 'formExercise:formExercise:formCreateExercise', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741815, 1330135413674741813, 'formExercise:formExercise:formEditExercise', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741816, 1330135413674741813, 'formExercise:formExercise:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741817, NULL, 'formCreateExercise', 0, '新建习题', 140, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741818, 1330135413674741817, 'formCreateExercise:formCreateExercise', 1, '新建习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741819, 1330135413674741818, 'formCreateExercise:formCreateExercise:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741820, 1330135413674741818, 'formCreateExercise:formCreateExercise:add', 2, '新增', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741821, NULL, 'formEditExercise', 0, '编辑习题', 150, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741822, 1330135413674741821, 'formEditExercise:formEditExercise', 1, '编辑习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741823, 1330135413674741822, 'formEditExercise:formEditExercise:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741824, 1330135413674741822, 'formEditExercise:formEditExercise:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741825, NULL, 'formPaper', 0, '作业管理', 160, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741826, 1330135413674741825, 'formPaper:formPaper', 1, '作业管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741827, 1330135413674741826, 'formPaper:formPaper:formCreatePaper', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741828, 1330135413674741826, 'formPaper:formPaper:formEditPaper', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741829, 1330135413674741826, 'formPaper:formPaper:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741830, 1330135413674741826, 'formPaper:formPaper:formPaperExercises', 2, '作业习题', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741831, NULL, 'formCreatePaper', 0, '新建作业', 170, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741832, 1330135413674741831, 'formCreatePaper:formCreatePaper', 1, '新建作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741833, 1330135413674741832, 'formCreatePaper:formCreatePaper:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741834, 1330135413674741832, 'formCreatePaper:formCreatePaper:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741835, NULL, 'formEditPaper', 0, '编辑作业', 180, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741836, 1330135413674741835, 'formEditPaper:formEditPaper', 1, '编辑作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741837, 1330135413674741836, 'formEditPaper:formEditPaper:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741838, 1330135413674741836, 'formEditPaper:formEditPaper:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741839, NULL, 'formPaperExercises', 0, '作业习题', 190, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741840, 1330135413674741839, 'formPaperExercises:formPaperExercises', 1, '作业习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741841, 1330135413674741840, 'formPaperExercises:formPaperExercises:formSetPaperExercises', 2, '设置习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741842, 1330135413674741840, 'formPaperExercises:formPaperExercises:deletePaperExercise', 2, '移除', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741843, 1330135413674741840, 'formPaperExercises:formPaperExercises:updatePaperExercise', 2, '设置必做', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741844, NULL, 'formSetPaperExercises', 0, '设置作业习题', 200, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741845, 1330135413674741844, 'formSetPaperExercises:formSetPaperExercises', 1, '设置作业习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741846, 1330135413674741845, 'formSetPaperExercises:formSetPaperExercises:addPaperExercise', 2, '新增习题', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741847, NULL, 'formSection', 0, '章节管理', 210, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741848, 1330135413674741847, 'formSection:formSection', 1, '章节管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741849, 1330135413674741848, 'formSection:formSection:formCreateSection', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741850, 1330135413674741848, 'formSection:formSection:formEditSection', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741851, 1330135413674741848, 'formSection:formSection:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741852, NULL, 'formCreateSection', 0, '新建章节', 220, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413674741853, 1330135413674741852, 'formCreateSection:formCreateSection', 1, '新建章节', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936064, 1330135413674741853, 'formCreateSection:formCreateSection:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936065, 1330135413674741853, 'formCreateSection:formCreateSection:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936066, NULL, 'formEditSection', 0, '编辑章节', 230, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936067, 1330135413678936066, 'formEditSection:formEditSection', 1, '编辑章节', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936068, 1330135413678936067, 'formEditSection:formEditSection:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936069, 1330135413678936067, 'formEditSection:formEditSection:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936070, NULL, 'formSectionPaper', 0, '章节作业', 240, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936071, 1330135413678936070, 'formSectionPaper:formSectionPaper', 1, '章节作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936072, 1330135413678936071, 'formSectionPaper:formSectionPaper:formSetSectionPaper', 2, '设置作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936073, 1330135413678936071, 'formSectionPaper:formSectionPaper:deleteCourseSectionPaper', 2, '移除', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936074, NULL, 'formSetSectionPaper', 0, '设置章节作业', 250, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936075, 1330135413678936074, 'formSetSectionPaper:formSetSectionPaper', 1, '设置章节作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936076, 1330135413678936075, 'formSetSectionPaper:formSetSectionPaper:addCourseSectionPaper', 2, '新增作业', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936077, NULL, 'formCourse', 0, '课程管理', 260, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936078, 1330135413678936077, 'formCourse:formCourse', 1, '课程管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936079, 1330135413678936078, 'formCourse:formCourse:formCreateCourse', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936080, 1330135413678936078, 'formCourse:formCourse:formEditCourse', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936081, 1330135413678936078, 'formCourse:formCourse:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936082, 1330135413678936078, 'formCourse:formCourse:updatePrice', 2, '更新价格', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936083, NULL, 'formCreateCourse', 0, '新建课程', 270, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936084, 1330135413678936083, 'formCreateCourse:formCreateCourse', 1, '新建课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936085, 1330135413678936084, 'formCreateCourse:formCreateCourse:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936086, 1330135413678936084, 'formCreateCourse:formCreateCourse:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936087, NULL, 'formEditCourse', 0, '编辑课程', 280, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936088, 1330135413678936087, 'formEditCourse:fragmentBasic', 1, '基础信息', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936089, 1330135413678936088, 'formEditCourse:fragmentBasic:update', 2, '保存', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936090, 1330135413678936087, 'formEditCourse:fragmentSection', 1, '课程章节', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936091, 1330135413678936090, 'formEditCourse:fragmentSection:formCreateSection', 2, '新建章节', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936092, 1330135413678936090, 'formEditCourse:fragmentSection:formEditSection', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936093, 1330135413678936090, 'formEditCourse:fragmentSection:delete', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936094, 1330135413678936090, 'formEditCourse:fragmentSection:formSectionPaper', 2, '章节作业', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936095, NULL, 'formClass', 0, '班级管理', 290, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936096, 1330135413678936095, 'formClass:formClass', 1, '班级管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936097, 1330135413678936096, 'formClass:formClass:formCreateClass', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936098, 1330135413678936096, 'formClass:formClass:formEditClass', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936099, 1330135413678936096, 'formClass:formClass:formClassCourse', 2, '课程', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936100, 1330135413678936096, 'formClass:formClass:formClassStudent', 2, '学生', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936101, 1330135413678936096, 'formClass:formClass:delete', 2, '删除', 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936102, NULL, 'formCreateClass', 0, '新建班级', 300, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936103, 1330135413678936102, 'formCreateClass:formCreateClass', 1, '新建班级', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936104, 1330135413678936103, 'formCreateClass:formCreateClass:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936105, 1330135413678936103, 'formCreateClass:formCreateClass:add', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936106, NULL, 'formEditClass', 0, '编辑班级', 310, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936107, 1330135413678936106, 'formEditClass:formEditClass', 1, '编辑班级', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936108, 1330135413678936107, 'formEditClass:formEditClass:cancel', 2, '取消', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936109, 1330135413678936107, 'formEditClass:formEditClass:update', 2, '保存', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936110, NULL, 'formClassCourse', 0, '班级课程', 320, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936111, 1330135413678936110, 'formClassCourse:formClassCourse', 1, '班级课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936112, 1330135413678936111, 'formClassCourse:formClassCourse:formSetClassCourse', 2, '设置课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936113, 1330135413678936111, 'formClassCourse:formClassCourse:deleteClassCourse', 2, '移除', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936114, NULL, 'formClassStudent', 0, '班级学生', 330, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936115, 1330135413678936114, 'formClassStudent:formClassStudent', 1, '班级学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936116, 1330135413678936115, 'formClassStudent:formClassStudent:formSetClassStudent', 2, '设置学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936117, 1330135413678936115, 'formClassStudent:formClassStudent:deleteClassStudent', 2, '移除', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936118, NULL, 'formSetClassCourse', 0, '设置班级课程', 340, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936119, 1330135413678936118, 'formSetClassCourse:formSetClassCourse', 1, '设置班级课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936120, 1330135413678936119, 'formSetClassCourse:formSetClassCourse:addClassCourse', 2, '新增课程', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936121, NULL, 'formSetClassStudent', 0, '设置班级学生', 350, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936122, 1330135413678936121, 'formSetClassStudent:formSetClassStudent', 1, '设置班级学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936123, 1330135413678936122, 'formSetClassStudent:formSetClassStudent:addClassStudent', 2, '新增学生', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936124, NULL, 'formStatsCoin', 0, '学币统计', 360, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936125, 1330135413678936124, 'formStatsCoin:formStatsCoin', 1, '学币统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936126, 1330135413678936125, 'formStatsCoin:formStatsCoin:export', 2, '导出', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936127, NULL, 'formStatsPaperExercise', 0, '习题统计', 370, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936128, 1330135413678936127, 'formStatsPaperExercise:formStatsPaperExercise', 1, '习题统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936129, 1330135413678936128, 'formStatsPaperExercise:formStatsPaperExercise:formStatsPaperExerciseDetail', 2, '详情', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936130, NULL, 'formStatsPaperExerciseDetail', 0, '习题统计详情', 380, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936131, 1330135413678936130, 'formStatsPaperExerciseDetail:formStatsPaperExerciseDetail', 1, '习题统计详情', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936132, NULL, 'formStatsStudentAction', 0, '学生行为统计', 390, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936133, 1330135413678936132, 'formStatsStudentAction:formStatsStudentAction', 1, '学生行为统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936134, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formBuyCourseDetail', 2, '购课详情', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936135, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formBuyVideoDetail', 2, '购买视频详情', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936136, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formBuyFlowerDetail', 2, '购买鲜花详情', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936137, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formBuyCoinDetail', 2, '充值详情', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936138, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formBuyPaperDetail', 2, '购买作业详情', 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936139, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formDoCourseDetail', 2, '上课详情', 50, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936140, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formWatchVideoDetail', 2, '观看视频详情', 60, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936141, 1330135413678936133, 'formStatsStudentAction:formStatsStudentAction:formRfreshDetail', 2, '刷题详情', 70, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936142, NULL, 'formStatsStudentActionDetail', 0, '学生行为详情', 400, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936143, 1330135413678936142, 'formStatsStudentActionDetail:formStatsStudentActionDetail', 1, '学生行为详情', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936144, NULL, 'formStatsStudentRegister', 0, '学生注册统计', 410, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936145, 1330135413678936144, 'formStatsStudentRegister:formStatsStudentRegister', 1, '学生注册统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936146, NULL, 'formStatsVideoTrans', 0, '视频流水统计', 420, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936147, 1330135413678936146, 'formStatsVideoTrans:formStatsVideoTrans', 1, '视频流水统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936148, NULL, 'formStatsCourseTrans', 0, '课程流水统计', 430, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936149, 1330135413678936148, 'formStatsCourseTrans:formStatsCourseTrans', 1, '课程流水统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936150, NULL, 'formStatsSchool', 0, '校区统计', 440, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936151, 1330135413678936150, 'formStatsSchool:formStatsSchool', 1, '校区统计', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936152, NULL, 'formVideoCourse', 0, '视频课程管理', 450, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936153, 1330135413678936152, 'formVideoCourse:formVideoCourse', 1, '视频课程管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936154, 1330135413678936153, 'formVideoCourse:formVideoCourse:formCreateVideoCourse', 2, '新建', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936155, 1330135413678936153, 'formVideoCourse:formVideoCourse:formEditVideo', 2, '编辑', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936156, 1330135413678936153, 'formVideoCourse:formVideoCourse:deleteVideo', 2, '删除', 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936157, 1330135413678936153, 'formVideoCourse:formVideoCourse:formEditVideoCourse', 2, '编辑', 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936158, 1330135413678936153, 'formVideoCourse:formVideoCourse:delete', 2, '删除', 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936159, 1330135413678936153, 'formVideoCourse:formVideoCourse:formCreateVideo', 2, '添加视频', 50, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936160, NULL, 'formEditKnowledge', 0, '编辑知识点', 460, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936161, 1330135413678936160, 'formEditKnowledge:formEditKnowledge', 1, '编辑知识点', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936162, 1330135413678936161, 'formEditKnowledge:formEditKnowledge:update', 2, '保存', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936163, NULL, 'formKnowledge', 0, '知识点管理', 470, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936164, 1330135413678936163, 'formKnowledge:formKnowledge', 1, '知识点管理', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936165, 1330135413678936164, 'formKnowledge:formKnowledge:delete', 2, '删除', 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936166, 1330135413678936164, 'formKnowledge:formKnowledge:formCreateKnowledge', 2, '新建', 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936175, NULL, 'formSysUser', 0, '用户管理', 10000, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936176, 1330135413678936175, 'formSysUser:fragmentSysUser', 1, '用户管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936177, 1330135413678936176, 'formSysUser:fragmentSysUser:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936178, 1330135413678936176, 'formSysUser:fragmentSysUser:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936179, 1330135413678936176, 'formSysUser:fragmentSysUser:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936180, 1330135413678936176, 'formSysUser:fragmentSysUser:resetPassword', 2, '重置密码', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936181, 1330135413678936176, 'formSysUser:fragmentSysUser:listSysUserPermDetail', 2, '权限详情', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936187, NULL, 'formSysDept', 0, '部门管理', 10100, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936188, 1330135413678936187, 'formSysDept:fragmentSysDept', 1, '部门管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936189, 1330135413678936188, 'formSysDept:fragmentSysDept:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936190, 1330135413678936188, 'formSysDept:fragmentSysDept:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936191, 1330135413678936188, 'formSysDept:fragmentSysDept:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936203, NULL, 'formSysRole', 0, '角色管理', 10200, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936204, 1330135413678936203, 'formSysRole:fragmentSysRole', 1, '角色管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936205, 1330135413678936203, 'formSysRole:fragmentSysRoleUser', 1, '用户授权', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936206, 1330135413678936204, 'formSysRole:fragmentSysRole:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936207, 1330135413678936204, 'formSysRole:fragmentSysRole:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936208, 1330135413678936204, 'formSysRole:fragmentSysRole:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936209, 1330135413678936204, 'formSysRole:fragmentSysRole:listSysRolePermDetail', 2, '权限详情', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936210, 1330135413678936205, 'formSysRole:fragmentSysRoleUser:addUserRole', 2, '授权用户', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936211, 1330135413678936205, 'formSysRole:fragmentSysRoleUser:deleteUserRole', 2, '移除用户', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936222, NULL, 'formSysDataPerm', 0, '数据权限管理', 10400, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936223, 1330135413678936222, 'formSysDataPerm:fragmentSysDataPerm', 1, '数据权限管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936224, 1330135413678936222, 'formSysDataPerm:fragmentSysDataPermUser', 1, '用户授权', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936225, 1330135413678936223, 'formSysDataPerm:fragmentSysDataPerm:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936226, 1330135413678936223, 'formSysDataPerm:fragmentSysDataPerm:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936227, 1330135413678936223, 'formSysDataPerm:fragmentSysDataPerm:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936228, 1330135413678936224, 'formSysDataPerm:fragmentSysDataPermUser:addDataPermUser', 2, '授权用户', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936229, 1330135413678936224, 'formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser', 2, '移除用户', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936236, NULL, 'formSysMenu', 0, '菜单管理', 10600, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936237, 1330135413678936236, 'formSysMenu:fragmentSysMenu', 1, '菜单管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936238, 1330135413678936237, 'formSysMenu:fragmentSysMenu:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936239, 1330135413678936237, 'formSysMenu:fragmentSysMenu:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936240, 1330135413678936237, 'formSysMenu:fragmentSysMenu:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936241, 1330135413678936237, 'formSysMenu:fragmentSysMenu:listSysMenuPermDetail', 2, '权限详情', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936248, NULL, 'formSysPermCode', 0, '权限字管理', 10700, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936249, 1330135413678936248, 'formSysPermCode:fragmentSysPermCode', 1, '权限字管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936250, 1330135413678936249, 'formSysPermCode:fragmentSysPermCode:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936251, 1330135413678936249, 'formSysPermCode:fragmentSysPermCode:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936252, 1330135413678936249, 'formSysPermCode:fragmentSysPermCode:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936253, 1330135413678936249, 'formSysPermCode:fragmentSysPermCode:listSysPermCodePermDetail', 2, '权限详情', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936263, NULL, 'formSysPerm', 0, '权限管理', 10800, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936264, 1330135413678936263, 'formSysPerm:fragmentSysPerm', 1, '权限管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936265, 1330135413678936264, 'formSysPerm:fragmentSysPerm:addPermModule', 2, '新增模块', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936266, 1330135413678936264, 'formSysPerm:fragmentSysPerm:updatePermModule', 2, '编辑模块', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936267, 1330135413678936264, 'formSysPerm:fragmentSysPerm:deletePermModule', 2, '删除模块', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936268, 1330135413678936264, 'formSysPerm:fragmentSysPerm:addPerm', 2, '新增权限', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936269, 1330135413678936264, 'formSysPerm:fragmentSysPerm:updatePerm', 2, '编辑权限', 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936270, 1330135413678936264, 'formSysPerm:fragmentSysPerm:deletePerm', 2, '删除权限', 6, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936271, 1330135413678936264, 'formSysPerm:fragmentSysPerm:listSysPermPermDetail', 2, '权限详情', 7, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936278, NULL, 'formSysDict', 0, '字典管理', 10900, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936279, 1330135413678936278, 'formSysDict:fragmentSysDict', 1, '字典管理', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936280, 1330135413678936279, 'formSysDict:fragmentSysDict:add', 2, '新增', 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936281, 1330135413678936279, 'formSysDict:fragmentSysDict:update', 2, '编辑', 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936282, 1330135413678936279, 'formSysDict:fragmentSysDict:delete', 2, '删除', 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1330135413678936283, 1330135413678936279, 'formSysDict:fragmentSysDict:reloadCache', 2, '同步缓存', 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_code` VALUES (1380401868789780480, NULL, 'formSysOperationLog', 0, '操作日志', 11100, 1034211781408560753, '2021-04-09 14:07:07', 1034211781408560753, '2021-04-09 14:07:07');
-INSERT INTO `zz_sys_perm_code` VALUES (1380401976096854016, NULL, 'formSysLoginUser', 0, '在线用户', 11200, 1034211781408560753, '2021-04-09 14:07:32', 1034211781408560753, '2021-04-09 14:07:32');
-INSERT INTO `zz_sys_perm_code` VALUES (1380402116614426624, 1380401868789780480, 'formSysOperationLog:fragmentSysOperationLog', 1, '操作日志', 1, 1034211781408560753, '2021-04-09 14:08:06', 1034211781408560753, '2021-04-09 14:08:06');
-INSERT INTO `zz_sys_perm_code` VALUES (1380402356650250240, 1380401976096854016, 'formSysLoginUser:fragmentLoginUser', 1, '在线用户', 1, 1034211781408560753, '2021-04-09 14:09:03', 1034211781408560753, '2021-04-09 14:09:03');
-INSERT INTO `zz_sys_perm_code` VALUES (1380402467937718272, 1380402356650250240, 'formSysLoginUser:fragmentLoginUser:delete', 2, '强制下线', 1, 1034211781408560753, '2021-04-09 14:09:30', 1034211781408560753, '2021-04-09 14:09:30');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429171057332224, NULL, 'formStudent', 0, '学生管理', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429171069915136, 1293429171057332224, 'formStudent:formStudent', 1, '学生管理', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429267132059648, NULL, 'formCreateStudent', 0, '新建学生', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429267153031168, 1293429267132059648, 'formCreateStudent:formCreateStudent', 1, '新建学生', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429656866787328, NULL, 'formEditStudent', 0, '编辑学生', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293429656879370240, 1293429656866787328, 'formEditStudent:formEditStudent', 1, '编辑学生', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293434467691532288, 1293429656879370240, 'formEditStudent:formEditStudent:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293434543608434688, 1293429656879370240, 'formEditStudent:formEditStudent:update', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293436368944369664, 1293429267153031168, 'formCreateStudent:formCreateStudent:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293436524536270848, 1293429267153031168, 'formCreateStudent:formCreateStudent:add', 2, '新增', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293440313007804416, 1293429171069915136, 'formStudent:formStudent:formCreateStudent', 2, '新建', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293440371212161024, 1293429171069915136, 'formStudent:formStudent:formEditStudent', 2, '编辑', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293440523041771520, 1293429171069915136, 'formStudent:formStudent:delete', 2, '删除', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293440813098864640, NULL, 'formCourse', 0, '课程管理', 30, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293440813111447552, 1293440813098864640, 'formCourse:formCourse', 1, '课程管理', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441007530020864, NULL, 'formCreateCourse', 0, '新建课程', 40, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441007542603776, 1293441007530020864, 'formCreateCourse:formCreateCourse', 1, '新建课程', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441136060272640, NULL, 'formEditCourse', 0, '编辑课程', 50, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441136077049856, 1293441136060272640, 'formEditCourse:formEditCourse', 1, '编辑课程', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441795115454464, 1293441007542603776, 'formCreateCourse:formCreateCourse:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293441892486221824, 1293441007542603776, 'formCreateCourse:formCreateCourse:add', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293442667975282688, 1293441136077049856, 'formEditCourse:formEditCourse:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293442766797279232, 1293441136077049856, 'formEditCourse:formEditCourse:update', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293444386415185920, 1293440813111447552, 'formCourse:formCourse:formCreateCourse', 2, '新建', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293444441515757568, 1293440813111447552, 'formCourse:formCourse:formEditCourse', 2, '编辑', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293444524432953344, 1293440813111447552, 'formCourse:formCourse:delete', 2, '删除', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293463749084057600, NULL, 'formCourseStats', 0, '课程统计', 60, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293463749092446208, 1293463749084057600, 'formCourseStats:formCourseStats', 1, '课程统计', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293473829191946240, NULL, 'formStudentActionStats', 0, '学生行为统计', 70, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293473829204529152, 1293473829191946240, 'formStudentActionStats:formStudentActionStats', 1, '学生行为统计', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293475157104398336, NULL, 'formStudentActionDetail', 0, '学生行为详情', 80, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293475157112786944, 1293475157104398336, 'formStudentActionDetail:formStudentActionDetail', 1, '学生行为详情', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293476824138911744, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formBuyCourseDetail', 2, '学生行为详情', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293477488848015360, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formBuyVideoDetail', 2, '学生行为详情', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293477691462258688, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formBuyFlowerDetail', 2, '学生行为详情', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293477898908340224, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formBuyPaperDetail', 2, '学生行为详情', 30, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293478093347885056, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formBuyCoinDetail', 2, '学生行为详情', 40, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293478281131069440, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formDoCourseDetail', 2, '学生行为详情', 50, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293478468947808256, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formWatchVideoDetail', 2, '学生行为详情', 60, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1293478698393014272, 1293473829204529152, 'formStudentActionStats:formStudentActionStats:formRfreshDetail', 2, '学生行为详情', 70, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310160670251028480, NULL, 'formCreateClass', 0, '新建班级', 90, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310160670297165824, 1310160670251028480, 'formCreateClass:formCreateClass', 1, '新建班级', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310160774819221504, NULL, 'formEditClass', 0, '编辑班级', 100, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310160774848581632, 1310160774819221504, 'formEditClass:formEditClass', 1, '编辑班级', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161223228067840, NULL, 'formEditClassCourseOrder', 0, '编辑课程顺序', 110, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161223257427968, 1310161223228067840, 'formEditClassCourseOrder:formEditClassCourseOrder', 1, '编辑课程顺序', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161356145561600, NULL, 'formSetClassStudent', 0, '设置班级学生', 120, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161356158144512, 1310161356145561600, 'formSetClassStudent:formSetClassStudent', 1, '设置班级学生', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161474563346432, NULL, 'formSetClassCourse', 0, '设置班级课程', 130, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310161474580123648, 1310161474563346432, 'formSetClassCourse:formSetClassCourse', 1, '设置班级课程', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310162766899712000, 1310161474580123648, 'formSetClassCourse:formSetClassCourse:addClassCourse', 2, '添加', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310163498042396672, 1310161356158144512, 'formSetClassStudent:formSetClassStudent:addClassStudent', 2, '添加', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310164330313945088, 1310161223257427968, 'formEditClassCourseOrder:formEditClassCourseOrder:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310164964761145344, 1310161223257427968, 'formEditClassCourseOrder:formEditClassCourseOrder:updateClassCourse', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310167306982133760, 1310160774848581632, 'formEditClass:formEditClass:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310167373478629376, 1310160774848581632, 'formEditClass:formEditClass:update', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310167756917706752, 1310160670297165824, 'formCreateClass:formCreateClass:cancel', 2, '取消', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1310167812844556288, 1310160670297165824, 'formCreateClass:formCreateClass:add', 2, '保存', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317447995888766976, NULL, 'formClass', 0, '班级管理', 140, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317447995897155584, 1317447995888766976, 'formClass:formClass', 1, '班级管理', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317449849376870400, 1317447995897155584, 'formClass:formClass:formCreateClass', 2, '新建', 70, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317449931765583872, 1317447995897155584, 'formClass:formClass:formSetClassCourse', 2, '设置班级课程', 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317449997456773120, 1317447995897155584, 'formClass:formClass:formSetClassStudent', 2, '设置班级学生', 60, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317450181515415552, 1317447995897155584, 'formClass:formClass:deleteClassCourse', 2, '移除', 30, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317450267221823488, 1317447995897155584, 'formClass:formClass:formEditClassCourseOrder', 2, '课程顺序', 40, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317450395492028416, 1317447995897155584, 'formClass:formClass:deleteClassStudent', 2, '移除', 50, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317450488903372800, 1317447995897155584, 'formClass:formClass:formEditClass', 2, '编辑', 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1317450579131240448, 1317447995897155584, 'formClass:formClass:delete', 2, '删除', 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992972, NULL, 'formSysUser', 0, '用户管理', 10000, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992973, 1471382975990992972, 'formSysUser:fragmentSysUser', 1, '用户管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992974, 1471382975990992973, 'formSysUser:fragmentSysUser:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992975, 1471382975990992973, 'formSysUser:fragmentSysUser:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992976, 1471382975990992973, 'formSysUser:fragmentSysUser:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992977, 1471382975990992973, 'formSysUser:fragmentSysUser:resetPassword', 2, '重置密码', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992978, 1471382975990992973, 'formSysUser:fragmentSysUser:listSysUserPermDetail', 2, '权限详情', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992990, NULL, 'formSysRole', 0, '角色管理', 10200, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992991, 1471382975990992990, 'formSysRole:fragmentSysRole', 1, '角色管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992992, 1471382975990992990, 'formSysRole:fragmentSysRoleUser', 1, '用户授权', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992993, 1471382975990992991, 'formSysRole:fragmentSysRole:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992994, 1471382975990992991, 'formSysRole:fragmentSysRole:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992995, 1471382975990992991, 'formSysRole:fragmentSysRole:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992996, 1471382975990992991, 'formSysRole:fragmentSysRole:listSysRolePermDetail', 2, '权限详情', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992997, 1471382975990992992, 'formSysRole:fragmentSysRoleUser:addUserRole', 2, '授权用户', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990992998, 1471382975990992992, 'formSysRole:fragmentSysRoleUser:deleteUserRole', 2, '移除用户', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993005, NULL, 'formSysMenu', 0, '菜单管理', 10600, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993006, 1471382975990993005, 'formSysMenu:fragmentSysMenu', 1, '菜单管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993007, 1471382975990993006, 'formSysMenu:fragmentSysMenu:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993008, 1471382975990993006, 'formSysMenu:fragmentSysMenu:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993009, 1471382975990993006, 'formSysMenu:fragmentSysMenu:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993010, 1471382975990993006, 'formSysMenu:fragmentSysMenu:listSysMenuPermDetail', 2, '权限详情', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993017, NULL, 'formSysPermCode', 0, '权限字管理', 10700, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993018, 1471382975990993017, 'formSysPermCode:fragmentSysPermCode', 1, '权限字管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993019, 1471382975990993018, 'formSysPermCode:fragmentSysPermCode:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993020, 1471382975990993018, 'formSysPermCode:fragmentSysPermCode:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993021, 1471382975990993018, 'formSysPermCode:fragmentSysPermCode:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993022, 1471382975990993018, 'formSysPermCode:fragmentSysPermCode:listSysPermCodePermDetail', 2, '权限详情', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993032, NULL, 'formSysPerm', 0, '权限管理', 10800, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993033, 1471382975990993032, 'formSysPerm:fragmentSysPerm', 1, '权限管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993034, 1471382975990993033, 'formSysPerm:fragmentSysPerm:addPermModule', 2, '新增模块', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993035, 1471382975990993033, 'formSysPerm:fragmentSysPerm:updatePermModule', 2, '编辑模块', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993036, 1471382975990993033, 'formSysPerm:fragmentSysPerm:deletePermModule', 2, '删除模块', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993037, 1471382975990993033, 'formSysPerm:fragmentSysPerm:addPerm', 2, '新增权限', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993038, 1471382975990993033, 'formSysPerm:fragmentSysPerm:updatePerm', 2, '编辑权限', 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993039, 1471382975990993033, 'formSysPerm:fragmentSysPerm:deletePerm', 2, '删除权限', 6, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993040, 1471382975990993033, 'formSysPerm:fragmentSysPerm:listSysPermPermDetail', 2, '权限详情', 7, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993047, NULL, 'formSysDict', 0, '字典管理', 10900, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993048, 1471382975990993047, 'formSysDict:fragmentSysDict', 1, '字典管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993049, 1471382975990993048, 'formSysDict:fragmentSysDict:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993050, 1471382975990993048, 'formSysDict:fragmentSysDict:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993051, 1471382975990993048, 'formSysDict:fragmentSysDict:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975990993052, 1471382975990993048, 'formSysDict:fragmentSysDict:reloadCache', 2, '同步缓存', 4, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187211, NULL, 'formSysLoginUser', 0, '在线用户', 11200, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187212, 1471382975995187211, 'formSysLoginUser:fragmentLoginUser', 1, '在线用户', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187213, 1471382975995187212, 'formSysLoginUser:fragmentLoginUser:delete', 2, '强制下线', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187216, NULL, 'formSysOperationLog', 0, '操作日志', 11100, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187217, 1471382975995187216, 'formSysOperationLog:fragmentSysOperationLog', 1, '操作日志', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187228, NULL, 'formSysDataPerm', 0, '数据权限管理', 10400, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187229, 1471382975995187228, 'formSysDataPerm:fragmentSysDataPerm', 1, '数据权限管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187230, 1471382975995187228, 'formSysDataPerm:fragmentSysDataPermUser', 1, '用户授权', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187231, 1471382975995187229, 'formSysDataPerm:fragmentSysDataPerm:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187232, 1471382975995187229, 'formSysDataPerm:fragmentSysDataPerm:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187233, 1471382975995187229, 'formSysDataPerm:fragmentSysDataPerm:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187234, 1471382975995187230, 'formSysDataPerm:fragmentSysDataPermUser:addDataPermUser', 2, '授权用户', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187235, 1471382975995187230, 'formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser', 2, '移除用户', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187241, NULL, 'formSysDept', 0, '部门管理', 10100, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187242, 1471382975995187241, 'formSysDept:fragmentSysDept', 1, '部门管理', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187243, 1471382975995187242, 'formSysDept:fragmentSysDept:add', 2, '新增', 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187244, 1471382975995187242, 'formSysDept:fragmentSysDept:update', 2, '编辑', 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_code` VALUES (1471382975995187245, 1471382975995187242, 'formSysDept:fragmentSysDept:delete', 2, '删除', 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -6629,8 +6197,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_perm_code_perm`;
 CREATE TABLE `zz_sys_perm_code_perm` (
-  `perm_code_id` bigint(20) NOT NULL COMMENT '权限字Id',
-  `perm_id` bigint(20) NOT NULL COMMENT '权限id',
+  `perm_code_id` bigint NOT NULL COMMENT '权限字Id',
+  `perm_id` bigint NOT NULL COMMENT '权限id',
   PRIMARY KEY (`perm_code_id`,`perm_id`),
   KEY `idx_perm_id` (`perm_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT COMMENT='系统权限字和权限资源关联表';
@@ -6639,211 +6207,128 @@ CREATE TABLE `zz_sys_perm_code_perm` (
 -- Records of zz_sys_perm_code_perm
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936177, 1330135413611827201);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413611827202);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936179, 1330135413611827203);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936176, 1330135413611827204);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936176, 1330135413611827205);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413611827206);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413611827207);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936180, 1330135413611827208);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936181, 1330135413611827209);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936181, 1330135413611827210);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936181, 1330135413611827211);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936189, 1330135413611827213);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936190, 1330135413611827214);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936191, 1330135413611827215);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936177, 1330135413611827216);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413611827216);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936188, 1330135413611827216);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936188, 1330135413611827217);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936190, 1330135413611827218);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936190, 1330135413611827219);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936105, 1330135413611827221);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936109, 1330135413611827222);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936101, 1330135413611827223);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936096, 1330135413611827224);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936107, 1330135413611827226);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936123, 1330135413611827228);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936117, 1330135413611827229);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936115, 1330135413611827230);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936122, 1330135413611827231);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936120, 1330135413611827232);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936113, 1330135413611827234);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936111, 1330135413611827235);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936119, 1330135413611827236);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741785, 1330135413611827238);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741789, 1330135413611827239);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741780, 1330135413611827240);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741777, 1330135413611827241);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741787, 1330135413611827243);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741791, 1330135413611827247);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741805, 1330135413611827250);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741801, 1330135413611827251);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741796, 1330135413611827252);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741793, 1330135413611827253);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741799, 1330135413611827255);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936086, 1330135413611827258);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936089, 1330135413611827259);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936081, 1330135413611827260);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936078, 1330135413611827261);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936088, 1330135413611827263);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936090, 1330135413611827263);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936082, 1330135413611827265);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936086, 1330135413611827266);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936089, 1330135413611827266);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936078, 1330135413611827267);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936088, 1330135413611827267);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936090, 1330135413611827267);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741820, 1330135413611827269);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741824, 1330135413611827270);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741816, 1330135413611827271);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741813, 1330135413611827272);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741822, 1330135413611827274);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741811, 1330135413611827277);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936162, 1330135413611827278);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936165, 1330135413611827279);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936164, 1330135413611827280);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936161, 1330135413611827282);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741834, 1330135413611827285);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741838, 1330135413611827286);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741829, 1330135413611827287);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741826, 1330135413611827288);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741836, 1330135413611827290);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741846, 1330135413611827292);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741843, 1330135413611827293);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741842, 1330135413611827294);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741840, 1330135413611827295);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741845, 1330135413611827296);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741763, 1330135413611827298);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741767, 1330135413611827299);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936156, 1330135413611827300);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936153, 1330135413611827301);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741765, 1330135413611827303);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741763, 1330135413611827305);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741767, 1330135413611827305);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741765, 1330135413611827306);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936153, 1330135413611827306);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741771, 1330135413611827308);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741775, 1330135413611827309);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936158, 1330135413611827310);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936153, 1330135413611827311);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741773, 1330135413611827313);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936065, 1330135413611827316);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936069, 1330135413611827317);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741851, 1330135413611827318);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936093, 1330135413611827318);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741848, 1330135413611827319);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936090, 1330135413611827319);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936067, 1330135413611827321);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936076, 1330135413611827323);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936073, 1330135413611827324);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936071, 1330135413611827325);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936075, 1330135413611827326);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936065, 1330135413611827327);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936069, 1330135413611827327);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741848, 1330135413611827328);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936067, 1330135413611827328);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936090, 1330135413611827328);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936131, 1330135413616021506);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936143, 1330135413616021514);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936125, 1330135413616021551);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936125, 1330135413616021552);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936126, 1330135413616021553);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936149, 1330135413616021557);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936149, 1330135413616021558);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936128, 1330135413616021569);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936128, 1330135413616021570);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936151, 1330135413616021575);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936151, 1330135413616021576);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936133, 1330135413616021581);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936133, 1330135413616021582);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936145, 1330135413616021587);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936145, 1330135413616021588);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741807, 1330135413616021605);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413674741807, 1330135413616021606);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936147, 1330135413616021617);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936147, 1330135413616021618);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936206, 1330135413616021623);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936207, 1330135413616021624);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936208, 1330135413616021625);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936177, 1330135413616021626);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413616021626);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936204, 1330135413616021626);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936207, 1330135413616021627);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936210, 1330135413616021628);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936211, 1330135413616021629);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936205, 1330135413616021630);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936210, 1330135413616021631);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936209, 1330135413616021632);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936209, 1330135413616021633);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936225, 1330135413616021635);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936226, 1330135413616021636);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936227, 1330135413616021637);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936177, 1330135413616021638);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936178, 1330135413616021638);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936223, 1330135413616021638);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936226, 1330135413616021639);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936228, 1330135413616021640);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936229, 1330135413616021641);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936224, 1330135413616021642);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936228, 1330135413616021643);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936238, 1330135413616021645);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936239, 1330135413616021646);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936240, 1330135413616021647);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936206, 1330135413616021648);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936207, 1330135413616021648);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936237, 1330135413616021648);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936239, 1330135413616021649);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936241, 1330135413616021650);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936241, 1330135413616021651);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936250, 1330135413616021653);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936251, 1330135413616021654);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936252, 1330135413616021655);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936238, 1330135413616021656);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936239, 1330135413616021656);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936249, 1330135413616021656);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936251, 1330135413616021657);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936253, 1330135413616021658);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936253, 1330135413616021659);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936265, 1330135413616021661);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936266, 1330135413616021662);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936267, 1330135413616021663);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936264, 1330135413616021664);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936250, 1330135413616021665);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936251, 1330135413616021665);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936264, 1330135413616021665);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936268, 1330135413616021667);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936269, 1330135413616021668);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936270, 1330135413616021669);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936264, 1330135413616021670);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936269, 1330135413616021671);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936271, 1330135413616021672);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936271, 1330135413616021673);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936271, 1330135413616021674);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021677);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021678);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021679);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021680);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021682);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021683);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021684);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021685);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021687);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021688);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021689);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021690);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021692);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021693);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021694);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021695);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021697);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021698);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021699);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1330135413678936279, 1330135413616021700);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1380402116614426624, 1380401489515646976);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1380402356650250240, 1380401565940060160);
-INSERT INTO `zz_sys_perm_code_perm` VALUES (1380402467937718272, 1380401663432462336);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992974, 1293376635331940352);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1293376635331940365);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992976, 1293376635331940379);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992973, 1293376635357106176);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992973, 1293376635357106182);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1293376635357106188);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1293376635357106190);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992977, 1293376635373883392);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293440813111447552, 1293376760750018568);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293441136077049856, 1293376760750018568);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293441892486221824, 1293378861102272520);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293442766797279232, 1293378861102272520);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293436524536270848, 1293396976896839680);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293434543608434688, 1293396976896839695);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293440523041771520, 1293396976896839711);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293429171069915136, 1293396976913616896);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293429656879370240, 1293396976913616914);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293441892486221824, 1293397261434228736);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293442766797279232, 1293397261434228748);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293444524432953344, 1293397261434228761);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293440813111447552, 1293397261451005952);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293441136077049856, 1293397261451005968);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310167812844556288, 1293397319433064448);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310167373478629376, 1293397319433064457);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317450579131240448, 1293397319433064467);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317447995897155584, 1293397319449841664);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310160774848581632, 1293397319449841672);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293463749092446208, 1293423774305095680);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293463749092446208, 1293423774330261504);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293473829204529152, 1293423954664361984);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293473829204529152, 1293423954676944896);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1293475157112786944, 1293424012151492608);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310162766899712000, 1310160460917510144);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310161223257427968, 1310160460917510147);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310164964761145344, 1310160460917510150);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317450181515415552, 1310160460917510154);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317447995897155584, 1310160460917510157);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310161474580123648, 1310160460917510166);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310163498042396672, 1310160477766029312);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317450395492028416, 1310160477766029321);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1317447995897155584, 1310160477766029324);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1310161356158144512, 1310160477766029335);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187243, 1450780378443812864);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187244, 1450780378443812873);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187245, 1450780378443812883);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992974, 1450780378510921728);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1450780378510921728);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187242, 1450780378510921728);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187242, 1450780378510921731);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187244, 1450780378510921734);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187244, 1450780378510921736);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992978, 1471382975978410019);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992978, 1471382975978410020);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992978, 1471382975978410021);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992993, 1471382975978410061);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992994, 1471382975978410062);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992995, 1471382975978410063);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992974, 1471382975978410064);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1471382975978410064);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992991, 1471382975978410064);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992994, 1471382975978410065);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992997, 1471382975978410066);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992998, 1471382975978410067);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992992, 1471382975978410068);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992997, 1471382975978410069);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992996, 1471382975978410070);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992996, 1471382975978410071);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187231, 1471382975978410073);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187232, 1471382975978410074);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187233, 1471382975978410075);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992974, 1471382975978410076);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992975, 1471382975978410076);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187229, 1471382975978410076);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187232, 1471382975978410077);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187234, 1471382975978410078);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187235, 1471382975978410079);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187230, 1471382975978410080);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187234, 1471382975978410081);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993007, 1471382975978410083);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993009, 1471382975978410084);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993008, 1471382975978410085);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992993, 1471382975978410086);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990992994, 1471382975978410086);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993006, 1471382975978410086);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993008, 1471382975978410087);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993010, 1471382975978410088);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993010, 1471382975978410089);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993019, 1471382975978410091);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993020, 1471382975978410092);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993021, 1471382975978410093);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993007, 1471382975978410094);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993008, 1471382975978410094);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993018, 1471382975978410094);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993020, 1471382975978410095);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993022, 1471382975978410096);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993022, 1471382975978410097);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993034, 1471382975978410099);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993035, 1471382975978410100);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993036, 1471382975978410101);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993033, 1471382975978410102);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993019, 1471382975978410103);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993020, 1471382975978410103);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993033, 1471382975978410103);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993037, 1471382975978410105);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993038, 1471382975978410106);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993039, 1471382975978410107);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993033, 1471382975978410108);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993038, 1471382975978410109);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993040, 1471382975978410110);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993040, 1471382975978410111);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993040, 1471382975978410112);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410115);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410116);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410117);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410118);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410120);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410121);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410122);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975990993048, 1471382975978410123);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187217, 1471382975978410125);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187212, 1471382975978410127);
+INSERT INTO `zz_sys_perm_code_perm` VALUES (1471382975995187213, 1471382975978410128);
 COMMIT;
 
 -- ----------------------------
@@ -6851,14 +6336,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_perm_module`;
 CREATE TABLE `zz_sys_perm_module` (
-  `module_id` bigint(20) NOT NULL COMMENT '权限模块id',
-  `parent_id` bigint(20) DEFAULT '0' COMMENT '上级权限模块id',
-  `module_name` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '权限模块名称',
-  `module_type` int(11) NOT NULL COMMENT '模块类型(0: 普通模块 1: Controller模块)',
-  `show_order` int(11) NOT NULL DEFAULT '0' COMMENT '权限模块在当前层级下的顺序，由小到大',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `module_id` bigint NOT NULL COMMENT '权限模块id',
+  `parent_id` bigint DEFAULT '0' COMMENT '上级权限模块id',
+  `module_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '权限模块名称',
+  `module_type` int NOT NULL COMMENT '模块类型(0: 普通模块 1: Controller模块)',
+  `show_order` int NOT NULL DEFAULT '0' COMMENT '权限模块在当前层级下的顺序，由小到大',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`module_id`) USING BTREE,
   KEY `idx_show_order` (`show_order`) USING BTREE,
@@ -6870,54 +6355,28 @@ CREATE TABLE `zz_sys_perm_module` (
 -- Records of zz_sys_perm_module
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_perm_module` VALUES (1215454941255045123, NULL, '用户权限', 0, 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1215454945344491520, NULL, '系统配置', 0, 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1215454945344491521, NULL, '缺省分组', 0, 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1217451480768843776, NULL, '统计权限', 0, 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827200, 1215454941255045123, '用户管理', 1, 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827212, 1215454941255045123, '部门管理', 1, 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827220, 1215454945344491521, '学生班级数据源', 1, 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827237, 1215454945344491521, '学生数据源', 1, 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827249, 1215454945344491521, '老师数据源', 1, 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827257, 1215454945344491521, '课程数据源', 1, 15, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827268, 1215454945344491521, '习题数据源', 1, 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827276, 1215454945344491521, '知识点数据源', 1, 25, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827284, 1215454945344491521, '作业数据源', 1, 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827297, 1215454945344491521, '视频数据源', 1, 35, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827307, 1215454945344491521, '视频课程数据源', 1, 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827315, 1215454945344491521, '课程章节数据源', 1, 45, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413611827329, 1215454945344491521, '作业习题流水数据源', 1, 50, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021510, 1215454945344491521, '学生行为数据源', 1, 55, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021518, 1215454945344491521, '学生学币流水数据源', 1, 60, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021526, 1215454945344491521, '学生课程流水数据源', 1, 65, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021534, 1215454945344491521, '学生注册流水数据源', 1, 70, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021542, 1215454945344491521, '视频流水数据源', 1, 75, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021550, 1217451480768843776, '学币统计', 1, 0, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021556, 1217451480768843776, '课程流水统计', 1, 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021562, 1217451480768843776, '习题统计', 1, 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021568, 1217451480768843776, '习题流水统计', 1, 15, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021574, 1217451480768843776, '校区统计', 1, 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021580, 1217451480768843776, '学生行为统计', 1, 25, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021586, 1217451480768843776, '学生注册统计', 1, 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021592, 1217451480768843776, '学生统计', 1, 35, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021598, 1217451480768843776, '老师统计', 1, 40, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021604, 1217451480768843776, '老师流水统计', 1, 45, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021610, 1217451480768843776, '视频统计', 1, 50, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021616, 1217451480768843776, '视频流水统计', 1, 55, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021622, 1215454941255045123, '角色管理', 1, 10, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021634, 1215454941255045123, '数据权限管理', 1, 15, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021644, 1215454941255045123, '菜单管理', 1, 20, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021652, 1215454941255045123, '权限字管理', 1, 25, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021660, 1215454941255045123, '权限模块管理', 1, 30, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021666, 1215454941255045123, '权限资源管理', 1, 35, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021675, 1215454945344491520, '字典管理', 0, 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021676, 1330135413616021675, '行政区划', 1, 1, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021681, 1330135413616021675, '课程类别字典', 1, 2, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021686, 1330135413616021675, '年级字典', 1, 3, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021691, 1330135413616021675, '教材版本字典', 1, 4, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1330135413616021696, 1330135413616021675, '作业类型字典', 1, 5, 1014065909648330753, '2020-11-21 00:00:00', 1014065909648330753, '2020-11-21 00:00:00');
-INSERT INTO `zz_sys_perm_module` VALUES (1380401290089074688, 1215454945344491520, '操作日志', 1, 5, 1034211781408560753, '2021-04-09 14:04:49', 1014065909648330753, '2021-04-10 21:55:44');
-INSERT INTO `zz_sys_perm_module` VALUES (1380401349912432640, 1215454945344491520, '在线用户', 1, 10, 1034211781408560753, '2021-04-09 14:05:03', 1014065909648330753, '2021-04-10 21:55:50');
+INSERT INTO `zz_sys_perm_module` VALUES (1293376634891538435, NULL, '用户权限', 0, 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293376634933481472, NULL, '系统配置', 0, 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293376634933481473, NULL, '缺省分组', 0, 3, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293376635289997312, 1293376634891538435, '用户管理', 1, 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293378124750262272, 1471382975978410113, '行政区划', 1, 1, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293378929620422656, 1471382975978410113, '年级', 1, 2, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293396976871673856, 1293376634933481473, '学生数据', 1, 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293397261417451520, 1293376634933481473, '课程数据', 1, 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293397319412092928, 1293376634933481473, '班级数据', 1, 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293423774284124160, 1293376634933481473, '课程统计', 1, 15, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293423954643390464, 1293376634933481473, '学生行为统计', 1, 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1293424012109549568, 1293376634933481473, '学生行为流水', 1, 25, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1450780378422841344, 1293376634891538435, '部门管理', 1, 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410060, 1293376634891538435, '角色管理', 1, 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410072, 1293376634891538435, '数据权限管理', 1, 15, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410082, 1293376634891538435, '菜单管理', 1, 20, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410090, 1293376634891538435, '权限字管理', 1, 25, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410098, 1293376634891538435, '权限模块管理', 1, 30, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410104, 1293376634891538435, '权限资源管理', 1, 35, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410113, 1293376634933481472, '字典管理', 0, 0, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410124, 1293376634933481472, '操作日志', 1, 5, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
+INSERT INTO `zz_sys_perm_module` VALUES (1471382975978410126, 1293376634933481472, '在线用户', 1, 10, 1293376634887344128, '2022-02-27 00:00:00', 1293376634887344128, '2022-02-27 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -6935,32 +6394,28 @@ CREATE TABLE `zz_sys_perm_whitelist` (
 -- Records of zz_sys_perm_whitelist
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/course/listDict', '课程数据源', '课程字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/courseCategory/listAll', '课程类别字典', '字典全部列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/courseCategory/listDict', '课程类别字典', '字典全部缓存列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/exercise/listDict', '习题数据源', '习题字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/grade/listAll', '年级字典', '字典全部列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/grade/listDict', '年级字典', '字典全部缓存列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/knowledge/listByCascadeFilter', '知识点数据源', '级联过滤');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/knowledge/listDict', '知识点数据源', '知识点字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/materialEdition/listAll', '教材版本字典', '字典全部列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/materialEdition/listDict', '教材版本字典', '字典全部缓存列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/paper/listDict', '作业数据源', '作业字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/paperType/listAll', '作业类型字典', '字典全部列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/paperType/listDict', '作业类型字典', '字典全部缓存列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/video/listDict', '视频数据源', '视频字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/coursepaper/videoCourse/listDict', '视频课程数据源', '视频课程字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/areaCode/listDict', '行政区划', '行政区划列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/areaCode/listDictByParentId', '行政区划', '行政区划过滤列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/areaCode/listAll', '行政区划', '字典全部列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/areaCode/listDict', '行政区划', '行政区划列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/areaCode/listDictByIds', '行政区划', '行政区划批量Id列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/areaCode/listDictByParentId', '行政区划', '行政区划过滤列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/course/listDict', '课程数据', '课程字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/course/listDictByIds', '课程数据', '课程字典批量Id列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/grade/listAll', '年级', '字典全部列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/grade/listDict', '年级', '字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/grade/listDictByIds', '年级', '字典批量Id列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/student/listDict', '学生数据', '学生字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/CourseClass/student/listDictByIds', '学生数据', '学生字典批量Id列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/changeHeadImage', '系统管理', '修改头像');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/changePassword', '系统管理', '修改密码');
 INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/doLogout', '登录模块', '退出登陆');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/downloadHeadImage', '系统管理', '下载头像');
 INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/getLoginInfo', '登录模块', '获取登录信息');
 INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/login/getUaaLogoutUrl', '登录模块', '获取uaa登出url');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/student/listDict', '学生数据源', '学生字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/studentClass/listDict', '学生班级数据源', '班级字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysDept/listDict', '部门管理', '校区字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysDept/listDictByParentId', '部门管理', '校区字典下一级字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysUser/listDict', '用户管理', '用户字典字典列表');
-INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/teacher/listDict', '老师数据源', '老师字典字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysDept/listDict', '部门管理', '部门字典字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysDept/listDictByIds', '部门管理', '部门字典字典批量Id列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysDept/listDictByParentId', '部门管理', '部门字典下一级字典列表');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysRole/listDict', '系统管理', '角色字典接口');
+INSERT INTO `zz_sys_perm_whitelist` VALUES ('/admin/upms/sysRole/listDictByIds', '系统管理', '角色字典接口');
 COMMIT;
 
 -- ----------------------------
@@ -6968,263 +6423,42 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_role`;
 CREATE TABLE `zz_sys_role` (
-  `role_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `role_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '角色名称',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `role_id` bigint NOT NULL COMMENT '主键Id',
+  `role_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '角色名称',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统角色表';
-
--- ----------------------------
--- Records of zz_sys_role
--- ----------------------------
-BEGIN;
-INSERT INTO `zz_sys_role` VALUES (1022706741125320704, '管理员', 1014065909648330753, '2020-10-22 00:00:00', 1014065909648330753, '2020-11-22 10:29:28');
-INSERT INTO `zz_sys_role` VALUES (1022707976280739840, '助教', 1014065909648330753, '2020-10-22 00:00:00', 1014065909648330753, '2020-11-22 10:28:20');
-INSERT INTO `zz_sys_role` VALUES (1022708050725441536, '老师', 1014065909648330753, '2020-10-22 00:00:00', 1014065909648330753, '2020-11-22 10:28:27');
-INSERT INTO `zz_sys_role` VALUES (1023899573928333312, '校长', 1014065909648330753, '2020-10-22 00:00:00', 1014065909648330753, '2020-11-22 10:28:38');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for zz_sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_role_menu`;
 CREATE TABLE `zz_sys_role_menu` (
-  `role_id` bigint(20) NOT NULL COMMENT '角色Id',
-  `menu_id` bigint(20) NOT NULL COMMENT '菜单Id',
+  `role_id` bigint NOT NULL COMMENT '角色Id',
+  `menu_id` bigint NOT NULL COMMENT '菜单Id',
   PRIMARY KEY (`role_id`,`menu_id`) USING BTREE,
   KEY `idx_menu_id` (`menu_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT COMMENT='角色与菜单对应关系表';
-
--- ----------------------------
--- Records of zz_sys_role_menu
--- ----------------------------
-BEGIN;
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454942018408448);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399680);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399681);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399682);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399684);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399686);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399687);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399688);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1215454943939399689);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222090917989584896);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222090917989584896);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222090978572111872);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222090978572111872);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091219459379200);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091293484650496);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091293484650496);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091471943897088);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091471943897088);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091556656254976);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091556656254976);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091646036873216);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091646036873216);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091738747768832);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091738747768832);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222091976535445504);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222091976535445504);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092072740196352);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1222092072740196352);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092215921152000);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092215921152000);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092307075960832);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092307075960832);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092496427814912);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092496427814912);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092599356035072);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092599356035072);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092687679688704);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092687679688704);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092781992808448);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092781992808448);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1222092891405422592);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1222092891405422592);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936169);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936170);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936171);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936172);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936173);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936183);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936184);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936185);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936186);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936193);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936194);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936195);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936196);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936197);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936198);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936200);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936201);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936202);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936213);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936214);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936215);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936216);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936217);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936218);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936219);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936220);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936221);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936231);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936232);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936233);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936234);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936243);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936244);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936245);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936246);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936255);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936256);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936257);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936258);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936259);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936260);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936261);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936273);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936274);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936275);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936276);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1330135413678936277);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936287);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936288);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936289);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936290);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936291);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936293);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936293);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936294);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936294);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936295);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936295);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936296);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936296);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936297);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936297);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936299);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936299);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936300);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936300);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936301);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936301);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936302);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936302);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936304);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936304);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936305);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936305);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936306);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936306);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936307);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936307);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936309);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936309);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936310);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936310);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936311);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936311);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936312);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936312);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936313);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936313);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936315);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936315);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936316);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936316);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936317);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936317);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936318);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936318);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936319);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936319);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936321);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936321);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936322);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936322);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936323);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936323);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936324);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936324);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936325);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936325);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936326);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936326);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936328);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936328);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936329);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936329);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936330);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936330);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936331);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936331);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936332);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936332);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936333);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936333);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936334);
-INSERT INTO `zz_sys_role_menu` VALUES (1022708050725441536, 1330135413678936334);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936336);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936336);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936338);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936338);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936340);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936340);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936341);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936341);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936343);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936343);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936344);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936344);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936345);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936345);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936346);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936346);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936347);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936347);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936348);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936348);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936349);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936349);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936350);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936350);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936351);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936351);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936353);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936353);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936355);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936355);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936356);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936356);
-INSERT INTO `zz_sys_role_menu` VALUES (1022707976280739840, 1330135413678936358);
-INSERT INTO `zz_sys_role_menu` VALUES (1023899573928333312, 1330135413678936358);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1380402889242972160);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1380403187302797312);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1380403312339193856);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1380403435244883968);
-INSERT INTO `zz_sys_role_menu` VALUES (1022706741125320704, 1380403576978804736);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for zz_sys_uaa_operator
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_uaa_operator`;
 CREATE TABLE `zz_sys_uaa_operator` (
-  `operator_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `login_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
-  `password` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
-  `show_name` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
-  `operator_type` int(11) NOT NULL COMMENT '用户类型(0: 管理员 1: 普通操作员)',
-  `head_image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户头像的Url',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者Id',
+  `operator_id` bigint NOT NULL COMMENT '主键Id',
+  `login_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
+  `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
+  `show_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
+  `operator_type` int NOT NULL COMMENT '用户类型(0: 管理员 1: 普通操作员)',
+  `head_image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户头像的Url',
+  `create_user_id` bigint NOT NULL COMMENT '创建者Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '最后更新时间',
-  `deleted_flag` int(11) NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
+  `deleted_flag` int NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
   PRIMARY KEY (`operator_id`) USING BTREE,
   UNIQUE KEY `uk_login_name` (`login_name`) USING BTREE,
   KEY `idx_create_time` (`create_time`) USING BTREE,
@@ -7243,16 +6477,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_uaa_user`;
 CREATE TABLE `zz_sys_uaa_user` (
-  `user_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `username` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
-  `password` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
-  `show_name` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
-  `locked` int(11) NOT NULL COMMENT '状态(0: 正常 1: 锁定)',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者Id',
+  `user_id` bigint NOT NULL COMMENT '主键Id',
+  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
+  `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
+  `show_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
+  `locked` int NOT NULL COMMENT '状态(0: 正常 1: 锁定)',
+  `create_user_id` bigint NOT NULL COMMENT '创建者Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '最后更新时间',
-  `deleted_flag` int(11) NOT NULL COMMENT '是否删除(1: 正常，-1： 删除)',
+  `deleted_flag` int NOT NULL COMMENT '是否删除(1: 正常，-1： 删除)',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE KEY `uk_username` (`username`) USING BTREE,
   KEY `idx_create_time` (`create_time`) USING BTREE,
@@ -7281,19 +6515,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_user`;
 CREATE TABLE `zz_sys_user` (
-  `user_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `login_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
-  `show_name` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
-  `dept_id` bigint(20) NOT NULL COMMENT '用户所在部门Id',
-  `user_type` int(11) NOT NULL COMMENT '用户类型(0: 管理员 1: 系统管理用户 2: 系统业务用户)',
-  `head_image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户头像的Url',
-  `user_status` int(11) NOT NULL COMMENT '状态(0: 正常 1: 锁定)',
-  `teacher_id` bigint(20) DEFAULT NULL COMMENT '老师id',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建者',
+  `user_id` bigint NOT NULL COMMENT '主键Id',
+  `login_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户登录名称',
+  `show_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户显示名称',
+  `dept_id` bigint NOT NULL COMMENT '用户所在部门Id',
+  `user_type` int NOT NULL COMMENT '用户类型(0: 管理员 1: 系统管理用户 2: 系统业务用户)',
+  `head_image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户头像的Url',
+  `user_status` int NOT NULL COMMENT '状态(0: 正常 1: 锁定)',
+  `teacher_id` bigint DEFAULT NULL COMMENT '老师id',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` bigint(20) NOT NULL COMMENT '更新者Id',
+  `update_user_id` bigint NOT NULL COMMENT '更新者Id',
   `update_time` datetime NOT NULL COMMENT '最后更新时间',
-  `deleted_flag` int(11) NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
+  `deleted_flag` int NOT NULL COMMENT '删除标记(1: 正常 -1: 已删除)',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE KEY `uk_login_name` (`login_name`) USING BTREE,
   KEY `idx_dept_id` (`dept_id`) USING BTREE,
@@ -7322,46 +6556,26 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_sys_user_role`;
 CREATE TABLE `zz_sys_user_role` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
-  `role_id` bigint(20) NOT NULL COMMENT '角色Id',
+  `user_id` bigint NOT NULL COMMENT '用户Id',
+  `role_id` bigint NOT NULL COMMENT '角色Id',
   PRIMARY KEY (`user_id`,`role_id`) USING BTREE,
   KEY `idx_role_id` (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户与角色对应关系表';
-
--- ----------------------------
--- Records of zz_sys_user_role
--- ----------------------------
-BEGIN;
-INSERT INTO `zz_sys_user_role` VALUES (1022708397548244992, 1022706741125320704);
-INSERT INTO `zz_sys_user_role` VALUES (1022708507363512320, 1022706741125320704);
-INSERT INTO `zz_sys_user_role` VALUES (1015820835156135936, 1022707976280739840);
-INSERT INTO `zz_sys_user_role` VALUES (1015836614618517504, 1022707976280739840);
-INSERT INTO `zz_sys_user_role` VALUES (1022708776776241152, 1022707976280739840);
-INSERT INTO `zz_sys_user_role` VALUES (1022708983702228992, 1022707976280739840);
-INSERT INTO `zz_sys_user_role` VALUES (1026350428866740296, 1022707976280739840);
-INSERT INTO `zz_sys_user_role` VALUES (1015820835156135936, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1015836614618517504, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1015836821309624320, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1015836926548905984, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1015837043205083136, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1026350428866740296, 1022708050725441536);
-INSERT INTO `zz_sys_user_role` VALUES (1015837043205083136, 1023899573928333312);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for zz_teacher
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_teacher`;
 CREATE TABLE `zz_teacher` (
-  `teacher_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `teacher_id` bigint NOT NULL COMMENT '主键Id',
   `teacher_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '教师名称',
   `birthday` date NOT NULL COMMENT '教师生日',
-  `gender` int(11) NOT NULL COMMENT '教师性别(0: 女 1: 男)',
-  `subject_id` int(11) NOT NULL COMMENT '所教的科目Id',
-  `level` int(11) NOT NULL COMMENT '教师职级(0: 初级 1: 中级 2: 高级)',
-  `flower_count` int(11) DEFAULT '0' COMMENT '鲜花数量',
-  `school_id` bigint(20) NOT NULL COMMENT '校区Id',
-  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `gender` int NOT NULL COMMENT '教师性别(0: 女 1: 男)',
+  `subject_id` int NOT NULL COMMENT '所教的科目Id',
+  `level` int NOT NULL COMMENT '教师职级(0: 初级 1: 中级 2: 高级)',
+  `flower_count` int DEFAULT '0' COMMENT '鲜花数量',
+  `school_id` bigint NOT NULL COMMENT '校区Id',
+  `user_id` bigint NOT NULL COMMENT '用户Id',
   `register_date` datetime NOT NULL COMMENT '入职时间',
   `available` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否在职',
   PRIMARY KEY (`teacher_id`) USING BTREE,
@@ -7384,15 +6598,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_teacher_stats`;
 CREATE TABLE `zz_teacher_stats` (
-  `stats_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `stats_id` bigint NOT NULL COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date NOT NULL COMMENT '统计月份',
-  `province_id` bigint(20) NOT NULL COMMENT '省份Id',
-  `city_id` bigint(20) NOT NULL COMMENT '城市Id',
-  `school_id` bigint(20) NOT NULL COMMENT '学校Id',
-  `video_watch_count` int(11) NOT NULL COMMENT '视频观看数量',
-  `flower_count` int(11) NOT NULL COMMENT '献花数量',
-  `new_student` int(11) NOT NULL COMMENT '新增学生数量',
+  `province_id` bigint NOT NULL COMMENT '省份Id',
+  `city_id` bigint NOT NULL COMMENT '城市Id',
+  `school_id` bigint NOT NULL COMMENT '学校Id',
+  `video_watch_count` int NOT NULL COMMENT '视频观看数量',
+  `flower_count` int NOT NULL COMMENT '献花数量',
+  `new_student` int NOT NULL COMMENT '新增学生数量',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_teacher_id` (`stats_date`,`school_id`) USING BTREE,
   KEY `idx_school_id` (`school_id`) USING BTREE,
@@ -7430,18 +6644,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_teacher_trans_stats`;
 CREATE TABLE `zz_teacher_trans_stats` (
-  `stats_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `stats_id` bigint NOT NULL COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
   `stats_month` date NOT NULL COMMENT '统计月份',
-  `province_id` bigint(20) NOT NULL COMMENT '省份Id',
-  `city_id` bigint(20) NOT NULL COMMENT '城市Id',
-  `school_id` bigint(20) NOT NULL COMMENT '学校Id',
-  `school_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '学校名称',
-  `teacher_id` bigint(20) NOT NULL COMMENT '老师Id',
-  `teacher_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '老师名称',
-  `video_watch_count` int(11) NOT NULL COMMENT '视频观看数量',
-  `flower_count` int(11) NOT NULL COMMENT '献花数量',
-  `new_student` int(11) NOT NULL COMMENT '新增学生数量',
+  `province_id` bigint NOT NULL COMMENT '省份Id',
+  `city_id` bigint NOT NULL COMMENT '城市Id',
+  `school_id` bigint NOT NULL COMMENT '学校Id',
+  `school_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学校名称',
+  `teacher_id` bigint NOT NULL COMMENT '老师Id',
+  `teacher_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '老师名称',
+  `video_watch_count` int NOT NULL COMMENT '视频观看数量',
+  `flower_count` int NOT NULL COMMENT '献花数量',
+  `new_student` int NOT NULL COMMENT '新增学生数量',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_teacher_id` (`stats_date`,`teacher_id`) USING BTREE,
   KEY `idx_teacher_id` (`teacher_id`) USING BTREE,
@@ -7494,20 +6708,34 @@ INSERT INTO `zz_teacher_trans_stats` VALUES (1018047146012446762, '2020-02-24', 
 COMMIT;
 
 -- ----------------------------
+-- Table structure for zz_transaction_message_producer_trans
+-- ----------------------------
+DROP TABLE IF EXISTS `zz_transaction_message_producer_trans`;
+CREATE TABLE `zz_transaction_message_producer_trans` (
+  `trans_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息事务Id',
+  `message_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息类型',
+  `command_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '命令类型',
+  `message_topic` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息主题',
+  `producer_trace_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '生产者traceId',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`trans_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用于事务型消息的生产者发送数据流水表';
+
+-- ----------------------------
 -- Table structure for zz_video
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_video`;
 CREATE TABLE `zz_video` (
-  `video_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `video_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '视频名称',
-  `video_course_id` bigint(20) NOT NULL COMMENT '视频课程Id',
-  `knowledge_id` bigint(20) NOT NULL COMMENT '知识点Id',
-  `teacher_id` bigint(20) NOT NULL COMMENT '老师Id',
-  `duration` int(11) NOT NULL COMMENT '视频时长(秒)',
+  `video_id` bigint NOT NULL COMMENT '主键Id',
+  `video_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '视频名称',
+  `video_course_id` bigint NOT NULL COMMENT '视频课程Id',
+  `knowledge_id` bigint NOT NULL COMMENT '知识点Id',
+  `teacher_id` bigint NOT NULL COMMENT '老师Id',
+  `duration` int NOT NULL COMMENT '视频时长(秒)',
   `online_flag` bit(1) NOT NULL COMMENT '可用状态',
-  `picture_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图片URL',
-  `video_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '视频文件URL',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户Id',
+  `picture_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图片URL',
+  `video_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '视频文件URL',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`video_id`) USING BTREE
@@ -7543,17 +6771,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_video_course`;
 CREATE TABLE `zz_video_course` (
-  `video_course_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `course_name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '课程名称',
-  `price` int(11) NOT NULL COMMENT '课程价格',
-  `difficulty` int(11) NOT NULL COMMENT '课程难度(0: 容易 1: 普通 2: 很难)',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `subject_id` tinyint(4) NOT NULL COMMENT '学科Id',
-  `edition_id` int(11) NOT NULL COMMENT '教材版本',
-  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户Id',
+  `video_course_id` bigint NOT NULL COMMENT '主键Id',
+  `course_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '课程名称',
+  `price` int NOT NULL COMMENT '课程价格',
+  `difficulty` int NOT NULL COMMENT '课程难度(0: 容易 1: 普通 2: 很难)',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `subject_id` tinyint NOT NULL COMMENT '学科Id',
+  `edition_id` int NOT NULL COMMENT '教材版本',
+  `create_user_id` bigint NOT NULL COMMENT '创建用户Id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  `available` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否可用(0: 不可用 1: 可用)',
+  `available` tinyint NOT NULL DEFAULT '0' COMMENT '是否可用(0: 不可用 1: 可用)',
   PRIMARY KEY (`video_course_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -7586,14 +6814,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_video_stats`;
 CREATE TABLE `zz_video_stats` (
-  `stats_id` bigint(20) NOT NULL COMMENT '主键Id',
+  `stats_id` bigint NOT NULL COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `province_id` bigint(20) NOT NULL COMMENT '学生所属省Id',
-  `city_id` bigint(20) NOT NULL COMMENT '学生所属城市Id',
-  `chinese_count` int(11) NOT NULL COMMENT '语文视频统计数量',
-  `math_count` int(11) NOT NULL COMMENT '数学视频播放数量',
-  `english_count` int(11) NOT NULL COMMENT '英语视频播放数量',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `province_id` bigint NOT NULL COMMENT '学生所属省Id',
+  `city_id` bigint NOT NULL COMMENT '学生所属城市Id',
+  `chinese_count` int NOT NULL COMMENT '语文视频统计数量',
+  `math_count` int NOT NULL COMMENT '数学视频播放数量',
+  `english_count` int NOT NULL COMMENT '英语视频播放数量',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_grade_id_region_id` (`stats_date`,`grade_id`,`province_id`,`city_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,
@@ -7606,14 +6834,14 @@ CREATE TABLE `zz_video_stats` (
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_video_trans`;
 CREATE TABLE `zz_video_trans` (
-  `trans_id` bigint(20) NOT NULL COMMENT '主键Id',
-  `student_id` bigint(20) NOT NULL COMMENT '学生Id',
-  `student_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
-  `school_id` bigint(20) NOT NULL COMMENT '学生校区',
-  `video_course_id` bigint(20) NOT NULL COMMENT '视频课程Id',
-  `video_id` bigint(20) NOT NULL COMMENT '视频Id',
-  `device_type` tinyint(4) NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
-  `watch_seconds` int(11) NOT NULL DEFAULT '0' COMMENT '观看时长',
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `student_id` bigint NOT NULL COMMENT '学生Id',
+  `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '学生名称',
+  `school_id` bigint NOT NULL COMMENT '学生校区',
+  `video_course_id` bigint NOT NULL COMMENT '视频课程Id',
+  `video_id` bigint NOT NULL COMMENT '视频Id',
+  `device_type` tinyint NOT NULL COMMENT '设备类型(0: iOS 1: Android 2: PC)',
+  `watch_seconds` int NOT NULL DEFAULT '0' COMMENT '观看时长',
   `watch_time` datetime NOT NULL COMMENT '观看时间',
   PRIMARY KEY (`trans_id`) USING BTREE,
   KEY `idx_video_id` (`video_id`) USING BTREE,
@@ -7728,15 +6956,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `zz_video_trans_stats`;
 CREATE TABLE `zz_video_trans_stats` (
-  `stats_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `stats_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键Id',
   `stats_date` date NOT NULL COMMENT '统计日期',
-  `stats_hour_range` tinyint(4) DEFAULT NULL COMMENT '观看小时区段(2小时一个区段)',
-  `grade_id` tinyint(4) NOT NULL COMMENT '年级Id',
-  `subject_id` tinyint(4) NOT NULL COMMENT '学科Id',
-  `video_id` bigint(20) NOT NULL COMMENT '视频Id',
-  `video_name` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT '视频名称',
-  `watch_count` int(11) NOT NULL COMMENT '观看次数',
-  `watch_second` int(11) NOT NULL COMMENT '观看秒数',
+  `stats_hour_range` tinyint DEFAULT NULL COMMENT '观看小时区段(2小时一个区段)',
+  `grade_id` tinyint NOT NULL COMMENT '年级Id',
+  `subject_id` tinyint NOT NULL COMMENT '学科Id',
+  `video_id` bigint NOT NULL COMMENT '视频Id',
+  `video_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '视频名称',
+  `watch_count` int NOT NULL COMMENT '观看次数',
+  `watch_second` int NOT NULL COMMENT '观看秒数',
   PRIMARY KEY (`stats_id`) USING BTREE,
   UNIQUE KEY `uk_stats_date_stats_hour_video_id` (`stats_date`,`stats_hour_range`,`video_id`) USING BTREE,
   KEY `idx_grade_id` (`grade_id`) USING BTREE,

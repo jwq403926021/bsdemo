@@ -73,7 +73,7 @@
 - 前后端代码完全交付，甚至可配置为自己的项目包名。
 - 前后端代码无一丝混淆，且代码质量超高，极易学习和二次开发，同时支持单体和微服务架构。
 - 可视化的拖拉拽编辑器，目前已经支持大部分常用组件。
-- 目前已支持 MySQL 和 PostgreSQL，后续版本考虑支持 Oracle。
+- 目前已支持 MySQL、PostgreSQL 和 Oracle。
 - 支持主从表联动。
 - 支持富文本、多图、多附件的上传和下载。
 - 支持主表数据、一对一从表及其字典数据的可配置性导出。
@@ -119,6 +119,7 @@
 #### 技术选型
 - 前端: Element (Vue) / Ant Design (React) + ECharts / AntV + Axios + Webpack。
 - 后端: Spring Boot / Spring Cloud / Spring Cloud Alibaba + Spring Security OAuth2 + Mybatis + Jwt。
+- 数据库：MySQL + PostgreSQL + Oracle。
 - 工具库: Activiti + Flowable + Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + Knife4j + qdox。
 - 服务组件: Redis + Zookeeper + Nacos + Consul + XXL-Job + Quartz + Seata + Minio + Canal + RocketMQ + Kafka +  Sentinel。
 - 系统监控: ELK + PinPoint / SkyWalking + Grafana + Prometheus。

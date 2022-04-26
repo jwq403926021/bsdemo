@@ -118,7 +118,7 @@
 
 #### 技术支持
 - 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群3:[![加入QQ群3](https://img.shields.io/badge/392442075-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
-![QQ群3](orange-group4.png)
+![QQ群3](orange-qq-group.png)
 
 ### 生成后工程
 >可无限制的用于学习、培训、接私活、公司自用和开发商业项目等场景，其中基础框架代码将永久免费，并持续更新。

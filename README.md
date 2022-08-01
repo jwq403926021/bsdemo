@@ -16,7 +16,7 @@
 - 橙单单体和微服务企业版优惠券继续可用，单体 109、微服务 309 即可获得橙单全部最新企业版源码，以及企业版工程的代码生成服务。
 
 ### 技术专栏
-> **授人以鱼不如授人以渔**。我们的专栏，是基于橙单低代码的基础架构，并对其进行了深入浅出和鞭辟入里的分析。专栏中的每一行代码，每一段注释，每一个技术点和每一步的思考过程，都是产品级强度的。相信 **吃透橙单、收入翻番、效率乘三**。
+> **授人以鱼不如授人以渔**。我们的专栏，是基于橙单低代码的基础架构，并对其进行了深入浅出和鞭辟入里的分析。专栏中的每一行代码，每一段注释，每一个技术点和每一步的思考过程，都是产品级强度的。请坚信 **吃透橙单、收入翻番、效率乘三**。
 
 - 用户权限操作。[http://www.orangeforms.com/special-column/](http://www.orangeforms.com/special-column/)
 - 权限模块设计。[http://www.orangeforms.com/special-column/perm/](http://www.orangeforms.com/special-column/perm/)
@@ -31,6 +31,7 @@
 - 租户权限管理。[http://www.orangeforms.com/special-column/tenant-perm/](http://www.orangeforms.com/special-column/tenant-perm/)
 - 全局编码字典。[http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
 - 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
+- 更多专栏文章 ... ...
 
 ### 选择橙单
 - **理念**，对开发者极为友好的低代码生成理念，与功能堆砌相比，我们更关注逻辑、数据关联关系以及应用场景，他们的组合既是业务功能良好实现的保障，更是卓越架构高可靠运行的基石。

@@ -29,7 +29,7 @@
 - 安全上传下载。[http://www.orangeforms.com/special-column/upload-download/](http://www.orangeforms.com/special-column/upload-download/)
 - 租户混合隔离。[http://www.orangeforms.com/special-column/tenant-mix-arch/](http://www.orangeforms.com/special-column/tenant-mix-arch/)
 - 租户权限管理。[http://www.orangeforms.com/special-column/tenant-perm/](http://www.orangeforms.com/special-column/tenant-perm/)
-- 全局编码字典。[http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
+- 租户编码字典。[http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
 - 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
 - 更多专栏文章 ... ...
 

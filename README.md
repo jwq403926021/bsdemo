@@ -15,14 +15,22 @@
 - 橙单多租户企业版工程优惠券即将取消，取消时间为 2022年8月15日，价格将从现有优惠后的 339 元，恢复到 999 元。
 - 橙单单体和微服务企业版优惠券继续可用，单体 109、微服务 309 即可获得橙单全部最新企业版源码，以及企业版工程的代码生成服务。
 
-### 仓库代码
-仓库内包含多种不同类型的工程，均为橙单生成器动态生成而得。目前已覆盖橙单全部基础组件和部分架构场景，以及最主流的技术栈组合，更多架构会在随后的版本中，逐步推送至开源仓库，敬请关注。
-- orange-demo-flowable 基于 Flowable 6.6 的完整工作流组件及其示例，同时包含完整的在线表单代码，前端工程包含流程编辑器和在线表单编辑器。
-- orange-demo-activiti 基于 Activiti 7.x 的完整工作流组件及其示例，同时包含完整的在线表单代码，前端工程包含流程编辑器和在线表单编辑器。
-- orange-demo-multi 基于 Nacos + Redis + Kafka + ELK + Skywalking 的全栈微服务架构。包含完整的用户权限和数据权限管理。
-- orange-demo-multi-uaa 基于 OAuth2 + Nacos + Redis + Kafka + ELK + Skywalking 的全栈微服务单点登录架构，权限管理已去除对 Spring Security 的依赖。
-- orange-demo-single 单体架构工程，如果项目中不需要工作流和在线表单，可使用该工程为模板进行二次开发，省去您框架裁剪的时间开销。
-- orange-demo-single-pg 单体架构工程，支持 PostgreSQL。
+### 技术专栏
+> **授人以鱼不如授人以渔**。我们的专栏，是基于橙单低代码的基础架构，并对其进行了深入浅出和鞭辟入里的分析。专栏中的每一行代码，每一段注释，每一个技术点和每一步的思考过程，都是产品级强度的。相信 **吃透橙单、收入翻番、效率乘三**。
+
+- 用户权限操作。[http://www.orangeforms.com/special-column/](http://www.orangeforms.com/special-column/)
+- 权限模块设计。[http://www.orangeforms.com/special-column/perm/](http://www.orangeforms.com/special-column/perm/)
+- 部门组织结构。[http://www.orangeforms.com/special-column/dept/](http://www.orangeforms.com/special-column/dept/)
+- 多表关联接口。[http://www.orangeforms.com/special-column/form-api/](http://www.orangeforms.com/special-column/form-api/)
+- 多表关联注解。[http://www.orangeforms.com/special-column/data-relation/](http://www.orangeforms.com/special-column/data-relation/)
+- 数据字典详解。[http://www.orangeforms.com/special-column/dict/](http://www.orangeforms.com/special-column/dict/)
+- 实时数据同步。[http://www.orangeforms.com/special-column/data-sync/](http://www.orangeforms.com/special-column/data-sync/)
+- 批量导入优化。[http://www.orangeforms.com/special-column/import/](http://www.orangeforms.com/special-column/import/)
+- 安全上传下载。[http://www.orangeforms.com/special-column/upload-download/](http://www.orangeforms.com/special-column/upload-download/)
+- 租户混合隔离。[http://www.orangeforms.com/special-column/tenant-mix-arch/](http://www.orangeforms.com/special-column/tenant-mix-arch/)
+- 租户权限管理。[http://www.orangeforms.com/special-column/tenant-perm/](http://www.orangeforms.com/special-column/tenant-perm/)
+- 全局编码字典。[http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
+- 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
 
 ### 选择橙单
 - **理念**，对开发者极为友好的低代码生成理念，与功能堆砌相比，我们更关注逻辑、数据关联关系以及应用场景，他们的组合既是业务功能良好实现的保障，更是卓越架构高可靠运行的基石。

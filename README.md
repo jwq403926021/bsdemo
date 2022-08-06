@@ -41,7 +41,7 @@
 - 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
 - 更多专栏文章 ... ...
 
-### 在线资源
+### 在线演示
 - 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
 - 演示配置。[http://config.orangeforms.com](http://config.orangeforms.com)
 - 环境搭建启动。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)

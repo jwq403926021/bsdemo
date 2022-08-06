@@ -41,7 +41,7 @@
 - **架构**，主流技术栈正交组合，具有极强的可裁剪性，相信总有一种组合适合您的企业。
 - **设计**，拥抱云原生的架构设计理念，更多单表查询，有效提升缓存利用率，业务服务自动组装各种关联数据 (含跨服务调用)，彻底释放数据库压力，让微服务下的服务拆分和库表拆分更加得心应手。
 - **代码**，顶级的代码强度，全覆盖的关联数据合法性验证，数据可见性防越权验证，完整规范且可追溯的日志体系，无限层级的树形数据高效读写。
-- **价格**，感动开源中国的。
+- **价格**，全网最低价和最宽松的商业版授权。
 
 #### 在线资源
 - 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
@@ -51,7 +51,7 @@
 - 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
 - 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
 - 完整演示项目 (不含工作流)。[http://demo.orangeforms.com](http://demo.orangeforms.com)
-- 在线表单和工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 统计打印、在线表单和工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 
 #### 工作流
 -  **支持静态表单 + 工作流的代码生成。用户可在生成器配置表单和流程，再生成相关的完整业务代码，生成后代码对于二次开发极为友好** 。

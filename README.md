@@ -100,14 +100,14 @@
 - 可配置定时任务 Job 服务，并将不同租户数据库中的业务行为数据，分组统计后刷新到租户运营管理数据库中，再由配置的统计表单进行显示。
 - 可与现有的单点登录服务 (uaa) 无缝集成。
 
-### 技术支持
+### 基础架构
 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群3:[![加入QQ群3](https://img.shields.io/badge/392442075-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
 ![QQ群3](orange-qq-group.png)
 
 #### 开箱即用
 项目信息如您所愿，工程名称、目录结构、基础包名、common模块、代码注释中的 @author 信息等，在创建工程时即已配置，不会留有橙单的任何信息。因此无需二次修改，前后端直接编译运行即可。如编译期和运行时出现问题，那一定是我们的 bug，在得到您反馈后，我们将及时修复。
 
-#### 工程部署
+#### 项目部署
 - 单体环境。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
 - 微服务。[http://www.orangeforms.com/development-doc/edu-multi/](http://www.orangeforms.com/development-doc/edu-multi/)
 - 多租户。[http://www.orangeforms.com/development-doc/edu-tenant/](http://www.orangeforms.com/development-doc/edu-tenant/)

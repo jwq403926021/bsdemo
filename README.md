@@ -64,6 +64,8 @@
 - **数据安全**，严格且合理的数据安全校验，流程敏感数据 (如合同附件) 不会被越权访问和下载。我们同时还支持审批中数据和最终发布数据分离，防止审批中数据污染其他业务关联表的数据，并在审批完成后执行主表及各关联从表的数据同步。
 
 #### 静态表单
+> 以下所有功能的前后端代码，均可通过橙单低代码生成工具配置后生成。标准化接口和数据结构，可轻松实现正交化组合。
+
 - 前后端支持单表增删改查、字典列表、分组聚合查询、部分更新、批量删除、导入导出、上传下载。
 - 批量导入支持常量字典和数据表字典的反向翻译，比如文件存储的是“一年级”字符串，导入过程中会批量替换为对应的Id后插入数据表。
 - 前后端支持主表与一对一、一对多、多对多关联表的关联查询，分组聚合查询、虚拟字段的聚合计算，数据导出、级联添加、级联更新、级联删除。
@@ -71,7 +73,6 @@
 - 前后端支持主表与字典表数据、一对一、一对多和多对多与字典表数据的关联查询。
 - 后台接口支持主表、一对一从表、一对多从表、多对多从表关联数据的单条和批量验证，会根据配置生成本地服务或跨服务远程调用的高性能数据验证。
 - 以上所有功能，均支持分布式跨库跨服务操作，接口保持不变，需要分布式事务的场景，会自动生成 Seata 相关的代码注解。需要远程数据关联查询的，会生成 FeignClient 调用接口，并自动完成数据组装。
-- 以上所有功能，均具备极高的可配置性，并生成标准化的调用接口和数据格式。前后端即配即得，开箱即用，与细粒度的操作权限和数据过滤权限完美结合。
 
 #### 在线表单
 - 前后端代码完全交付，甚至可配置为自己的项目包名。
@@ -100,16 +101,13 @@
 - 可与现有的单点登录服务 (uaa) 无缝集成。
 
 ### 技术支持
-- 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群3:[![加入QQ群3](https://img.shields.io/badge/392442075-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
+欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群3:[![加入QQ群3](https://img.shields.io/badge/392442075-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
 ![QQ群3](orange-qq-group.png)
-
-### 生成后工程
->可无限制的用于学习、培训、接私活、公司自用和开发商业项目等场景，其中基础框架代码将永久免费，并持续更新。
 
 #### 开箱即用
 项目信息如您所愿，工程名称、目录结构、基础包名、common模块、代码注释中的 @author 信息等，在创建工程时即已配置，不会留有橙单的任何信息。因此无需二次修改，前后端直接编译运行即可。如编译期和运行时出现问题，那一定是我们的 bug，在得到您反馈后，我们将及时修复。
 
-#### 开源工程部署
+#### 工程部署
 - 单体环境。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
 - 微服务。[http://www.orangeforms.com/development-doc/edu-multi/](http://www.orangeforms.com/development-doc/edu-multi/)
 - 多租户。[http://www.orangeforms.com/development-doc/edu-tenant/](http://www.orangeforms.com/development-doc/edu-tenant/)

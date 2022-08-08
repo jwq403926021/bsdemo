@@ -1,7 +1,7 @@
 ### 新版功能
 > 以下为 2.5 版本的最新功能列表。
 
-- 报表打印，新增线上也是环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)。
+- 报表打印，新增线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)。
 - 报表打印，新增报表统计模块，可通过拖来拽方式，快速构建 Dashboard 和各种统计表单。
 - 报表打印，新增自定义打印模板模块，通过在线电子表格 (基于Luckysheet)，可设计出极为灵活的打印模板，后台计算后可渲染到 PDF。
 - 基础架构，单体、微服务、多租户用户权限验证逻辑，新增支持基于 Caffeine 的一级缓存，以提升该高频操作的运行时效率。

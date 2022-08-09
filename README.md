@@ -3,7 +3,7 @@
 
 - 报表打印，新增线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)。
 - 报表打印，新增报表统计模块，可通过拖来拽方式，快速构建 Dashboard 和各种统计表单。
-- 报表打印，新增自定义打印模板模块，通过在线电子表格 (基于Luckysheet)，可设计出极为灵活的打印模板，后台计算后可渲染到 PDF。
+- 报表打印，新增自定义打印模板模块，通过在线电子表格 (基于Luckysheet)，可设计出极为灵活的打印模板，后台计算后可通过 x-easypdf 渲染到 PDF。
 - 报表打印，模块自身已支持 MySQL、PostgreSQL 和 Oracle。
 - 报表打印，动态可添加的统计数据源，已支持 MySQL、PostgreSQL、Oracle 和 ClickHouse。
 - 报表打印，已支持全部字典类型的动态数据翻译，如自定义常量字典，全局编码字典、数据表字典等。

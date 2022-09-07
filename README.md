@@ -37,6 +37,7 @@
 - 用户权限操作。[http://www.orangeforms.com/special-column/](http://www.orangeforms.com/special-column/)
 - 权限模块设计。[http://www.orangeforms.com/special-column/perm/](http://www.orangeforms.com/special-column/perm/)
 - 部门组织结构。[http://www.orangeforms.com/special-column/dept/](http://www.orangeforms.com/special-column/dept/)
+- 数据权限设计。[http://www.orangeforms.com/special-column/data-perm/](http://www.orangeforms.com/special-column/data-perm/)
 - 多表关联接口。[http://www.orangeforms.com/special-column/form-api/](http://www.orangeforms.com/special-column/form-api/)
 - 多表关联注解。[http://www.orangeforms.com/special-column/data-relation/](http://www.orangeforms.com/special-column/data-relation/)
 - 数据字典详解。[http://www.orangeforms.com/special-column/dict/](http://www.orangeforms.com/special-column/dict/)

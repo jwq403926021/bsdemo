@@ -4,11 +4,7 @@
 - 在线表单，支持第三方独立接入，目前以 **若依** 为例，并提供详细的接入文档和示例代码。
 - 在线表单，不修改任何 **若依** 默认代码的前提下，仅通过新增插件接口的方式，为 **若依** 集成橙单的在线表单功能。
 - 在线表单，支持 Tab 容器组件。
-![](orange-demo-activiti/1.png)
-![](orange-demo-activiti/2.png)
-![](orange-demo-activiti/4.png)
-![](orange-demo-activiti/5.png)
-![](orange-demo-activiti/3.png)
+
 ![](orange-demo-activiti/image.png)
 
 ### 友情感谢

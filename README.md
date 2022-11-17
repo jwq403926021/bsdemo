@@ -9,7 +9,7 @@
 - 基础架构，新增图片文件上传后的格式验证，修复图片上传的安全漏洞。
 
 ![](orange-demo-activiti/1.png)
-![](orange-demo-activiti/2.png)
+![](orange-demo-activiti/6.png)
 ![](orange-demo-activiti/4.png)
 ![](orange-demo-activiti/5.png)
 ![](orange-demo-activiti/3.png)

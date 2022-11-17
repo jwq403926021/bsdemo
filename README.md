@@ -5,7 +5,8 @@
 - 在线表单，不修改任何 **若依** 默认代码的前提下，仅通过新增插件接口的方式，为 **若依** 集成橙单的在线表单功能。
 - 在线表单，支持 Tab 容器组件。
 
-![](orange-demo-activiti/image.png)
+![](orange-demo-activiti/1.png)
+![](orange-demo-activiti/2.png)
 
 ### 友情感谢
 - 可一键部署的开源问卷调查考试系统 **卷王** [https://gitee.com/surveyking/surveyking](https://gitee.com/surveyking/surveyking) 

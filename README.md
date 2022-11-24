@@ -8,6 +8,7 @@
 - 在线表单，新增支持 Tab 容器组件和左树右表布局。
 - 在线表单，组件渲染接口增加基于 Caffeine 的一级缓存，整体性能无限接近路由表单。
 - 基础架构，新增图片文件上传后的格式验证，修复图片上传的安全漏洞。
+- 基础架构，基础代码、工作流、在线表单、报表打印和多租户，全部支持达梦数据库。
 
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/6.png)
@@ -132,7 +133,7 @@
 #### 技术选型
 - 前端: Element (Vue) / Luckysheet / ECharts / AntV + Axios + Webpack。
 - 后端: Spring Boot / Spring Cloud / Spring Cloud Alibaba + Spring Security OAuth2 + Mybatis + Jwt。
-- 数据库：MySQL + PostgreSQL + Oracle。
+- 数据库：MySQL + PostgreSQL + Oracle + 达梦。
 - 工具库: Flowable + Hutool + Guava + Caffeine + Lombok + MapStruct + Mybatis Plus + Knife4j + x-easypdf。
 - 服务组件: Redis + Zookeeper + Nacos + Consul + XXL-Job + Quartz + Seata + Minio + Canal + RocketMQ + Kafka +  Sentinel。
 - 系统监控: ELK + PinPoint / SkyWalking + Grafana + Prometheus。

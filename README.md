@@ -16,7 +16,6 @@
 - 基础架构，基础代码、权限、工作流、在线表单、报表打印和多租户，全部支持达梦数据库。
 - 基础架构，生成后的工程代码，包括基础组件、单体、微服务、多租户等可生成的复杂业务代码，100% 通过 SonarQube 的代码扫描。
 
-![](orange-demo-activiti/2.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/6.png)
 ![](orange-demo-activiti/4.png)

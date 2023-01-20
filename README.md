@@ -9,7 +9,7 @@
 - 报表打印，不修改任何 **若依** 默认代码的前提下，仅通过新增插件接口的方式，为 **若依** 集成橙单的统计和打印功能，操作权限和数据权限均可在接入后实现完整兼容。
 - 报表打印，编辑器升级为新版UI。
 
-![](image.png)
+![](orange-demo-activiti/8.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/6.png)
 

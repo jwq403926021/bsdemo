@@ -10,6 +10,7 @@
 - 报表打印，编辑器升级为新版UI。
 
 ![](orange-demo-activiti/8image.png)
+![](orange-demo-activiti/9image.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/6.png)
 

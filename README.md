@@ -14,10 +14,10 @@
 - 工作流，支持基于静态路径分析的自由跳功能。
 - 工作流，基于静态路径分析，重新实现了驳回和撤回功能。
 
+![](image10.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/image.png)
 ![](orange-demo-activiti/8image.png)
-![](orange-demo-activiti/image2.png)
 ![](orange-demo-activiti/9image.png)
 
 ### 友情感谢

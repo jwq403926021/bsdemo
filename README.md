@@ -1,7 +1,6 @@
 ### 技术交流
 
-欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群4:[![加入QQ群4](https://img.shields.io/badge/664800781-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
-![QQ群4](orange-qq-group.png)
+欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群4: [![加入QQ群4](https://img.shields.io/badge/664800781-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
 
 ### 新版功能
 2.7 版本新上线功能如下。

@@ -1,3 +1,8 @@
+### 技术交流
+
+欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群4:[![加入QQ群4](https://img.shields.io/badge/664800781-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
+![QQ群4](orange-qq-group.png)
+
 ### 新版功能
 2.7 版本新上线功能如下。
 线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)(集中访问会相对较慢)。
@@ -123,8 +128,6 @@
 - 可与现有的单点登录服务 (uaa) 无缝集成。
 
 ### 基础架构
-欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群4:[![加入QQ群4](https://img.shields.io/badge/664800781-red.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=peNBWGDSQxgKzvZVDtPfjvTCD6MOqTMX&jump_from=webapi)
-![QQ群4](orange-qq-group.png)
 
 #### 开箱即用
 项目信息如您所愿，工程名称、目录结构、基础包名、common模块、代码注释中的 @author 信息等，在创建工程时即已配置，不会留有橙单的任何信息。因此无需二次修改，前后端直接编译运行即可。如编译期和运行时出现问题，那一定是我们的 bug，在得到您反馈后，我们将及时修复。

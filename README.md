@@ -1,7 +1,8 @@
 ### 技术交流
 
 欢迎加入我们的技术交流 QQ 群，如遇任何使用中的问题我们都将第一时间为您答疑。群4: [**664800781**]
-![](orange-qq.png)
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=N0iVapc6M7wQFHHOJJICAuyQD00BKDjp&jump_from=webapi&authKey=L4SimBVdpw7Eeh1eob2D0DuXqpFaOTNSoeBWQ/yJ4CB82RBnbTZDtw8Y6FmCWZuV"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="橙单技术交流群-4" title="橙单技术交流群-4"></a>
+
 
 ### 新版功能
 2.7 版本新上线功能如下。

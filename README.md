@@ -35,9 +35,11 @@
 - 基础架构，升级到 knife4j 4.1.0。
 
 ![](orange-demo-activiti/ruoyi_to_orange_flow.png)
+![](orange-demo-activiti/image_new_flow_ui.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/image.png)
 ![](orange-demo-activiti/8image.png)
+![](orange-demo-activiti/image_new_report_demo.png)
 
 ### 友情感谢
 - 可一键部署的开源问卷调查考试系统 **卷王** [https://gitee.com/surveyking/surveyking](https://gitee.com/surveyking/surveyking) 

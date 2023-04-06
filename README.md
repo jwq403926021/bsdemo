@@ -38,7 +38,7 @@
 ![](orange-demo-activiti/image_new_flow_ui.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/image.png)
-![](orange-demo-activiti/8image.png)
+![](orange-demo-activiti/image_report_menu.png)
 ![](orange-demo-activiti/image_new_report_demo.png)
 
 ### 友情感谢

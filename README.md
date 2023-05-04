@@ -2,6 +2,21 @@
 
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。**QQ群 [664800781]**。
 
+### 新版功能
+2.9 版本新上线功能如下。
+线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)(集中访问会相对较慢)。
+- 工作流，支持钉钉风格流程编辑器，目前已同时支持两种高颜值流程编辑器。
+- 多租户，支持动态多数据源。
+- 多租户，数据同步服务优化后合并。
+- 基础架构，在线表单、工作流和报表打印等编辑器的 UI 做了进一步的优化和统一。
+![](orange-demo-activiti/image-dingding.png)
+![](orange-demo-activiti/image_new_flow_ui.png)
+![](orange-demo-activiti/ruoyi_to_orange_flow.png)
+![](orange-demo-activiti/1.png)
+![](orange-demo-activiti/image.png)
+![](orange-demo-activiti/image_report_menu.png)
+![](orange-demo-activiti/image_new_report_demo.png)
+
 ### 新架构优势
 在升级到 2.8 版本之后，橙单基础架构组件，目前包括报表打印、在线表单和工作流等，全部支持第三方快速接入功能，并以 “**若依**” 为示例，提供了完整且详细的接入文档，其他框架或老系统均可参考该示例文档，手动修改后接入橙单的全部功能组件。具体可见后面的 “**若依**” 接入效果图。
 
@@ -12,34 +27,6 @@
 - 橙单独立部署的在线表单、工作流和报表打印等组件服务，可同时服务于多个不同的业务系统。如出现性能瓶颈，亦可动态扩充橙单组件服务的实例数量，以缓解系统的并发处理压力。
 
 ![](third-arch.jpg)
-
-### 新版功能
-2.8 版本新上线功能如下。
-线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)(集中访问会相对较慢)。
-- 工作流，支持流程表和业务表的库表分离。
-- 工作流，支持独立部署，可同时接入多个应用系统，并根据 appCode 实现数据隔离。
-- 工作流，支持其他应用框架的第三方独立接入，目前仅以 "**若依**" 为例，并提供详细的接入文档和示例代码。
-- 工作流，升级流程编辑器前端样式，显著提升颜值和配置的合理性。
-- 工作流，新增支持流程图的静态分析，显著提升并行网关内流程任务的跳转能力。
-- 工作流，新增支持，前后自由跳转、自动审批跳过和智能驳回等实用功能。
-- 工作流，在线表单工作流的权限配置改为自动推演，以降低上线后的系统管理成本。
-- 工作流，支持在线表单业务页面主动发起审批流程，之前仅能在工单列表页面发起流程。
-- 在线表单，支持动态添加多数据源，可同时添加不同类型的数据库，目前已支持 MySQL、Oracle、PostgreSQL、达梦和人大金仓。
-- 在线表单，支持内置表和业务表的库表分离。
-- 在线表单，新增支持表格容器组件。
-- 报表打印，支持 API 接口数据源。
-- 报表打印，新增 10 个自定义组件 (普通数据表、轮播图、HTML Viewer、漏斗图、雷达图、统计计数卡片、项目列表、三种进度条)。
-- 基础架构，全模块支持人大金仓数据库。
-- 基础架构，升级到 spring boot 2.7.10。
-- 基础架构，升级到 spring cloud 2021.0.6。
-- 基础架构，升级到 knife4j 4.1.0。
-
-![](orange-demo-activiti/ruoyi_to_orange_flow.png)
-![](orange-demo-activiti/image_new_flow_ui.png)
-![](orange-demo-activiti/1.png)
-![](orange-demo-activiti/image.png)
-![](orange-demo-activiti/image_report_menu.png)
-![](orange-demo-activiti/image_new_report_demo.png)
 
 ### 友情感谢
 - 可一键部署的开源问卷调查考试系统 **卷王** [https://gitee.com/surveyking/surveyking](https://gitee.com/surveyking/surveyking) 

@@ -14,7 +14,6 @@
 ![](orange-demo-activiti/ruoyi_to_orange_flow.png)
 ![](orange-demo-activiti/1.png)
 ![](orange-demo-activiti/image.png)
-![](orange-demo-activiti/image_report_menu.png)
 ![](orange-demo-activiti/image_new_report_demo.png)
 
 ### 新架构优势

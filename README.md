@@ -1,8 +1,5 @@
-### 技术交流
-
-欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。**QQ群 [664800781]**。
-
 ### 在线演示
+欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群 [664800781]。
 - 微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 - 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)

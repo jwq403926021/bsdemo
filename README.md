@@ -4,7 +4,10 @@
 
 ### 新版功能
 2.9 版本新上线功能如下。
-线上演示环境 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)(集中访问会相对较慢)。
+微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
+多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
+
 - 前端，全新的样式设计上线。
 - 多租户，集成在线表单。
 - 多租户，集成工作流。
@@ -22,10 +25,6 @@
 
 ![](orange-demo-activiti/image-generator.png)
 ![](orange-demo-activiti/image-dingding.png)
-![](orange-demo-activiti/image_new_flow_ui.png)
-![](orange-demo-activiti/ruoyi_to_orange_flow.png)
-![](orange-demo-activiti/image.png)
-![](orange-demo-activiti/image_new_report_demo.png)
 
 ### 选择橙单
  **_橙单，具备极好代码生成能力的低代码工具_**。生成后工程全部源码交付，所有代码文件无任何橙单痕迹。就如同贵公司最优秀的技术团队亲手打造而得。欢迎加入我们的技术支持QQ群4 (**664800781**)，您的技术问题我们会尽快给出回复。
@@ -72,14 +71,12 @@
 - 更多专栏文章 ... ...
 
 ### 在线演示
-- 网站首页。[http://www.orangeforms.com](http://www.orangeforms.com)
-- 演示配置。[http://config.orangeforms.com](http://config.orangeforms.com)
-- 环境搭建启动。[http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
-- 后端代码文档。[http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
-- 前端代码文档。[http://www.orangeforms.com/development-vue/](http://www.orangeforms.com/development-vue/)
-- 生成器操作指南。[http://www.orangeforms.com/orange-doc/](http://www.orangeforms.com/orange-doc/)
-- 完整演示项目 (不含工作流)。[http://demo.orangeforms.com](http://demo.orangeforms.com)
-- 统计打印、在线表单和工作流演示项目。[http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 网站首页 [http://www.orangeforms.com](http://www.orangeforms.com)
+- 微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
+- 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
+- 环境搭建启动 [http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
+- 后端代码文档 [http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
 
 ### 功能介绍
 

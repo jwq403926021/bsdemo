@@ -2,12 +2,13 @@
 
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。**QQ群 [664800781]**。
 
+### 在线演示
+- 微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
+- 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
+- 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
+
 ### 新版功能
 2.9 版本新上线功能如下。
-微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
-多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
-多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
-
 - 前端，全新的样式设计上线。
 - 多租户，集成在线表单。
 - 多租户，集成工作流。
@@ -51,32 +52,32 @@
 - 可一键部署的开源问卷调查考试系统 **卷王** [https://gitee.com/surveyking/surveyking](https://gitee.com/surveyking/surveyking) 
 - 可一行代码实现 PDF 灵活写入的开源库 **x-easypdf** [https://gitee.com/dromara/x-easypdf](https://gitee.com/dromara/x-easypdf)
 
-### 技术专栏
-> **授人以鱼不如授人以渔**。我们的专栏，是基于橙单低代码的基础架构，并对其进行了深入浅出和鞭辟入里的分析。专栏中的每一行代码，每一段注释，每一个技术点和每一步的思考过程，都是产品级强度的。请坚信 **吃透橙单、收入翻番、效率乘三**。
-
-- 用户权限操作。[http://www.orangeforms.com/special-column/](http://www.orangeforms.com/special-column/)
-- 权限模块设计。[http://www.orangeforms.com/special-column/perm/](http://www.orangeforms.com/special-column/perm/)
-- 部门组织结构。[http://www.orangeforms.com/special-column/dept/](http://www.orangeforms.com/special-column/dept/)
-- 数据权限设计。[http://www.orangeforms.com/special-column/data-perm/](http://www.orangeforms.com/special-column/data-perm/)
-- 多表关联接口。[http://www.orangeforms.com/special-column/form-api/](http://www.orangeforms.com/special-column/form-api/)
-- 多表关联注解。[http://www.orangeforms.com/special-column/data-relation/](http://www.orangeforms.com/special-column/data-relation/)
-- 数据字典详解。[http://www.orangeforms.com/special-column/dict/](http://www.orangeforms.com/special-column/dict/)
-- 实时数据同步。[http://www.orangeforms.com/special-column/data-sync/](http://www.orangeforms.com/special-column/data-sync/)
-- 批量导入优化。[http://www.orangeforms.com/special-column/import/](http://www.orangeforms.com/special-column/import/)
-- 安全上传下载。[http://www.orangeforms.com/special-column/upload-download/](http://www.orangeforms.com/special-column/upload-download/)
-- 租户混合隔离。[http://www.orangeforms.com/special-column/tenant-mix-arch/](http://www.orangeforms.com/special-column/tenant-mix-arch/)
-- 租户权限管理。[http://www.orangeforms.com/special-column/tenant-perm/](http://www.orangeforms.com/special-column/tenant-perm/)
-- 租户编码字典。[http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
-- 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
-- 更多专栏文章 ... ...
-
-### 在线演示
+### 线上资源
 - 网站首页 [http://www.orangeforms.com](http://www.orangeforms.com)
 - 微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 - 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
 - 环境搭建启动 [http://www.orangeforms.com/development-doc/edu-single/](http://www.orangeforms.com/development-doc/edu-single/)
 - 后端代码文档 [http://www.orangeforms.com/development-doc/](http://www.orangeforms.com/development-doc/)
+
+### 技术专栏
+> **授人以鱼不如授人以渔**。我们的专栏，是基于橙单低代码的基础架构，并对其进行了深入浅出和鞭辟入里的分析。专栏中的每一行代码，每一段注释，每一个技术点和每一步的思考过程，都是产品级强度的。请坚信 **吃透橙单、收入翻番、效率乘三**。
+
+- 用户权限操作 [http://www.orangeforms.com/special-column/](http://www.orangeforms.com/special-column/)
+- 权限模块设计 [http://www.orangeforms.com/special-column/perm/](http://www.orangeforms.com/special-column/perm/)
+- 部门组织结构 [http://www.orangeforms.com/special-column/dept/](http://www.orangeforms.com/special-column/dept/)
+- 数据权限设计 [http://www.orangeforms.com/special-column/data-perm/](http://www.orangeforms.com/special-column/data-perm/)
+- 多表关联接口 [http://www.orangeforms.com/special-column/form-api/](http://www.orangeforms.com/special-column/form-api/)
+- 多表关联注解 [http://www.orangeforms.com/special-column/data-relation/](http://www.orangeforms.com/special-column/data-relation/)
+- 数据字典详解 [http://www.orangeforms.com/special-column/dict/](http://www.orangeforms.com/special-column/dict/)
+- 实时数据同步 [http://www.orangeforms.com/special-column/data-sync/](http://www.orangeforms.com/special-column/data-sync/)
+- 批量导入优化 [http://www.orangeforms.com/special-column/import/](http://www.orangeforms.com/special-column/import/)
+- 安全上传下载 [http://www.orangeforms.com/special-column/upload-download/](http://www.orangeforms.com/special-column/upload-download/)
+- 租户混合隔离 [http://www.orangeforms.com/special-column/tenant-mix-arch/](http://www.orangeforms.com/special-column/tenant-mix-arch/)
+- 租户权限管理 [http://www.orangeforms.com/special-column/tenant-perm/](http://www.orangeforms.com/special-column/tenant-perm/)
+- 租户编码字典 [http://www.orangeforms.com/special-column/tenant-global-dict/](http://www.orangeforms.com/special-column/tenant-global-dict/)
+- 租户数据同步。[http://www.orangeforms.com/special-column/tenant-datasync/](http://www.orangeforms.com/special-column/tenant-datasync/)
+- 更多专栏文章 ... ...
 
 ### 功能介绍
 

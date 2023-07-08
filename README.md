@@ -18,8 +18,10 @@
 - 基础架构，升级自动编码规则计算的高可靠性处理。
 - 生成器，支持可生成 common-flow-online 和 common-report 位于独立的服务。
 
-![](orange-demo-activiti/image-generator.png)
+![](orange-demo-activiti/tenant-adminimage.png)
+![](orange-demo-activiti/tenant-admin-onlineimage.png)
 ![](orange-demo-activiti/image-dingding.png)
+![](orange-demo-activiti/image-generator.png)
 
 
 ### 选择橙单

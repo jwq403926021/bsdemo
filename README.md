@@ -22,7 +22,7 @@
 ![](orange-demo-activiti/tenant-admin-onlineimage.png)
 ![](orange-demo-activiti/tenant-busiimage.png)
 ![](orange-demo-activiti/image-dingding.png)
-![](orange-demo-activiti/image-generator.png)
+![](orange-demo-activiti/image_new_flow_ui.png)
 
 
 ### 选择橙单

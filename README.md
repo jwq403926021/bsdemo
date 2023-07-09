@@ -25,6 +25,7 @@
 ![](orange-demo-activiti/flow-bpmn-jsimage.png)
 ![](orange-demo-activiti/online-edit.png)
 ![](orange-demo-activiti/report_edit.png)
+![](orange-demo-activiti/print_edit.png)
 
 ### 选择橙单
  **_橙单，具备极好代码生成能力的低代码工具_**。生成后工程全部源码交付，所有代码文件无任何橙单痕迹。就如同贵公司最优秀的技术团队亲手打造而得。欢迎加入我们的技术支持QQ群4 (**664800781**)，您的技术问题我们会尽快给出回复。

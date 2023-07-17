@@ -1,23 +1,15 @@
 ### 在线演示
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群 [664800781]。
+- 大屏可视化演示 [http://demo.orangeforms.com/visualization](http://demo.orangeforms.com/visualization)
 - 微服务演示 [http://demo.orangeforms.com/flow](http://demo.orangeforms.com/flow)
 - 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
 
 ### 新版功能
-2.9 版本新上线功能如下。
-- 前端，全新的样式设计上线。
-- 多租户，集成在线表单。
-- 多租户，集成工作流。
-- 多租户，集成报表打印。
-- 多租户，支持动态多数据源。
-- 多租户，数据同步服务优化后合并。
-- 工作流，支持钉钉风格流程编辑器，目前已同时支持两种高颜值流程编辑器。
-- 工作流，流程工单编号字段，升级为高可靠性的自动编码规则计算处理方式。
-- 基础架构，在线表单、工作流和报表打印等编辑器的 UI 做了进一步的优化和统一。
-- 基础架构，升级自动编码规则计算的高可靠性处理。
-- 生成器，支持可生成 common-flow-online 和 common-report 位于独立的服务。
+2.9.1 版本新上线功能如下。
+- 新增支持对 GoView 的集成，支持大屏可视化功能。后台数据管理和数据格式转换部分由橙单提供。
 
+![](orange-demo-activiti/visualization.png)
 ![](orange-demo-activiti/tenant-adminimage.png)
 ![](orange-demo-activiti/tenant-admin-onlineimage.png)
 ![](orange-demo-activiti/tenant-busiimage.png)

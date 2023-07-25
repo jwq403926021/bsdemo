@@ -10,7 +10,7 @@
 - 新增支持对 GoView 的集成，支持大屏可视化功能。后台数据管理和数据格式转换部分由橙单提供。
 - 报表模块，打印功能新增支持 API 数据集。
 
-![](orange-demo-activiti/visualization.png)
+![](orange-demo-activiti/visualization-new.png)
 ![](orange-demo-activiti/tenant-adminimage.png)
 ![](orange-demo-activiti/tenant-admin-onlineimage.png)
 ![](orange-demo-activiti/tenant-busiimage.png)

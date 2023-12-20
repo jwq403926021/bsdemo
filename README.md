@@ -10,7 +10,7 @@
 - 移动端，在线表单同时支持 vant(h5) 和 uniapp(小程序)。
 - 移动端，工作流审批同时支持 vant(h5) 和 uniapp(小程序)。
 - 移动端，统计表单同时支持 vant(h5) 和 uniapp(小程序)。
-- 报表打印，用 x-spreadsheet 替换掉 luckysheet，作为打印编辑器的电子表单组件。
+- 报表打印，x-spreadsheet 替换 luckysheet，作为打印编辑器的电子表格组件。
 - 报表打印，新增支持 Doris 分析数据库。
 - 基础架构，支持华为云 OSS。
 - 基础架构，全模块支持华为 OpenGauss。

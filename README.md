@@ -6,9 +6,14 @@
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
 
 ### 新版功能
-2.9.1 版本新上线功能如下。
-- 新增支持对 GoView 的集成，支持大屏可视化功能。后台数据管理和数据格式转换部分由橙单提供。
-- 报表模块，打印功能新增支持 API 数据集。
+2.9.2 版本新上线功能如下。
+- 移动端，在线表单同时支持 vant 和 uniapp。
+- 移动端，工作流审批同时支持 vant 和 uniapp。
+- 移动端，统计表单同时支持 vant 和 uniapp。
+- 报表打印，用 x-spreadsheet 替换掉 luckysheet，作为打印编辑器的电子表单组件。
+- 报表打印，新增支持 Doris 分析数据库。
+- 基础架构，支持华为云 OSS。
+- 基础架构，全模块支持华为 OpenGauss。
 
 ![](orange-demo-activiti/visualization-new.png)
 ![](orange-demo-activiti/tenant-adminimage.png)

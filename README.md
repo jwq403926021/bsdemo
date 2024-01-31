@@ -6,7 +6,7 @@
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
 
 ### 新版功能
-2.9.4 版本新上线功能如下。
+2.9.5 版本新上线功能如下。
 - 移动端，在线表单同时支持 vant(h5) 和 uniapp(小程序)。
 - 移动端，工作流审批同时支持 vant(h5) 和 uniapp(小程序)。
 - 移动端，统计表单同时支持 vant(h5) 和 uniapp(小程序)。
@@ -15,17 +15,21 @@
 - 工作流，支持流程任务空审批人的处理机制，目前已实现 “自动审批、自动拒绝和指定转派”。
 - 工作流，支持对已存在业务数据的多次审批。
 - 工作流，支持服务启动时指定流程表所在数据源。
+- 工作流，Spring Boot 3 版本升级至 Flowable 7。
+- 工作流，Spring Boot 2 版本升级至 Flowable 6.8。
+- 工作流，原有自动跳过的执行监听器改为任务监听器，以支持更多自动跳过条件。
 - 在线表单，支持批量导入，导入过程支持字典数据的反向翻译。
 - 在线表单，根据配置项可以切换，业务表和在线表单表之间是同库还是跨库。之前就支持跨库，因此会有多次事务的副作用。
 - 报表打印，x-spreadsheet 替换 luckysheet，作为打印编辑器的电子表格组件。
-- 报表打印，新增支持 Doris 分析数据库。
-- 报表模块，移除所有和 luckysheet 相关的代码。
 - 报表模块，打印预览改为 x-spreadsheet 预览，可以直接下载 excel 数据文件。
+- 报表打印，新增支持 Doris 分析数据库。
 - 基础架构，支持华为云 OSS。
 - 基础架构，全模块支持华为 OpenGauss。
 - 基础架构，全局编码字典支持独立数据源配置。
 - 基础架构，升级到 Knife4j 4.5.0，全面支持 OpenAPI3 规范。
 - 基础架构，jwt 升级到 0.12.3。
+- 基础架构，升级支持 Spring Boot 3.1.6。从当前版本开始，橙单将同时支持 Spring Boot 3.x 和 Spring Boot 2.7.x。
+- 基础架构，升级支持 Mybatis Flex。从当前版本开始，橙单将同时支持 Mybatis Flex 和 Mybatis Plus。
 
 ![](orange-demo-activiti/orangeform-mobile-h5.png)
 ![](orange-demo-activiti/visualization-new.png)

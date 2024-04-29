@@ -31,7 +31,6 @@
 - 基础架构，升级支持 Spring Boot 3.1.6。从当前版本开始，橙单将同时支持 Spring Boot 3.x 和 Spring Boot 2.7.x。
 - 基础架构，升级支持 Mybatis Flex。从当前版本开始，橙单将同时支持 Mybatis Flex 和 Mybatis Plus。
 
-![](orange-demo-activiti/orangeform-mobile-h5.png)
 ![](orange-demo-activiti/visualization-new.png)
 ![](orange-demo-activiti/tenant-adminimage.png)
 ![](orange-demo-activiti/tenant-admin-onlineimage.png)

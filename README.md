@@ -1,7 +1,7 @@
 ### 在线演示
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群 [664800781]。
-- 免费在线代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
-- 橙单完整演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
+- 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
+- 完整演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
 - 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
 - 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
 

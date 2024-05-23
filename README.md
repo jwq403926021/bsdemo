@@ -3,8 +3,8 @@
 - 橙单在线文档 [https://www.orangeforms.com](https://www.orangeforms.com)
 - 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
 - 完整演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
-- 多租户管理演示 [http://tenantadmin.orangeforms.com](http://tenantadmin.orangeforms.com)
-- 多租户运营演示 [http://tenant.orangeforms.com](http://tenant.orangeforms.com)
+- 多租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
+- 多租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)
 
 ### 新版功能
 2.9.5 版本新上线功能如下。

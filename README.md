@@ -57,6 +57,8 @@
 ![](orange-demo-activiti/flow-bpmn-jsimage.png)
 
 ![](orange-demo-activiti/online-edit.png)
+
+![](orange-demo-activiti/online-edit.png)
 ![](orange-demo-activiti/report_edit.png)
 ![](orange-demo-activiti/print_edit.png)
 ![](orange-demo-activiti/visualization-new.png)

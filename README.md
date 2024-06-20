@@ -1,36 +1,37 @@
-### 在线演示
+### 在线资源
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群 [833624889]。
 - 橙单在线文档 [https://www.orangeforms.com](https://www.orangeforms.com)
 - 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
-- 完整演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
-- 多租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
-- 多租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)
+- 橙单演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
+- 租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
+- 租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)
 
-### 新版功能
-2.9.5 版本新上线功能如下。
-- 移动端，在线表单同时支持 vant(h5) 和 uniapp(小程序)。
-- 移动端，工作流审批同时支持 vant(h5) 和 uniapp(小程序)。
-- 移动端，统计表单同时支持 vant(h5) 和 uniapp(小程序)。
-- 工作流，支持流程复活，既已经完成的流程还能再次回到审批状态。
-- 工作流，支持任务超时提醒，已支持 ”消息提醒和自动审批“。
-- 工作流，支持流程任务空审批人的处理机制，目前已实现 “自动审批、自动拒绝和指定转派”。
-- 工作流，支持对已存在业务数据的多次审批。
-- 工作流，支持服务启动时指定流程表所在数据源。
+### 新版橙单
+- 全新网站上线。
+- 全新文档上线，新版文档具备更好的阅读体验，所用功能截图全部更新到最新版本，以便于用户快速上手。
+- 全新代码生成器上线，可免费生成 80% 以上的业务代码，全部代码 SonarQube 扫描「0」警告。
+- 全新演示工程上线，配有详细的示例说明和导航，以便于您更快速的了解橙单。
+
+### 3.0即将发布
+- 移动端，在线表单同时支持 Vant(H5) 和 Uniapp(小程序)。
+- 移动端，工作流审批同时支持 vant(H5) 和 Uniapp(小程序)。
+- 移动端，统计表单同时支持 vant(H5) 和 Uniapp(小程序)。
+- 移动端，路由表单代码生成同时支持 Vant(H5) 和 Uniapp(小程序)。
+- 移动端，路由表单工作流代码生成同时支持 Vant(H5) 和 Uniapp(小程序)。
+- 移动端，路由统计表单代码生成同时支持 Vant(H5) 和 Uniapp(小程序)。
+- 基础框架，单体工程支持 Sa-Token，可免费在线生成。
+- 基础框架，微服务工程支持 Sa-Token，可免费在线生成。
+- 基础框架，多租户工程支持 Sa-Token。
+- 基础架构，全模块支持 Mybatis Flex 和 Mybatis Plus。
+- 多租户，完整集成移动端。
+- 多租户，完整集成在线表单，租户可自行配置个性化在线表单。
+- 多租户，完整集成工作流，租户可自行配置流程。
+- 多租户，完整集成统计表单，租户可自行设计自己的统计图表表单。
 - 工作流，Spring Boot 3 版本升级至 Flowable 7。
 - 工作流，Spring Boot 2 版本升级至 Flowable 6.8。
-- 工作流，原有自动跳过的执行监听器改为任务监听器，以支持更多自动跳过条件。
-- 在线表单，支持批量导入，导入过程支持字典数据的反向翻译。
-- 在线表单，根据配置项可以切换，业务表和在线表单表之间是同库还是跨库。之前就支持跨库，因此会有多次事务的副作用。
-- 报表打印，x-spreadsheet 替换 luckysheet，作为打印编辑器的电子表格组件。
-- 报表模块，打印预览改为 x-spreadsheet 预览，可以直接下载 excel 数据文件。
-- 报表打印，新增支持 Doris 分析数据库。
-- 基础架构，支持华为云 OSS。
-- 基础架构，全模块支持华为 OpenGauss。
-- 基础架构，全局编码字典支持独立数据源配置。
-- 基础架构，升级到 Knife4j 4.5.0，全面支持 OpenAPI3 规范。
-- 基础架构，jwt 升级到 0.12.3。
-- 基础架构，升级支持 Spring Boot 3.1.6。从当前版本开始，橙单将同时支持 Spring Boot 3.x 和 Spring Boot 2.7.x。
-- 基础架构，升级支持 Mybatis Flex。从当前版本开始，橙单将同时支持 Mybatis Flex 和 Mybatis Plus。
+- 工作流，支持流程复活，空候选人自动审批、超时提醒、同一数据多次审批。
+- 代码质量，全部基础模块代码，通过 SonarQube 最严格的代码扫描「0」警告。
+- 代码质量，全部可生成的业务代码，通过 SonarQube 最严格的代码扫描「0」警告。
 
 ![](orange-demo-activiti/tenant-adminimage.png)
 ![](orange-demo-activiti/tenant-admin-onlineimage.png)

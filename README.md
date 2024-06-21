@@ -1,6 +1,5 @@
-
 ![](code.orangeforms.com2.png)
-![](code.orangeforms.com.jpg)
+
 ### 在线资源
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群(833624889)。
 - 橙单在线文档 [https://www.orangeforms.com](https://www.orangeforms.com)

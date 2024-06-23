@@ -6,6 +6,9 @@
 - 租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
 - 租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)
 
+### 视频分享
+- 租户架构应用 [https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
+
 ### 新版橙单
 - 全新网站上线，让更多的开发者关注橙单。
 - 全新文档上线，更好的阅读体验。

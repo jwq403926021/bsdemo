@@ -2,8 +2,9 @@
 
 ### 在线资源
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群(833624889)。
-- 橙单在线文档 [https://www.orangeforms.com](https://www.orangeforms.com)
 - 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
+- 免费生成指南 [https://www.orangeforms.com/article/free-use](https://www.orangeforms.com/article/free-use)
+- 橙单在线文档 [https://www.orangeforms.com](https://www.orangeforms.com)
 - 橙单演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
 - 租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
 - 租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)

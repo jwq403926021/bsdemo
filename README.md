@@ -52,25 +52,25 @@
 - 代码质量，全部生成的业务代码，通过 SonarQube 最严格的代码扫描「0」警告。
 
 ### 图和真相
-![](orange-demo-activiti/sonar.png)
+![](images/sonar.png)
 
-![](orange-demo-activiti/tenant-adminimage.png)
+![](images/tenant-adminimage.png)
 
-![](orange-demo-activiti/tenant-admin-onlineimage.png)
+![](images/tenant-admin-onlineimage.png)
 
-![](orange-demo-activiti/tenant-busiimage.png)
+![](images/tenant-busiimage.png)
 
-![](orange-demo-activiti/image-dingding.png)
+![](images/image-dingding.png)
 
-![](orange-demo-activiti/flow-bpmn-jsimage.png)
+![](images/flow-bpmn-jsimage.png)
 
-![](orange-demo-activiti/online-edit.png)
+![](images/online-edit.png)
 
-![](orange-demo-activiti/report-edit.png)
+![](images/report-edit.png)
 
-![](orange-demo-activiti/print_edit.png)
+![](images/print_edit.png)
 
-![](orange-demo-activiti/visualization-new.png)
+![](images/visualization-new.png)
 
 ### 感谢支持
 都看到这里了，非常感谢您的关注和耐心.赠人玫瑰手有余香，希望能再花 1 秒钟的时间在下面 Star 一下。

@@ -1,0 +1,277 @@
+<template>
+  <div class="process-design" style="display: flex; height: 100%">
+    <ProcessDesigner
+      v-bind="controlForm"
+      :key="`designer-${reloadIndex}`"
+      v-model:value="xmlString"
+      keyboard
+      ref="processDesigner"
+      :processId="flowEntryInfo.processDefinitionKey"
+      :processName="flowEntryInfo.processDefinitionName"
+      :flowEntryInfo="flowEntryInfo"
+      :events="['element.click', 'connection.added', 'connection.removed', 'connection.changed']"
+      @element-click="elementClick"
+      @init-finished="initModeler"
+      @event="handlerEvent"
+      @save="onSaveProcess"
+    />
+    <PropertiesPanel
+      v-if="modeler"
+      :key="`penal-${reloadIndex}`"
+      :bpmn-modeler="modeler"
+      :prefix="controlForm.prefix"
+      :width="600"
+      class="process-panel"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import 'highlight.js/styles/atom-one-dark-reasonable.css';
+import hljs from 'highlight.js';
+//import javascript from 'highlight.js/lib/languages/javascript';
+import xml from 'highlight.js/lib/languages/xml';
+import json from 'highlight.js/lib/languages/json';
+import { ANY_OBJECT } from '@/types/generic';
+import ProcessDesigner from '../package/process-designer/ProcessDesigner.vue';
+import PropertiesPanel from '../package/refactor/PropertiesPanel.vue';
+// 自定义元素选中时的弹出菜单（修改 默认任务 为 用户任务）
+//import CustomContentPadProvider from '../package/process-designer/plugins/content-pad';
+// 自定义左侧菜单（修改 默认任务 为 用户任务）
+//import CustomPaletteProvider from '../package/process-designer/plugins/palette';
+
+// Then register the languages you need
+//hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('json', json);
+
+const emit = defineEmits<{ save: [string] }>();
+const props = defineProps<{ flowEntryInfo: ANY_OBJECT }>();
+
+const processDesigner = ref();
+let reloadIndex = 0;
+const xmlString = ref<string>(props.flowEntryInfo.bpmnXml);
+const modeler = ref();
+const controlForm = ref<ANY_OBJECT>({
+  processId: '',
+  processName: '',
+  simulation: false,
+  labelEditing: false,
+  labelVisible: false,
+  prefix: 'flowable',
+  headerButtonSize: 'default',
+  //additionalModel: [CustomContentPadProvider, CustomPaletteProvider],
+});
+
+const elementClick = (element: ANY_OBJECT) => {
+  console.log('ProcessDesigner main', element);
+};
+const initModeler = (m: ANY_OBJECT) => {
+  setTimeout(() => {
+    modeler.value = m;
+  }, 10);
+};
+const handlerEvent = (eventName: string, element: ANY_OBJECT | null, some: ANY_OBJECT) => {
+  console.log('ProcessDesigner main', eventName, element, some);
+};
+const onSaveProcess = (saveData: string) => {
+  emit('save', saveData);
+};
+
+defineExpose({
+  processDesigner,
+});
+</script>
+
+<style lang="scss">
+@import url('../package/theme/index.scss');
+// 边框被 token-simulation 样式覆盖了
+.djs-palette {
+  background: var(--palette-background-color);
+  border: solid 1px var(--palette-border-color) !important;
+  border-radius: 2px;
+}
+
+.my-process-designer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  .my-process-designer__header {
+    width: 100%;
+    min-height: 36px;
+    .el-button {
+      text-align: center;
+    }
+    .el-button-group {
+      margin: 4px;
+    }
+    .el-tooltip__popper {
+      .el-button {
+        width: 100%;
+        text-align: left;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      .el-button:hover {
+        background: rgba(64, 158, 255, 0.8);
+        color: #ffffff;
+      }
+    }
+    .align {
+      position: relative;
+      i {
+        &:after {
+          content: '|';
+          position: absolute;
+          left: 15px;
+          transform: rotate(90deg) translate(200%, 60%);
+        }
+      }
+    }
+    .align.align-left i {
+      transform: rotate(90deg);
+    }
+    .align.align-right i {
+      transform: rotate(-90deg);
+    }
+    .align.align-top i {
+      transform: rotate(180deg);
+    }
+    .align.align-bottom i {
+      transform: rotate(0deg);
+    }
+    .align.align-center i {
+      transform: rotate(90deg);
+      &:after {
+        transform: rotate(90deg) translate(0, 60%);
+      }
+    }
+    .align.align-middle i {
+      transform: rotate(0deg);
+      &:after {
+        transform: rotate(90deg) translate(0, 60%);
+      }
+    }
+  }
+  .my-process-designer__container {
+    display: inline-flex;
+    width: 100%;
+    flex: 1;
+    background-color: #f6f7f9;
+    .my-process-designer__canvas {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMGUwZTAiIG9wYWNpdHk9Ii4yIi8+PHBhdGggZD0iTTQwIDBIMHY0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PC9zdmc+')
+        repeat !important;
+      div.toggle-mode {
+        display: none;
+      }
+    }
+    .my-process-designer__property-panel {
+      height: 100%;
+      overflow: scroll;
+      overflow-y: auto;
+      z-index: 10;
+      * {
+        box-sizing: border-box;
+      }
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+//侧边栏配置
+.djs-palette.open {
+  .djs-palette-entries {
+    div[class^='bpmn-icon-']:before,
+    div[class*='bpmn-icon-']:before {
+      line-height: unset;
+    }
+    div.entry {
+      position: relative;
+    }
+    div.entry:hover {
+      &::after {
+        width: max-content;
+        content: attr(title);
+        vertical-align: text-bottom;
+        position: absolute;
+        right: -10px;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+        transform: translateX(100%);
+        font-size: 0.5em;
+        display: inline-block;
+        text-decoration: inherit;
+        font-variant: normal;
+        text-transform: none;
+        background: #fafafa;
+        box-shadow: 0 0 6px #eeeeee;
+        border: 1px solid #cccccc;
+        box-sizing: border-box;
+        padding: 0 16px;
+        border-radius: 4px;
+        z-index: 100;
+      }
+    }
+  }
+}
+pre {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  max-height: calc(80vh - 32px);
+  overflow-y: auto;
+}
+.hljs {
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.hljs * {
+  font-family: Consolas, Monaco, monospace;
+}
+
+// 流程图
+.djs-container {
+  // 框
+  .djs-visual {
+    rect,
+    polygon,
+    circle {
+      stroke: #c1c2c4 !important;
+      stroke-width: 1px !important;
+    }
+    circle[style*='stroke-width: 4px'] {
+      stroke: #333333 !important;
+    }
+    path[style='fill: black; stroke-width: 1px; stroke: black;'] {
+      fill: #333333 !important;
+      stroke-width: 1px;
+      stroke: #333333 !important;
+    }
+  }
+  // 线
+  .djs-visual path {
+    stroke: #333333 !important;
+  }
+
+  // 实心箭头
+  [id^='sequenceflow-end-white-black'] path {
+    fill: #333333 !important;
+    stroke: #333333 !important;
+  }
+  // 空心箭头
+  [id^='conditional-flow-marker-white-black'] path {
+    stroke: #333333 !important;
+  }
+}
+</style>

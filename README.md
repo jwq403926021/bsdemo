@@ -1,5 +1,5 @@
 ### 开源简介
-- 橙单开源工程绝对保证开箱即用和代码质量，所有代码全部通过 SonarQube 最严格的扫描 0 警告。
+- 橙单开源工程绝对保证「开箱即用」和代码质量，所有代码全部通过 SonarQube 最严格的扫描「0」警告。
 - 主流技术栈 Spring Boot3 + Flowable7 + Mybatis-Flex + Mybatis-Plus + Sa-Token + Element Plus(Vue3) + 自研表单引擎。
 - 开源工程提供两个后端版本，分别是基于 Mybatis-Flex 和 Mybatis-Plus，其他功能完全一致。
 - 前端提供高颜值的表单编辑器和流程编辑器，完整可用的流程功能，以及精致统一的前端样式规范。

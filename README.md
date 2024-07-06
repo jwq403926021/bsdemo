@@ -7,7 +7,7 @@
 - 环境搭建文档 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
 
 ### 免费代码生成
-结合好橙单开源工程和免费线上代码生成工具，在 0 成本投入的情况下，让你项目开发效率提升十倍。
+结合好橙单开源工程和免费线上代码生成工具，可在 0 成本投入的情况下，让您的项目开发效率提升十倍。
 - 免费生成指南 [https://www.orangeforms.com/article/free](https://www.orangeforms.com/article/free)
 - 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
 

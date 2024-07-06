@@ -5,6 +5,7 @@
 - 技术栈 Spring Boot3 + Flowable7 + Mybatis-Flex + Mybatis-Plus + Sa-Token + Element Plus(Vue3) + 自研表单引擎。
 - 开源工程提供两个后端版本，分别是基于 Mybatis-Flex 和 Mybatis-Plus，其他功能完全一致。
 - 前端提供高颜值的表单编辑器和流程编辑器，完整可用的流程功能，以及精致统一的前端样式规范。
+- 橙单开源工程环境搭建 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
 
 ### 在线资源
 欢迎加入我们的技术交流群，如遇任何使用中的问题我们都将第一时间为您答疑。QQ群(833624889)。

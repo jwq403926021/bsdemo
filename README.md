@@ -11,7 +11,7 @@
 - 免费生成指南 [https://www.orangeforms.com/article/free](https://www.orangeforms.com/article/free)
 - 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
 
-### 橙单线上资源
+### 线上资源
 - 橙单官方文档 [https://www.orangeforms.com](https://www.orangeforms.com)
 - 橙单演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
 - 租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)

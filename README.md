@@ -11,7 +11,7 @@
 - 如果您喜欢 QQ 沟通，可以加入我们的 QQ 群 833624889。
 - 如果您习惯使用微信，扫码加我微信，拉您入群。
 
-|![](images/OrangeL.png)|![](images/OrangeL.png)|![](images/OrangeL.png)|
+|![](images/OrangeL.png)|||
 |---|---|---|
 
 ### 入群福利

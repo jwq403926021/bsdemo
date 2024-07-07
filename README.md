@@ -3,7 +3,7 @@
 - 支持工作流、在线表单、权限框架和数据权限过滤。
 - 全部主流技术栈 Spring Boot3 + Flowable7 + Mybatis-Flex + Mybatis-Plus + Sa-Token + Element Plus(Vue3)。
 - 后端工程提供基于 Mybatis-Flex 和 Mybatis-Plus 的两个版本，其余功能完全一致。
-- 前端提供高颜值的表单编辑器和流程编辑器，以及精致统一的前端样式规范。
+- 前端提供「高颜值」的表单编辑器和流程编辑器，以及精致统一的前端样式规范。
 - 环境搭建文档 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
 
 ### 联系我们

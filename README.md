@@ -30,17 +30,10 @@
 ### 视频分享
 - 租户架构应用 [https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 
-### 良心推荐
-强烈推荐贺波老师的《深入Activiti流程引擎：核心原理与高阶实战》，该书对系统学习和深入掌握 Activiti/Flowable 极有帮助，书中涵盖很多大型流程中心平台所涉及的技术架构和场景案例。橙单团队作为贺老师的忠实粉丝，我们希望这本书可以帮助到更多对工作流有兴趣的开发者们。
-|![](images/book1.jpg)|![](images/book3.jpg)|
-|---|---|
-
 ### 图和真相
 ![](images/sonar.png)
 
 ![](images/tenant-adminimage.png)
-
-![](images/tenant-admin-onlineimage.png)
 
 ![](images/tenant-busiimage.png)
 
@@ -55,6 +48,10 @@
 ![](images/print_edit.png)
 
 ![](images/visualization-new.png)
+
+### 良心推荐
+强烈推荐贺波老师的《深入Activiti流程引擎：核心原理与高阶实战》，该书对系统学习和深入掌握 Activiti/Flowable 极有帮助，书中涵盖很多大型流程中心平台所涉及的技术架构和场景案例。橙单团队作为贺老师的忠实粉丝，我们希望这本书可以帮助到更多对工作流有兴趣的开发者们。
+![](images/book1.jpg)
 
 ### 感谢支持
 非常感谢您的关注。也真心希望能够得到您的 Star，更欢迎入群一起参与技术交流。

@@ -4,7 +4,7 @@
  Source Server         : hw-test
  Source Server Type    : MySQL
  Source Server Version : 80024
- Source Host           : 121.37.102.103:3306
+ Source Host           : localhost:3306
  Source Schema         : zzdemo-online-open
 
  Target Server Type    : MySQL

@@ -11,8 +11,8 @@
 - 如果您喜欢 QQ 沟通，可以加入我们的 QQ 群 833624889。
 - 如果您习惯使用微信，扫码加我微信，拉您入群。
 
-|![](images/OrangeL.png)|![](images/OrangeL.png)|
-|---|---|
+|![](images/OrangeL.png)|![](images/OrangeL.png)|![](images/OrangeL.png)|
+|---|---|---|
 
 ### 入群福利
 - 结合橙单开源工程和免费的代码生成工具，可在 0 成本投入情况下，让您的项目开发效率提升数倍。
@@ -32,8 +32,8 @@
 
 ### 良心推荐
 强烈推荐贺波老师的《深入Activiti流程引擎：核心原理与高阶实战》，该书对系统学习和深入掌握 Activiti/Flowable 极有帮助，书中涵盖很多大型流程中心平台所涉及的技术架构和场景案例。橙单团队作为贺老师的忠实粉丝，我们希望这本书可以帮助到更多对工作流有兴趣的开发者们。
-|![](images/book1.jpg)|![](Book2.jpg)|![](images/book3.jpg)|
-|---|---|---|
+|![](images/book1.jpg)|![](images/book3.jpg)|
+|---|---|
 
 ### 图和真相
 ![](images/sonar.png)

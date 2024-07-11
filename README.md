@@ -8,9 +8,9 @@
 
 ### 联系我们
 - 70 后创业，无奈行业太卷。真心期望得到您的 Star，让更多同行知道我们的存在。
-- 如果您喜欢 QQ 沟通，可以加入我们的 QQ 群 833624889。
-- 如果您习惯使用微信，扫码加我微信，拉您入群。
-|![](images/OrangeL.png)|![](images/weixingroup.png)|![](images/OrangeL.png)|
+- 下图左侧是个人微信，加好友后拉您入群，右侧是群二维码，扫码后可直接入群。
+
+|![](images/OrangeL.png)|![](images/weixingroup.png)|
 |---|---|---|
 
 ### 入群福利

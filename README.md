@@ -10,7 +10,7 @@
 - 70 后创业，无奈行业太卷。真心期望得到您的 Star，让更多同行知道我们的存在。
 - 下图左侧是个人微信，加好友后拉您入群，右侧是群二维码，扫码后可直接入群。
 
-|![](images/OrangeL.png)|![](images/weixingroup.png)|
+|![](images/OrangeL.png)|![](weixingroup.png)|
 |---|---|
 
 ### 入群福利

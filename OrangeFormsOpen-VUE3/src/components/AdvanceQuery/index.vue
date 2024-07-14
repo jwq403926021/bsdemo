@@ -149,7 +149,7 @@ const loadGroupData = () => {
         }
         if (currentGroup.value == null) currentGroup.value = dataList[0];
         setTimeout(() => {
-          if (groupTree.value)
+          if (groupTree.value && currentGroup.value)
             groupTree.value.setCurrentKey(currentGroup.value[props.treePanel.keyColumnName]);
         }, 50);
       })

@@ -274,7 +274,7 @@ export function setObjectToSessionStorage(key: string, value: ANY_OBJECT) {
  * @param {*} defaultValue 默认值
  */
 export function getObjectFromSessionStorage(key: string, defaultValue: ANY_OBJECT): ANY_OBJECT {
-  let jsonObj = null;
+  let jsonObj: ANY_OBJECT;
   try {
     const val: string | null = sessionStorage.getItem(key);
     if (val == null) return defaultValue;
@@ -590,11 +590,9 @@ export function fileToBase64(file: File) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = e => {
-      console.log('file loaded', e);
       resolve(e.target?.result as string);
     };
     reader.onerror = e => {
-      console.warn('file load', e);
       reject(e);
     };
   });
@@ -640,7 +638,6 @@ export function deepMerge(obj1: ANY_OBJECT, obj2: ANY_OBJECT) {
           tempObj[key] = copyObject(val2);
         }
       } else if (Array.isArray(val2)) {
-        //console.log('......deepMerge.......', val1, val2, obj1, obj2);
         // 如果两个值都是数组，则合并数组
         if (Array.isArray(val1)) {
           tempObj[key] = val2.map((arrVal2, index) => {

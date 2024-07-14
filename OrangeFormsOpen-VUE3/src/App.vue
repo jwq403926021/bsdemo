@@ -9,7 +9,7 @@ watch(
   () => route.name,
   () => {
     //console.log('路由发生了变化', route.name, route.fullPath, route.path, route);
-    document.title = import.meta.env.VITE_PROJECT_NAME;
+    document.title = process.env.VUE_APP_PROJECT_NAME;
     if (route.meta && route.meta.title) {
       document.title += ' - ' + route.meta.title;
     }

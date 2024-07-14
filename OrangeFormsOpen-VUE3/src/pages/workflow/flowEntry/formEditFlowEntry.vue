@@ -425,31 +425,6 @@
   </el-config-provider>
 </template>
 
-<script lang="ts">
-const defaultApprovalStatus = [
-  {
-    id: 1,
-    name: '同意',
-  },
-  {
-    id: 2,
-    name: '拒绝',
-  },
-  {
-    id: 3,
-    name: '驳回',
-  },
-  {
-    id: 4,
-    name: '会签同意',
-  },
-  {
-    id: 5,
-    name: '会签拒绝',
-  },
-];
-</script>
-
 <script setup lang="ts">
 import { VxeTable, VxeColumn } from 'vxe-table';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
@@ -494,7 +469,13 @@ import ProcessDesigner from '../components/ProcessDesigner.vue';
 import EditFlowEntryStatus from './formEditFlowEntryStatus.vue';
 import EditFlowEntryVariable from './formEditFlowEntryVariable.vue';
 const layoutStore = useLayoutStore();
-
+const defaultApprovalStatus = [
+  { id: 1, name: '同意' },
+  { id: 2, name: '拒绝' },
+  { id: 3, name: '驳回' },
+  { id: 4, name: '会签同意' },
+  { id: 5, name: '会签拒绝' },
+];
 interface IProps extends ThirdProps {
   flowEntry?: ANY_OBJECT;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调

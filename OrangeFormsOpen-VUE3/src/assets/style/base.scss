@@ -61,71 +61,71 @@ $--color-primary-light-9: color-mix(in srgb, $--color-white 90%, $--color-primar
 /**
  * 弹窗样式，封装的layer的弹窗
  **/
-body .layer-dialog .layui-layer-title{
+.layui-layer-page .layui-layer-title{
   border:1px solid #01000000;
   border-radius: 4px 4px 0 0;
   background-color: #f8f8f8;
 }
 
-body .layer-dialog .slot-fragment {
+.layui-layer-page .slot-fragment {
   height: 100%;
 }
 
-body .layer-dialog .layui-layer-setwin {color: #fff}
+.layui-layer-page .layui-layer-setwin {color: #fff}
 
-body .layer-dialog {
+.layui-layer-page {
   border:1px solid #01000000;
   border-radius: 4px;
 }
 
-body .layer-dialog .layui-layer-content {
+.layui-layer-page .layui-layer-content {
   padding: $box-padding-size;
 }
 
-body .layer-dialog.one_to_one_query .layui-layer-content {
+.layui-layer-page.one_to_one_query .layui-layer-content {
   padding: 0;
 }
 
-body .layer-dialog.layui-layer-iframe .layui-layer-content {
+.layui-layer-page.layui-layer-iframe .layui-layer-content {
   padding: 0!important;
 }
 
 /**
  * 左树右表弹窗样式
  */
-body .layer-advance-dialog {
+.layer-advance-dialog {
   background-color: #F8F8F8;
   border:1px solid #01000000;
   border-radius: 4px;
 }
 
-body .layer-advance-dialog .layui-layer-title{
+.layer-advance-dialog .layui-layer-title{
   border:1px solid #01000000;
   border-radius: 4px 4px 0 0;
 }
 
-body .layer-advance-dialog .layui-layer-content {
+.layer-advance-dialog .layui-layer-content {
   padding: 5px 15px;
 }
 
 /**
  * 全屏弹窗样式
  */
-body .fullscreen-dialog {
+.fullscreen-dialog {
   background-color: #F8F8F8;
   border: none;
   border-radius: 0;
 }
 
-body .fullscreen-dialog .layui-layer-title {
+.fullscreen-dialog .layui-layer-title {
   display: none;
 }
 
-body .fullscreen-dialog .layui-layer-setwin {
+.fullscreen-dialog .layui-layer-setwin {
   display: none;
 }
 
-body .fullscreen-dialog .layui-layer-content {
+.fullscreen-dialog .layui-layer-content {
   height: 100vh!important;
   padding: 0;
 }
@@ -735,7 +735,7 @@ body .fullscreen-dialog .layui-layer-content {
         border-radius: 8px;
         line-height: 40px;
       }
-      .logo {;
+      .logo {
         display: inline-block;
         padding-left: 0;
         margin-right: 8px;

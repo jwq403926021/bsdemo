@@ -16,14 +16,11 @@ export const useDropdown = <T>(options: DropdownOptions<T>) => {
 
   const { loadData, isTree, idKey, parentIdKey } = finalOptions;
 
-  //console.log('dropdown', loadData, isTree, idKey, parentIdKey);
-
   const loadDropdownData = (): Promise<T[]> => {
     return new Promise((resolve, reject) => {
       if (!loaded && !loading.value) {
         loadData()
           .then(res => {
-            console.log(`loadDropdownData 加载了${res.dataList.length}条数据`);
             loaded = true;
             dropdownList.value = isTree
               ? treeDataTranslate(res.dataList, idKey, parentIdKey)

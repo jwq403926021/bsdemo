@@ -70,11 +70,10 @@ export class Dialog {
         },
       };
 
-      let layerOptions = {
+      let layerOptions: ANY_OBJECT = {
         title: title,
         type: 1,
-        skin:
-          'layer-dialog ' + (window.innerWidth <= 1900 ? 'container-default' : 'container-large'),
+        skin: 'layui-layer-page',
         resize: false,
         offset: 'auto',
         shadeClose: false,
@@ -103,7 +102,8 @@ export class Dialog {
 
       console.log('dialog params', params);
       //layerOptions.content = h(component, params);
-      layerOptions.content = h(Layout, () => h(component, params));
+      const vueComponent = h(Layout, () => h(component, params));
+      layerOptions.content = vueComponent;
 
       const id = layer.open(layerOptions);
       observer.index = id;

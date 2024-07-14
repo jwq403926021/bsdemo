@@ -125,14 +125,12 @@ import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {
-  flowEntry: ANY_OBJECT;
+  flowEntry?: ANY_OBJECT | undefined;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
   dialog?: DialogProp<ANY_OBJECT>;
 }
 const props = withDefaults(defineProps<IProps>(), {
-  flowEntry: () => {
-    return {};
-  },
+  flowEntry: undefined,
 });
 const { thirdParams } = useThirdParty(props);
 const formItemSize = computed(() => {

@@ -35,7 +35,6 @@ export const useTable = <T>(options: TableOptions<T>) => {
 
   // 监听pageSize变化
   watch(pageSize, (newVal, oldVal) => {
-    //console.log('pageSize change', newVal, oldVal);
     if (newVal != oldVal) {
       loadData(1, newVal)
         .then(() => {
@@ -70,13 +69,7 @@ export const useTable = <T>(options: TableOptions<T>) => {
    */
   const loadData = (pageNum: number, pageSize: number, reload = false): Promise<void> => {
     if (paged && !reload && oldPage == pageNum && oldPageSize == pageSize) {
-      console.log('数据已加载，无须重复执行');
       return Promise.resolve();
-    }
-    if (paged) {
-      console.log(`开始加载数据, 第${pageNum}页，每页${pageSize}, 强制加载：${reload}`);
-    } else {
-      console.log(`开始加载数据, 无分页, 强制加载：${reload}`);
     }
 
     const params = {} as RequestParam;
@@ -91,13 +84,11 @@ export const useTable = <T>(options: TableOptions<T>) => {
       loading.value = true;
       loadTableData(params)
         .then(res => {
-          //console.log(res.dataList, res.totalCount);
           // vxetable需要用到对象的hasOwnerProperty方法，因此需要重新构造对象
           dataList.value = res.dataList.map((item: T) => {
             return { ...item };
           });
           totalCount.value = res.totalCount;
-          console.log(`本次加载${res.dataList.length}条数据，共有${res.totalCount}条数据`);
           resolve();
         })
         .catch(e => {
@@ -105,7 +96,6 @@ export const useTable = <T>(options: TableOptions<T>) => {
         })
         .finally(() => {
           loading.value = false;
-          //console.log('加载数据完毕');
         });
     });
   };
@@ -125,7 +115,6 @@ export const useTable = <T>(options: TableOptions<T>) => {
    * @param {String} order 正序还是倒序
    */
   const onSortChange = ({ prop, field, order }: SortInfo) => {
-    //console.log(prop, field, order);
     orderInfo.fieldName = prop || field;
     orderInfo.asc = order == 'ascending' || order == 'asc';
     refreshTable();
@@ -137,7 +126,6 @@ export const useTable = <T>(options: TableOptions<T>) => {
    * @param showMsg 是否显示查询结果成功与否消息
    */
   const refreshTable = (research = false, pageNum = 0, showMsg = false) => {
-    //console.log(research, pageNum, showMsg);
     let reload = false;
     if (research) {
       if (!verifyTableParameter()) return;

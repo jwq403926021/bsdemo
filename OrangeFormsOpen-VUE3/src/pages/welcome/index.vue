@@ -133,7 +133,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="示例说明" name="cases">
+        <el-tab-pane label="示例说明" name="cases" :lazy="true">
           <p style="margin-bottom: 16px">
             <strong>在线表单，</strong>
             通过在线表单编辑器创建，配置并绑定菜单后即可生效，无代码修改，适用于相对简单的表单页面。

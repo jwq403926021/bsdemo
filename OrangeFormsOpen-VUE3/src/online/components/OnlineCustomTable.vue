@@ -199,7 +199,9 @@ import { SysOnlineFieldKind } from '@/common/staticDict/online';
 import { useUpload } from '@/common/hooks/useUpload';
 import { SortInfo } from '@/common/types/sortinfo';
 import { API_CONTEXT } from '@/api/config';
+import { useLayoutStore } from '@/store';
 
+const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
 const { parseUploadData } = useUpload();
 
@@ -247,8 +249,6 @@ const form = inject('form', () => {
   console.error('OnlineCustomTable: form not injected');
   return { isEdit: false } as ANY_OBJECT;
 });
-import { useLayoutStore } from '@/store';
-const layoutStore = useLayoutStore();
 
 const slots = useSlots();
 

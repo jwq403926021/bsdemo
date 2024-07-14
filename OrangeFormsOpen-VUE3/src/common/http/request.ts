@@ -61,26 +61,21 @@ class LoadingManager {
 
   showMask() {
     this.refCount++;
-    //console.log('loading >>>', this.refCount);
     if (this.refCount <= 1 && this.loading == null) {
-      //console.log('loading do create serice');
       this.loading = ElLoading.service(this.options);
     }
   }
 
   hideMask() {
-    //console.log('loading hideMask', this.refCount);
     if (this.refCount <= 1 && this.loading != null) {
       this.loading.close();
       this.loading = null;
-      //console.log('loading hideMask do close');
     }
     this.refCount--;
     this.refCount = Math.max(0, this.refCount);
   }
 }
 
-//console.log('new LoadingManager');
 const loadingManager = new LoadingManager({
   fullscreen: true,
   background: 'rgba(0, 0, 0, 0.1)',
@@ -142,7 +137,6 @@ export async function commonRequest<D>(
         ...data,
         ...finalAxiosOption,
       });
-      //console.log('result:', result);
       if (result instanceof Blob || result.success) {
         return Promise.resolve(result);
       } else {
@@ -254,13 +248,6 @@ export const download = async (
   method?: RequestMethods,
   options?: RequestOption,
 ) => {
-  // console.log(
-  //   'download file url=%s, params:%s, filename:%s, options:%s',
-  //   url,
-  //   params,
-  //   filename,
-  //   options,
-  // );
   return new Promise((resolve, reject) => {
     downloadBlob(url, params, method, options)
       .then(blobData => {
@@ -300,13 +287,11 @@ export const downloadBlob = (
     const axiosOption: AxiosRequestConfig = {
       responseType: 'blob',
       transformResponse: function (data) {
-        //console.log(data);
         return data instanceof Blob && data.size > 0 ? data : undefined;
       },
     };
     commonRequest<Blob>(requestUrl(url), params, method, options, axiosOption)
       .then(res => {
-        //console.log('download blob response >>>', res);
         if (res instanceof Blob) {
           const blobData = new Blob([res.data], { type: 'application/octet-stream' });
           resolve(blobData);
@@ -337,7 +322,6 @@ export const downloadBlob = (
  * @param options 请求设置(showMask-是否显示Loading层，默认为true；showError-是否显示错误信息，默认为true；throttleFlag-是否开户节流，默认为false；throttleTimeout-节流时效，默认为50毫秒)
  */
 export const upload = async (url: string, params: ANY_OBJECT, options?: RequestOption) => {
-  //console.log('upload file url=%s, params:%s, options:%s', url, params, options);
   const axiosOption: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'multipart/form-data',

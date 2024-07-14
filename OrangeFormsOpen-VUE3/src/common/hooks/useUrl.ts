@@ -9,14 +9,13 @@ export const useUrlBuilder = () => {
    * @returns 请求全路径（含参数）
    */
   const buildGetUrl = (actionName: string, params: ANY_OBJECT | null = null) => {
-    console.log('getUrl', actionName);
     const queryString = objectToQueryString(params);
     if (actionName != null && actionName !== '') {
       if (actionName.substring(0, 1) === '/') actionName = actionName.substring(1);
     }
 
     return (
-      import.meta.env.VITE_SERVER_HOST + actionName + (queryString == null ? '' : '?' + queryString)
+      process.env.VUE_APP_SERVER_HOST + actionName + (queryString == null ? '' : '?' + queryString)
     );
   };
 
@@ -25,14 +24,13 @@ export const useUrlBuilder = () => {
    * @param actionName action方法名称
    */
   const requestUrl = (actionName: string) => {
-    console.log('requestUrl', actionName);
     if (actionName) {
       if (actionName.substring(0, 1) === '/') actionName = actionName.substring(1);
     }
     if (actionName.indexOf('http://') === 0 || actionName.indexOf('https://') === 0) {
       return actionName;
     } else {
-      return import.meta.env.VITE_SERVER_HOST + actionName;
+      return process.env.VUE_APP_SERVER_HOST + actionName;
     }
   };
 

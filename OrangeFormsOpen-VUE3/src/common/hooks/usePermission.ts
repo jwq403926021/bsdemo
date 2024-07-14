@@ -5,7 +5,6 @@ export const usePermissions = () => {
   const loginStorage = useLoginStore();
 
   const checkPermCodeExist = (permCode: string) => {
-    //console.log(permCode);
     if (getAppId() != null && getAppId() !== '') return true;
 
     if (loginStorage.userInfo == null) {

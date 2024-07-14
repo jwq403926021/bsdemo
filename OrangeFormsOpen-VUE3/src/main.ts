@@ -31,6 +31,7 @@ import * as olineDicgt from '@/common/staticDict/online';
 import * as flowDict from '@/common/staticDict/flow';
 
 import { ANY_OBJECT } from '@/types/generic';
+import { debounce } from 'lodash';
 
 function useTable(app: ANY_OBJECT) {
   app.use(VxeTable).use(VxeColumn).use(Edit);
@@ -40,6 +41,15 @@ function useStaticDict(app: ANY_OBJECT, staticDict: ANY_OBJECT) {
     app.config.globalProperties[key] = staticDict[key];
   });
 }
+
+// webpack需要重写ResizeObserver，否则会报错
+const resizeObserver = window.ResizeObserver;
+window.ResizeObserver = class ResizeObserver extends resizeObserver {
+  constructor(callback) {
+    callback = debounce(callback, 10);
+    super(callback);
+  }
+};
 
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

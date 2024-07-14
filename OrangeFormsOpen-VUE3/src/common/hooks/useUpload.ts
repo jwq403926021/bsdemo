@@ -13,7 +13,7 @@ export const useUpload = () => {
    * @returns {Array} 上传文件信息，[{name, downloadUri, filename, url}]
    */
   const parseUploadData = (jsonData: string, params: ANY_OBJECT) => {
-    let pathList = [];
+    let pathList: Array<ANY_OBJECT> = [];
     if (jsonData != null) {
       try {
         pathList = JSON.parse(jsonData);
@@ -39,7 +39,7 @@ export const useUpload = () => {
    * @param {*} item 上传文件
    * @param {*} params 上传文件的参数
    */
-  const getUploadFileUrl = (item: { downloadUri: string }, params?: ANY_OBJECT) => {
+  const getUploadFileUrl = (item: ANY_OBJECT, params?: ANY_OBJECT) => {
     if (item == null || item.downloadUri == null) {
       return null;
     } else {
@@ -101,7 +101,6 @@ export const useUpload = () => {
         },
       )
         .then((res: ANY_OBJECT) => {
-          console.log('uploaded file fetchUpload', res);
           if (res.data && res.success) {
             resolve(res.data);
           }

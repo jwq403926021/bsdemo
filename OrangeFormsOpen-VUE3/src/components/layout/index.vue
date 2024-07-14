@@ -144,7 +144,7 @@ const route = useRoute();
 const layoutStore = useLayoutStore();
 const loginStore = useLoginStore();
 const documentClientHeight = inject('documentClientHeight', ref(500));
-const projectName = import.meta.env.VITE_PROJECT_NAME;
+const projectName = process.env.VUE_APP_PROJECT_NAME;
 
 const { getUploadFileUrl } = useUpload();
 

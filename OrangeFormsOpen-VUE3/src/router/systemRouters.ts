@@ -1,4 +1,4 @@
-import { RouteLocationNormalizedLoaded } from 'vue-router';
+import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import Layout from '@/components/layout/index.vue';
 import Welcome from '@/pages/welcome/index.vue';
 import Login from '@/pages/login/index.vue';
@@ -9,7 +9,7 @@ function getProps(route: RouteLocationNormalizedLoaded) {
 }
 
 // 系统生成路由
-export const routers = [
+export const routers: Array<RouteRecordRaw> = [
   {
     path: '/login',
     component: Login,
@@ -217,7 +217,7 @@ export const routers = [
   // 第三方接入路由
   {
     path: '/thirdParty',
-    component: import('@/components/thirdParty/index.vue'),
+    component: () => import('@/components/thirdParty/index.vue'),
     name: 'thirdParty',
     props: getProps,
     children: [

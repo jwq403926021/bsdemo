@@ -34,7 +34,6 @@ export const useWidgetToolkit = () => {
     widgetType: number,
     formType: number,
   ) {
-    console.log(column, widgetType, formType);
     if (column == null) {
       return {
         disabled: true,
@@ -43,7 +42,7 @@ export const useWidgetToolkit = () => {
     }
     const columnFieldType = getColumnDataType(column);
     let disabled = false;
-    let warningMsg = null;
+    let warningMsg: string | null = null;
     if (column.fieldKind === SysOnlineFieldKind.UPLOAD) {
       disabled = widgetType !== SysCustomWidgetType.Upload;
       warningMsg = SysOnlineFieldKind.getValue(column.fieldKind);

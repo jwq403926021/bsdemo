@@ -26,4 +26,6 @@ export interface ColumnInfo {
   fieldKind: number;
   maxFileCount: number;
   dictId: string;
+  maskFieldType: number;
+  encodedRule: ANY_OBJECT | string | undefined;
 }

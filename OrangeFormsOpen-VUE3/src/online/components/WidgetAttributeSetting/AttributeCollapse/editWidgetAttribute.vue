@@ -7,7 +7,7 @@
     </template>
     <el-input
       v-if="inputWidgetType === SysCustomWidgetType.Input"
-      size="default"
+      size="small"
       style="width: 100%"
       clearable
       v-model="valStr"
@@ -17,7 +17,7 @@
     />
     <el-row v-if="inputWidgetType === SysCustomWidgetType.NumberInput" type="flex">
       <el-input-number
-        size="default"
+        size="small"
         clearable
         style="width: 100%"
         controls-position="right"
@@ -30,21 +30,19 @@
       />
     </el-row>
     <el-row v-if="inputWidgetType === SysCustomWidgetType.Radio" type="flex" align="middle">
-      <el-radio-group
-        size="default"
-        v-model="valNum"
-        v-bind="attributeProps"
-        @change="onValueChange"
-      >
-        <el-radio-button v-for="item in dropdownData" :key="item.id" :value="item.id">
-          {{ item.name }}
-        </el-radio-button>
+      <el-radio-group size="small" v-model="valNum" v-bind="attributeProps" @change="onValueChange">
+        <el-radio-button
+          v-for="item in dropdownData"
+          :key="item.id"
+          :value="item.id"
+          :label="item.name"
+        />
       </el-radio-group>
     </el-row>
     <el-slider
       v-if="inputWidgetType === SysCustomWidgetType.Slider"
       style="width: 95%; margin-left: 5px"
-      size="default"
+      size="small"
       :min="attributeItem.min"
       :max="attributeItem.max"
       v-model="valNum"
@@ -54,7 +52,7 @@
     />
     <el-row v-if="inputWidgetType === SysCustomWidgetType.Switch" type="flex" align="middle">
       <el-select
-        size="default"
+        size="small"
         style="width: 100%"
         v-model="valBool"
         @input="onValueChange"
@@ -65,18 +63,12 @@
         <el-option label="是" :value="true" />
         <el-option label="否" :value="false" />
       </el-select>
-      <!--
-        <el-switch size="default"
-          :value="value" @input="onValueChange"
-          @change="$emit('change')"
-        />
-        -->
     </el-row>
     <el-select
       v-if="inputWidgetType === SysCustomWidgetType.Select"
       style="width: 100%"
       clearable
-      size="default"
+      size="small"
       v-model="valNum"
       v-bind="attributeProps"
       @change="onValueChange"
@@ -86,7 +78,7 @@
     </el-select>
     <el-color-picker
       v-if="inputWidgetType === SysCustomWidgetType.ColorPicker"
-      size="default"
+      size="small"
       v-model="valStr"
       @input="onValueChange"
       v-bind="attributeProps"

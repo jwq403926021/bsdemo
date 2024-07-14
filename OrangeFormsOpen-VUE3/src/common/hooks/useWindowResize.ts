@@ -12,7 +12,6 @@ const documentClientHeight = ref(0);
  */
 export const useWindowResize = () => {
   const windowResize = () => {
-    //console.log('窗口尺寸发生变化');
     documentClientHeight.value = document.documentElement.clientHeight;
     if (window.innerWidth <= WIDTH) {
       layoutStore.defaultFormItemSize = 'default';

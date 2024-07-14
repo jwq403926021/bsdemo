@@ -23,7 +23,6 @@ const axiosInstance: AxiosInstance = axios.create({
   },
   transformResponse: [
     function (data) {
-      //console.log('transformResponse', data);
       if (typeof data === 'string') {
         return JSONbig({ storeAsString: true }).parse(data);
       } else {
@@ -58,7 +57,6 @@ const loginInvalid = () => {
 // 创建响应拦截
 axiosInstance.interceptors.response.use(
   <T>(response: AxiosResponse): AxiosPromise<ResponseDataType<T>> => {
-    //console.log('axios response => ', response);
     const { data, status } = response;
     // 如果401响应放行至此，执行此逻辑
     if (status === 401) {
@@ -80,7 +78,6 @@ axiosInstance.interceptors.response.use(
       if (response.headers['refreshedtoken'] != null) {
         setToken(response.headers['refreshedtoken']);
       }
-      //console.log('response', response, 'blob', response.data instanceof Blob);
       // 判断请求是否成功
       if (!(response.data instanceof Blob) && !response.data.success) {
         return Promise.reject(new Error(response.data.errorMessage || 'error'));

@@ -965,6 +965,9 @@ const getWidth = () => {
   return '100%';
 };
 export default class Sheet {
+  cell(ri, ci, sheetIndex) {
+    throw new Error('Method not implemented.');
+  }
   constructor(targetEl, data) {
     this.eventMap = createEventEmitter();
     const { showToolbar, showContextmenu, mode } = data.settings;

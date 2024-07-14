@@ -547,7 +547,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       if (widget.props.dictInfo && Array.isArray(widget.props.dictInfo.paramList)) {
         widget.props.dictInfo.paramList.forEach((param: ANY_OBJECT) => {
           if (param.dictValueType === SysOnlineParamValueType.STATIC_DICT) {
-            let errorItem = null;
+            let errorItem: ANY_OBJECT | null = null;
             if (Array.isArray(param.dictValue) && param.dictValue.length === 2) {
               const dicts = StaticDict as ANY_OBJECT;
               const staticDict = dicts[param.dictValue[0]];

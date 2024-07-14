@@ -131,7 +131,7 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import { useLayoutStore } from '@/store';
 import BasicForm from './basic/index.vue';
-import DataModel from './dataModel/indev.vue';
+import DataModel from './dataModel/index.vue';
 import FormDesign from './formDesign/index.vue';
 import EditOnlineForm from './editOnlineForm.vue';
 const layoutStore = useLayoutStore();
@@ -220,7 +220,6 @@ const onNextClick = () => {
         })
         .then(res => {
           res.forEach((item, index) => {
-            console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR', item);
             getPageDatasourceTableList.value[index].columnList = item;
             return getPageDatasourceTableList.value[index];
           });
@@ -232,7 +231,7 @@ const onNextClick = () => {
           activeStep.value = SysOnlinePageSettingStep.FORM_DESIGN;
         })
         .catch(e => {
-          console.error(e);
+          console.warn(e);
         });
       break;
   }

@@ -25,7 +25,6 @@ export const useDownload = () => {
       },
     )
       .then(res => {
-        console.log('============= download', res);
         const data = res instanceof Blob ? res : res.data;
         if (data instanceof Blob) {
           const url = window.URL.createObjectURL(data);
@@ -41,7 +40,6 @@ export const useDownload = () => {
         }
       })
       .catch(e => {
-        console.error('============= download', e);
         if (e instanceof Blob) {
           const reader = new FileReader();
           reader.onload = function () {

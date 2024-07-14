@@ -19,10 +19,7 @@ export const useDate = () => {
     statsType = allowStatsType.indexOf(statsType) === -1 ? 'day' : statsType;
     if (statsType === 'datetime') format = 'YYYY-MM-DD HH:mm:ss';
 
-    //console.log('date', statsType, format, date);
-
     const tempDate = date instanceof Date ? date : parseDate(date, format);
-    //console.log('tempDate', tempDate);
     if (!tempDate) return undefined;
     switch (statsType) {
       case 'time':

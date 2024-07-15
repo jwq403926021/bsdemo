@@ -5,6 +5,7 @@
 - 后端工程提供基于 Mybatis-Flex 和 Mybatis-Plus 的两个版本，其余功能完全一致。
 - 前端提供「高颜值」的表单编辑器和流程编辑器，以及精致统一的前端样式规范。
 - 环境搭建文档 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
+- 若依集成橙单文档 [https://www.orangeforms.com/article/open-project-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90](https://www.orangeforms.com/article/open-project-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
 
 ### 联系我们
 - 70 后创业，无奈行业太卷。真心期望得到您的 Star，让更多同行知道我们的存在。

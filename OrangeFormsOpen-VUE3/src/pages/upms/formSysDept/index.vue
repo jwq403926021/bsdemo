@@ -150,7 +150,7 @@ const loadSysDeptListVerify = () => {
 const tableOptions: TableOptions<SysDept> = {
   loadTableData: loadSysDeptListData,
   verifyTableParameter: loadSysDeptListVerify,
-  paged: true,
+  paged: false,
 };
 
 const formSysDept = reactive({

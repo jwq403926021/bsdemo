@@ -121,7 +121,7 @@ const showPassword = ref(false);
 
 const dataForm = reactive({
   mobilePhone: 'admin',
-  password: '123321',
+  password: '123456',
 });
 
 const dataRule = {

@@ -4,8 +4,8 @@
 - 全部主流技术栈 Boot3 + Flowable7 + Sa-Token + Vue3。
 - 后端提供 Mybatis-Flex 和 Mybatis-Plus 双版本。
 - 高颜值的在线表单和流程编辑器，以及精致统一的前端样式规范。
-- 环境搭建文档 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
-- 若依集成橙单 [https://www.orangeforms.com/article/open-project-setup#若依集成](https://www.orangeforms.com/article/open-project-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
+- 环境搭建文档 [https://www.orangeforms.com/article/open-setup](https://www.orangeforms.com/article/open-setup)。
+- 若依集成橙单 [https://www.orangeforms.com/article/open-setup#若依集成](https://www.orangeforms.com/article/open-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
 
 ### 联系我们
 - 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。

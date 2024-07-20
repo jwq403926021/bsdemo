@@ -8,7 +8,7 @@
 - 若依集成橙单文档 [https://www.orangeforms.com/article/open-project-setup#若依集成](https://www.orangeforms.com/article/open-project-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
 
 ### 联系我们
-- 如果橙单开源为您带来帮助，我们真心期望能够得到您的 Star，让更多同行知道我们的存在。
+- 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。
 - 如果希望得到更及时的支持，请扫左侧二维码加我微信，邀您入群，扫右侧二维码可直接入群。
 
 |![](images/OrangeL.png)|![](images/weixingroup2.png)|

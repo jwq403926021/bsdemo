@@ -1,22 +1,18 @@
-### 橙单开源
-- 开源工程绝对保证「开箱即用」和 BUG 极少，全部代码通过 SonarQube 最严格的扫描「0」警告。
-- 支持工作流、在线表单、权限框架和数据权限过滤。
-- 全部主流技术栈 Spring Boot3 + Flowable7 + Sa-Token + Mybatis-Flex + Mybatis-Plus + Element Plus(Vue3)。
-- 后端工程提供基于 Mybatis-Flex 和 Mybatis-Plus 的两个版本，其余功能完全一致。
-- 前端提供「高颜值」的表单编辑器和流程编辑器，以及精致统一的前端样式规范。
+### 良心开源
+- 功能完整、开箱即用、BUG 极少，全部代码通过 SonarQube 最严格的扫描 0 警告。
+- 支持工作流、在线表单、数据权限和用户权限。
+- 全部主流技术栈 Boot3 + Flowable7 + Sa-Token + Vue3。
+- 后端提供 Mybatis-Flex 和 Mybatis-Plus 双版本。
+- 高颜值的在线表单和流程编辑器，以及精致统一的前端样式规范。
 - 环境搭建文档 [https://www.orangeforms.com/article/open-project-setup](https://www.orangeforms.com/article/open-project-setup)。
 - 若依集成橙单文档 [https://www.orangeforms.com/article/open-project-setup#若依集成](https://www.orangeforms.com/article/open-project-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
 
 ### 联系我们
-- 70 后创业，无奈行业太卷。真心期望得到您的 Star，让更多同行知道我们的存在。
-- 下图左侧是个人微信，加好友后拉您入群，右侧是群二维码，扫码后可直接入群。
+- 如果橙单开源为您带来帮助，我们真心期望能够得到您的 Star，让更多同行知道我们的存在。
+- 如果希望得到更及时的支持，请扫左侧二维码加我微信，邀您入群，扫右侧二维码可直接入群。
 
 |![](images/OrangeL.png)|![](images/weixingroup2.png)|
 |---|---|
-
-### 入群福利
-- 结合橙单开源工程和免费的代码生成工具，可在 0 成本投入情况下，让您的项目开发效率提升数倍。
-- 提供更多有关代码生成技术和项目上的交流，助您私活儿接到手软。
 
 ### 线上资源
 - 免费生成指南 [https://www.orangeforms.com/article/free](https://www.orangeforms.com/article/free)
@@ -49,7 +45,7 @@
 
 ![](images/visualization-new.png)
 
-### 良心推荐
+### 诚挚推荐
 强烈推荐贺波老师的《深入Activiti流程引擎：核心原理与高阶实战》，该书对系统学习和深入掌握 Activiti/Flowable 极有帮助，书中涵盖很多大型流程中心平台所涉及的技术架构和场景案例。橙单团队作为贺老师的忠实粉丝，我们希望这本书可以帮助到更多对工作流有兴趣的开发者们。[推荐购买链接](https://item.jd.com/13928958.html) 
 ![](images/book1.jpg)
 

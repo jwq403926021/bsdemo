@@ -1,5 +1,5 @@
 ### 良心开源
-- 功能完整、开箱即用、BUG 极少，全部代码通过 SonarQube 最严格的扫描 0 警告。
+- 功能完整、开箱即用、BUG 极少，全部代码通过 SonarQube 扫描 0 警告。
 - 支持工作流、在线表单、数据权限和用户权限。
 - 全部主流技术栈 Boot3 + Flowable7 + Sa-Token + Vue3。
 - 后端提供 Mybatis-Flex 和 Mybatis-Plus 双版本。

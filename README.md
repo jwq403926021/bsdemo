@@ -30,10 +30,6 @@
 ### 图和真相
 ![](images/sonar.png)
 
-![](images/tenant-adminimage.png)
-
-![](images/tenant-busiimage.png)
-
 ![](images/image-dingding.png)
 
 ![](images/flow-bpmn-jsimage.png)
@@ -43,6 +39,10 @@
 ![](images/report-edit.png)
 
 ![](images/print_edit.png)
+
+![](images/tenant-adminimage.png)
+
+![](images/tenant-busiimage.png)
 
 ![](images/visualization-new.png)
 

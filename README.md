@@ -17,8 +17,8 @@
 
 ### 线上资源
 - 免费生成指南 [https://www.orangeforms.com/article/free](https://www.orangeforms.com/article/free)
-- 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
 - 橙单官方文档 [https://www.orangeforms.com](https://www.orangeforms.com)
+- 免费代码生成 [https://code.orangeforms.com](https://code.orangeforms.com)
 - 橙单演示工程 [https://demo.orangeforms.com](https://demo.orangeforms.com)
 - 租户管理演示 [https://tenantadmin.orangeforms.com](https://tenantadmin.orangeforms.com)
 - 租户运营演示 [https://tenant.orangeforms.com](https://tenant.orangeforms.com)

@@ -12,7 +12,7 @@
 - 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。
 - 如需更多支持，请扫左侧二维码加我微信，邀您入群，扫右侧二维码可直接入群。
 
-|![](images/OrangeL.png)|![](images/weixingroup2.png)|
+|![](images/OrangeL.png)|![](images/weixingroup.png)|
 |---|---|
 
 ### 线上资源

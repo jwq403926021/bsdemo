@@ -1,7 +1,7 @@
 <template>
   <div class="user-select">
     <el-select
-      :model-value="value"
+      :model-value="modelValue"
       style="width: 100%"
       :multiple="multiple"
       :disabled="disabled"
@@ -32,11 +32,14 @@ import { SysCommonBizController } from '@/api/system';
 import { Dialog } from '@/components/Dialog';
 import UserSelectDlg from './UserSelectDlg.vue';
 
-const emit = defineEmits<{ input: [ANY_OBJECT]; change: [ANY_OBJECT, ANY_OBJECT[]] }>();
+const emit = defineEmits<{
+  'update:modelValue': [string | number | ANY_OBJECT[]];
+  change: [string | number | ANY_OBJECT[], string | number | ANY_OBJECT[]];
+}>();
 
 const pps = withDefaults(
   defineProps<{
-    value: string | number;
+    modelValue: string | number | Array<ANY_OBJECT> | undefined;
     size?: '' | 'default' | 'small' | 'large';
     placeholder?: string;
     props?: ANY_OBJECT;
@@ -68,13 +71,15 @@ const refreshData = (data: ANY_OBJECT) => {
   }
 };
 const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
+  console.log('handlerEditOperate', items);
   selectedItems.value = [];
   if (pps.multiple) {
-    if (Array.isArray(items.value)) selectedItems.value = items.value;
+    if (Array.isArray(items)) selectedItems.value = items;
   } else {
-    if (items.value != null) selectedItems.value.push(items.value);
+    if (items != null) selectedItems.value.push(items);
   }
   if (!checkSelectChange()) return;
+  console.log('1111', selectedItems.value);
   emitChange();
 };
 const onVisibleChange = (visible: boolean) => {
@@ -119,7 +124,7 @@ const emitChange = () => {
       return item;
     });
     emit(
-      'input',
+      'update:modelValue',
       tempValue.map(item => item[pps.props.value]),
     );
     emit(
@@ -129,19 +134,19 @@ const emitChange = () => {
     );
   } else {
     tempValue = selectedItems.value[0] || {};
-    emit('input', tempValue[pps.props.value]);
+    emit('update:modelValue', tempValue[pps.props.value]);
     emit('change', tempValue[pps.props.value], selectedItems.value);
   }
 };
 const checkSelectChange = () => {
   let valueIdString = pps.multiple
-    ? (pps.value || [])
-        .sort((val1, val2) => {
+    ? ((pps.modelValue || []) as ANY_OBJECT[])
+        .sort((val1: ANY_OBJECT, val2: ANY_OBJECT) => {
           if (val1 === val2) return 0;
           return val1 < val2 ? -1 : 1;
         })
         .join(',')
-    : pps.value || '';
+    : pps.modelValue || '';
   let selectedItemsString = selectedItems.value
     .sort((item1, item2) => {
       if (item1[pps.props.value] === item2[pps.props.value]) return 0;
@@ -155,12 +160,16 @@ const getSelectUserList = () => {
   let params: ANY_OBJECT = {
     widgetType: 'upms_user',
   };
-  if (pps.value == null || pps.value === '' || (Array.isArray(pps.value) && pps.value.length <= 0))
+  if (
+    pps.modelValue == null ||
+    pps.modelValue === '' ||
+    (Array.isArray(pps.modelValue) && pps.modelValue.length <= 0)
+  )
     selectedItems.value = [];
   if (pps.multiple) {
-    params.fieldValues = Array.isArray(pps.value) ? pps.value : [];
+    params.fieldValues = Array.isArray(pps.modelValue) ? pps.modelValue : [];
   } else {
-    params.fieldValues = Array.isArray(pps.value) ? pps.value[0] : pps.value;
+    params.fieldValues = Array.isArray(pps.modelValue) ? pps.modelValue[0] : pps.modelValue;
     params.fieldValues = params.fieldValues == null ? [] : [params.fieldValues];
   }
   if (Array.isArray(params.fieldValues) && params.fieldValues.length > 0) {
@@ -179,9 +188,9 @@ const getSelectUserList = () => {
   }
 };
 watch(
-  () => pps.value,
+  () => pps.modelValue,
   () => {
-    if (pps.value) getSelectUserList();
+    if (pps.modelValue) getSelectUserList();
   },
   {
     immediate: true,

@@ -1,7 +1,7 @@
 <template>
   <div class="dept-select">
     <el-select
-      :model-value="value"
+      :model-value="modelValue"
       style="width: 100%"
       :multiple="multiple"
       :disabled="disabled"
@@ -32,11 +32,14 @@ import { SysCommonBizController } from '@/api/system';
 import { Dialog } from '@/components/Dialog';
 import DeptSelectDlg from './DeptSelectDlg.vue';
 
-const emit = defineEmits<{ input: [ANY_OBJECT]; change: [ANY_OBJECT] }>();
+const emit = defineEmits<{
+  'update:modelValue': [string | number | ANY_OBJECT[]];
+  change: [string | number | ANY_OBJECT[], string | number | ANY_OBJECT[]];
+}>();
 
 const props = withDefaults(
   defineProps<{
-    value: string | number | Array<ANY_OBJECT>;
+    modelValue: string | number | Array<ANY_OBJECT> | undefined;
     size?: '' | 'default' | 'small' | 'large';
     placeholder?: string;
     props?: ANY_OBJECT;
@@ -69,12 +72,11 @@ const refreshData = (data: ANY_OBJECT) => {
   }
 };
 const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
-  console.log('DeptSelect > handlerEditOperate', items);
   selectedItems.value = [];
   if (props.multiple) {
-    if (Array.isArray(items.value)) selectedItems.value = items.value;
+    if (Array.isArray(items)) selectedItems.value = items;
   } else {
-    if (items.value != null) selectedItems.value.push(items.value);
+    if (items != null) selectedItems.value.push(items);
   }
   if (!checkSelectChange()) return;
   emitChange();
@@ -115,7 +117,7 @@ const onClear = () => {
   emitChange();
 };
 const emitChange = () => {
-  let tempValue;
+  let tempValue: string | number | ANY_OBJECT[];
   if (props.multiple) {
     tempValue = selectedItems.value.map(item => {
       return item[props.props.value];
@@ -123,19 +125,19 @@ const emitChange = () => {
   } else {
     tempValue = (selectedItems.value[0] || {})[props.props.value];
   }
-  emit('input', tempValue);
-  emit('change', tempValue);
+  emit('update:modelValue', tempValue);
+  emit('change', tempValue, selectedItems.value);
 };
 const checkSelectChange = () => {
   let valueIdString =
-    props.multiple && Array.isArray(props.value)
-      ? (props.value || [])
+    props.multiple && Array.isArray(props.modelValue)
+      ? (props.modelValue || [])
           .sort((val1: ANY_OBJECT, val2: ANY_OBJECT) => {
             if (val1 === val2) return 0;
             return val1 < val2 ? -1 : 1;
           })
           .join(',')
-      : props.value || '';
+      : props.modelValue || '';
   let selectedItemsString = selectedItems.value
     .sort((item1, item2) => {
       if (item1[props.props.value] === item2[props.props.value]) return 0;
@@ -149,12 +151,16 @@ const getSelectDeptList = () => {
   let params: ANY_OBJECT = {
     widgetType: 'upms_dept',
   };
-  if (props.value == null || props.value === '' || props.value.length <= 0)
+  if (
+    props.modelValue == null ||
+    props.modelValue === '' ||
+    (props.modelValue as ANY_OBJECT[]).length <= 0
+  )
     selectedItems.value = [];
   if (props.multiple) {
-    params.fieldValues = Array.isArray(props.value) ? props.value : [];
+    params.fieldValues = Array.isArray(props.modelValue) ? props.modelValue : [];
   } else {
-    params.fieldValues = Array.isArray(props.value) ? props.value[0] : props.value;
+    params.fieldValues = Array.isArray(props.modelValue) ? props.modelValue[0] : props.modelValue;
     params.fieldValues = params.fieldValues == null ? [] : [params.fieldValues];
   }
   if (Array.isArray(params.fieldValues) && params.fieldValues.length > 0) {
@@ -173,9 +179,9 @@ const getSelectDeptList = () => {
   }
 };
 watch(
-  () => props.value,
+  () => props.modelValue,
   () => {
-    if (props.value) getSelectDeptList();
+    if (props.modelValue) getSelectDeptList();
   },
   {
     immediate: true,

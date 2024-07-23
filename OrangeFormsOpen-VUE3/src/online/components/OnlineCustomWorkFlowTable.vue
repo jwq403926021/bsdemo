@@ -156,7 +156,9 @@ import { downloadBlob, post } from '@/common/http/request';
 import { useDownload } from '@/common/hooks/useDownload';
 import { useUpload } from '@/common/hooks/useUpload';
 import { API_CONTEXT } from '@/api/config';
+import { useLayoutStore } from '@/store';
 
+const layoutStore = useLayoutStore();
 const emit = defineEmits<{
   viewWorkOrder: [ANY_OBJECT, ANY_OBJECT | null];
   handlerWorkOrder: [ANY_OBJECT, ANY_OBJECT | null];
@@ -194,8 +196,6 @@ const props = withDefaults(defineProps<IProps>(), {
   operationList: () => [],
 });
 
-import { useLayoutStore } from '@/store';
-const layoutStore = useLayoutStore();
 const form = inject('form', () => {
   console.error('OnlineCustomWorkFlowTable: form not injected');
   return { isEdit: false } as ANY_OBJECT;
@@ -210,6 +210,11 @@ const tableColumnList = computed(() => {
     props.widget && props.widget.props && Array.isArray(props.widget.props.tableColumnList)
       ? props.widget.props.tableColumnList
       : [];
+  tempList = tempList.map(item => {
+    return {
+      ...item,
+    };
+  });
   tempList.forEach((item: ANY_OBJECT) => {
     if (item.fieldType === 0 || item.fieldType == null) {
       // 绑定表字段

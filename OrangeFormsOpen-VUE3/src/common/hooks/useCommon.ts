@@ -1,5 +1,5 @@
+import { getCurrentInstance } from 'vue';
 import { Delete, Search, Edit, Plus, Refresh, Picture } from '@element-plus/icons-vue';
-import { EpPropMergeType } from 'element-plus/es/utils';
 import { useDate } from '@/common/hooks/useDate';
 import { usePermissions } from '@/common/hooks/usePermission';
 import { Dialog } from '@/components/Dialog';

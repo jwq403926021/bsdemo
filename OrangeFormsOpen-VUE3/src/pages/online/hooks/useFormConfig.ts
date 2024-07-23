@@ -245,7 +245,8 @@ export const useFormConfig = () => {
   };
 
   const buildFormConfig = (formData: ANY_OBJECT) => {
-    if (formData == null) return;
+    if (formData == null || formData.rawData == null || formData.rawData.onlineTableList == null)
+      return;
     const formConfig = formData;
     formConfig.datasourceMap = new Map();
     formConfig.relationMap = new Map();

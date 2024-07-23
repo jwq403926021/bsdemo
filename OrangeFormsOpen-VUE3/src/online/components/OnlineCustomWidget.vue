@@ -150,7 +150,6 @@ const isMobileFilter = computed(() => {
   );
 });
 const getAllDropdownData = computed(() => {
-  console.log('widget getAllDropdownData', pps.widget.props.supportAll, dictDataList);
   if (pps.widget.props.supportAll) {
     return [
       {

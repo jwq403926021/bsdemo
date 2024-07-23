@@ -1,10 +1,13 @@
 import { createApp } from 'vue';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import '@/common/http/request';
+// eslint-disable-next-line import/named
+import { debounce } from 'lodash';
 import { VxeTable, VxeColumn, Edit } from 'vxe-table';
 import App from '@/App.vue';
 import { router } from '@/router/index';
 import pinia from '@/store';
+import useStaticDictStore from '@/store/staticDict';
 
 // 表格样式
 import 'vxe-table/lib/style.css';
@@ -31,17 +34,20 @@ import * as olineDicgt from '@/common/staticDict/online';
 import * as flowDict from '@/common/staticDict/flow';
 
 import { ANY_OBJECT } from '@/types/generic';
-import { debounce } from 'lodash';
 
+// vxe-table设置
 function useTable(app: ANY_OBJECT) {
   app.use(VxeTable).use(VxeColumn).use(Edit);
 }
+// 静态字典设置
 function useStaticDict(app: ANY_OBJECT, staticDict: ANY_OBJECT) {
+  if (app.config.globalProperties.StaticDict == null) {
+    app.config.globalProperties.StaticDict = {};
+  }
   Object.keys(staticDict).forEach(key => {
-    app.config.globalProperties[key] = staticDict[key];
+    app.config.globalProperties.StaticDict[key] = staticDict[key];
   });
 }
-
 // webpack需要重写ResizeObserver，否则会报错
 const resizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends resizeObserver {
@@ -60,3 +66,6 @@ useStaticDict(app, olineDicgt);
 useStaticDict(app, flowDict);
 app.use(pinia).use(router).use(useTable);
 app.mount('#app');
+// 设置静态字典
+const staticDictStore = useStaticDictStore();
+staticDictStore.setStaticDict(app.config.globalProperties.StaticDict);

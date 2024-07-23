@@ -51,8 +51,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   });
 
   const form = computed(() => {
-    const temp: ANY_OBJECT = buildFormConfig(dialogParams.value.formConfig) || {};
-    return temp;
+    buildFormConfig(dialogParams.value.formConfig);
+    return dialogParams.value.formConfig;
   });
 
   const loginStore = useLoginStore();

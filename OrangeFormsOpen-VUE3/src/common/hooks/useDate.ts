@@ -43,43 +43,24 @@ export const useDate = () => {
    * @param {String} statsType 转换类型（day, month, year）
    * @param {String} format 输出格式
    */
-  const getDateRangeFilter = (date: string, statsType = 'day', format = 'YYYY-MM-dd HH:mm:ss') => {
+  const getDateRangeFilter = (date: string, statsType = 'day', format = 'YYYY-MM-DD HH:mm:ss') => {
     if (date == null) return [];
-
-    statsType = allowStatsType.indexOf(statsType) === -1 ? 'day' : statsType;
-    date = date.substring(0, date.indexOf(' '));
-    const tempList = date.split('-');
-    const year = Number.parseInt(tempList[0]);
-    const month = Number.parseInt(tempList[1]);
-    const day = Number.parseInt(tempList[2]);
-    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    const tempDate = parseDate(date, format);
+    console.log('tempDate', tempDate);
+    if (tempDate && tempDate.isValid()) {
+      switch (statsType) {
+        case 'day':
+          return [tempDate.startOf('d').format(format), tempDate.endOf('d').format(format)];
+        case 'month':
+          return [tempDate.startOf('M').format(format), tempDate.endOf('M').format(format)];
+        case 'year':
+          return [tempDate.startOf('y').format(format), tempDate.endOf('y').format(format)];
+        default:
+          return [];
+      }
+    } else {
       return [];
     }
-    const tempDate = new Date(year, month - 1, day);
-    // 判断是否正确的日期
-    if (isNaN(tempDate.getTime())) return [];
-
-    tempDate.setHours(0, 0, 0, 0);
-    let retDate: Date[] = [];
-    // TODO 如果类型为'time', 'datetime'会出错
-    switch (statsType) {
-      case 'day':
-        retDate = [new Date(tempDate), new Date(tempDate.setDate(tempDate.getDate() + 1))];
-        break;
-      case 'month':
-        tempDate.setDate(1);
-        retDate = [new Date(tempDate), new Date(tempDate.setMonth(tempDate.getMonth() + 1))];
-        break;
-      case 'year':
-        tempDate.setDate(1);
-        tempDate.setMonth(0);
-        retDate = [new Date(tempDate), new Date(tempDate.setFullYear(tempDate.getFullYear() + 1))];
-        break;
-    }
-
-    retDate[1] = new Date(retDate[1].getTime() - 1);
-
-    return [formatDate(retDate[0], format), formatDate(retDate[1], format)];
   };
 
   return {

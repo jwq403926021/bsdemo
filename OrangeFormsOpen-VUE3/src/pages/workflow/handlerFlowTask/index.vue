@@ -79,24 +79,24 @@ const isOnlineForm = computed(() => {
 });
 
 const isDraft = computed(() => {
-  return typeof dialogParams.isDraft === 'string'
-    ? dialogParams.isDraft === 'true'
-    : dialogParams.isDraft;
+  return typeof dialogParams.value.isDraft === 'string'
+    ? dialogParams.value.isDraft === 'true'
+    : dialogParams.value.isDraft;
 });
 const isPreview = computed(() => {
-  return typeof dialogParams.isPreview === 'string'
-    ? dialogParams.isPreview === 'true'
-    : dialogParams.isPreview;
+  return typeof dialogParams.value.isPreview === 'string'
+    ? dialogParams.value.isPreview === 'true'
+    : dialogParams.value.isPreview;
 });
 const isRuntime = computed(() => {
-  return typeof dialogParams.isRuntime === 'string'
-    ? dialogParams.isRuntime === 'true'
-    : dialogParams.isRuntime;
+  return typeof dialogParams.value.isRuntime === 'string'
+    ? dialogParams.value.isRuntime === 'true'
+    : dialogParams.value.isRuntime;
 });
 const readOnly = computed(() => {
-  return typeof dialogParams.readOnly === 'string'
-    ? dialogParams.readOnly === 'true'
-    : dialogParams.readOnly;
+  return typeof dialogParams.value.readOnly === 'string'
+    ? dialogParams.value.readOnly === 'true'
+    : dialogParams.value.readOnly;
 });
 
 const getFlowInfo = computed(() => {

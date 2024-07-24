@@ -84,7 +84,7 @@
             :size="layoutStore.defaultFormItemSize"
             :tree-config="{ rowField: 'menuId', parentField: 'parentId' }"
             @refresh="initFormData"
-            class="border-bottom-0"
+            class="border-bottom-0 page-table"
           >
             <template v-slot:operator>
               <el-button
@@ -173,7 +173,6 @@ import { MenuItem } from '@/types/upms/menu';
 import { SystemMenuController } from '@/api/system';
 import { useLayoutStore } from '@/store';
 import { useMenuTools } from './hooks';
-
 const { checkPermCodeExist } = usePermissions();
 const activeFragment = ref('fragmentSysColumn');
 const currentColumnId: Ref<string | undefined> = ref();

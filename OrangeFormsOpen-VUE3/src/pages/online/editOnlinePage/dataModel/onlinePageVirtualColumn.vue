@@ -391,17 +391,10 @@ const onAggregationTableIdChange = () => {
     currentColumn.value.objectFieldType = undefined;
   }
 
-  if (aggregationRelation.value) {
-    if (
-      Array.isArray(aggregationRelation.value.columnList) &&
-      aggregationRelation.value.columnList.length > 0
-    ) {
-      aggregationColumnList.value = aggregationRelation.value.columnList;
-    } else {
-      loadOnlineTableColumnList(aggregationRelation.value.tableId).catch(e => {
-        console.warn(e);
-      });
-    }
+  if (aggregationRelation.value && currentColumn.value) {
+    loadOnlineTableColumnList(currentColumn.value.aggregationTableId).catch(e => {
+      console.warn(e);
+    });
   }
 };
 const onAggregationColumnIdChange = () => {

@@ -125,7 +125,9 @@ import { Dialog } from '@/components/Dialog';
 import { SysFlowCopyForType } from '@/common/staticDict/flow';
 import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
+import { useLayoutStore } from '@/store';
 
+const layoutStore = useLayoutStore();
 interface IProps extends ThirdProps {
   deptList: ANY_OBJECT[];
   postList: ANY_OBJECT[];
@@ -136,8 +138,6 @@ interface IProps extends ThirdProps {
 }
 const props = defineProps<IProps>();
 const { thirdParams, onCloseThirdDialog } = useThirdParty(props);
-import { useLayoutStore } from '@/store';
-const layoutStore = useLayoutStore();
 const deptId = ref<string>();
 const selectDeptList = ref<ANY_OBJECT[]>([]);
 const formData = ref<ANY_OBJECT>({

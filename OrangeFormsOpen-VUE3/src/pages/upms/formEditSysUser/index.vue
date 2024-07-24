@@ -145,7 +145,6 @@ const layoutStore = useLayoutStore();
 
 const props = defineProps<{
   rowData?: User;
-  defaultFormItemSize: Ref<'' | 'default' | 'small' | 'large'>;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
   dialog?: DialogProp<ANY_OBJECT>;
 }>();

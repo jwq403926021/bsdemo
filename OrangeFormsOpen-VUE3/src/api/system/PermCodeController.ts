@@ -8,6 +8,6 @@ import { API_CONTEXT } from '../config';
 
 export default class PermCodeController extends BaseController {
   static getPermCodeList(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<PermCode[]>(API_CONTEXT + '/upms/login/getAllPermCodes', params, httpOptions);
+    return super.get<PermCode[]>(API_CONTEXT + '/upms/login/getAllPermCodes', params, httpOptions);
   }
 }

@@ -196,7 +196,7 @@ const props = withDefaults(
     // 当前任务节点名称
     taskName?: string;
     // 当前任务节点操作列表
-    operationList?: Array<ANY_OBJECT>;
+    operationList?: Array<ANY_OBJECT> | string;
   }>(),
   {
     isDraft: false,
@@ -219,8 +219,11 @@ const copyItemList = ref<ANY_OBJECT[]>([]);
 const assigneeList = ref<ANY_OBJECT[]>([]);
 
 const flowOperationList = computed<ANY_OBJECT[]>(() => {
-  if (Array.isArray(props.operationList)) {
-    return props.operationList.map(item => {
+  const operationList = Array.isArray(props.operationList)
+    ? props.operationList
+    : JSON.parse(props.operationList || '[]');
+  if (Array.isArray(operationList)) {
+    return operationList.map(item => {
       if (item.type === SysFlowTaskOperationType.MULTI_SIGN && item.multiSignAssignee != null) {
         let multiSignAssignee = {
           ...item.multiSignAssignee,
@@ -443,7 +446,6 @@ onMounted(() => {
 
 <style lang="scss">
 @import url('../package/theme/index.scss');
-// 边框被 token-simulation 样式覆盖了
 .djs-palette {
   background: var(--palette-background-color);
   border: solid 1px var(--palette-border-color) !important;
@@ -546,7 +548,6 @@ onMounted(() => {
   }
 }
 
-//侧边栏配置
 .djs-palette.open {
   .djs-palette-entries {
     div[class^='bpmn-icon-']:before,
@@ -598,9 +599,7 @@ pre {
   font-family: Consolas, Monaco, monospace;
 }
 
-// 流程图
 .djs-container {
-  // 框
   .djs-visual {
     rect,
     polygon,
@@ -617,17 +616,13 @@ pre {
       stroke: #333333 !important;
     }
   }
-  // 线
   .djs-visual path {
     stroke: #333333 !important;
   }
-
-  // 实心箭头
   [id^='sequenceflow-end-white-black'] path {
     fill: #333333 !important;
     stroke: #333333 !important;
   }
-  // 空心箭头
   [id^='conditional-flow-marker-white-black'] path {
     stroke: #333333 !important;
   }

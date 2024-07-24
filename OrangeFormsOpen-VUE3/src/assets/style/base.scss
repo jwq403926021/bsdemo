@@ -1,13 +1,9 @@
-// @import url('element-variables');
-// @import url('transition');
-
 html, body {
   padding: 0;
   margin: 0;
   font-size: 14px;
   font-family: Arial,'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',sans-serif;
   background-color: rgb(228 240 255);
-  //background-color: white;
 }
 
 *,
@@ -1030,8 +1026,6 @@ $--color-primary-light-9: color-mix(in srgb, $--color-white 90%, $--color-primar
   font-weight: bold !important;
 }
 
-// element-plus尺寸去除了medium,small变的更小了
-//.container-small, [class^='el-'][class*='small']{
 .container-default, [class^='el-'][class*='default']{
   font-weight: normal;
   .el-tree,.el-input input,.el-radio__label,.el-checkbox__label,.el-switch__label *,.el-upload-list__item,.el-upload__tip,.vxe-cell--label,.vxe-cell--title,.el-tabs__item,.el-breadcrumb,.el-pager li,.el-pagination__total,label,.el-form-item__label,.el-table .cell,.user-dropdown,.el-select-dropdown__item,.el-cascader-node__label,.vxe-table--render-default.size--small,.el-tree-node__label,.el-dropdown-menu__item,.table-btn,.unified-font,.custom-label,.el-link span,.group-title,.el-radio-button__inner,.el-collapse-item__header{
@@ -1052,8 +1046,6 @@ $--color-primary-light-9: color-mix(in srgb, $--color-white 90%, $--color-primar
   }
 }
 
-// element-plus尺寸去除了medium
-//.container-medium, [class^='el-'][class*='medium']{
 .container-large, [class^='el-'][class*='large']{
   .vxe-cell--title{
     font-weight: bold;

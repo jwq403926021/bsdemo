@@ -15,7 +15,6 @@ export default class SysGlobalDictController {
   }
 
   static listAll(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    console.log(this);
     return get<listAllItemType>(API_CONTEXT + '/upms/globalDict/listAll', params, httpOptions);
   }
 

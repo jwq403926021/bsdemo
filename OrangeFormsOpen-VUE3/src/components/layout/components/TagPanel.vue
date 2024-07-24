@@ -279,4 +279,3 @@ const rightClick = () => {
   background: #eee;
 }
 </style>
-@/types/upms/menu

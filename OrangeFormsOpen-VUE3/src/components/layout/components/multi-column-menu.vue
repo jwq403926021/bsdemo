@@ -150,4 +150,3 @@ const select = () => {
   }
 }
 </style>
-@/types/upms/menu

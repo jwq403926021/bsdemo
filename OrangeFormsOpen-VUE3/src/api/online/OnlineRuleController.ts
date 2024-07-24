@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class OnlineRuleController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlineRule/list',
       params,
       httpOptions,
@@ -14,7 +14,7 @@ export default class OnlineRuleController extends BaseController {
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get(API_CONTEXT + '/online/onlineRule/view', params, httpOptions);
+    return super.get(API_CONTEXT + '/online/onlineRule/view', params, httpOptions);
   }
 
   //   static export(sender, params, fileName) {
@@ -22,14 +22,14 @@ export default class OnlineRuleController extends BaseController {
   //   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineRule/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineRule/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineRule/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineRule/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineRule/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineRule/delete', params, httpOptions);
   }
 }

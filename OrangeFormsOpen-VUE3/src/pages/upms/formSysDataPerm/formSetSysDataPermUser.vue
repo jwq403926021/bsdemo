@@ -131,7 +131,6 @@ const layoutStore = useLayoutStore();
 
 const props = defineProps<{
   dataPermId: string | number;
-  defaultFormItemSize: Ref<'' | 'default' | 'small' | 'large'>;
 }>();
 const formItemSize = computed(() => {
   return layoutStore.defaultFormItemSize;

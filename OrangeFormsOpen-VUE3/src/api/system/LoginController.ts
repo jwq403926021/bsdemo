@@ -5,10 +5,10 @@ import { API_CONTEXT } from '../config';
 
 export default class LoginController extends BaseController {
   static login(params: loginParam) {
-    return this.post<UserInfo>(API_CONTEXT + '/upms/login/doLogin', params);
+    return super.post<UserInfo>(API_CONTEXT + '/upms/login/doLogin', params);
   }
 
   static logout() {
-    return this.post(API_CONTEXT + '/upms/login/doLogout', {});
+    return super.post(API_CONTEXT + '/upms/login/doLogout', {});
   }
 }

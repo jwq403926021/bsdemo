@@ -260,9 +260,13 @@ const onEditOperation = (operation: ANY_OBJECT) => {
       height: '450px',
       pathName: '/thirdParty/thirdEditOperation',
     },
-  ).then(res => {
-    updateEditOperation(res);
-  });
+  )
+    .then(res => {
+      updateEditOperation(res);
+    })
+    .catch(e => {
+      console.warn(e);
+    });
 };
 const updateEditOperation = (res: ANY_OBJECT) => {
   //console.log('>>> updateEditOperation', res);

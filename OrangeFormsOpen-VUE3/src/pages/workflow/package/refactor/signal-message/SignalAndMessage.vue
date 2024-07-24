@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
 import { VxeTable, VxeColumn } from 'vxe-table';
-
+import RightAddBtn from '@/components/Btns/RightAddBtn.vue';
 import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 

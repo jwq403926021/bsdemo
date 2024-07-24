@@ -226,7 +226,6 @@ const values = computed({
 });
 
 const onWidgetClick = (widget: ANY_OBJECT | null = null) => {
-  console.log('block block block onWidgetClick', widget);
   emit('widgetClick', widget);
 };
 const onDragAdd = (e: DragEvent) => {

@@ -58,7 +58,6 @@ const treeDataList = computed(() => {
     );
   });
   let temp = treeDataTranslate(tempList, 'id', 'parentId');
-  console.log('temp', temp);
   if (props.multiple) {
     return temp;
   } else {
@@ -73,7 +72,6 @@ const treeDataList = computed(() => {
 });
 
 const onNodeClick = () => {
-  console.log('onNodeClick');
   if (!props.multiple) onSelectChange();
 };
 const emit = defineEmits<{
@@ -89,7 +87,6 @@ const onValueChange = () => {
       temp = tree.value.getCurrentKey();
     }
   }
-  console.log('onValueChange', temp);
   emit('update:value', temp);
   let dictData = props.multiple
     ? null
@@ -97,7 +94,6 @@ const onValueChange = () => {
   emit('change', temp, dictData);
 };
 const onSelectChange = () => {
-  console.log('onSelectChange');
   nextTick(() => {
     onValueChange();
   });

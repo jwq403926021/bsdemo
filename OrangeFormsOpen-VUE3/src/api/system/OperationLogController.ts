@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class OperationLogController extends BaseController {
   static listSysOperationLog(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/upms/sysOperationLog/list',
       params,
       httpOptions,

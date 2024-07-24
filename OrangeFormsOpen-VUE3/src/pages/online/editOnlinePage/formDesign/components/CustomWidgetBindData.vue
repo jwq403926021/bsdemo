@@ -220,7 +220,6 @@ const getValidColumnList = computed(() => {
             data.value.widgetType,
             formType.value,
           );
-          console.log(disabled, warningMsg, item);
           // 查询页面仅能选择支持过滤的字段
           if (
             !disabled &&

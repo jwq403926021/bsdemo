@@ -1189,11 +1189,8 @@ defineExpose({
   .design-box {
     display: flex;
     justify-content: center;
-    // background: white;
     width: 100%;
     height: calc(100% - 48px);
-    // border: 1px solid #E8E8E8;
-    // padding: 25px;
   }
 }
 .attribute-panel {

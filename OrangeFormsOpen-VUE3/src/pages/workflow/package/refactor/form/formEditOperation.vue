@@ -50,7 +50,7 @@
             >
               <el-option label="不更新" :value="undefined" />
               <el-option
-                v-for="item in dialogParams.validStatusList"
+                v-for="item in dialogParams.validStatusList.value"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
@@ -173,7 +173,9 @@ import { Dialog } from '@/components/Dialog';
 import { DialogProp } from '@/components/Dialog/types';
 import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
+import { useLayoutStore } from '@/store';
 
+const layoutStore = useLayoutStore();
 interface IProps extends ThirdProps {
   rowData?: ANY_OBJECT;
   validStatusList?: Ref<ANY_OBJECT[]>;
@@ -184,9 +186,6 @@ const props = withDefaults(defineProps<IProps>(), {
   validStatusList: () => ref([]),
 });
 const { thirdParams, onCloseThirdDialog } = useThirdParty(props);
-
-import { useLayoutStore } from '@/store';
-const layoutStore = useLayoutStore();
 
 const form = ref();
 const formData = ref<ANY_OBJECT>({

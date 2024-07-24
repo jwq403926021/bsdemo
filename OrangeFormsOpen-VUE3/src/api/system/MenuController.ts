@@ -6,31 +6,31 @@ import { API_CONTEXT } from '../config';
 
 export default class SystemMenuController extends BaseController {
   static getMenuPermList(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<MenuItem[]>(API_CONTEXT + '/upms/sysMenu/list', params, httpOptions);
+    return super.post<MenuItem[]>(API_CONTEXT + '/upms/sysMenu/list', params, httpOptions);
   }
 
   static addMenu(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysMenu/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysMenu/add', params, httpOptions);
   }
 
   static updateMenu(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysMenu/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysMenu/update', params, httpOptions);
   }
 
   static deleteMenu(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysMenu/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysMenu/delete', params, httpOptions);
   }
 
   static viewMenu(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<MenuItem>(API_CONTEXT + '/upms/sysMenu/view', params, httpOptions);
+    return super.get<MenuItem>(API_CONTEXT + '/upms/sysMenu/view', params, httpOptions);
   }
 
   static listMenuPermCode(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT[]>(API_CONTEXT + '/upms/sysMenu/listMenuPerm', params, httpOptions);
+    return super.get<ANY_OBJECT[]>(API_CONTEXT + '/upms/sysMenu/listMenuPerm', params, httpOptions);
   }
 
   static listSysPermByMenuIdWithDetail(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT[]>(
+    return super.get<ANY_OBJECT[]>(
       API_CONTEXT + '/upms/sysMenu/listSysPermWithDetail',
       params,
       httpOptions,
@@ -38,7 +38,7 @@ export default class SystemMenuController extends BaseController {
   }
 
   static listSysUserByMenuIdWithDetail(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT[]>(
+    return super.get<ANY_OBJECT[]>(
       API_CONTEXT + '/upms/sysMenu/listSysUserWithDetail',
       params,
       httpOptions,

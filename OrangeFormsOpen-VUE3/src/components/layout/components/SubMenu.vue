@@ -23,7 +23,7 @@
         }}</span>
       </template>
       <template v-for="child in menu.children" :key="child.menuId">
-        <sub-menu class="nest-menu" :index="child.menuId" :menu="child" :isChild="true" />
+        <sub-menu class="nest-menu" :menu="child" :isChild="true" />
       </template>
     </el-sub-menu>
   </div>
@@ -63,10 +63,9 @@ const getTextStyle = (isShow: boolean) => {
 .nest-menu :deep(.el-menu-item span:first-child),
 .nest-menu :deep(.el-menu-item .menu-icon:first-child),
 .nest-menu :deep(.el-submenu__title span:first-child) {
-  padding-left: 14px !important;
+  padding-left: 8px !important;
 }
 .nest-menu :deep(.el-submenu__title .menu-icon:first-child) {
   margin-left: 8px !important;
 }
 </style>
-@/types/upms/menu

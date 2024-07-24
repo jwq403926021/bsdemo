@@ -400,7 +400,6 @@ onUnmounted(() => {
 }
 
 .copy-select :deep(.el-tag) {
-  //margin-right: 10px;
   margin-right: 8px;
 }
 

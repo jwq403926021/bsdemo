@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class FlowCategoryController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/flow/flowCategory/list',
       params,
       httpOptions,
@@ -14,18 +14,18 @@ export default class FlowCategoryController extends BaseController {
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowCategory/view', params, httpOptions);
+    return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowCategory/view', params, httpOptions);
   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowCategory/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowCategory/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowCategory/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowCategory/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowCategory/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowCategory/delete', params, httpOptions);
   }
 }

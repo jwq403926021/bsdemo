@@ -8,8 +8,8 @@
     :taskId="dialogParams.taskId"
     :taskName="dialogParams.taskName"
     :operationList="dialogParams.operationList"
-    :isRuntime="dialogParams.isRuntime"
-    :isDraft="dialogParams.isDraft"
+    :isRuntime="isRuntime"
+    :isDraft="isDraft"
     @close="handlerClose"
     @start="handlerStart"
     @submit="handlerOperation"
@@ -22,20 +22,24 @@
       style="width: 100%"
       :style="{ height: mainContextHeight - 188 + 'px' }"
       :formId="dialogParams.formId"
-      :readOnly="isReadOnly"
+      :readOnly="readOnly"
       :flowInfo="getFlowInfo"
     />
     <!-- 路由页面 -->
-    <router-view
-      ref="routerFlowForm"
-      style="width: 100%"
-      :isRuntimeTask="dialogParams.isRuntime"
-      :isDraft="dialogParams.isDraft"
-      :readOnly="dialogParams.readOnly"
-      :processInstanceId="dialogParams.processInstanceId"
-      :taskId="dialogParams.taskId"
-      :taskVariableList="dialogParams.variableList"
-    />
+    <router-view v-slot:="{ Component, route }">
+      <component
+        :is="Component"
+        ref="routerFlowForm"
+        :key="route.path"
+        style="width: 100%"
+        :isRuntimeTask="isRuntime"
+        :isDraft="isDraft"
+        :readOnly="readOnly"
+        :processInstanceId="dialogParams.processInstanceId"
+        :taskId="dialogParams.taskId"
+        :taskVariableList="variableList"
+      />
+    </router-view>
   </HandlerFlowTask>
 </template>
 
@@ -73,11 +77,28 @@ const { handlerFlowTaskRef, preHandlerOperation, submitConsign, handlerClose, di
 const isOnlineForm = computed(() => {
   return !!dialogParams.value.formId;
 });
-const isReadOnly = computed(() => {
-  return typeof dialogParams.value.readOnly === 'string'
-    ? dialogParams.value.readOnly === 'true'
-    : dialogParams.value.readOnly;
+
+const isDraft = computed(() => {
+  return typeof dialogParams.isDraft === 'string'
+    ? dialogParams.isDraft === 'true'
+    : dialogParams.isDraft;
 });
+const isPreview = computed(() => {
+  return typeof dialogParams.isPreview === 'string'
+    ? dialogParams.isPreview === 'true'
+    : dialogParams.isPreview;
+});
+const isRuntime = computed(() => {
+  return typeof dialogParams.isRuntime === 'string'
+    ? dialogParams.isRuntime === 'true'
+    : dialogParams.isRuntime;
+});
+const readOnly = computed(() => {
+  return typeof dialogParams.readOnly === 'string'
+    ? dialogParams.readOnly === 'true'
+    : dialogParams.readOnly;
+});
+
 const getFlowInfo = computed(() => {
   return {
     processInstanceId: dialogParams.value.processInstanceId,
@@ -85,9 +106,14 @@ const getFlowInfo = computed(() => {
     processDefinitionKey: dialogParams.value.processDefinitionKey,
     processInstanceInitiator: dialogParams.value.processInstanceInitiator,
     messageId: dialogParams.value.messageId,
-    isRuntime: dialogParams.value.isRuntime,
-    isDraft: dialogParams.value.isDraft,
+    isRuntime: isRuntime.value,
+    isDraft: isDraft.value,
   };
+});
+const variableList = computed(() => {
+  let temp = dialogParams.value.variableList;
+  const variableList = Array.isArray(temp) ? temp : JSON.parse(temp || '[]');
+  return variableList;
 });
 
 const messageStore = useMessage();
@@ -107,20 +133,21 @@ const getRouterCompomentFunction = (functionName: string) => {
  */
 const getMasterData = (
   operationType: string,
-  assignee: string | undefined,
+  assignee: string | Array<string> | undefined,
 ): Promise<ANY_OBJECT> => {
   return new Promise((resolve, reject) => {
     // TODO workflowFormRef.value.getFormData无须判断
     if (isOnlineForm.value && workflowFormRef.value.getFormData) {
       workflowFormRef.value
-        .getFormData(false, dialogParams.value.variableList)
+        .getFormData(false, variableList)
         .then((formData: ANY_OBJECT | null) => {
           console.log('handleerFlowTask.getMasterData 表单数据', formData);
           if (formData == null) {
             reject();
             return;
           }
-          const assigneeArr = assignee && assignee !== '' ? assignee.split(',') : undefined;
+          const assigneeArr =
+            assignee && assignee !== '' ? (assignee as string).split(',') : undefined;
           if (operationType === SysFlowTaskOperationType.MULTI_SIGN) {
             // 会签操作设置多实例处理人集合
             if (formData.taskVariableData == null) formData.taskVariableData = {};
@@ -140,7 +167,7 @@ const getMasterData = (
     } else {
       // 获得静态表单页面的getMasterData函数
       let funGetMasterData = getRouterCompomentFunction('getMasterData');
-      return funGetMasterData ? funGetMasterData(dialogParams.value.variableList) : reject();
+      return funGetMasterData ? funGetMasterData(variableList) : reject();
     }
   });
 };
@@ -271,10 +298,10 @@ const preHandlerOperationThen = (
 const handlerOperation = (
   operation: ANY_OBJECT,
   copyItemList: ANY_OBJECT[],
-  xml: string | undefined,
+  xml?: string | undefined,
 ) => {
   if (isOnlineForm.value) {
-    preHandlerOperation(operation, isStart.value || dialogParams.value.isDraft, xml, copyItemList)
+    preHandlerOperation(operation, isStart.value || isDraft.value, xml, copyItemList)
       .then(res => {
         preHandlerOperationThen(operation, copyItemList, res);
       })
@@ -302,7 +329,7 @@ const handlerOperation = (
 const handlerStart = (
   operation: ANY_OBJECT,
   copyItemList: ANY_OBJECT[],
-  xml: string | undefined,
+  xml?: string | undefined,
 ) => {
   // 启动并保存草稿后再次提交
   if (draftProcessInstanceId.value != null && draftTaskId.value != null) {
@@ -345,7 +372,7 @@ const handlerStart = (
             },
             {
               // 判断是否是从流程设计里启动
-              processDefinitionKey: dialogParams.value.isPreview
+              processDefinitionKey: isPreview.value
                 ? undefined
                 : dialogParams.value.processDefinitionKey,
             },
@@ -441,8 +468,8 @@ const initFormData = () => {
       taskId: dialogParams.value.taskId,
     };
     // 判断是展示历史流程的数据还是待办流程的数据
-    let httpCall = null;
-    if (dialogParams.value.isDraft) {
+    let httpCall: ANY_OBJECT | null = null;
+    if (isDraft.value) {
       // 草稿数据
       httpCall = FlowOperationController.viewOnlineDraftData({
         processDefinitionKey: dialogParams.value.processDefinitionKey,
@@ -455,7 +482,7 @@ const initFormData = () => {
       });
     } else {
       httpCall =
-        dialogParams.value.taskId != null && dialogParams.value.isRuntime
+        dialogParams.value.taskId != null && isRuntime.value
           ? FlowOperationController.viewUserTask(params)
           : FlowOperationController.viewHistoricProcessInstance(params);
     }
@@ -465,7 +492,7 @@ const initFormData = () => {
         // 一对多数据
         oneToManyRelationData.value = (res.data || {}).oneToMany;
         // 草稿一对多数据，添加唯一主键
-        if (dialogParams.value.isDraft || dialogParams.value.isDraft === 'true') {
+        if (isDraft.value) {
           if (oneToManyRelationData.value != null) {
             let tempTime = new Date().getTime();
             Object.keys(oneToManyRelationData.value).forEach(key => {

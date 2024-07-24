@@ -8,7 +8,7 @@ import { API_CONTEXT } from '../config';
 export default class LoginUserController extends BaseController {
   // 在线用户查询
   static listSysLoginUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<OnlineUser>>(
+    return super.post<TableData<OnlineUser>>(
       API_CONTEXT + '/upms/loginUser/list',
       params,
       httpOptions,
@@ -16,6 +16,6 @@ export default class LoginUserController extends BaseController {
   }
   // 强退
   static deleteSysLoginUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/loginUser/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/loginUser/delete', params, httpOptions);
   }
 }

@@ -7,7 +7,7 @@ import { API_CONTEXT } from '../config';
 
 export default class OnlineColumnController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ColumnInfo>>(
+    return super.post<TableData<ColumnInfo>>(
       API_CONTEXT + '/online/onlineColumn/list',
       params,
       httpOptions,
@@ -15,7 +15,7 @@ export default class OnlineColumnController extends BaseController {
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ColumnInfo>(API_CONTEXT + '/online/onlineColumn/view', params, httpOptions);
+    return super.get<ColumnInfo>(API_CONTEXT + '/online/onlineColumn/view', params, httpOptions);
   }
 
   //   static export(sender, params, fileName) {
@@ -23,23 +23,23 @@ export default class OnlineColumnController extends BaseController {
   //   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineColumn/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineColumn/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineColumn/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineColumn/update', params, httpOptions);
   }
 
   static refreshColumn(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineColumn/refresh', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineColumn/refresh', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineColumn/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineColumn/delete', params, httpOptions);
   }
 
   static listOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlineColumn/listOnlineColumnRule',
       params,
       httpOptions,
@@ -47,7 +47,7 @@ export default class OnlineColumnController extends BaseController {
   }
 
   static listNotInOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlineColumn/listNotInOnlineColumnRule',
       params,
       httpOptions,
@@ -55,11 +55,15 @@ export default class OnlineColumnController extends BaseController {
   }
 
   static addOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineColumn/addOnlineColumnRule', params, httpOptions);
+    return super.post(
+      API_CONTEXT + '/online/onlineColumn/addOnlineColumnRule',
+      params,
+      httpOptions,
+    );
   }
 
   static deleteOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlineColumn/deleteOnlineColumnRule',
       params,
       httpOptions,
@@ -67,7 +71,7 @@ export default class OnlineColumnController extends BaseController {
   }
 
   static updateOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlineColumn/updateOnlineColumnRule',
       params,
       httpOptions,
@@ -75,7 +79,7 @@ export default class OnlineColumnController extends BaseController {
   }
 
   static viewOnlineColumnRule(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<ANY_OBJECT>(
+    return super.post<ANY_OBJECT>(
       API_CONTEXT + '/online/onlineColumn/viewOnlineColumnRule',
       params,
       httpOptions,

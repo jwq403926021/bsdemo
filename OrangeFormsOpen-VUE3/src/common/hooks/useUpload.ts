@@ -12,7 +12,10 @@ export const useUpload = () => {
    * @param {Object} params 上传文件的参数
    * @returns {Array} 上传文件信息，[{name, downloadUri, filename, url}]
    */
-  const parseUploadData = (jsonData: string, params: ANY_OBJECT) => {
+  const parseUploadData = (
+    jsonData: string | null | undefined,
+    params: ANY_OBJECT,
+  ): ANY_OBJECT[] => {
     let pathList: Array<ANY_OBJECT> = [];
     if (jsonData != null) {
       try {

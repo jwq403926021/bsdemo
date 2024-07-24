@@ -71,7 +71,6 @@ const refreshData = (data: ANY_OBJECT) => {
   }
 };
 const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
-  console.log('handlerEditOperate', items);
   selectedItems.value = [];
   if (pps.multiple) {
     if (Array.isArray(items)) selectedItems.value = items;
@@ -79,7 +78,6 @@ const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
     if (items != null) selectedItems.value.push(items);
   }
   if (!checkSelectChange()) return;
-  console.log('1111', selectedItems.value);
   emitChange();
 };
 const onVisibleChange = (visible: boolean) => {

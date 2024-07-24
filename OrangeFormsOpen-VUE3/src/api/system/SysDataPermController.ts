@@ -10,28 +10,28 @@ export default class SysDataPermController extends BaseController {
    * @param params    {dataPermId, dataPermName, deptIdListString}
    */
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDataPerm/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDataPerm/add', params, httpOptions);
   }
 
   /**
    * @param params    {dataPermId, dataPermName, deptIdListString}
    */
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDataPerm/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDataPerm/update', params, httpOptions);
   }
 
   /**
    * @param params    {dataPermId}
    */
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDataPerm/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDataPerm/delete', params, httpOptions);
   }
 
   /**
    * @param params    {dataPermName}
    */
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<PermData>>(
+    return super.post<TableData<PermData>>(
       API_CONTEXT + '/upms/sysDataPerm/list',
       params,
       httpOptions,
@@ -42,14 +42,14 @@ export default class SysDataPermController extends BaseController {
    * @param params    {dataPermId}
    */
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<PermData>(API_CONTEXT + '/upms/sysDataPerm/view', params, httpOptions);
+    return super.get<PermData>(API_CONTEXT + '/upms/sysDataPerm/view', params, httpOptions);
   }
 
   /**
    * @param params    {dataPermId, searchString}
    */
   static listDataPermUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<User>>(
+    return super.post<TableData<User>>(
       API_CONTEXT + '/upms/sysDataPerm/listDataPermUser',
       params,
       httpOptions,
@@ -60,18 +60,18 @@ export default class SysDataPermController extends BaseController {
    * @param params    {dataPermId, userIdListString}
    */
   static addDataPermUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDataPerm/addDataPermUser', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDataPerm/addDataPermUser', params, httpOptions);
   }
 
   /**
    * @param params    {dataPermId, userId}
    */
   static deleteDataPermUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDataPerm/deleteDataPermUser', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDataPerm/deleteDataPermUser', params, httpOptions);
   }
 
   static listNotInDataPermUser(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<User>>(
+    return super.post<TableData<User>>(
       API_CONTEXT + '/upms/sysDataPerm/listNotInDataPermUser',
       params,
       httpOptions,

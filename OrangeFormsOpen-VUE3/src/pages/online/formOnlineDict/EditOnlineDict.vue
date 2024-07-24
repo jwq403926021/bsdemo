@@ -377,7 +377,7 @@
               header-cell-class-name="table-header-gray"
               height="300px"
             >
-              <vxe-column title="选择" header-align="center" align="center" width="50px">
+              <vxe-column title="选择" header-align="center" align="center" width="60px">
                 <template v-slot="scope">
                   <el-radio :value="scope.row.dictCode"> </el-radio>
                 </template>

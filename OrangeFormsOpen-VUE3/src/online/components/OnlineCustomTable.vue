@@ -270,7 +270,6 @@ const buildFlowParam = computed(() => {
   return flowParam;
 });
 const tableColumnList = computed(() => {
-  console.log('>>> ===', props.widget.props.tableColumnList);
   let tempList =
     props.widget && props.widget.props && Array.isArray(props.widget.props.tableColumnList)
       ? props.widget.props.tableColumnList

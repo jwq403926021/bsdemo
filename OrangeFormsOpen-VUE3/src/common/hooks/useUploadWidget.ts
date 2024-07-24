@@ -1,7 +1,8 @@
 import { UploadFile } from 'element-plus';
+import { ANY_OBJECT } from '@/types/generic';
 
 export const useUploadWidget = (maxFileCount = 1) => {
-  const fileList = ref<UploadFile[]>([]);
+  const fileList = ref<Array<UploadFile | ANY_OBJECT>>([]);
   const maxCount = ref(maxFileCount);
 
   /**
@@ -9,7 +10,10 @@ export const useUploadWidget = (maxFileCount = 1) => {
    * @param {Object} uploadFile 改变的文件
    * @param {Array} uploadFiles 改变后的文件列表
    */
-  const onFileChange = (uploadFile: UploadFile | null, uploadFiles: UploadFile[] | null) => {
+  const onFileChange = (
+    uploadFile: UploadFile | ANY_OBJECT | null,
+    uploadFiles: Array<UploadFile | ANY_OBJECT> | null,
+  ) => {
     if (uploadFiles && uploadFiles.length > 0) {
       if (maxFileCount == 1) {
         fileList.value = [uploadFiles[uploadFiles.length - 1]];

@@ -6,22 +6,22 @@ import { API_CONTEXT } from '../config';
 
 export default class SysPostController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<Post>>(API_CONTEXT + '/upms/sysPost/list', params, httpOptions);
+    return super.post<TableData<Post>>(API_CONTEXT + '/upms/sysPost/list', params, httpOptions);
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<Post>(API_CONTEXT + '/upms/sysPost/view', params, httpOptions);
+    return super.get<Post>(API_CONTEXT + '/upms/sysPost/view', params, httpOptions);
   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysPost/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysPost/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysPost/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysPost/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysPost/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysPost/delete', params, httpOptions);
   }
 }

@@ -6,31 +6,31 @@ import { API_CONTEXT } from '../config';
 
 export default class SysDeptController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<SysDept>>(API_CONTEXT + '/upms/sysDept/list', params, httpOptions);
+    return super.post<TableData<SysDept>>(API_CONTEXT + '/upms/sysDept/list', params, httpOptions);
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<SysDept>(API_CONTEXT + '/upms/sysDept/view', params, httpOptions);
+    return super.get<SysDept>(API_CONTEXT + '/upms/sysDept/view', params, httpOptions);
   }
 
   static export(params: ANY_OBJECT, fileName: string) {
-    return this.download(API_CONTEXT + '/upms/sysDept/export', params, fileName);
+    return super.download(API_CONTEXT + '/upms/sysDept/export', params, fileName);
   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/delete', params, httpOptions);
   }
 
   static listNotInSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<SysDeptPost>>(
+    return super.post<TableData<SysDeptPost>>(
       API_CONTEXT + '/upms/sysDept/listNotInSysDeptPost',
       params,
       httpOptions,
@@ -38,7 +38,7 @@ export default class SysDeptController extends BaseController {
   }
 
   static listSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<SysDeptPost>>(
+    return super.post<TableData<SysDeptPost>>(
       API_CONTEXT + '/upms/sysDept/listSysDeptPost',
       params,
       httpOptions,
@@ -46,18 +46,18 @@ export default class SysDeptController extends BaseController {
   }
 
   static addSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/addSysDeptPost', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/addSysDeptPost', params, httpOptions);
   }
 
   static updateSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/updateSysDeptPost', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/updateSysDeptPost', params, httpOptions);
   }
 
   static deleteSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/upms/sysDept/deleteSysDeptPost', params, httpOptions);
+    return super.post(API_CONTEXT + '/upms/sysDept/deleteSysDeptPost', params, httpOptions);
   }
 
   static viewSysDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get(API_CONTEXT + '/upms/sysDept/viewSysDeptPost', params, httpOptions);
+    return super.get(API_CONTEXT + '/upms/sysDept/viewSysDeptPost', params, httpOptions);
   }
 }

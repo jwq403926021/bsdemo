@@ -7,7 +7,7 @@ import { API_CONTEXT } from '../config';
 
 export default class OnlinePageController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<FormPage>>(
+    return super.post<TableData<FormPage>>(
       API_CONTEXT + '/online/onlinePage/list',
       params,
       httpOptions,
@@ -15,7 +15,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static listAllPageAndForm(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<ANY_OBJECT>(
+    return super.post<ANY_OBJECT>(
       API_CONTEXT + '/online/onlinePage/listAllPageAndForm',
       params,
       httpOptions,
@@ -23,7 +23,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<FormPage>(API_CONTEXT + '/online/onlinePage/view', params, httpOptions);
+    return super.get<FormPage>(API_CONTEXT + '/online/onlinePage/view', params, httpOptions);
   }
 
   //   static export(sender, params, fileName) {
@@ -31,27 +31,27 @@ export default class OnlinePageController extends BaseController {
   //   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<string>(API_CONTEXT + '/online/onlinePage/add', params, httpOptions);
+    return super.post<string>(API_CONTEXT + '/online/onlinePage/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<string>(API_CONTEXT + '/online/onlinePage/update', params, httpOptions);
+    return super.post<string>(API_CONTEXT + '/online/onlinePage/update', params, httpOptions);
   }
 
   static updatePublished(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlinePage/updatePublished', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlinePage/updatePublished', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlinePage/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlinePage/delete', params, httpOptions);
   }
 
   static updateStatus(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlinePage/updateStatus', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlinePage/updateStatus', params, httpOptions);
   }
 
   static listOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlinePage/listOnlinePageDatasource',
       params,
       httpOptions,
@@ -59,7 +59,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static listNotInOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlinePage/listNotInOnlinePageDatasource',
       params,
       httpOptions,
@@ -67,7 +67,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static addOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlinePage/addOnlinePageDatasource',
       params,
       httpOptions,
@@ -75,7 +75,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static deleteOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlinePage/deleteOnlinePageDatasource',
       params,
       httpOptions,
@@ -83,7 +83,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static updateOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlinePage/updateOnlinePageDatasource',
       params,
       httpOptions,
@@ -91,7 +91,7 @@ export default class OnlinePageController extends BaseController {
   }
 
   static viewOnlinePageDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get(
+    return super.get(
       API_CONTEXT + '/online/onlinePage/viewOnlinePageDatasource',
       params,
       httpOptions,

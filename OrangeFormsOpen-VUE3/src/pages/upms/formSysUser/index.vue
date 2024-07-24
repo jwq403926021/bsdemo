@@ -173,7 +173,7 @@ const layoutStore = useLayoutStore();
 const Dialog = useDialog();
 const mainContextHeight = inject('mainContextHeight', 200);
 const form = ref();
-const deptIdPath = ref([]);
+const deptIdPath = ref<Array<string | number>>([]);
 
 const deptOptions = { value: 'id', label: 'name', checkStrictly: true };
 

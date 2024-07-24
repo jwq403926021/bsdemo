@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class FlowEntryVariableController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/flow/flowEntryVariable/list',
       params,
       httpOptions,
@@ -14,18 +14,18 @@ export default class FlowEntryVariableController extends BaseController {
   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntryVariable/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntryVariable/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntryVariable/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntryVariable/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntryVariable/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntryVariable/delete', params, httpOptions);
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntryVariable/view', params, httpOptions);
+    return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntryVariable/view', params, httpOptions);
   }
 }

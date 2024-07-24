@@ -5,7 +5,6 @@ $color-white: #fff;
 $color-primary-light-9: color-mix(in srgb, $color-white 90%, $color-primary 10%) !default;
 $color-text-secondary: #909399 !default;
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
-  // do not use same name, it will override.
   $colors: (
     'primary': (
       'base': $color-primary,
@@ -74,11 +73,9 @@ $radio-font-size: map.merge(
 );
 @use '@/assets/style/base.scss';
 
-// 覆盖原样式，否则它会遮盖弹出对话框
 :deep(.vxe-table--empty-placeholder) {
   z-index: 0;
 }
-// messagebox会被layer遮盖，因为下面这个样式对应的元素没有设置z-index，尽管其父元素设置了
 .el-overlay-message-box {
   z-index: 2000;
 }

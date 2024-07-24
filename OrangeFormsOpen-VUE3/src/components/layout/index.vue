@@ -28,7 +28,7 @@
               >
                 <i class="online-icon icon-message" style="font-size: 16px; color: #333" />
               </el-badge>
-              <template v-slot:dropdown>
+              <template #dropdown>
                 <el-dropdown-menu style="min-width: 130px">
                   <el-dropdown-item class="user-dropdown-item" command="remindingMessage">
                     催办消息
@@ -57,7 +57,7 @@
                 >{{ (userInfo || {}).showName
                 }}<el-icon class="el-icon--right"><el-icon-arrow-down /></el-icon>
               </span>
-              <template v-slot:dropdown>
+              <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item class="user-dropdown-item" command="modifyPassword"
                     >修改密码</el-dropdown-item
@@ -354,9 +354,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
-//@import url('@/assets/style/element-variables.scss');
-//$--color-primary: #f70;
-
 .header {
   z-index: 1;
   .header-main {

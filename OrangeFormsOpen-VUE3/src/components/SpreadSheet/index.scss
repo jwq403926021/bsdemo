@@ -1,5 +1,5 @@
 $css-prefix: x-spreadsheet;
-// color
+
 $red-color: #DB2828;
 $red-hover-color: #d01919;
 $orange-color: #F2711C;
@@ -29,7 +29,6 @@ $dark-hover-color: color-mix($dark-color, 10%);
 $black-color: #1B1C1D;
 $black-hover-color: #27292a;
 
-// base
 $border-style: 1px solid #e0e2e4;
 $icon-size: 18px;
 $line-height: 1.25em;
@@ -42,9 +41,6 @@ $border-radius: 2px;
 $form-field-height: 30px;
 $primary-color: $blue-color;
 $primary-hover-color: $blue-hover-color;
-
-// method
-
 
 .x-spreadsheet {
   font-size: 13px;
@@ -69,13 +65,11 @@ $primary-hover-color: $blue-hover-color;
 }
 
 .x-spreadsheet-table {
-  // html5 bottom margin bug
   vertical-align: bottom;
 }
 
 .x-spreadsheet-tooltip {
   position: absolute;
-  // 这个组件在全屏dialog中用，全局中有z值会比这个默认值高
   z-index: 9999;
   padding: 5px 10px;
   font-size: 12px;
@@ -295,7 +289,6 @@ $primary-hover-color: $blue-hover-color;
     }
   }
   &:hover {
-    // opacity: .85;
   }
 }
 
@@ -351,7 +344,7 @@ $primary-hover-color: $blue-hover-color;
     border: 2px dashed rgb(75 137 255);
   }
   .x-spreadsheet-selector-autofill {
-    border: 1px dashed rgb(0 0 0 / 45%); // #606060; // rgba(0, 0, 0, .2);
+    border: 1px dashed rgb(0 0 0 / 45%);
   }
   .x-spreadsheet-selector-corner {
     position: absolute;
@@ -425,10 +418,6 @@ $primary-hover-color: $blue-hover-color;
     background: rgb(0 0 0 / 5%);
   }
 
-  // &.active {
-    ////   background: #89aef53d;
-  // }
-
   &.divider {
     height: 0;
     padding: 0;
@@ -459,29 +448,12 @@ $primary-hover-color: $blue-hover-color;
       width: 10px;
       height: 10px;
       background: rgb(0 0 0 / 8%);
-      // border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 2px;
       content: '';
     }
   }
   &.state.checked::before {
     background: #4b89ff;
-    // content: '';
-    // position: absolute;
-    // width: 5px;
-    // height: 12px;
-    // color: #4b89ff; // #353A41;
-    // border-left: none;
-    // border-top: none;
-    // border-bottom: 2px solid;
-    // border-right: 2px solid;
-    // left: 15px;
-    // top: 6px;
-    // background: none;
-    // border-radius: 0;
-    // transform-origin: center;
-    // transform: rotate(45deg);
-    // -webkit-transform: rotate(45deg);
   }
 
 }
@@ -765,8 +737,6 @@ $primary-hover-color: $blue-hover-color;
     }
 
     td > .cell {
-      // border: 1px solid rgba(0,0,0,.05);
-
       &:hover {
         background: #ecf6fd;
       }
@@ -813,8 +783,6 @@ $primary-hover-color: $blue-hover-color;
   color: rgb(0 0 0 / 60%);
   background: #E0E1E2;
   border-radius: 3px;
-  //box-shadow: 0px 1px 2px -1px rgba(255,255,255,0.5) inset, 0px -2px 0px 0px rgba(0,0,0,0.1) inset;
-  //box-shadow: 0 0 0 0 rgba(0,0,0,.5) inset;
   outline: none;
   transition: all 0.1s linear;
   line-height: 1em;
@@ -839,7 +807,6 @@ $primary-hover-color: $blue-hover-color;
   }
 }
 
-// form begin
 .x-spreadsheet-form-input {
   position: relative;
   display: inline-flex;
@@ -896,7 +863,6 @@ $primary-hover-color: $blue-hover-color;
   display: flex;
   flex-flow: wrap;
   flex-direction: row;
-  //flex-wrap: wrap;
 
   .x-spreadsheet-form-field {
     flex: 0 1 auto;
@@ -927,7 +893,6 @@ $primary-hover-color: $blue-hover-color;
     color: #f04134;
   }
 }
-// form end
 .x-spreadsheet-dimmer {
   position: absolute;
   top: 0 !important;

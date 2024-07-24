@@ -255,10 +255,10 @@ import { ANY_OBJECT } from '@/types/generic';
 import FormEditGlobalDict from '@/pages/upms/formEditGlobalDict/index.vue';
 import FormEditDictData from '@/pages/upms/formEditDictData/index.vue';
 import { treeDataTranslate } from '@/common/utils';
+import { useLayoutStore } from '@/store';
 import { useDialog } from '@/components/Dialog/useDialog';
 
 const Dialog = useDialog();
-import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 const mainContextHeight = inject('mainContextHeight', 200);
 const { checkPermCodeExist } = usePermissions();

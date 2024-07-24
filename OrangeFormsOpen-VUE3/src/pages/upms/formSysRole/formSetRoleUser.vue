@@ -128,7 +128,6 @@ const layoutStore = useLayoutStore();
 
 const props = defineProps<{
   roleId: string | number;
-  defaultFormItemSize: Ref<'' | 'default' | 'small' | 'large'>;
 }>();
 
 const formItemSize = computed(() => {

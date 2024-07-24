@@ -73,7 +73,9 @@ export class Dialog {
       let layerOptions: ANY_OBJECT = {
         title: title,
         type: 1,
-        skin: 'layui-layer-page',
+        skin:
+          'layui-layer-page ' +
+          (window.innerWidth <= 1900 ? 'container-default' : 'container-large'),
         resize: false,
         offset: 'auto',
         shadeClose: false,

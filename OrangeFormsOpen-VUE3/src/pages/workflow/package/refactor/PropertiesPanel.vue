@@ -146,6 +146,7 @@ import FormVariable from './form-variable/index.vue';
 import CopyForSelect from './copy-for/index.vue';
 import UserTaskListeners from './listeners/UserTaskListeners.vue';
 import AutoAgree from './autoAgree/index.vue';
+import RightAddBtn from '@/components/Btns/RightAddBtn.vue';
 
 const props = withDefaults(
   defineProps<{

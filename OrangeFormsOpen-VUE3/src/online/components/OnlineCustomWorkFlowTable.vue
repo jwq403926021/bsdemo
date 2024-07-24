@@ -472,25 +472,9 @@ watch(
   },
 );
 
-// watch(
-//   () => props.widget,
-//   newVal => {
-//     if (newVal) {
-//       newVal.widgetImpl = getCurrentInstance();
-//     }
-//   },
-//   {
-//     deep: true,
-//     immediate: true,
-//   },
-// );
-
 watch(
   () => props.widget,
   () => {
-    // if (newVal) {
-    //   newVal.widgetImpl = getCurrentInstance();
-    // }
     refreshColumn();
   },
   {

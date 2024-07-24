@@ -10,7 +10,8 @@ export default class FlowDictionaryController extends BaseController {
     httpOptions?: RequestOption,
   ): Promise<DictionaryBase> {
     return new Promise((resolve, reject) => {
-      this.get<DictData[]>(API_CONTEXT + '/flow/flowCategory/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/flow/flowCategory/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('', res.data);
           resolve(dictData);

@@ -133,11 +133,19 @@ const formData = reactive({
 onMounted(() => {
   const log = { ...props.rowData };
   if (props.rowData.requestArguments) {
-    log.requestArguments = JSON.parse(props.rowData.requestArguments.toString()) || {};
+    try {
+      log.requestArguments = JSON.parse(props.rowData.requestArguments.toString()) || {};
+    } catch (e) {
+      log.requestArguments = props.rowData.requestArguments;
+    }
   }
   log.requestArguments = log.requestArguments || {};
   if (props.rowData.responseResult) {
-    log.responseResult = JSON.parse(props.rowData.responseResult.toString()) || {};
+    try {
+      log.responseResult = JSON.parse(props.rowData.responseResult.toString()) || {};
+    } catch (e) {
+      log.responseResult = props.rowData.responseResult;
+    }
   }
   log.responseResult = log.responseResult || {};
   formData.formViewSysOperationLog = log;

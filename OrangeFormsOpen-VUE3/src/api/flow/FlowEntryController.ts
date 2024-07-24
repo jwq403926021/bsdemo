@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class FlowEntryController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/flow/flowEntry/list',
       params,
       httpOptions,
@@ -14,27 +14,27 @@ export default class FlowEntryController extends BaseController {
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/view', params, httpOptions);
+    return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/view', params, httpOptions);
   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/delete', params, httpOptions);
   }
 
   static publish(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/publish', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/publish', params, httpOptions);
   }
 
   static listFlowEntryPublish(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<TableData<ANY_OBJECT>>(
+    return super.get<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/flow/flowEntry/listFlowEntryPublish',
       params,
       httpOptions,
@@ -42,23 +42,27 @@ export default class FlowEntryController extends BaseController {
   }
 
   static updateMainVersion(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/updateMainVersion', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/updateMainVersion', params, httpOptions);
   }
 
   static suspendFlowEntryPublish(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/suspendFlowEntryPublish', params, httpOptions);
+    return super.post(API_CONTEXT + '/flow/flowEntry/suspendFlowEntryPublish', params, httpOptions);
   }
 
   static activateFlowEntryPublish(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/flow/flowEntry/activateFlowEntryPublish', params, httpOptions);
+    return super.post(
+      API_CONTEXT + '/flow/flowEntry/activateFlowEntryPublish',
+      params,
+      httpOptions,
+    );
   }
 
   static viewDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/viewDict', params, httpOptions);
+    return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/viewDict', params, httpOptions);
   }
 
   static listDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<TableData<ANY_OBJECT>>(
+    return super.get<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/flow/flowEntry/listDict',
       params,
       httpOptions,
@@ -66,6 +70,6 @@ export default class FlowEntryController extends BaseController {
   }
 
   static listAll(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>('/admin/flow/flowEntry/listAll', params, httpOptions);
+    return super.get<ANY_OBJECT>('/admin/flow/flowEntry/listAll', params, httpOptions);
   }
 }

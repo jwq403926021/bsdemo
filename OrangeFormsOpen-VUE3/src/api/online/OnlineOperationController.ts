@@ -6,7 +6,7 @@ import { API_CONTEXT } from '../config';
 
 export default class OnlineOperationController extends BaseController {
   static listDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<ANY_OBJECT[]>(
+    return super.post<ANY_OBJECT[]>(
       API_CONTEXT + '/online/onlineOperation/listDict',
       params,
       httpOptions,
@@ -14,7 +14,7 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static listByDatasourceId(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlineOperation/listByDatasourceId',
       params,
       httpOptions,
@@ -22,7 +22,7 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static listByOneToManyRelationId(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<ANY_OBJECT>>(
+    return super.post<TableData<ANY_OBJECT>>(
       API_CONTEXT + '/online/onlineOperation/listByOneToManyRelationId',
       params,
       httpOptions,
@@ -30,11 +30,11 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static addDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineOperation/addDatasource', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineOperation/addDatasource', params, httpOptions);
   }
 
   static addOneToManyRelation(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlineOperation/addOneToManyRelation',
       params,
       httpOptions,
@@ -42,11 +42,15 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static updateDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineOperation/updateDatasource', params, httpOptions);
+    return super.post(
+      API_CONTEXT + '/online/onlineOperation/updateDatasource',
+      params,
+      httpOptions,
+    );
   }
 
   static updateOneToManyRelation(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlineOperation/updateOneToManyRelation',
       params,
       httpOptions,
@@ -54,7 +58,7 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static viewByDatasourceId(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(
+    return super.get<ANY_OBJECT>(
       API_CONTEXT + '/online/onlineOperation/viewByDatasourceId',
       params,
       httpOptions,
@@ -62,7 +66,7 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static viewByOneToManyRelationId(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<ANY_OBJECT>(
+    return super.get<ANY_OBJECT>(
       API_CONTEXT + '/online/onlineOperation/viewByOneToManyRelationId',
       params,
       httpOptions,
@@ -70,11 +74,15 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static deleteDatasource(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineOperation/deleteDatasource', params, httpOptions);
+    return super.post(
+      API_CONTEXT + '/online/onlineOperation/deleteDatasource',
+      params,
+      httpOptions,
+    );
   }
 
   static deleteOneToManyRelation(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(
+    return super.post(
       API_CONTEXT + '/online/onlineOperation/deleteOneToManyRelation',
       params,
       httpOptions,
@@ -82,10 +90,14 @@ export default class OnlineOperationController extends BaseController {
   }
 
   static getColumnRuleCode(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get(API_CONTEXT + '/online/onlineOperation/getColumnRuleCode', params, httpOptions);
+    return super.get(
+      API_CONTEXT + '/online/onlineOperation/getColumnRuleCode',
+      params,
+      httpOptions,
+    );
   }
 
   static getPrintTemplate(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<ANY_OBJECT>(API_CONTEXT + '/report/reportPrint/listAll', params, httpOptions);
+    return super.post<ANY_OBJECT>(API_CONTEXT + '/report/reportPrint/listAll', params, httpOptions);
   }
 }

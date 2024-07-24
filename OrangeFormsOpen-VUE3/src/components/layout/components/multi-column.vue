@@ -140,4 +140,3 @@ watch(
   }
 }
 </style>
-@/types/upms/menu

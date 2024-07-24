@@ -442,7 +442,6 @@ $current-color: #409eff;
 .process-viewer .djs-palette {
   display: none;
 }
-// 边框被 token-simulation 样式覆盖了
 .djs-palette {
   background: var(--palette-background-color);
   border: solid 1px var(--palette-border-color) !important;
@@ -544,8 +543,6 @@ $current-color: #409eff;
     }
   }
 }
-
-//侧边栏配置
 .djs-palette.open {
   .djs-palette-entries {
     div[class^='bpmn-icon-']:before,
@@ -596,10 +593,7 @@ pre {
 .hljs * {
   font-family: Consolas, Monaco, monospace;
 }
-
-// 流程图
 .djs-container {
-  // 框
   .djs-visual {
     rect,
     polygon,
@@ -616,17 +610,13 @@ pre {
       stroke: #333333 !important;
     }
   }
-  // 线
   .djs-visual path {
     stroke: #333333 !important;
   }
-
-  // 实心箭头
   [id^='sequenceflow-end-white-black'] path {
     fill: #333333 !important;
     stroke: #333333 !important;
   }
-  // 空心箭头
   [id^='conditional-flow-marker-white-black'] path {
     stroke: #333333 !important;
   }

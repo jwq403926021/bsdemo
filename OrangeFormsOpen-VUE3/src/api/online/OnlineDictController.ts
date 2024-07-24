@@ -7,11 +7,15 @@ import { API_CONTEXT } from '../config';
 
 export default class OnlineDictController extends BaseController {
   static list(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<Dict>>(API_CONTEXT + '/online/onlineDict/list', params, httpOptions);
+    return super.post<TableData<Dict>>(
+      API_CONTEXT + '/online/onlineDict/list',
+      params,
+      httpOptions,
+    );
   }
 
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.get<Dict>(API_CONTEXT + '/online/onlineDict/view', params, httpOptions);
+    return super.get<Dict>(API_CONTEXT + '/online/onlineDict/view', params, httpOptions);
   }
 
   //   static export(sender, params, fileName) {
@@ -19,19 +23,19 @@ export default class OnlineDictController extends BaseController {
   //   }
 
   static add(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineDict/add', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineDict/add', params, httpOptions);
   }
 
   static update(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineDict/update', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineDict/update', params, httpOptions);
   }
 
   static delete(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post(API_CONTEXT + '/online/onlineDict/delete', params, httpOptions);
+    return super.post(API_CONTEXT + '/online/onlineDict/delete', params, httpOptions);
   }
 
   static listAllGlobalDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return this.post<TableData<Dict>>(
+    return super.post<TableData<Dict>>(
       API_CONTEXT + '/online/onlineDict/listAllGlobalDict',
       params,
       httpOptions,

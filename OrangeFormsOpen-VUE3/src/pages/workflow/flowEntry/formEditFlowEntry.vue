@@ -83,7 +83,7 @@
             <el-col
               v-if="activeStep === SysFlowEntryStep.BASIC"
               class="main-box"
-              style="width: 600px"
+              style="min-width: 650px"
               :span="9"
             >
               <el-form

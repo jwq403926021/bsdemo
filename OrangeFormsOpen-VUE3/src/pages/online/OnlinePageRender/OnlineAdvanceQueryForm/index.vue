@@ -795,8 +795,6 @@ defineExpose({ resetWidget });
 onMounted(() => {
   isReady.value = false;
   if (!dialogParams.value.isEdit) {
-    initPage();
-    initFormWidgetList();
     initFormData();
     initWidgetLinkage();
   }

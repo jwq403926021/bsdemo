@@ -428,8 +428,6 @@ const onSearch = () => {
 onMounted(() => {
   isReady.value = false;
   if (!props.isEdit) {
-    initPage();
-    initFormWidgetList();
     if (props.entryId) {
       FlowEntryController.viewDict({
         entryId: props.entryId,

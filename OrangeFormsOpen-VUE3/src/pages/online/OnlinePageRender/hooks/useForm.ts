@@ -52,6 +52,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
 
   const form = computed(() => {
     buildFormConfig(dialogParams.value.formConfig);
+    initPage();
+    initFormWidgetList();
     return dialogParams.value.formConfig;
   });
 
@@ -66,7 +68,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   const { checkPermCodeExist } = usePermissions();
 
   const masterTable = computed(() => {
-    return form.value.tableMap.get(form.value.masterTableId);
+    return dialogParams.value.formConfig.tableMap.get(dialogParams.value.formConfig.masterTableId);
   });
   const isRelation = computed(() => {
     return masterTable.value?.relation != null;
@@ -206,12 +208,12 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     // 一对一关联选择组件
     if (
       widget.widgetType === SysCustomWidgetType.DataSelect &&
-      (form.value.formType === SysOnlineFormType.FORM ||
-        form.value.formType === SysOnlineFormType.FLOW)
+      (dialogParams.value.formConfig.formType === SysOnlineFormType.FORM ||
+        dialogParams.value.formConfig.formType === SysOnlineFormType.FLOW)
     ) {
       const selectRow = (detail || {}).selectRow;
       const relationId = (widget.props.relativeTable || {}).relationId;
-      const relation = form.value.relationMap.get(relationId);
+      const relation = dialogParams.value.formConfig.relationMap.get(relationId);
       if (relation != null) {
         formData[relation.variableName] = selectRow || {};
       }
@@ -235,7 +237,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
   const getWidgetValueByColumn = (column: ANY_OBJECT) => {
     if (column == null) return undefined;
-    const table = column ? form.value.tableMap.get(column.tableId) : undefined;
+    const table = column ? dialogParams.value.formConfig.tableMap.get(column.tableId) : undefined;
     if (table == null || table.datasource == null) return undefined;
     return table.relation == null
       ? formData[table.datasource.variableName][column.columnName]
@@ -244,7 +246,9 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   const getParamValue = (valueType: number, valueData: string) => {
     switch (valueType) {
       case SysOnlineParamValueType.TABLE_COLUMN: {
-        const column = form.value.columnMap ? form.value.columnMap.get(valueData) : null;
+        const column = dialogParams.value.formConfig.columnMap
+          ? dialogParams.value.formConfig.columnMap.get(valueData)
+          : null;
         return column ? getWidgetValueByColumn(column) : undefined;
       }
       case SysOnlineParamValueType.STATIC_DICT:
@@ -289,7 +293,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     }
   };
   const checkOperationPermCode = (operation: ANY_OBJECT | null) => {
-    if (form.value.formType !== SysOnlineFormType.QUERY || props.isEdit) return true;
+    if (dialogParams.value.formConfig.formType !== SysOnlineFormType.QUERY || props.isEdit) return true;
     return checkPermCodeExist(getOperationPermCode(operation));
   };
   const checkOperationDisabled = (
@@ -453,7 +457,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
 
   const initPage = () => {
-    form.value.tableMap.forEach((table: ANY_OBJECT) => {
+    dialogParams.value.formConfig.tableMap.forEach((table: ANY_OBJECT) => {
       if (table.relation == null) {
         // 主表
         const tempObj = Array.isArray(table.columnList)
@@ -494,8 +498,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       }
     });
     // 初始化自定义字段
-    if (Array.isArray(form.value.customFieldList)) {
-      form.value.customFieldList.forEach(field => {
+    if (Array.isArray(dialogParams.value.formConfig.customFieldList)) {
+      dialogParams.value.formConfig.customFieldList.forEach(field => {
         formData.customField[field.fieldName] = undefined;
       });
     }
@@ -523,12 +527,13 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
   const initWidget = (widget: ANY_OBJECT) => {
     if (widget != null) {
-      if (widget.bindData.tableId) widget.table = form.value.tableMap.get(widget.bindData.tableId);
+      if (widget.bindData.tableId)
+        widget.table = dialogParams.value.formConfig.tableMap.get(widget.bindData.tableId);
       if (widget.bindData.columnId)
-        widget.column = form.value.columnMap.get(widget.bindData.columnId);
+        widget.column = dialogParams.value.formConfig.columnMap.get(widget.bindData.columnId);
       if (widget.bindData.dataType === SysCustomWidgetBindDataType.Custom) {
         if (widget.props.dictId != null) {
-          widget.dictInfo = form.value.dictMap.get(widget.props.dictId);
+          widget.dictInfo = dialogParams.value.formConfig.dictMap.get(widget.props.dictId);
         } else {
           // TODO 这里与原代码不一致，原代码走不到这一步
           widget.dictInfo = (widget.column || {}).dictInfo;
@@ -585,7 +590,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         });
       }
       if (widget.props.dictInfo && widget.props.dictInfo.dictId) {
-        widget.props.dictInfo.dict = form.value.dictMap.get(widget.props.dictInfo.dictId);
+        widget.props.dictInfo.dict = dialogParams.value.formConfig.dictMap.get(widget.props.dictInfo.dictId);
       }
       if (widget.column && widget.column.dictInfo != null) {
         dropdownWidgetList.push(widget);
@@ -604,9 +609,11 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         }
         if (Array.isArray(widget.props.tableColumnList)) {
           widget.props.tableColumnList.forEach((tableColumn: ANY_OBJECT) => {
-            tableColumn.table = form.value.tableMap.get(tableColumn.tableId);
-            tableColumn.column = form.value.columnMap.get(tableColumn.columnId);
-            tableColumn.relation = form.value.relationMap.get(tableColumn.relationId);
+            tableColumn.table = dialogParams.value.formConfig.tableMap.get(tableColumn.tableId);
+            tableColumn.column = dialogParams.value.formConfig.columnMap.get(tableColumn.columnId);
+            tableColumn.relation = dialogParams.value.formConfig.relationMap.get(
+              tableColumn.relationId,
+            );
             if (tableColumn.table == null || tableColumn.column == null) {
               errorMessage.value.push({
                 widget: widget,
@@ -634,10 +641,10 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         if (Array.isArray(widget.props.dictInfo.paramList)) {
           widget.props.dictInfo.paramList.forEach((dictParam: ANY_OBJECT) => {
             if (dictParam.dictValueType === SysOnlineParamValueType.TABLE_COLUMN) {
-              let linkageItem = form.value.linkageMap.get(dictParam.dictValue);
+              let linkageItem = dialogParams.value.formConfig.linkageMap.get(dictParam.dictValue);
               if (linkageItem == null) {
                 linkageItem = [];
-                form.value.linkageMap.set(dictParam.dictValue, linkageItem);
+                dialogParams.value.formConfig.linkageMap.set(dictParam.dictValue, linkageItem);
               }
               linkageItem.push(widget);
             }
@@ -648,14 +655,14 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
 
   const initFormWidgetList = () => {
-    if (Array.isArray(form.value.widgetList)) {
-      form.value.widgetList.forEach(widget => {
+    if (Array.isArray(dialogParams.value.formConfig.widgetList)) {
+      dialogParams.value.formConfig.widgetList.forEach(widget => {
         initWidget(widget);
       });
     }
     errorMessage.value = [];
-    if (form.value.tableWidget) initWidget(form.value.tableWidget);
-    if (form.value.leftWidget) initWidget(form.value.leftWidget);
+    if (dialogParams.value.formConfig.tableWidget) initWidget(dialogParams.value.formConfig.tableWidget);
+    if (dialogParams.value.formConfig.leftWidget) initWidget(dialogParams.value.formConfig.leftWidget);
     if (errorMessage.value.length > 0) {
       console.error(errorMessage);
     }
@@ -771,7 +778,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     if (!rules.value) {
       rules.value = {};
     }
-    form.value.widgetList.forEach((widget: ANY_OBJECT) => {
+    dialogParams.value.formConfig.widgetList.forEach((widget: ANY_OBJECT) => {
       buildWidgetRule(widget, rules.value);
     });
     nextTick(() => {
@@ -781,9 +788,9 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
 
   // TODO initWidgetLinkage
   const initWidgetLinkage = () => {
-    // form.value.linkageMap.forEach((widgetList: ANY_OBJECT[], key: string) => {
-    //   const column = form.value.columnMap.get(key);
-    //   const table = column ? form.value.tableMap.get(column.tableId) : undefined;
+    // dialogParams.value.formConfig.linkageMap.forEach((widgetList: ANY_OBJECT[], key: string) => {
+    //   const column = dialogParams.value.formConfig.columnMap.get(key);
+    //   const table = column ? dialogParams.value.formConfig.tableMap.get(column.tableId) : undefined;
     //   const watchKey =
     //     'formData.' +
     //     (table.relation == null ? table.datasource.variableName : table.relation.variableName) +

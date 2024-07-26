@@ -562,12 +562,13 @@ const formExpose = useFormExpose(formData);
 onMounted(() => {
   isReady.value = false;
   if (!dialogParams.value.isEdit) {
-    initPage();
-    initFormWidgetList();
     initWidgetRule();
     initFormData()
       .then(() => {
         initWidgetLinkage();
+        setTimeout(() => {
+          formRef.value.clearValidate();
+        });
       })
       .catch((e: Error) => {
         console.warn(e);

@@ -384,6 +384,9 @@ const handlerStart = (
             .catch(e => {
               console.warn(e);
             });
+        })
+        .catch(e => {
+          console.warn(e);
         });
       })
       .catch(e => {

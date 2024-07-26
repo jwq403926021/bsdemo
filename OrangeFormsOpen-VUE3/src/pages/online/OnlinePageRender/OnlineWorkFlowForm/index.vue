@@ -231,13 +231,14 @@ const initFormData = () => {
 onMounted(() => {
   isReady.value = false;
   if (!props.isEdit) {
-    initPage();
-    initFormWidgetList();
     initWidgetRule();
 
     initFormData()
       .then(() => {
         initWidgetLinkage();
+        setTimeout(() => {
+          componentRef.value.clearValidate();
+        });
       })
       .catch((e: Error) => {
         console.warn(e);
@@ -260,8 +261,8 @@ const getFormDataImpl = (variableList: ANY_OBJECT[] | null = null) => {
     }
   });
   // 获取流程变量
-  if (variableList) {
-    variableList.forEach(variable => {
+  if (variableList && variableList.value) {
+    variableList.value.forEach(variable => {
       if (!variable.builtin) {
         let column = form.value.columnMap.get(variable.bindColumnId);
         let relation = form.value.relationMap.get(variable.bindRelationId);

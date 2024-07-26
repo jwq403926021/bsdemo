@@ -1,5 +1,9 @@
 <template>
-  <div class="online-query-form" :style="{ height: height ? height : '100%' }" v-show="isReady">
+  <div
+    class="online-query-form"
+    :style="{ height: height ? height : '100%', width: '100%' }"
+    v-show="isReady"
+  >
     <OnlineFilterBox
       class="query-filter-box"
       :isEdit="dialogParams.isEdit"
@@ -29,7 +33,7 @@
     >
       <OnlineCustomTable
         ref="dataTable"
-        style="padding-top: 0 !important"
+        style="padding: 0 !important"
         :dataList="queryTableWidget.dataList"
         :isEdit="dialogParams.isEdit"
         :widget="queryTable"
@@ -511,8 +515,6 @@ const initFormData = () => {
 onMounted(() => {
   isReady.value = false;
   if (!dialogParams.value.isEdit) {
-    initPage();
-    initFormWidgetList();
     initFormData();
   }
   isReady.value = true;

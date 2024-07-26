@@ -112,7 +112,8 @@ public class GlobalDictServiceImpl extends BaseService<GlobalDict, Long> impleme
 
     @Override
     public List<GlobalDict> getGlobalDictList(GlobalDict filter, String orderBy) {
-        return globalDictMapper.getGlobalDictList(filter, orderBy);
+        List<Map<String, Object>> dictList = globalDictMapper.getGlobalDictList(filter, orderBy);
+        return dictList.stream().map(c -> JSON.parseObject(JSON.toJSONString(c), GlobalDict.class)).collect(Collectors.toList());
     }
 
     @Override

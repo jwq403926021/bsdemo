@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 全局字典数据操作访问接口。
@@ -30,5 +31,5 @@ public interface GlobalDictMapper extends BaseDaoMapper<GlobalDict> {
             + "</if>"
             + "<if test=\"orderBy != null and orderBy != ''\"> ORDER BY ${orderBy} </if>"
             + "</script>")
-    List<GlobalDict> getGlobalDictList(@Param("filter") GlobalDict filter, @Param("orderBy") String orderBy);
+    List<Map<String, Object>> getGlobalDictList(@Param("filter") GlobalDict filter, @Param("orderBy") String orderBy);
 }

@@ -80,7 +80,7 @@
         >{{ getOperation(SysCustomWidgetOperationType.ADD).name || '新建' }}</el-button
       >
     </template>
-    <vxe-column v-if="hasBatchOperation && !form().readOnly" type="checkbox" :width="40" />
+    <vxe-column v-if="hasBatchOperation && !form().readOnly" type="checkbox" :width="50" />
     <vxe-column v-if="singleSelect" type="radio" align="center" :width="50" />
     <vxe-column v-if="tableColumnList.length > 0" type="seq" title="序号" :width="50" />
     <template v-for="tableColumn in tableColumnList" :key="tableColumn.column?.columnId">

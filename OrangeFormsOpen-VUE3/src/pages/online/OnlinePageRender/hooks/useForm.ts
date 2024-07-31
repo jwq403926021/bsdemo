@@ -52,8 +52,10 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
 
   const form = computed(() => {
     buildFormConfig(dialogParams.value.formConfig);
-    initPage();
-    initFormWidgetList();
+    if (!dialogParams.value.isEdit) {
+      initPage();
+      initFormWidgetList();
+    }
     return dialogParams.value.formConfig;
   });
 

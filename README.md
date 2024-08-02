@@ -1,3 +1,6 @@
+### 新人印象
+- 快速了解一下我们，相信会有令人惊喜的收获 [https://www.orangeforms.com/article/knowus](https://www.orangeforms.com/article/knowus)
+
 ### 良心开源
 - 功能完整、开箱即用、BUG 极少。
 - 代码质量，行业翘楚，全部通过 SonarQube 扫描 0 警告。
@@ -12,7 +15,7 @@
 - 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。
 - 如需更多支持，请扫左侧二维码加我微信，邀您入群，扫右侧二维码可直接入群。
 
-|![](images/OrangeL.png)|![](images/wechatgroup3)|
+|![](images/OrangeL.png)|![](images/wechatgroup3.png)|
 |---|---|
 
 ### 线上资源

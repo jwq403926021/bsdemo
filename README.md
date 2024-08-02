@@ -1,5 +1,5 @@
 ### 新人印象
-- 快速了解一下我们，相信会有令人惊喜的收获 [https://www.orangeforms.com/article/knowus](https://www.orangeforms.com/article/knowus)
+- 不妨来快速了解一下橙单，相信您会有令人惊喜的收获 [https://www.orangeforms.com/article/knowus](https://www.orangeforms.com/article/knowus)
 
 ### 良心开源
 - 功能完整、开箱即用、BUG 极少。

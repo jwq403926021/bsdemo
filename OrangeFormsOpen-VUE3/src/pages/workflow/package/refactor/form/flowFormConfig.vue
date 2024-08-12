@@ -35,16 +35,36 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="允许编辑" style="margin-bottom: 4px">
-        <template #label>
-          <span>允许编辑</span>
-          <el-switch
-            v-model="formData.editable"
-            @change="updateElementFormKey"
-            style="margin-left: 18px"
-          />
-        </template>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="允许编辑" style="margin-bottom: 4px">
+            <template #label>
+              <span>允许编辑</span>
+              <el-switch
+                v-model="formData.editable"
+                @change="updateElementFormKey"
+                style="margin-left: 18px"
+              />
+            </template>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            v-if="flowEntryComputed.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
+          >
+            <template #label>
+              <span>表单权限设置</span>
+              <el-button
+                type="primary"
+                size="mini"
+                style="margin-left: 18px"
+                @click="onSetOnlineFormAuth"
+                >设置</el-button
+              >
+            </template>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <el-row v-else-if="tabType === 'button'" style="padding-top: 3px">
       <!-- <el-col :span="24">
@@ -107,15 +127,17 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus';
+import { getUUID } from '@/common/utils/index';
+import { ElMessageBox, ElMessage } from 'element-plus';
 import { VxeTable, VxeColumn } from 'vxe-table';
 import { ANY_OBJECT } from '@/types/generic';
 import { Dialog } from '@/components/Dialog';
 import { SysOnlineFormType } from '@/common/staticDict/index';
 import { SysFlowEntryBindFormType, SysFlowTaskOperationType } from '@/common/staticDict/flow';
 import EditOperation from './formEditOperation.vue';
-
+import FormSetOnlineFormAuth from './formSetOnlineFormAuth.vue';
 import { useLayoutStore } from '@/store';
+
 const layoutStore = useLayoutStore();
 
 const props = defineProps<{ id: string; type: string; tabType: string }>();
@@ -137,6 +159,7 @@ const form = ref();
 const formData = ref<ANY_OBJECT>({
   formId: flowEntry().value.defaultFormId,
   routerName: flowEntry().value.defaultRouterName,
+  formAuth: {},
   editable: false,
 });
 const operationList = ref<ANY_OBJECT>({});
@@ -163,9 +186,94 @@ const getFlowEntryValidStatus = computed(() => {
   }
 });
 
+const currentForm = computed(() => {
+  return formList().find((item: ANY_OBJECT) => item.formId === formData.value.formId);
+});
+
+const formatOnlineFormInfo = formInfo => {
+  if (formInfo == null) return null;
+  let children;
+  if (Array.isArray(formInfo.childWidgetList) && formInfo.childWidgetList.length > 0) {
+    children = formInfo.childWidgetList.map(subWidget => formatOnlineFormInfo(subWidget));
+  }
+  return {
+    formId: getUUID(),
+    showName: formInfo.showName,
+    variableName: formInfo.variableName,
+    widgetType: formInfo.widgetType,
+    children: children,
+  };
+};
+
+const onSetOnlineFormAuth = () => {
+  if (currentForm.value == null) {
+    ElMessage.error('请先选择表单！');
+    return;
+  }
+  let formWidgetConfig = JSON.parse(currentForm.value.widgetJson);
+  let tempConfig = {
+    pc: {
+      widgetList: [],
+    },
+    mobile: {
+      widgetList: [],
+    },
+  };
+  if (formWidgetConfig != null) {
+    if (
+      formWidgetConfig.pc &&
+      Array.isArray(formWidgetConfig.pc.widgetList) &&
+      formWidgetConfig.pc.widgetList.length > 0
+    ) {
+      tempConfig.pc = {
+        widgetList: formWidgetConfig.pc.widgetList.map(subWidget =>
+          formatOnlineFormInfo(subWidget),
+        ),
+      };
+    }
+    if (
+      formWidgetConfig.mobile &&
+      Array.isArray(formWidgetConfig.mobile.widgetList) &&
+      formWidgetConfig.mobile.widgetList.length > 0
+    ) {
+      tempConfig.mobile = {
+        widgetList: formWidgetConfig.mobile.widgetList.map(subWidget => formatOnlineFormInfo(subWidget))
+      };
+    }
+  }
+  console.log(tempConfig);
+  Dialog.show<ANY_OBJECT>(
+    '设置表单权限',
+    FormSetOnlineFormAuth,
+    {
+      area: ['1000px', '700px']
+    },
+    {
+      formAuth: formData.value.formAuth || {},
+      formWidgetConfig: tempConfig,
+      path: 'thirdSetOnlineFormAuth'
+    },
+    {
+      width: '1000px',
+      height: '700px',
+      pathName: '/thirdParty/formSetOnlineFormAuth',
+    },
+  )
+    .then(res => {
+      formData.value.formAuth = res;
+      updateElementFormKey();
+    })
+    .catch(e => {
+      console.warn(e);
+    });
+};
+
 const refreshData = (data: ANY_OBJECT) => {
   if (data.path === 'thirdEditOperation' && data.isSuccess) {
     updateEditOperation(data.data);
+  } else if (data.path === 'thirdSetOnlineFormAuth' && data.isSuccess) {
+    formData.value.formAuth = data.data;
+    updateElementFormKey();
   }
 };
 const resetFormList = () => {
@@ -176,6 +284,7 @@ const resetFormList = () => {
     formData.value = {
       formId: formObj.formId,
       routerName: formObj.routerName,
+      formAuth: formObj.formAuth || {},
       editable: !formObj.readOnly,
       groupType: formObj.groupType || 'ASSIGNEE',
     };
@@ -208,6 +317,7 @@ const updateElementFormKey = () => {
         flowEntry().value.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM
           ? undefined
           : formData.value.routerName,
+      formAuth: formData.value.formAuth,
       readOnly: !formData.value.editable,
       groupType: formData.value.groupType || 'ASSIGNEE',
     });

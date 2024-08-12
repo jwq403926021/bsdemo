@@ -352,42 +352,43 @@ const handlerStart = (
   } else {
     preHandlerOperation(operation, true, xml)
       .then(res => {
-        getMasterData(operation.type, (res || {}).assignee).then(formData => {
-          FlowOperationController.startAndTakeUserTask(
-            {
-              processDefinitionKey: dialogParams.value.processDefinitionKey,
-              masterData: formData.masterData || {},
-              slaveData: formData.slaveData,
-              taskVariableData: {
-                ...formData.taskVariableData,
-                latestApprovalStatus: operation.latestApprovalStatus,
+        getMasterData(operation.type, (res || {}).assignee)
+          .then(formData => {
+            FlowOperationController.startAndTakeUserTask(
+              {
+                processDefinitionKey: dialogParams.value.processDefinitionKey,
+                masterData: formData.masterData || {},
+                slaveData: formData.slaveData,
+                taskVariableData: {
+                  ...formData.taskVariableData,
+                  latestApprovalStatus: operation.latestApprovalStatus,
+                },
+                flowTaskCommentDto: {
+                  approvalType: operation.type,
+                },
+                copyData: (copyItemList || []).reduce((retObj, item) => {
+                  retObj[item.type] = item.id;
+                  return retObj;
+                }, {}),
               },
-              flowTaskCommentDto: {
-                approvalType: operation.type,
+              {
+                // 判断是否是从流程设计里启动
+                processDefinitionKey: isPreview.value
+                  ? undefined
+                  : dialogParams.value.processDefinitionKey,
               },
-              copyData: (copyItemList || []).reduce((retObj, item) => {
-                retObj[item.type] = item.id;
-                return retObj;
-              }, {}),
-            },
-            {
-              // 判断是否是从流程设计里启动
-              processDefinitionKey: isPreview.value
-                ? undefined
-                : dialogParams.value.processDefinitionKey,
-            },
-          )
-            .then(() => {
-              handlerClose();
-              ElMessage.success('启动成功！');
-            })
-            .catch(e => {
-              console.warn(e);
-            });
-        })
-        .catch(e => {
-          console.warn(e);
-        });
+            )
+              .then(() => {
+                handlerClose();
+                ElMessage.success('启动成功！');
+              })
+              .catch(e => {
+                console.warn(e);
+              });
+          })
+          .catch(e => {
+            console.warn(e);
+          });
       })
       .catch(e => {
         console.warn(e);

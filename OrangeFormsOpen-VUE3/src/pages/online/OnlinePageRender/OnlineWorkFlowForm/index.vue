@@ -68,6 +68,7 @@ const props = withDefaults(
     isEdit: false,
     readOnly: false,
     fullscreen: false,
+    flowInfo: undefined,
     mode: 'pc',
   },
 );
@@ -82,6 +83,7 @@ const {
   rules,
   masterTable,
   formData,
+  formAuth,
   richEditWidgetList,
   tableWidgetList,
   getWidgetValue,
@@ -132,6 +134,9 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    formAuth: () => {
+      return formAuth.value;
+    },
   };
 });
 
@@ -228,23 +233,73 @@ const initFormData = () => {
   });
 };
 
+const viewTaskFormKey = () => {
+  if (
+    props.flowInfo == null ||
+    props.flowInfo.taskId == null ||
+    props.flowInfo.taskId === '' ||
+    props.flowInfo.processInstanceId == null ||
+    props.flowInfo.processInstanceId === ''
+  ) {
+    return Promise.resolve();
+  }
+  let paraams = {
+    processInstanceId: props.flowInfo.processInstanceId,
+    taskId: props.flowInfo.taskId,
+  };
+  return new Promise<void>((resolve, reject) => {
+    FlowOperationController.viewTaskFormKey(paraams)
+      .then(res => {
+        try {
+          let temp = JSON.parse(res.data);
+          formAuth.value = temp.formAuth;
+          Object.keys(formAuth.value || {}).forEach(key => {
+            let formAuthItem = formAuth.value[key];
+            Object.keys(formAuthItem).forEach(subKey => {
+              let authItem = formAuthItem[subKey];
+              if (authItem && authItem != null && authItem !== '') {
+                formAuthItem[subKey] = authItem.split(',').map(item => parseInt(item));
+              } else {
+                formAuthItem[subKey] = [0, 0];
+              }
+              let disabled = formAuthItem[subKey][0] === 1;
+              let hide = formAuthItem[subKey][1] === 1;
+              formAuthItem[subKey].disabled = disabled;
+              formAuthItem[subKey].hide = hide;
+            });
+          });
+          console.log(formAuth.value);
+        } catch (e) {
+          formAuth.value = null;
+        }
+        resolve();
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
+};
+
 onMounted(() => {
   isReady.value = false;
   if (!props.isEdit) {
-    initWidgetRule();
-
-    initFormData()
-      .then(() => {
-        initWidgetLinkage();
-        setTimeout(() => {
-          componentRef.value.clearValidate();
+    viewTaskFormKey().then(() => {
+      initWidgetRule();
+      initFormData()
+        .then(() => {
+          initWidgetLinkage();
+          setTimeout(() => {
+            componentRef.value.clearValidate();
+          });
+        })
+        .catch((e: Error) => {
+          console.warn(e);
         });
-      })
-      .catch((e: Error) => {
-        console.warn(e);
-      });
+      isReady.value = true;
+    });
+  } else {
+    isReady.value = true;
   }
-  isReady.value = true;
 });
 
 const getFormDataImpl = (variableList: ANY_OBJECT[] | null = null) => {

@@ -355,6 +355,10 @@ const getWidgetProps = computed(() => {
 });
 
 const getDisabledStatus = () => {
+  const formWidgetAuth: ANY_OBJECT | null = form().formAuth()
+    ? form().formAuth().pc[pps.widget.variableName]
+    : null;
+  if (formWidgetAuth && formWidgetAuth.disabled) return true;
   return pps.widget.props.disabled;
 };
 

@@ -309,12 +309,19 @@ export const routers: Array<RouteRecordRaw> = [
         props: getProps,
         component: () => import('@/pages/workflow/components/CopyForSelect/addCopyForItem.vue'),
       },
-      // 流程设计-抄送
+      // 流程设计-任务操作按钮
       {
         path: 'thirdEditOperation',
         name: 'thirdEditOperation',
         props: getProps,
         component: () => import('@/pages/workflow/package/refactor/form/formEditOperation.vue'),
+      },
+      // 流程设计-设置表单权限
+      {
+        path: 'thirdSetOnlineFormAuth',
+        name: 'thirdSetOnlineFormAuth',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/formSetOnlineFormAuth.vue'),
       },
       // 流程设计-添加变量
       {

@@ -7,7 +7,8 @@ import { API_CONTEXT } from '../config';
 export default class DictionaryController extends BaseController {
   static dictSysRole(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/sysRole/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/sysRole/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('角色字典', res.data);
           resolve(dictData);
@@ -20,7 +21,8 @@ export default class DictionaryController extends BaseController {
   // 全局编码字典
   static dictGlobalDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/globalDict/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/globalDict/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase(
             '编码字典',
@@ -42,7 +44,8 @@ export default class DictionaryController extends BaseController {
 
   static dictGlobalDictByIds(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/globalDict/listDictByIds', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/globalDict/listDictByIds', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('编码字典', res.data);
           resolve(dictData);
@@ -55,7 +58,8 @@ export default class DictionaryController extends BaseController {
 
   static dictSysDept(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/sysDept/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/sysDept/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('部门字典', res.data);
           resolve(dictData);
@@ -71,7 +75,8 @@ export default class DictionaryController extends BaseController {
     httpOptions?: RequestOption,
   ): Promise<DictionaryBase> {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/sysDept/listDictByParentId', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/sysDept/listDictByParentId', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('部门字典', res.data);
           resolve(dictData);
@@ -84,7 +89,8 @@ export default class DictionaryController extends BaseController {
 
   static dictSysMenu(params: ANY_OBJECT, httpOptions?: RequestOption): Promise<DictionaryBase> {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/sysMenu/listMenuDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/sysMenu/listMenuDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('菜单字典', res.data);
           resolve(dictData);
@@ -97,11 +103,12 @@ export default class DictionaryController extends BaseController {
 
   static dictDeptPost(params: ANY_OBJECT, httpOptions?: RequestOption): Promise<ANY_OBJECT[]> {
     return new Promise((resolve, reject) => {
-      super.get<ANY_OBJECT[]>(
-        API_CONTEXT + '/upms/sysDept/listSysDeptPostWithRelation',
-        params,
-        httpOptions,
-      )
+      super
+        .get<ANY_OBJECT[]>(
+          API_CONTEXT + '/upms/sysDept/listSysDeptPostWithRelation',
+          params,
+          httpOptions,
+        )
         .then(res => {
           resolve(res.data);
         })
@@ -112,7 +119,8 @@ export default class DictionaryController extends BaseController {
   }
   static dictSysPost(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/upms/sysPost/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/upms/sysPost/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('岗位字典', res.data);
           resolve(dictData);
@@ -125,7 +133,8 @@ export default class DictionaryController extends BaseController {
 
   static dictReportDblink(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/report/reportDblink/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/report/reportDblink/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('数据库链接', res.data);
           resolve(dictData);
@@ -138,7 +147,8 @@ export default class DictionaryController extends BaseController {
 
   static dictReportDict(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/report/reportDict/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/report/reportDict/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('报表字典', res.data);
           resolve(dictData);
@@ -150,7 +160,8 @@ export default class DictionaryController extends BaseController {
   }
   static dictAreaCode(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/app/areaCode/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/app/areaCode/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('行政区划', res.data);
           resolve(dictData);
@@ -163,7 +174,8 @@ export default class DictionaryController extends BaseController {
 
   static dictAreaCodeByParentId(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/app/areaCode/listDictByParentId', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/app/areaCode/listDictByParentId', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('行政区划', res.data);
           resolve(dictData);
@@ -177,7 +189,8 @@ export default class DictionaryController extends BaseController {
   // 业务相关的接口
   static dictKnowledge(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>('/admin/app/knowledge/listDict', params, httpOptions)
+      super
+        .get<DictData[]>('/admin/app/knowledge/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('知识点字典', res.data);
           resolve(dictData);
@@ -190,7 +203,8 @@ export default class DictionaryController extends BaseController {
 
   static dictStudent(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>(API_CONTEXT + '/app/student/listDict', params, httpOptions)
+      super
+        .get<DictData[]>(API_CONTEXT + '/app/student/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('学生字典', res.data);
           dictData.setList(res.data);
@@ -204,7 +218,8 @@ export default class DictionaryController extends BaseController {
 
   static dictTeacher(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return new Promise<DictionaryBase>((resolve, reject) => {
-      super.get<DictData[]>('/admin/app/teacher/listDict', params, httpOptions)
+      super
+        .get<DictData[]>('/admin/app/teacher/listDict', params, httpOptions)
         .then(res => {
           const dictData = new DictionaryBase('老师字典', res.data);
           resolve(dictData);

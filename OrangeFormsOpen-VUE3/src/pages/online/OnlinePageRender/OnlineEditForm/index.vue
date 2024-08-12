@@ -259,7 +259,6 @@ const {
 } = useForm(props);
 
 provide('form', () => {
-  console.log('provide form1', props, form);
   return {
     ...form.value,
     mode: props.mode || 'pc',

@@ -278,4 +278,12 @@ export default class FlowOperationController extends BaseController {
       httpOptions,
     );
   }
+  // 获取用户任务信息
+  static viewTaskFormKey(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.get<ANY_OBJECT>(
+      API_CONTEXT + '/flow/flowOperation/viewTaskFormKey',
+      params,
+      httpOptions,
+    );
+  }
 }

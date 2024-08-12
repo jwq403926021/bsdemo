@@ -220,7 +220,6 @@ const values = computed({
     return props.value;
   },
   set(val: Array<ANY_OBJECT>) {
-    console.log('block values>>>>>>>>>>>>', val);
     emit('update:value', val);
   },
 });

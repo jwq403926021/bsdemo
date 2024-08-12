@@ -142,7 +142,11 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       return getSystemVariableValue(widget.bindData.systemVariableType);
     }
   };
-  const getWidgetVisible = () => {
+  const getWidgetVisible = widget => {
+    const formWidgetAuth: ANY_OBJECT | null = formAuth.value
+      ? formAuth.value.pc[widget.variableName]
+      : null;
+    if (formWidgetAuth && formWidgetAuth.hide) return false;
     return true;
   };
   const onValueChange = (widget: ANY_OBJECT, value: ANY_OBJECT) => {
@@ -295,7 +299,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     }
   };
   const checkOperationPermCode = (operation: ANY_OBJECT | null) => {
-    if (dialogParams.value.formConfig.formType !== SysOnlineFormType.QUERY || props.isEdit) return true;
+    if (dialogParams.value.formConfig.formType !== SysOnlineFormType.QUERY || props.isEdit)
+      return true;
     return checkPermCodeExist(getOperationPermCode(operation));
   };
   const checkOperationDisabled = (
@@ -592,7 +597,9 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         });
       }
       if (widget.props.dictInfo && widget.props.dictInfo.dictId) {
-        widget.props.dictInfo.dict = dialogParams.value.formConfig.dictMap.get(widget.props.dictInfo.dictId);
+        widget.props.dictInfo.dict = dialogParams.value.formConfig.dictMap.get(
+          widget.props.dictInfo.dictId,
+        );
       }
       if (widget.column && widget.column.dictInfo != null) {
         dropdownWidgetList.push(widget);
@@ -663,8 +670,10 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       });
     }
     errorMessage.value = [];
-    if (dialogParams.value.formConfig.tableWidget) initWidget(dialogParams.value.formConfig.tableWidget);
-    if (dialogParams.value.formConfig.leftWidget) initWidget(dialogParams.value.formConfig.leftWidget);
+    if (dialogParams.value.formConfig.tableWidget)
+      initWidget(dialogParams.value.formConfig.tableWidget);
+    if (dialogParams.value.formConfig.leftWidget)
+      initWidget(dialogParams.value.formConfig.leftWidget);
     if (errorMessage.value.length > 0) {
       console.error(errorMessage);
     }
@@ -899,12 +908,15 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       });
   };
 
+  const formAuth = ref();
+
   return {
     rules,
     isReady,
     dialogParams,
     form,
     formData,
+    formAuth,
     masterTable,
     isRelation,
     tableWidgetList,

@@ -533,6 +533,30 @@ public class FlowOperationController {
     }
 
     /**
+     * 获取指定流程定义的指定任务Id的formKey。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @param taskId            流程任务Id。
+     * @return formKey数据。
+     */
+    @GetMapping("/viewTaskFormKey")
+    public ResponseResult<String> viewTaskFormKey(
+            @RequestParam String processInstanceId, @RequestParam String taskId) throws IOException {
+        TaskInfo task = flowApiService.getTaskById(taskId);
+        if (task == null) {
+            task = flowApiService.getHistoricTaskInstance(processInstanceId, taskId);
+            if (task == null) {
+                return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+            }
+        }
+        UserTask userTask = flowApiService.getUserTask(task.getProcessDefinitionId(), task.getTaskDefinitionKey());
+        if (userTask == null) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
+        }
+        return ResponseResult.success(userTask.getFormKey());
+    }
+
+    /**
      * 获取流程图高亮数据。
      *
      * @param processInstanceId 流程实例Id。

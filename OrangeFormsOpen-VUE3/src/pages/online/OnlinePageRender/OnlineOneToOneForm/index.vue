@@ -169,6 +169,7 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    instanceData: () => useFormExpose(formData),
   };
 });
 
@@ -495,7 +496,7 @@ const onOperationClick = (operation: ANY_OBJECT, row: ANY_OBJECT | null) => {
   } else if (operation.type === SysCustomWidgetOperationType.EXPORT) {
     onExport(operation);
   } else if (operation.type === SysCustomWidgetOperationType.PRINT) {
-    if (row) onPrint(operation, row, queryTable.value.showName + '.pdf');
+    if (row) onPrint(operation, row, null, queryTable.value.showName + '.pdf');
   } else {
     handlerOperation(operation, {
       isEdit: dialogParams.value.isEdit,

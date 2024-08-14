@@ -134,6 +134,7 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    instanceData: () => useFormExpose(formData),
     formAuth: () => {
       return formAuth.value;
     },

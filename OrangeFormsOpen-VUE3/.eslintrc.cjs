@@ -49,19 +49,14 @@ module.exports = {
     'vue/comment-directive': 'off',
     'vue/multi-word-component-names': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
+    'import/extensions': 'off',
     'import/order': [
       'error',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
       },
     ],
+    'import/named': 'off',
+    'import/no-unresolved': 'off',
   },
 };

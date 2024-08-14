@@ -25,9 +25,10 @@ import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
 import widgetData from '@/online/config/index';
 import combinedDict from '@/common/staticDict/combined';
 import { pattern } from '@/common/utils/validate';
-import { post } from '@/common/http/request';
-//import { API_CONTEXT } from '@/api/config';
+import { post, downloadBlob } from '@/common/http/request';
+import { API_CONTEXT } from '@/api/config';
 import { useThirdParty } from '@/components/thirdParty/hooks';
+import { useFormExpose } from './useFormExpose';
 
 const StaticDict = { ...combinedDict };
 
@@ -143,8 +144,9 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     }
   };
   const getWidgetVisible = widget => {
-    const formWidgetAuth: ANY_OBJECT | null =
-      formAuth.value && formAuth.value.pc ? formAuth.value.pc[widget.variableName] : null;
+    const formWidgetAuth: ANY_OBJECT | null = formAuth.value && formAuth.value.pc
+      ? formAuth.value.pc[widget.variableName]
+      : null;
     if (formWidgetAuth && formWidgetAuth.hide) return false;
     return true;
   };
@@ -815,50 +817,79 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     //   });
     // });
   };
+  const getPrintParamItem = (row, printParamList) => {
+    let param;
+    if (Array.isArray(printParamList)) {
+      param = printParamList
+        .map(item => {
+          const columnId = item.paramValue;
+          if (columnId != null) {
+            const column = dialogParams.value.formConfig.columnMap.get(columnId);
+            const value = row ? (row || {})[column.columnName] : getWidgetValueByColumn(column);
+            if (item.paramName != null && value != null) {
+              return {
+                paramName: item.paramName,
+                paramValue: value,
+              };
+            }
+          }
+          return null;
+        })
+        .filter(item => item != null);
+    }
+
+    return param;
+  };
 
   // TODO onPrint
-  const onPrint = (operation: ANY_OBJECT, row: ANY_OBJECT | null, fileName: string) => {
+  const onPrint = (
+    operation: ANY_OBJECT,
+    row: ANY_OBJECT | null,
+    selectRows: ANY_OBJECT[] | undefined | null,
+    fileName: string,
+  ) => {
     console.log('onPrint', operation, row, fileName);
     if (operation == null) return;
-    // let printParam
-    // if (row != null) {
-    //   let temp = getPrintParamItem(row, operation.printParamList)
-    //   printParam = temp ? [temp] : []
-    // } else {
-    //   if (this.selectRows.length <= 0) {
-    //     ElMessage.error('请选择要打印的数据！')
-    //     return
-    //   }
-    //   printParam = this.selectRows
-    //     .map((row) => {
-    //       return this.getPrintParamItem(row, operation.printParamList)
-    //     })
-    //     .filter((item) => item != null)
-    // }
-    // let params = {
-    //   datasourceId: masterTable.value.datasource.datasourceId,
-    //   printId: operation.printTemplateId,
-    //   printParams: printParam,
-    // }
-    // post(
-    //   API_CONTEXT + '/online/onlineOperation/print/' +
-    //     masterTable.value.datasource.variableName,
-    //   params
-    // )
-    //   .then((res) => {
-    //     let downloadUrl = res.data
-    //     ajax
-    //       .fetchDownloadBlob(downloadUrl, {}, fileName, 'get')
-    //       .then((blobData) => {
-    //         let pdfUrl = window.URL.createObjectURL(blobData)
-    //         window.open('./lib/pdfjs/web/viewer.html?file=' + pdfUrl)
-    //       })
-    //       .catch((e) => {
-    //         console.log(e)
-    //         ElMessage.error(e)
-    //       })
-    //   })
-    //   .catch((e) => {})
+    let printParam;
+    if (row != null) {
+      const temp = getPrintParamItem(row, operation.printParamList);
+      printParam = temp ? [temp] : [];
+    } else {
+      if (selectRows == null || selectRows?.length <= 0) {
+        ElMessage.error('请选择要打印的数据！');
+        return;
+      }
+      printParam = selectRows
+        .map(row => {
+          return getPrintParamItem(row, operation.printParamList);
+        })
+        .filter(item => item != null);
+    }
+    const params = {
+      datasourceId: masterTable.value.datasource.datasourceId,
+      printId: operation.printTemplateId,
+      printParams: printParam,
+    };
+    post(
+      API_CONTEXT + '/online/onlineOperation/print/' + masterTable.value.datasource.variableName,
+      params,
+    )
+      .then(res => {
+        const downloadUrl = res.data;
+        console.log('downloadUrl', downloadUrl);
+        downloadBlob(downloadUrl as string, {}, 'get')
+          .then(blobData => {
+            const pdfUrl = window.URL.createObjectURL(blobData as Blob);
+            window.open('./lib/pdfjs/web/viewer.html?file=' + pdfUrl);
+          })
+          .catch(e => {
+            console.log(e);
+            ElMessage.error(e);
+          });
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   const masterTablePrimaryKey = computed(() => {

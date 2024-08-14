@@ -80,10 +80,6 @@
           <vxe-column title="按钮名称" min-width="100px">
             <template v-slot="scope">
               <span style="font-size: 12px">{{ scope.row.label }}</span>
-              <!-- <el-button class="table-btn" link style="text-decoration: underline;"
-                @click="onEditOperation(scope.row)">
-                {{scope.row.label}}
-              </el-button> -->
             </template>
           </vxe-column>
           <vxe-column title="按钮类型" min-width="100px">
@@ -237,7 +233,9 @@ const onSetOnlineFormAuth = () => {
       formWidgetConfig.mobile.widgetList.length > 0
     ) {
       tempConfig.mobile = {
-        widgetList: formWidgetConfig.mobile.widgetList.map(subWidget => formatOnlineFormInfo(subWidget))
+        widgetList: formWidgetConfig.mobile.widgetList.map(subWidget =>
+          formatOnlineFormInfo(subWidget),
+        ),
       };
     }
   }
@@ -246,12 +244,12 @@ const onSetOnlineFormAuth = () => {
     '设置表单权限',
     FormSetOnlineFormAuth,
     {
-      area: ['1000px', '700px']
+      area: ['1000px', '700px'],
     },
     {
       formAuth: formData.value.formAuth || {},
       formWidgetConfig: tempConfig,
-      path: 'thirdSetOnlineFormAuth'
+      path: 'thirdSetOnlineFormAuth',
     },
     {
       width: '1000px',

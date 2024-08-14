@@ -138,7 +138,10 @@ import { useUpload } from '@/common/hooks/useUpload';
 import Sidebar from './components/Sidebar.vue';
 import BreadCrumb from './components/BreadCrumb.vue';
 import TagPanel from './components/TagPanel.vue';
+import { useCommon } from '@/common/hooks/useCommon';
+import FormModifyPassword from './components/formModifyPassword/index.vue';
 
+const { Dialog } = useCommon();
 const router = useRouter();
 const route = useRoute();
 const layoutStore = useLayoutStore();
@@ -331,13 +334,12 @@ const handleCommand = (command: string) => {
             });
         })
         .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '取消退出',
-          });
+          console.log('取消退出');
         });
       break;
-
+    case 'modifyPassword':
+      Dialog.show('修改密码', FormModifyPassword, { area: '500px' }, {});
+      break;
     default:
       ElMessage.warning(`click on item ${command}`);
       break;

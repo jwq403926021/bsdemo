@@ -244,7 +244,7 @@ const props = withDefaults(
   },
 );
 
-const table = ref<ANY_OBJECT>();
+const table = ref();
 const form = inject('form', () => {
   console.error('OnlineCustomTable: form not injected');
   return { isEdit: false } as ANY_OBJECT;
@@ -403,10 +403,12 @@ const onRadioSelectChange = () => {
     props.onRadioChange(selectRow);
   }
 };
-// const setSelectedRow = (rowNum: number) => {
-//   table.value.getTableImpl().setRadioRow(props.dataList[rowNum]);
-//   nextTick(onRadioSelectChange);
-// };
+const setSelectedRow = (rowNum: number) => {
+  nextTick(() => {
+    table.value.getTableImpl().setRadioRow(props.dataList[rowNum]);
+    onRadioSelectChange();
+  });
+};
 // 取消行内编辑
 // const cancelRowEvent = (row: ANY_OBJECT) => {
 //   if (form().isEdit) return;
@@ -554,6 +556,10 @@ watch(
     refreshColumn();
   },
 );
+
+defineExpose({
+  setSelectedRow,
+});
 </script>
 
 <style scoped>

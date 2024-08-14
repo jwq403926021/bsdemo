@@ -101,7 +101,7 @@ const buildWidgetAuthInfo = (widget, authData) => {
 const onSubmit = () => {
   let authData = {
     pc: {},
-    mobile: {}
+    mobile: {},
   };
   pcFormWidgetList.value.forEach(item => {
     buildWidgetAuthInfo(item, authData.pc);
@@ -124,7 +124,7 @@ const setParentStatus = (widget, fieldName, val) => {
     activeTableData.value,
     widget.formId,
     'formId',
-    'children'
+    'children',
   );
   if (Array.isArray(parentPath)) {
     parentPath.forEach(parent => {
@@ -146,9 +146,7 @@ const setChildStatus = (widget, fieldName, val) => {
 
 const onWidgetDisableChange = (widget, val) => {
   // 当val为true时，当前组件的所有子组件都禁用，当val为false时，当前组件的父组件都启用
-  val
-    ? setChildStatus(widget, 'disabled', val)
-    : setParentStatus(widget, 'disabled', val);
+  val ? setChildStatus(widget, 'disabled', val) : setParentStatus(widget, 'disabled', val);
   if (activeName.value === 'pc') {
     pcFormWidgetList.value = [...pcFormWidgetList.value];
   } else {
@@ -158,9 +156,7 @@ const onWidgetDisableChange = (widget, val) => {
 
 const onWidgetHideChange = (widget, val) => {
   // 当val为true时，当前组件的所有子组件都隐藏，当val为false时，当前组件的父组件都显示
-  val
-    ? setChildStatus(widget, 'hidden', val)
-    : setParentStatus(widget, 'hidden', val);
+  val ? setChildStatus(widget, 'hidden', val) : setParentStatus(widget, 'hidden', val);
   if (activeName.value === 'pc') {
     pcFormWidgetList.value = [...pcFormWidgetList.value];
   } else {

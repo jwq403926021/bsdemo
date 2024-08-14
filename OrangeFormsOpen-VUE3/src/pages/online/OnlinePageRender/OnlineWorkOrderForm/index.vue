@@ -128,6 +128,7 @@ import { FlowEntryController, FlowOperationController } from '@/api/flow';
 import widgetData from '@/online/config/index';
 import { useLayoutStore } from '@/store';
 import { useForm } from '../hooks/useForm';
+import { useFormExpose } from '../hooks/useFormExpose';
 
 const emit = defineEmits<{
   tableClick: [ANY_OBJECT];
@@ -160,6 +161,7 @@ const {
   isReady,
   dialogParams,
   form,
+  formData,
   checkOperationPermCode,
   checkOperationDisabled,
   checkOperationVisible,
@@ -180,6 +182,7 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    instanceData: () => useFormExpose(formData),
   };
 });
 

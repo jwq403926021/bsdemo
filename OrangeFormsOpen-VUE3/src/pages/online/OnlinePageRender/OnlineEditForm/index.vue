@@ -284,6 +284,7 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    instanceData: () => useFormExpose(formData),
   };
 });
 
@@ -301,7 +302,7 @@ const onOperationClick = (operation: ANY_OBJECT) => {
   } else {
     keyName = masterTable.value.relation.variableName;
   }
-  onPrint(operation, formData[keyName], form.value.formName + '.pdf');
+  onPrint(operation, formData[keyName], null, form.value.formName + '.pdf');
 };
 
 const onCancel = () => {

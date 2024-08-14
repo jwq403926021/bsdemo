@@ -239,7 +239,6 @@ const {
 } = useForm(props);
 
 provide('form', () => {
-  console.log('provide form5', props, form);
   return {
     ...form.value,
     mode: props.mode || 'pc',
@@ -263,6 +262,7 @@ provide('form', () => {
       return props.currentWidget === widget;
     },
     getWidgetObject: widgetData.getWidgetObject,
+    instanceData: () => useFormExpose(formData),
   };
 });
 
@@ -582,7 +582,7 @@ const onOperationClick = (operation: ANY_OBJECT, row: ANY_OBJECT | null) => {
   } else if (operation.type === SysCustomWidgetOperationType.EXPORT) {
     onExport(operation);
   } else if (operation.type === SysCustomWidgetOperationType.PRINT) {
-    onPrint(operation, row, queryTable.value.showName + '.pdf');
+    onPrint(operation, row, selectRows.value, queryTable.value.showName + '.pdf');
   } else if (operation.type === SysCustomWidgetOperationType.START_FLOW) {
     console.log('启动流程');
     onStartFlow(operation, row);

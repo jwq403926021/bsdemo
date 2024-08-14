@@ -28,7 +28,6 @@
             :value="item.id"
             :label="item.name"
           />
-          :key="item.id" :value="item.id" :label="item.name" />
         </el-select>
       </el-form-item>
       <el-form-item
@@ -37,8 +36,8 @@
         key="express"
       >
         <el-input
-          :value="flowConditionForm.body"
-          @input="onExpressionBodyChange"
+          :model-value="flowConditionForm.body"
+          @update:modelValue="onExpressionBodyChange"
           clearable
           type="textarea"
           :disabled="flowConditionForm.type === 'operation'"

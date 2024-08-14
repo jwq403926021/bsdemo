@@ -355,13 +355,9 @@ const getWidgetProps = computed(() => {
 });
 
 const getDisabledStatus = () => {
-  let formWidgetAuth: ANY_OBJECT | null = null;
-  if (form().formAuth) {
-    formWidgetAuth = form().formAuth();
-    if (formWidgetAuth != null) {
-      formWidgetAuth = formWidgetAuth.pc[pps.widget.variableName];
-    }
-  }
+  const formWidgetAuth: ANY_OBJECT | null = form().formAuth && form().formAuth() && form().formAuth().pc
+    ? form().formAuth().pc[pps.widget.variableName]
+    : null;
   if (formWidgetAuth && formWidgetAuth.disabled) return true;
   return pps.widget.props.disabled;
 };
@@ -400,6 +396,8 @@ const onValueInput = (val: ANY_OBJECT | undefined) => {
     if (multiSelect.value && Array.isArray(tempValue) /*&& tempValue.length > 0*/) {
       tempValue = tempValue.join(',') + ',';
     }
+  } else {
+    tempValue = val;
   }
   console.log('widget update:value', tempValue);
   emit('update:value', tempValue);
@@ -413,10 +411,9 @@ const onValueChange = (
 ) => {
   let tempVal: ValueType | undefined = undefined;
   let dictData = null;
-
+  tempVal = parseValue(val);
   console.log('widget onValueChange >>>', val);
-  if (val) {
-    tempVal = parseValue(val);
+  if (val != null) {
     if (multiSelect.value) {
       dictData = val
         .map((item: string) => {
@@ -442,8 +439,6 @@ const onValueChange = (
       }
     }
   }
-
-  // 这个似乎没有起到什么作用
   emit('change', tempVal, {
     dictData: dictData,
     selectRow: selectRow,

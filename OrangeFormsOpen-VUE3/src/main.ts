@@ -25,6 +25,7 @@ import 'element-plus/theme-chalk/el-cascader-panel.css';
 import 'element-plus/theme-chalk/el-tree.css';
 import 'element-plus/theme-chalk/el-date-picker.css';
 import 'element-plus/theme-chalk/el-input-number.css';
+import 'element-plus/theme-chalk/el-switch.css';
 
 // 其它样式
 import '@/assets/online-icon/iconfont.css';

@@ -314,6 +314,7 @@ import { useLayoutStore } from '@/store';
 import OnlineFilterBox from '../OnlineQueryForm/OnlineFilterBox.vue';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
+import { useFormExpose } from '../hooks/useFormExpose';
 
 const { fetchUpload } = useUpload();
 
@@ -411,6 +412,7 @@ provide('form', () => {
     filter: {
       name: leftFilter.value,
     },
+    instanceData: () => useFormExpose(formData),
   };
 });
 
@@ -775,7 +777,7 @@ const onOperationClick = (operation: ANY_OBJECT | null, row: ANY_OBJECT | null =
   } else if (operation.type === SysCustomWidgetOperationType.EXPORT) {
     onExport(operation);
   } else if (operation.type === SysCustomWidgetOperationType.PRINT) {
-    onPrint(operation, row, queryTable.value.showName + '.pdf');
+    onPrint(operation, row, selectRows.value, queryTable.value.showName + '.pdf');
   } else if (operation.type === SysCustomWidgetOperationType.START_FLOW) {
     onStartFlow(operation, row);
   } else {

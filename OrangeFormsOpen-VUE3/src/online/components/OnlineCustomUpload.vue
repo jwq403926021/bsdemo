@@ -170,6 +170,13 @@ const uploadWidgetImpl = reactive(
 
 const getDisabledStatus = () => {
   if (form().isEdit) return true;
+  let formWidgetAuth: ANY_OBJECT | null = null;
+  if (form().formAuth) {
+    formWidgetAuth = form().formAuth();
+    if (formWidgetAuth != null) {
+      formWidgetAuth = formWidgetAuth.pc[pps.widget.variableName];
+    }
+  }
   return props.widget.props.disabled;
 };
 

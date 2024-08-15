@@ -39,7 +39,6 @@ import { ANY_OBJECT } from '@/types/generic';
 import { useUpload } from '@/common/hooks/useUpload';
 import { useLoginStore } from '@/store';
 import LoginController from '@/api/system/LoginController';
-import { SystemController } from '@/api';
 
 const { getUploadFileUrl, getUploadActionUrl, getUploadHeaders } = useUpload();
 const loginStore = useLoginStore();

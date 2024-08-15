@@ -77,6 +77,7 @@ declare module 'vue' {
     InputNumberRange: typeof import('./src/components/InputNumberRange/index.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']
     LayoutComponentsBreadCrumb: typeof import('./src/components/layout/components/BreadCrumb.vue')['default']
+    LayoutComponentsFormModifyHeadImage: typeof import('./src/components/layout/components/formModifyHeadImage/index.vue')['default']
     LayoutComponentsFormModifyPassword: typeof import('./src/components/layout/components/formModifyPassword/index.vue')['default']
     LayoutComponentsMultiColumn: typeof import('./src/components/layout/components/multi-column.vue')['default']
     LayoutComponentsMultiColumnMenu: typeof import('./src/components/layout/components/multi-column-menu.vue')['default']

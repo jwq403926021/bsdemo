@@ -482,9 +482,9 @@ const initFormData = () => {
       // 如果是复制，清空主键以及自动编码字段
       let clearColumnList: string[] = [];
       if (isRelation.value) {
-        formData[masterTable.value.relation.variableName] = {
-          ...dialogParams.value.rowData,
-        };
+        Object.keys(dialogParams.value.rowData).forEach(key => {
+          formData[masterTable.value.relation.variableName][key] = dialogParams.value.rowData[key];
+        });
         clearFormData(formData[masterTable.value.relation.variableName], clearColumnList);
         resolve();
       } else {

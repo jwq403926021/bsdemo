@@ -144,9 +144,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     }
   };
   const getWidgetVisible = widget => {
-    const formWidgetAuth: ANY_OBJECT | null = formAuth.value && formAuth.value.pc
-      ? formAuth.value.pc[widget.variableName]
-      : null;
+    const formWidgetAuth: ANY_OBJECT | null =
+      formAuth.value && formAuth.value.pc ? formAuth.value.pc[widget.variableName] : null;
     if (formWidgetAuth && formWidgetAuth.hide) return false;
     return true;
   };

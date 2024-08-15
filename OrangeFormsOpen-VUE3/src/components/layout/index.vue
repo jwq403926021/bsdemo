@@ -135,11 +135,12 @@ import { SysMenuBindType, SysOnlineFormType } from '@/common/staticDict';
 import LoginController from '@/api/system/LoginController';
 import { MenuItem } from '@/types/upms/menu';
 import { useUpload } from '@/common/hooks/useUpload';
+import { useCommon } from '@/common/hooks/useCommon';
 import Sidebar from './components/Sidebar.vue';
 import BreadCrumb from './components/BreadCrumb.vue';
 import TagPanel from './components/TagPanel.vue';
-import { useCommon } from '@/common/hooks/useCommon';
 import FormModifyPassword from './components/formModifyPassword/index.vue';
+import FormModifyHeadImage from './components/formModifyHeadImage/index.vue';
 
 const { Dialog } = useCommon();
 const router = useRouter();
@@ -339,6 +340,9 @@ const handleCommand = (command: string) => {
       break;
     case 'modifyPassword':
       Dialog.show('修改密码', FormModifyPassword, { area: '500px' }, {});
+      break;
+    case 'modifyHeadImage':
+      Dialog.show('修改头像', FormModifyHeadImage, { area: '500px' }, {});
       break;
     default:
       ElMessage.warning(`click on item ${command}`);

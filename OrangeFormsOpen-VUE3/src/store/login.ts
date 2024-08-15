@@ -19,6 +19,10 @@ export default defineStore('login', {
     setUserInfo(info: UserInfo) {
       this.userInfo = initUserInfo(info);
     },
+    setHeadImage(headImage: (string & { downloadUri: string; filename: string }) | null) {
+      if (this.userInfo == null) return;
+      this.userInfo.headImageUrl = headImage;
+    },
   },
   persist: {
     // 开启持久存储

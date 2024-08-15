@@ -505,10 +505,11 @@ const dropdownDBLinkIdOptions: DropdownOptions<ANY_OBJECT> = {
 const dblinkIdWidget = reactive(useDropdown(dropdownDBLinkIdOptions));
 
 const loadTableNameWidgetDropdownList = (): Promise<ListData<ANY_OBJECT>> => {
-  if (!formOnlineDict.value.dblinkId) {
-    return Promise.reject();
-  }
   return new Promise((resolve, reject) => {
+    if (!formOnlineDict.value.dblinkId) {
+      reject('请选择数据表所属数据库');
+      return;
+    }
     OnlineDblinkController.listDblinkTables({
       dblinkId: formOnlineDict.value.dblinkId,
     })
@@ -709,6 +710,7 @@ const onDeleteDictData = (row: ANY_OBJECT) => {
 };
 const onDblinkChange = () => {
   clearDictInfo();
+  tableNameWidget.setDirty(true);
   formOnlineDict.value.tableName = undefined;
 };
 

@@ -51,7 +51,7 @@ export const useDropdown = <T>(options: DropdownOptions<T>) => {
             resolve(res);
           })
           .catch(e => {
-            reject(e);
+            resolve([]);
           });
       } else {
         resolve(dropdownList.value);
@@ -73,10 +73,18 @@ export const useDropdown = <T>(options: DropdownOptions<T>) => {
     return Promise.resolve();
   };
 
+  const setDirty = dirty => {
+    if (dirty) {
+      dropdownList.value = [];
+    }
+    loaded = !dirty;
+  };
+
   return {
     loading,
     dropdownList,
     onVisibleChange,
     refresh,
+    setDirty,
   };
 };

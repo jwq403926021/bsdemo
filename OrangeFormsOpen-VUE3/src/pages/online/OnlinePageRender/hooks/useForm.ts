@@ -419,7 +419,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         if (dlgComponent == null) {
           return Promise.reject(new Error('错误的操作组件！！！'));
         } else {
-          const thirdPath = 'thirdOnlineEditForm';
+          const thirdPath = `thirdOnlineEditForm${widget == null ? '' : '/' + widget.variableName}`;
           operationCallback.value = callback;
           return Dialog.show(
             formConfig.formName,

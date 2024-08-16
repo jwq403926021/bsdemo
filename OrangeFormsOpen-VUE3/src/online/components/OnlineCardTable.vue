@@ -96,8 +96,7 @@ const handlerEditOperate = (row: ANY_OBJECT | null, res: ANY_OBJECT) => {
     } else {
       console.log('更新记录', res, props, tableWidget);
       // 更新记录
-      // TODO 为什么这里要重新赋值
-      //row = res[props.widget.relation.variableName];
+      row = res[props.widget.relation.variableName];
       onTableDataListChange(
         tableWidget.dataList.map((item: ANY_OBJECT) => {
           if (row != null && row.__cascade_add_id__ != null) {

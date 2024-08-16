@@ -339,7 +339,9 @@ const handleCommand = (command: string) => {
         });
       break;
     case 'modifyPassword':
-      Dialog.show('修改密码', FormModifyPassword, { area: '500px' }, {});
+      Dialog.show('修改密码', FormModifyPassword, { area: '500px' }, {}).catch(e => {
+        console.warn(e);
+      });
       break;
     case 'modifyHeadImage':
       Dialog.show('修改头像', FormModifyHeadImage, { area: '500px' }, {});

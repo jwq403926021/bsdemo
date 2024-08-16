@@ -72,6 +72,7 @@ const treeDataList = computed(() => {
 });
 
 const onNodeClick = () => {
+  if (form().isEdit) return;
   if (!props.multiple) onSelectChange();
 };
 const emit = defineEmits<{

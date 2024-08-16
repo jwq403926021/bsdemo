@@ -185,25 +185,6 @@ const onDeleteRow = (data: ANY_OBJECT) => {
 const onTableDataListChange = (dataList: ANY_OBJECT[]) => {
   emit('input', dataList);
 };
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdOnlineEditForm/' + props.widget.variableName) {
-    handlerEditOperate(data.rowData, data.data);
-  }
-};
-
-onMounted(() => {
-  //let widget = props.widget;
-  //widget.widgetImpl = getCurrentInstance();
-  window.addEventListener(
-    'message',
-    event => {
-      if (event.data.type === 'refreshData') {
-        refreshData(event.data.data);
-      }
-    },
-    false,
-  );
-});
 </script>
 
 <style scoped>

@@ -12,7 +12,7 @@
     :change="onValueChange"
     @widgetClick="onWidgetClick"
   >
-    <template v-if="form().mode === 'pc'" v-slot="scope">
+    <template v-if="form().mode === 'pc' && widget.widgetType !== SysCustomWidgetType.Cascader" v-slot="scope">
       <template v-if="widget.widgetType === SysCustomWidgetType.Radio">
         <el-radio v-for="item in getAllDropdownData" :key="item.id" :value="item.id">
           {{ item.name }}
@@ -98,10 +98,7 @@ interface IProps extends WidgetProps {
 }
 const pps = withDefaults(defineProps<IProps>(), {});
 
-console.log('widget pps', pps);
-
 const form = inject('form', () => {
-  console.error('OnlineCustomWidget: form not injected');
   return { isEdit: false } as ANY_OBJECT;
 });
 const parentWidget = inject<ANY_OBJECT | null>('parentWidget', null);
@@ -430,7 +427,6 @@ const onValueChange = (
     dictData: dictData,
     selectRow: selectRow,
   });
-  onValueInput(tempVal);
 };
 
 const loadDropdownData = () => {

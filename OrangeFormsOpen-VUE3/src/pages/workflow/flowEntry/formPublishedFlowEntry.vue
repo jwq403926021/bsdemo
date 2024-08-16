@@ -130,19 +130,16 @@ interface IProps extends ThirdProps {
   dialog?: DialogProp<ANY_OBJECT>;
 }
 const props = withDefaults(defineProps<IProps>(), {
-  flowEntry: () => {
-    return {};
-  },
+  flowEntry: undefined,
 });
 const { thirdParams } = useThirdParty(props);
 const formItemSize = computed(() => {
   return layoutStore.defaultFormItemSize || thirdParams.value.defaultFormItemSize?.value;
 });
-
 const entryXml = ref<string>();
 const dialogParams = computed(() => {
   return {
-    flowEntry: props.flowEntry || thirdParams.value.flowEntry,
+    flowEntry: props.flowEntry || thirdParams.value.flowEntry || {},
   };
 });
 /**

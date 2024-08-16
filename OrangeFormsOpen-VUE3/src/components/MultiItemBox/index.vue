@@ -23,7 +23,7 @@
             </el-link>
             <div class="right">
               <slot name="right" :data="item" />
-              <el-icon><Close /></el-icon>
+              <el-icon @click="onDeleteItem(item)" style="cursor: pointer"><Close /></el-icon>
             </div>
           </el-row>
         </template>
@@ -138,10 +138,10 @@ const onEditItem = (item: ANY_OBJECT | null) => {
     emit('edit', item);
   }
 };
-// const onDeleteItem = (item: ANY_OBJECT) => {
-//   if (props.disabled) return;
-//   emit('delete', item);
-// };
+const onDeleteItem = (item: ANY_OBJECT) => {
+  if (props.disabled) return;
+  emit('delete', item);
+};
 </script>
 
 <style scoped>

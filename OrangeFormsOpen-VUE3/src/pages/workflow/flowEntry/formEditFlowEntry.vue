@@ -899,6 +899,7 @@ const onBindFormTypeChange = () => {
 // 流程绑定表单页面改变
 const onEntryPageChange = () => {
   formFlowEntryData.value.defaultFormId = undefined;
+  defaultFormIdWidget.setDirty(true);
   entryDatasource = null;
 };
 const getFormShareInfo = (form: ANY_OBJECT) => {

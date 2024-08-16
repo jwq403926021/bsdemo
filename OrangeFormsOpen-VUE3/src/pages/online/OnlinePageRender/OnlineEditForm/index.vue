@@ -395,7 +395,6 @@ const onSaveFormData = () => {
 };
 // 提交
 const onSubmit = () => {
-  console.log('OnlineEditForm submit', dialogParams.value);
   if (dialogParams.value.isEdit) return;
   if (Array.isArray(richEditWidgetList)) {
     richEditWidgetList.forEach(richWidget => {
@@ -405,7 +404,6 @@ const onSubmit = () => {
     });
   }
   formRef.value.validate((valid: boolean) => {
-    console.log('OnlineEditForm submit validate', valid, form.value);
     if (!valid) return;
     if (dialogParams.value.saveData) {
       // 非级联保存数据
@@ -494,13 +492,9 @@ const initFormData = () => {
         form.value.tableMap.forEach((table: ANY_OBJECT) => {
           if (table.relation && table.relation.relationType === SysOnlineRelationType.ONE_TO_ONE) {
             relationNameList.push(table.relation.variableName);
-            formData[table.relation.variableName] = table.columnList.reduce(
-              (retObj: ANY_OBJECT, column: ANY_OBJECT) => {
-                retObj[column.columnName] = undefined;
-                return retObj;
-              },
-              {},
-            );
+            table.columnList.forEach(column => {
+              formData[table.relation.variableName][column.columnName] = undefined;
+            });
           } else if (table.relation == null) {
             datasourceName = table.datasource.variableName;
           }
@@ -512,10 +506,9 @@ const initFormData = () => {
           } else {
             // 从表字段
             if (dialogParams.value.rowData[key]) {
-              formData[key] = {
-                ...formData[key],
-                ...dialogParams.value.rowData[key],
-              };
+              Object.keys(dialogParams.value.rowData[key]).forEach(subKey => {
+                formData[key][subKey] = dialogParams.value.rowData[key][subKey];
+              });
             }
           }
         });
@@ -571,7 +564,7 @@ onMounted(() => {
         });
       })
       .catch((e: Error) => {
-        console.warn(e);
+        console.error(e);
       });
   }
   isReady.value = true;

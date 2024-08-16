@@ -47,7 +47,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       isCopy: props.isCopy || thirdParams.value.isCopy || false,
       readOnly: props.readOnly || thirdParams.value.readOnly || false,
       fullscreen: props.fullscreen || thirdParams.value.fullscreen || false,
-      saveData: !thirdParams.value.saveData ? props.saveData : thirdParams.value.saveData,
+      saveData:
+        (thirdParams.value || {}).saveData == null ? props.saveData : thirdParams.value.saveData,
     };
   });
 
@@ -221,7 +222,13 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       const relationId = (widget.props.relativeTable || {}).relationId;
       const relation = dialogParams.value.formConfig.relationMap.get(relationId);
       if (relation != null) {
-        formData[relation.variableName] = selectRow || {};
+        if (selectRow != null) {
+          Object.keys(selectRow).forEach(key => {
+            formData[relation.variableName][key] = selectRow[key];
+          });
+        } else {
+          formData[relation.variableName] = Object.create({});
+        }
       }
     }
   };
@@ -337,7 +344,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         formId: formId,
       })
         .then(res => {
-          console.log('<<<<<<OnlineFormController.render>>>>>', res);
           const onlineForm = res.data.onlineForm;
           let formConfigData = JSON.parse(onlineForm.widgetJson);
           formConfigData = formConfigData.pc;
@@ -413,7 +419,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         if (dlgComponent == null) {
           return Promise.reject(new Error('错误的操作组件！！！'));
         } else {
-          console.log('handlerOperation component', dlgComponent);
           const thirdPath = 'thirdOnlineEditForm';
           operationCallback.value = callback;
           return Dialog.show(
@@ -456,7 +461,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     return widget.relation ? formData[widget.relation.variableName] : [];
   };
   const setTableData = (widget: ANY_OBJECT, dataList: ANY_OBJECT[]) => {
-    console.log('setTableData', widget, dataList);
     if (widget == null) return;
     if (widget.relation) {
       formData[widget.relation.variableName] = dataList;
@@ -510,7 +514,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         formData.customField[field.fieldName] = undefined;
       });
     }
-    console.log('initPage formData', formData);
   };
 
   const errorMessage = ref<ANY_OBJECT[]>([]);
@@ -756,7 +759,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
         widgetRuleKey &&
         (widget.props.required || (widget.column && Array.isArray(widget.column.ruleList)))
       ) {
-        console.log('rules >>>>>>>>>>', rules, 'widgetRuleKey', widgetRuleKey);
         if (rules) {
           rules[widgetRuleKey] = [];
           // 必填验证
@@ -799,22 +801,24 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
 
   // TODO initWidgetLinkage
   const initWidgetLinkage = () => {
-    // dialogParams.value.formConfig.linkageMap.forEach((widgetList: ANY_OBJECT[], key: string) => {
-    //   const column = dialogParams.value.formConfig.columnMap.get(key);
-    //   const table = column ? dialogParams.value.formConfig.tableMap.get(column.tableId) : undefined;
-    //   const watchKey =
-    //     'formData.' +
-    //     (table.relation == null ? table.datasource.variableName : table.relation.variableName) +
-    //     '.';
-    //   watchKey += column.columnName;
-    //   watch(watchKey, newValue => {
-    //     if (Array.isArray(widgetList)) {
-    //       widgetList.forEach(widget => {
-    //         resetWidget(widget);
-    //       });
-    //     }
-    //   });
-    // });
+    /*
+    dialogParams.value.formConfig.linkageMap.forEach((widgetList: ANY_OBJECT[], key: string) => {
+      const column = dialogParams.value.formConfig.columnMap.get(key);
+      const table = column ? dialogParams.value.formConfig.tableMap.get(column.tableId) : undefined;
+      let watchKey =
+        'formData.' +
+        (table.relation == null ? table.datasource.variableName : table.relation.variableName) +
+        '.';
+      watchKey += column.columnName;
+      watch(watchKey, newValue => {
+        if (Array.isArray(widgetList)) {
+          widgetList.forEach(widget => {
+            resetWidget(widget);
+          });
+        }
+      });
+    });
+    */
   };
   const getPrintParamItem = (row, printParamList) => {
     let param;
@@ -847,7 +851,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     selectRows: ANY_OBJECT[] | undefined | null,
     fileName: string,
   ) => {
-    console.log('onPrint', operation, row, fileName);
     if (operation == null) return;
     let printParam;
     if (row != null) {
@@ -875,19 +878,17 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     )
       .then(res => {
         const downloadUrl = res.data;
-        console.log('downloadUrl', downloadUrl);
         downloadBlob(downloadUrl as string, {}, 'get')
           .then(blobData => {
             const pdfUrl = window.URL.createObjectURL(blobData as Blob);
             window.open('./lib/pdfjs/web/viewer.html?file=' + pdfUrl);
           })
           .catch(e => {
-            console.log(e);
             ElMessage.error(e);
           });
       })
       .catch(e => {
-        console.log(e);
+        console.error(e);
       });
   };
 
@@ -933,7 +934,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
           });
       })
       .catch(e => {
-        console.warn(e);
+        console.error(e);
       });
   };
 

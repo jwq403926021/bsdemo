@@ -80,7 +80,7 @@ export const useThirdParty = (props: ThirdProps) => {
 };
 
 export const useThirdPartyAlive = () => {
-  let refreshTimer: number;
+  let refreshTimer: number | null | ReturnType<typeof setInterval>;
 
   const route = useRoute();
 

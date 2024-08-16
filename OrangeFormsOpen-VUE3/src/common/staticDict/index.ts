@@ -211,7 +211,7 @@ const SysMenuType = new DictionaryBase('菜单类型', [
   },
   {
     id: 1,
-    name: '表单',
+    name: '菜单',
     symbol: 'MENU',
   },
   {

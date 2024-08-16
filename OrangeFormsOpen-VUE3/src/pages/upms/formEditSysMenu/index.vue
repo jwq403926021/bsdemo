@@ -339,30 +339,32 @@ const loadPageAndForms = () => {
         formTreeData.value = [];
         return;
       }
-      formTreeData.value = pageList.map(page => {
-        let children = formList
-          .filter((form: ANY_OBJECT) => {
-            return (
-              form.pageId === page.pageId &&
-              form.formKind === SysOnlineFormKind.PAGE &&
-              (form.formType === SysOnlineFormType.QUERY ||
-                form.formType === SysOnlineFormType.ADVANCE_QUERY)
-            );
-          })
-          .map((form: ANY_OBJECT) => {
-            return {
-              id: form.formId,
-              name: form.formName,
-            };
-          });
+      formTreeData.value = pageList
+        .map(page => {
+          let children = formList
+            .filter((form: ANY_OBJECT) => {
+              return (
+                form.pageId === page.pageId &&
+                form.formKind === SysOnlineFormKind.PAGE &&
+                (form.formType === SysOnlineFormType.QUERY ||
+                  form.formType === SysOnlineFormType.ADVANCE_QUERY)
+              );
+            })
+            .map((form: ANY_OBJECT) => {
+              return {
+                id: form.formId,
+                name: form.formName,
+              };
+            });
 
-        return {
-          id: page.pageId,
-          name: page.pageName,
-          disabled: !page.published,
-          children,
-        };
-      });
+          return {
+            id: page.pageId,
+            name: page.pageName,
+            disabled: !page.published,
+            children,
+          };
+        })
+        .filter(page => page.children.length > 0);
       if (formData.value.onlineFormId) {
         onlineFormPath.value = findTreeNodePath(
           formTreeData.value,

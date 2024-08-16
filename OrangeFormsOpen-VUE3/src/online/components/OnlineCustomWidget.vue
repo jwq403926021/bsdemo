@@ -168,11 +168,6 @@ const getWidgetStyle = computed(() => {
   };
 });
 const getComponent = computed(() => {
-  console.log(
-    'widget getComponent',
-    pps.widget.widgetType,
-    SysCustomWidgetType.getValue(pps.widget.widgetType),
-  );
   if (
     [
       SysCustomWidgetType.Text,
@@ -185,7 +180,6 @@ const getComponent = computed(() => {
     return OnlineCustomLabel;
   }
   let mode = form().mode;
-  console.log('widget getComponent mode', mode);
 
   switch (pps.widget.widgetType) {
     case SysCustomWidgetType.Label:
@@ -251,7 +245,6 @@ const isDictWidget = computed(() => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const bindValue = computed<string | number | boolean | any[] | ANY_OBJECT | Date | undefined>({
   get() {
-    console.log('widget bind props.value >>', pps.value);
     let tempValue = pps.value === undefined ? '' : pps.value;
     if (isDictWidget.value) tempValue = tempValue == null ? '' : tempValue + '';
     if (multiSelect.value && pps.value && typeof tempValue === 'string') {
@@ -291,7 +284,6 @@ const bindValue = computed<string | number | boolean | any[] | ANY_OBJECT | Date
     }
   },
   set(val) {
-    console.log('widget .......bindValue..........', val, typeof val);
     onValueInput(val as ANY_OBJECT | undefined);
   },
 });
@@ -324,7 +316,6 @@ const getWidgetProps = computed(() => {
   ) {
     props['value-format'] = 'YYYY-MM-DD HH:mm:ss';
   }
-  console.log('widget props', SysCustomWidgetType.getValue(pps.widget.widgetType), props);
   return {
     ...props,
     clearable: true,
@@ -381,12 +372,9 @@ const parseValue = (val: ValueType): ANY_OBJECT => {
 const onValueInput = (val: ANY_OBJECT | undefined) => {
   let tempValue: ValueType | undefined = undefined;
   if (val) {
-    console.log('widget typeof val', typeof val, val instanceof InputEvent, val instanceof Event);
     if (val instanceof InputEvent) {
-      console.warn('widget input value is InputEvent');
       return;
     } else if (val instanceof Event) {
-      console.log('wiget >>>>>>> value >>>>>>', val, val.target instanceof HTMLInputElement);
       if (val.target instanceof HTMLInputElement) {
         tempValue = val.target.value;
       }
@@ -400,7 +388,6 @@ const onValueInput = (val: ANY_OBJECT | undefined) => {
   } else {
     tempValue = val;
   }
-  console.log('widget update:value', tempValue);
   emit('update:value', tempValue);
   emit('update:modelValue', tempValue);
   // ElDatePicker(DateRange)有了这个事件才能更新显示
@@ -413,7 +400,6 @@ const onValueChange = (
   let tempVal: ValueType | undefined = undefined;
   let dictData = null;
   tempVal = parseValue(val);
-  console.log('widget onValueChange >>>', val);
   if (val != null) {
     if (multiSelect.value) {
       dictData = val
@@ -454,7 +440,6 @@ const loadDropdownData = () => {
   dictDataList.value = [];
   setTimeout(() => {
     let dictInfo = (pps.widget.props.dictInfo || {}).dict;
-    console.log('widget OnlineCustomWidget loadDropdownData', dictInfo, pps);
     if (dictInfo && form().getDictDataList) {
       let dictCall;
       if (form().pageCode != null) {
@@ -466,7 +451,6 @@ const loadDropdownData = () => {
       }
       dictCall
         .then((res: ANY_OBJECT[]) => {
-          console.log('OnlineCustomWidget loadDropdownData', res);
           res.forEach((item: ANY_OBJECT) => {
             item.id = item.id + '';
             if (item.parentId) item.parentId = item.parentId + '';
@@ -485,15 +469,12 @@ const loadDropdownData = () => {
 };
 
 const getHtml = () => {
-  console.log('widget call getHtml()');
   const refs = (getCurrentInstance()?.refs || {}) as ANY_OBJECT;
-  console.log('refs', refs);
   if (pps.widget.widgetType === SysCustomWidgetType.RichEditor) {
     return refs[pps.widget.variableName] ? refs[pps.widget.variableName].getHtml() : undefined;
   }
 };
 const reset = () => {
-  console.log('widget call reset()');
   onValueInput(undefined);
   onValueChange(undefined);
   nextTick(() => {
@@ -502,7 +483,6 @@ const reset = () => {
 };
 const refresh = () => {
   const refs = (getCurrentInstance()?.refs || {}) as ANY_OBJECT;
-  console.log('widget call refresh() refs:', refs);
   if (
     refs[pps.widget.variableName] &&
     typeof refs[pps.widget.variableName].refresh === 'function'
@@ -520,7 +500,6 @@ defineExpose({
 watch(
   () => pps.widget,
   () => {
-    console.log('props widget change', pps.widget);
     if (pps.widget) loadDropdownData();
   },
   {
@@ -575,7 +554,6 @@ watch(
 );
 
 onMounted(() => {
-  console.log('getComponent', getComponent.value, getWidgetProps.value);
   //propsWidget.value.widgetImpl = getCurrentInstance();
   //propsWidget.value.parent = parentWidget;
 });

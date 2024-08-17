@@ -115,6 +115,7 @@ const emitChange = (info: ANY_OBJECT) => {
   });
 };
 const handlerEditOperate = (row: ANY_OBJECT | null, res: ANY_OBJECT) => {
+  if (res == null) return;
   if (!row) {
     emitChange({
       dictId: props.value.dictId,

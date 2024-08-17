@@ -145,7 +145,6 @@ function showDialog(title: string, params?: ANY_OBJECT, options?: ANY_OBJECT) {
       dialogKey;
 
     dlgUrl += '&thirdParamsString=' + encodeURIComponent(JSON.stringify(paramsCopy));
-
     const data = {
       title: title,
       dlgFullScreen: options.fullscreen,

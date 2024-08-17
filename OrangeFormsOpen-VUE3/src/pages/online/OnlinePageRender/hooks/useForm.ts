@@ -151,7 +151,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     return true;
   };
   const onValueChange = (widget: ANY_OBJECT, value: ANY_OBJECT) => {
-    console.log('useForm.onValueChange', widget, value);
     if (props.isEdit || !isReady.value) return;
     if (widget.bindData.dataType === SysCustomWidgetBindDataType.Column && widget.column) {
       // 绑定从表字段
@@ -169,7 +168,6 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
     ) {
       formData.customField[widget.bindData.formFieldName] = value;
     }
-    console.log('useForm.onValueChange formData', formData);
   };
   const onWidgetValueChange = (
     widget: ANY_OBJECT,

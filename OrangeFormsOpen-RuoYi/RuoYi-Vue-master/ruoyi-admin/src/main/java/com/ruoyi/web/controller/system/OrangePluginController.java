@@ -331,7 +331,7 @@ public class OrangePluginController extends BaseController {
                 "admin/online/flowOnlineOperation/printWorkOrder/"
         );
 
-        flowWorkOrderOperationPerms = CollUtil.newHashSet(
+        flowWorkOrderCommonPerms = CollUtil.newHashSet(
                 "/admin/online/onlineForm/view",
                 "/admin/online/onlineForm/render",
                 "/admin/flow/flowOperation/viewInitialHistoricTaskInfo",
@@ -615,6 +615,7 @@ public class OrangePluginController extends BaseController {
             urlPerms.addAll(flowFinishTaskPerms);
         }
         if (hasFlowWorkOrderOperationPerms) {
+            urlPerms.addAll(flowWorkOrderCommonPerms);
             urlPerms.addAll(flowWorkOrderCommonPerms);
         }
         if (hasReportDblinkPerms) {

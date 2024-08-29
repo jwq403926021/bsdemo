@@ -88,6 +88,32 @@ public class FlowOperationController {
     private static final String INSTANCE_ID = "processInstanceId";
 
     /**
+     * 根据指定流程的主版本，发起一个流程实例。
+     *
+     * @param processDefinitionKey 流程标识。
+     * @return 应答结果对象。
+     */
+    @SaCheckPermission("flowOperation.all")
+    @OperationLog(type = SysOperationLogType.START_FLOW)
+    @PostMapping("/startOnly")
+    public ResponseResult<Void> startOnly(@MyRequestBody(required = true) String processDefinitionKey) {
+        // 1. 验证流程数据的合法性。
+        ResponseResult<FlowEntry> flowEntryResult = flowOperationHelper.verifyAndGetFlowEntry(processDefinitionKey);
+        if (!flowEntryResult.isSuccess()) {
+            return ResponseResult.errorFrom(flowEntryResult);
+        }
+        // 2. 验证流程一个用户任务的合法性。
+        FlowEntryPublish flowEntryPublish = flowEntryResult.getData().getMainFlowEntryPublish();
+        ResponseResult<TaskInfoVo> taskInfoResult =
+                flowOperationHelper.verifyAndGetInitialTaskInfo(flowEntryPublish, false);
+        if (!taskInfoResult.isSuccess()) {
+            return ResponseResult.errorFrom(taskInfoResult);
+        }
+        flowApiService.start(flowEntryPublish.getProcessDefinitionId(), null);
+        return ResponseResult.success();
+    }
+
+    /**
      * 获取开始节点之后的第一个任务节点的数据。
      *
      * @param processDefinitionKey 流程标识。

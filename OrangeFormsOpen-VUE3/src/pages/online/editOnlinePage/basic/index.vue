@@ -34,6 +34,15 @@
           <el-input v-model="formPageData.pageName" @change="dirty = true" />
         </el-form-item>
       </el-col>
+      <el-col :span="24">
+        <el-form-item label="后台扩展类">
+          <el-input
+            v-model="formPageData.extraJson.extendClass"
+            placeholder="请输入包含包名的完整类名称"
+            @change="dirty = true"
+          />
+        </el-form-item>
+      </el-col>
     </el-form>
   </div>
 </template>
@@ -85,6 +94,7 @@ const savePageInfo = (status: number) => {
   let params = {
     onlinePageDto: {
       ...formPageData.value,
+      extraJson: JSON.stringify(formPageData.value.extraJson || {}),
       status: status,
       published: false,
     },

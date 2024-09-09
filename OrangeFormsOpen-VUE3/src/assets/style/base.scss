@@ -39,6 +39,7 @@ $table-row-height: 50px;
 $--color-white: #FFF !default;
 $--border-color-base: #DCDFE6;
 $--color-primary: #F70 !default;
+
 $--color-sidebar-title-text: #FFF;
 $--color-menu-background: #2D3039;
 $--color-text-secondary: #909399 !default;
@@ -57,71 +58,71 @@ $--color-primary-light-9: color-mix(in srgb, $--color-white 90%, $--color-primar
 /**
  * 弹窗样式，封装的layer的弹窗
  **/
-.layui-layer-page .layui-layer-title{
+body .layui-layer-page .layui-layer-title{
   border:1px solid #01000000;
   border-radius: 4px 4px 0 0;
   background-color: #f8f8f8;
 }
 
-.layui-layer-page .slot-fragment {
+body .layui-layer-page .slot-fragment {
   height: 100%;
 }
 
-.layui-layer-page .layui-layer-setwin {color: #fff}
+body .layui-layer-page .layui-layer-setwin {color: #fff}
 
-.layui-layer-page {
+body .layui-layer-page {
   border:1px solid #01000000;
   border-radius: 4px;
 }
 
-.layui-layer-page .layui-layer-content {
+body .layui-layer-page .layui-layer-content {
   padding: $box-padding-size;
 }
 
-.layui-layer-page.one_to_one_query .layui-layer-content {
+body .layui-layer-page.one_to_one_query .layui-layer-content {
   padding: 0;
 }
 
-.layui-layer-page.layui-layer-iframe .layui-layer-content {
+body .layui-layer-page.layui-layer-iframe .layui-layer-content {
   padding: 0!important;
 }
 
 /**
  * 左树右表弹窗样式
  */
-.layer-advance-dialog {
+body .layer-advance-dialog {
   background-color: #F8F8F8;
   border:1px solid #01000000;
   border-radius: 4px;
 }
 
-.layer-advance-dialog .layui-layer-title{
+body .layer-advance-dialog .layui-layer-title{
   border:1px solid #01000000;
   border-radius: 4px 4px 0 0;
 }
 
-.layer-advance-dialog .layui-layer-content {
+body .layer-advance-dialog .layui-layer-content {
   padding: 5px 15px;
 }
 
 /**
  * 全屏弹窗样式
  */
-.fullscreen-dialog {
+body .fullscreen-dialog {
   background-color: #F8F8F8;
   border: none;
   border-radius: 0;
 }
 
-.fullscreen-dialog .layui-layer-title {
+body .fullscreen-dialog .layui-layer-title {
   display: none;
 }
 
-.fullscreen-dialog .layui-layer-setwin {
+body .fullscreen-dialog .layui-layer-setwin {
   display: none;
 }
 
-.fullscreen-dialog .layui-layer-content {
+body .fullscreen-dialog .layui-layer-content {
   height: 100vh!important;
   padding: 0;
 }
@@ -760,6 +761,10 @@ $--color-primary-light-9: color-mix(in srgb, $--color-white 90%, $--color-primar
     background: $--color-primary-light-9;
     border: 1px dashed $--color-primary-light-4;
   }
+}
+
+.relation-select-popper {
+  display: none;
 }
 
 .vxe-table--render-default.border--full .vxe-body--column {

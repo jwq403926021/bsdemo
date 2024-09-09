@@ -347,7 +347,7 @@ const handleCommand = (command: string) => {
       Dialog.show('修改头像', FormModifyHeadImage, { area: '500px' }, {});
       break;
     default:
-      ElMessage.warning(`click on item ${command}`);
+      ElMessage.warning(`click on item `);
       break;
   }
 };

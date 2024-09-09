@@ -5,4 +5,7 @@ export interface FormPage {
   pageType?: number;
   published: boolean;
   status: number;
+  extraJson: {
+    extendClass?: string;
+  };
 }

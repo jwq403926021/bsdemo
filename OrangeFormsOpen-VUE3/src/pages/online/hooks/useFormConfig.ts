@@ -156,7 +156,7 @@ export const useFormConfig = () => {
     maskFieldList: [],
     allowEventList: [OnlineFormEventType.AFTER_CREATE_FORM],
     fullscreen: true,
-    supportOperation: true,
+    supportOperation: false,
     width: 800,
   };
 

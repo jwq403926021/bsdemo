@@ -1,6 +1,12 @@
 <template>
   <el-row>
-    <el-form label-position="left" label-width="115px" size="default" @submit.prevent>
+    <el-form
+      label-position="left"
+      label-width="115px"
+      size="default"
+      style="width: 100%"
+      @submit.prevent
+    >
       <el-col :span="24">
         <el-form-item label="弹窗表单选择">
           <el-select

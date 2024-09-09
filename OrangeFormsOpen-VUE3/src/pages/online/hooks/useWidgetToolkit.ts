@@ -92,7 +92,7 @@ export const useWidgetToolkit = () => {
           break;
         case SysCustomWidgetType.Switch:
         case SysCustomWidgetType.MobileSwitchFilter:
-          disabled = columnFieldType !== 'Boolean';
+          disabled = columnFieldType !== 'Boolean' && columnFieldType !== 'Number';
           break;
         case SysCustomWidgetType.Slider:
         case SysCustomWidgetType.Stepper:
@@ -147,5 +147,6 @@ export const useWidgetToolkit = () => {
   }
   return {
     columnIsValidByWidgetType,
+    getColumnDataType,
   };
 };

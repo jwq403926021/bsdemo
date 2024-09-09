@@ -249,12 +249,6 @@ const onSetOnlineFormAuth = () => {
     {
       formAuth: formData.value.formAuth || {},
       formWidgetConfig: tempConfig,
-      path: 'thirdSetOnlineFormAuth',
-    },
-    {
-      width: '1000px',
-      height: '700px',
-      pathName: '/thirdParty/formSetOnlineFormAuth',
     },
   )
     .then(res => {

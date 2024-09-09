@@ -90,15 +90,6 @@
       <template #default="{ row }">
         <el-button
           link
-          :size="layoutStore.defaultFormItemSize"
-          v-if="getPrintOperation != null"
-          :class="getPrintOperation.btnClass"
-          @click.stop="onPrint(getPrintOperation, row)"
-        >
-          {{ getPrintOperation.name || '打印' }}
-        </el-button>
-        <el-button
-          link
           type="primary"
           :size="layoutStore.defaultFormItemSize"
           v-if="(row.initTaskInfo || {}).taskKey !== (row.runtimeTaskInfo || {}).taskKey"
@@ -250,7 +241,7 @@ const remoteSort = computed(() => {
 });
 const getPrintOperation = computed(() => {
   let operation = findItemFromList(
-    form().operationList,
+    props.widget.operationList,
     SysCustomWidgetOperationType.PRINT,
     'type',
   );
@@ -397,36 +388,6 @@ const getPrintParamItem = (row: ANY_OBJECT, printParamList: ANY_OBJECT[]) => {
   }
 
   return param;
-};
-const onPrint = (operation: ANY_OBJECT, row: ANY_OBJECT) => {
-  if (operation == null || row == null || row.processDefinitionKey == null) return;
-  let printParam;
-  let temp = getPrintParamItem(row, operation.printParamList);
-  printParam = temp ? [temp] : [];
-
-  let params = {
-    printId: operation.printTemplateId,
-    printParams: printParam,
-  };
-  post<string>(
-    API_CONTEXT + '/flow/flowOnlineOperation/printWorkOrder/' + row.processDefinitionKey,
-    params,
-  )
-    .then(res => {
-      let downloadUrl = res.data;
-      downloadBlob(downloadUrl, {})
-        .then((blobData: Blob) => {
-          let pdfUrl = window.URL.createObjectURL(blobData);
-          window.open('./lib/pdfjs/web/viewer.html?file=' + pdfUrl);
-        })
-        .catch(e => {
-          console.log(e);
-          ElMessage.error(e);
-        });
-    })
-    .catch(e => {
-      console.warn(e);
-    });
 };
 const formatListData = (data: ANY_OBJECT) => {
   Object.keys(data).forEach(key => {

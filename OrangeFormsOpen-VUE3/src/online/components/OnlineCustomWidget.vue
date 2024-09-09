@@ -12,7 +12,10 @@
     :change="onValueChange"
     @widgetClick="onWidgetClick"
   >
-    <template v-if="form().mode === 'pc' && widget.widgetType !== SysCustomWidgetType.Cascader" v-slot="scope">
+    <template
+      v-if="form().mode === 'pc' && widget.widgetType !== SysCustomWidgetType.Cascader"
+      v-slot="scope"
+    >
       <template v-if="widget.widgetType === SysCustomWidgetType.Radio">
         <el-radio v-for="item in getAllDropdownData" :key="item.id" :value="item.id">
           {{ item.name }}

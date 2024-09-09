@@ -245,7 +245,7 @@ export const download = async (
   url: string,
   params: ANY_OBJECT,
   filename: string,
-  method?: RequestMethods,
+  method: RequestMethods = 'post',
   options?: RequestOption,
 ) => {
   return new Promise((resolve, reject) => {

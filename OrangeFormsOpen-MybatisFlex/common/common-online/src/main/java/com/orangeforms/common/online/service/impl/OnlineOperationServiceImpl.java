@@ -95,6 +95,8 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
     private CacheManager cacheManager;
     @Autowired
     private OnlineDataSourceUtil dataSourceUtil;
+    @Autowired
+    private OnlineExtendExecutorUtil onlineExtendExecutorUtil;
 
     private static final String DICT_MAP_SUFFIX = "DictMap";
     private static final String DICT_MAP_LIST_SUFFIX = "DictMapList";
@@ -148,6 +150,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                 }
             }
         }
+        onlineExtendExecutorUtil.doBeforeInsert(table, data);
         onlineOperationMapper.insert(table.getTableName(), columnNames, columnValueList);
         return id;
     }
@@ -159,25 +162,27 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             OnlineTable masterTable,
             JSONObject masterData,
             Map<OnlineDatasourceRelation, List<JSONObject>> slaveDataListMap) {
+        Map<OnlineTable, List<JSONObject>> slaveDataMap = this.convertToSlaveTableAndDataList(slaveDataListMap);
+        onlineExtendExecutorUtil.doBeforeInsertWithRelation(masterTable, masterData, slaveDataMap);
         Object id = this.saveNew(masterTable, masterData);
-        if (slaveDataListMap == null) {
-            return id;
-        }
-        // 迭代多个关联列表。
-        for (Map.Entry<OnlineDatasourceRelation, List<JSONObject>> entry : slaveDataListMap.entrySet()) {
-            Long masterColumnId = entry.getKey().getMasterColumnId();
-            OnlineColumn masterColumn = masterTable.getColumnMap().get(masterColumnId);
-            Object columnValue = masterData.get(masterColumn.getColumnName());
-            OnlineTable slaveTable = entry.getKey().getSlaveTable();
-            OnlineColumn slaveColumn = slaveTable.getColumnMap().get(entry.getKey().getSlaveColumnId());
-            // 迭代关联中的数据集合
-            for (JSONObject slaveData : entry.getValue()) {
-                if (!slaveData.containsKey(slaveTable.getPrimaryKeyColumn().getColumnName())) {
-                    slaveData.put(slaveColumn.getColumnName(), columnValue);
-                    this.saveNew(slaveTable, slaveData);
+        if (slaveDataListMap != null) {
+            // 迭代多个关联列表。
+            for (Map.Entry<OnlineDatasourceRelation, List<JSONObject>> entry : slaveDataListMap.entrySet()) {
+                Long masterColumnId = entry.getKey().getMasterColumnId();
+                OnlineColumn masterColumn = masterTable.getColumnMap().get(masterColumnId);
+                Object columnValue = masterData.get(masterColumn.getColumnName());
+                OnlineTable slaveTable = entry.getKey().getSlaveTable();
+                OnlineColumn slaveColumn = slaveTable.getColumnMap().get(entry.getKey().getSlaveColumnId());
+                // 迭代关联中的数据集合
+                for (JSONObject slaveData : entry.getValue()) {
+                    if (!slaveData.containsKey(slaveTable.getPrimaryKeyColumn().getColumnName())) {
+                        slaveData.put(slaveColumn.getColumnName(), columnValue);
+                        this.saveNew(slaveTable, slaveData);
+                    }
                 }
             }
         }
+        onlineExtendExecutorUtil.doAfterInsertWithRelation(masterTable, masterData, slaveDataMap);
         return id;
     }
 
@@ -219,7 +224,10 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             return true;
         }
         String dataPermFilter = this.buildDataPermFilter(table);
-        return this.doUpdate(table, updateColumnList, filterList, dataPermFilter);
+        onlineExtendExecutorUtil.doBeforeUpdate(table, data);
+        boolean r = this.doUpdate(table, updateColumnList, filterList, dataPermFilter);
+        onlineExtendExecutorUtil.doAfterUpdate(table, data);
+        return r;
     }
 
     @MultiDatabaseWriteMethod
@@ -244,16 +252,18 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             JSONObject masterData,
             Long datasourceId,
             Map<OnlineDatasourceRelation, List<JSONObject>> slaveDataListMap) {
+        Map<OnlineTable, List<JSONObject>> slaveDataMap = this.convertToSlaveTableAndDataList(slaveDataListMap);
+        onlineExtendExecutorUtil.doBeforeUpdateWithRelationn(masterTable, masterData, slaveDataMap);
         this.update(masterTable, masterData);
-        if (slaveDataListMap == null) {
-            return;
+        if (slaveDataListMap != null) {
+            String masterDataId = masterData.get(masterTable.getPrimaryKeyColumn().getColumnName()).toString();
+            for (Map.Entry<OnlineDatasourceRelation, List<JSONObject>> relationEntry : slaveDataListMap.entrySet()) {
+                Long relationId = relationEntry.getKey().getRelationId();
+                this.updateRelationData(
+                        masterTable, masterData, masterDataId, datasourceId, relationId, relationEntry.getValue());
+            }
         }
-        String masterDataId = masterData.get(masterTable.getPrimaryKeyColumn().getColumnName()).toString();
-        for (Map.Entry<OnlineDatasourceRelation, List<JSONObject>> relationEntry : slaveDataListMap.entrySet()) {
-            Long relationId = relationEntry.getKey().getRelationId();
-            this.updateRelationData(
-                    masterTable, masterData, masterDataId, datasourceId, relationId, relationEntry.getValue());
-        }
+        onlineExtendExecutorUtil.doAfterUpdateWithRelationn(masterTable, masterData, slaveDataMap);
     }
 
     @MultiDatabaseWriteMethod
@@ -296,6 +306,9 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
         List<OnlineFilterDto> filterList =
                 this.makeDefaultFilter(table, table.getPrimaryKeyColumn(), dataId);
         String dataPermFilter = this.buildDataPermFilter(table);
+        OnlineColumn pkCol = table.getPrimaryKeyColumn();
+        Object id = onlineOperationHelper.convertToTypeValue(pkCol, dataId);
+        onlineExtendExecutorUtil.doBeforeDelete(table, id);
         if (table.getLogicDeleteColumn() == null) {
             if (this.doDelete(table, filterList, dataPermFilter) != 1) {
                 return false;
@@ -304,6 +317,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             this.doLogicDelete(table, table.getPrimaryKeyColumn(), dataId, dataPermFilter);
         }
         if (CollUtil.isEmpty(relationList)) {
+            onlineExtendExecutorUtil.doAfterDelete(table, id);
             return true;
         }
         Map<String, Object> masterData = getMasterData(table, null, null, dataId);
@@ -327,6 +341,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                 this.doLogicDelete(slaveTable, slaveColumn, columnValue, null);
             }
         }
+        onlineExtendExecutorUtil.doAfterDelete(table, id);
         return true;
     }
 
@@ -387,7 +402,9 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             this.buildVirtualColumn(resultList, table, toManyRelationList);
         }
         this.reformatResultListWithOneToOneRelation(resultList, oneToOneRelationList);
-        return resultList.get(0);
+        Map<String, Object> result = resultList.get(0);
+        onlineExtendExecutorUtil.doAfterSelectOne(table, result);
+        return result;
     }
 
     @Override
@@ -402,7 +419,11 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                 slaveTable, null, selectFields, filterList, dataPermFilter, null, null);
         List<Map<String, Object>> resultList = pageData.getDataList();
         this.buildDataListWithDict(resultList, slaveTable);
-        return CollUtil.isEmpty(resultList) ? null : resultList.get(0);
+        Map<String, Object> result = CollUtil.isEmpty(resultList) ? null : resultList.get(0);
+        if (result != null) {
+            onlineExtendExecutorUtil.doAfterSelectOne(slaveTable, result);
+        }
+        return result;
     }
 
     @Override
@@ -414,6 +435,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             String orderBy,
             MyPageParam pageParam) {
         this.normalizeFilterList(table, oneToOneRelationList, filterList);
+        onlineExtendExecutorUtil.doBeforeSelectList(table, filterList);
         // 组件表关联数据。
         List<JoinTableInfo> joinInfoList = this.makeJoinInfoList(table, oneToOneRelationList);
         // 拼接关联表的select fields字段。
@@ -433,6 +455,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             this.buildVirtualColumn(resultList, table, toManyRelationList);
         }
         this.reformatResultListWithOneToOneRelation(resultList, oneToOneRelationList);
+        onlineExtendExecutorUtil.doAfterSelectList(table, resultList);
         return pageData;
     }
 
@@ -440,6 +463,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
     public MyPageData<Map<String, Object>> getSlaveDataList(
             OnlineDatasourceRelation relation, List<OnlineFilterDto> filterList, String orderBy, MyPageParam pageParam) {
         OnlineTable slaveTable = relation.getSlaveTable();
+        onlineExtendExecutorUtil.doBeforeSelectList(slaveTable, filterList);
         this.normalizeFilterList(slaveTable, null, filterList);
         // 拼接关联表的select fields字段。
         String selectFields = this.makeSelectFields(slaveTable, null);
@@ -447,6 +471,7 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
         MyPageData<Map<String, Object>> pageData =
                 this.getList(slaveTable, null, selectFields, filterList, dataPermFilter, orderBy, pageParam);
         this.buildDataListWithDict(pageData.getDataList(), slaveTable);
+        onlineExtendExecutorUtil.doAfterSelectList(slaveTable, pageData.getDataList());
         return pageData;
     }
 
@@ -1230,6 +1255,18 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
             joinInfoList.add(joinInfo);
         }
         return joinInfoList;
+    }
+
+    private Map<OnlineTable, List<JSONObject>> convertToSlaveTableAndDataList(
+            Map<OnlineDatasourceRelation, List<JSONObject>> slaveDataListMap) {
+        Map<OnlineTable, List<JSONObject>> resultMap = MapUtil.newHashMap();
+        if (slaveDataListMap == null) {
+            return resultMap;
+        }
+        for (Map.Entry<OnlineDatasourceRelation, List<JSONObject>> entry : slaveDataListMap.entrySet()) {
+            resultMap.put(entry.getKey().getSlaveTable(), entry.getValue());
+        }
+        return resultMap;
     }
 
     private String makeSelectFields(OnlineTable table, String relationVariable) {

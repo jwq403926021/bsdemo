@@ -8,6 +8,7 @@
         <result column="page_code" jdbcType="VARCHAR" property="pageCode"/>
         <result column="page_name" jdbcType="VARCHAR" property="pageName"/>
         <result column="page_type" jdbcType="INTEGER" property="pageType"/>
+        <result column="extra_json" jdbcType="VARCHAR" property="extraJson"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="published" jdbcType="BOOLEAN" property="published"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -61,10 +62,10 @@
     </select>
 
     <select id="getOnlinePageListByDatasourceId" resultMap="BaseResultMap">
-        SELECT a.* FROM zz_online_page a, zz_online_page_datasource b
+        SELECT zz_online_page.* FROM zz_online_page, zz_online_page_datasource b
         <where>
             <include refid="filterRef"/>
-            AND b.datasource_id = #{datasourceI} AND b.page_id = a.page_id
+            AND b.datasource_id = #{datasourceId} AND b.page_id = zz_online_page.page_id
         </where>
     </select>
 </mapper>

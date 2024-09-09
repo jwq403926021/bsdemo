@@ -47,6 +47,12 @@ public class OnlinePageVo {
     private Integer pageType;
 
     /**
+     * 扩展数据。
+     */
+    @Schema(description = "扩展数据")
+    private String extraJson;
+
+    /**
      * 页面编辑状态。
      */
     @Schema(description = "页面编辑状态")

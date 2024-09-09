@@ -6,35 +6,40 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.orangeforms.common.core.cache.CacheConfig;
 import com.orangeforms.common.core.constant.ObjectFieldType;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
+import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.core.object.ResponseResult;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.upload.BaseUpDownloader;
 import com.orangeforms.common.core.upload.UpDownloaderFactory;
 import com.orangeforms.common.core.upload.UploadResponseInfo;
 import com.orangeforms.common.core.upload.UploadStoreTypeEnum;
+import com.orangeforms.common.core.util.ApplicationContextHolder;
 import com.orangeforms.common.online.config.OnlineProperties;
-import com.orangeforms.common.online.model.OnlineColumn;
-import com.orangeforms.common.online.model.OnlineDatasource;
-import com.orangeforms.common.online.model.OnlineDatasourceRelation;
-import com.orangeforms.common.online.model.OnlineTable;
+import com.orangeforms.common.online.model.*;
 import com.orangeforms.common.online.model.constant.FieldKind;
 import com.orangeforms.common.online.model.constant.RelationType;
+import com.orangeforms.common.online.object.BaseOnlineExtendExecutor;
 import com.orangeforms.common.online.object.ColumnData;
-import com.orangeforms.common.online.service.OnlineDatasourceRelationService;
-import com.orangeforms.common.online.service.OnlineDatasourceService;
-import com.orangeforms.common.online.service.OnlineOperationService;
-import com.orangeforms.common.online.service.OnlineTableService;
+import com.orangeforms.common.online.object.OnlinePageExtra;
+import com.orangeforms.common.online.service.*;
 import com.orangeforms.common.redis.cache.SessionCacheHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.annotation.Resource;
 import java.io.Serializable;
 import java.io.IOException;
 import java.util.*;
@@ -57,6 +62,8 @@ public class OnlineOperationHelper {
     @Autowired
     private OnlineTableService onlineTableService;
     @Autowired
+    private OnlinePageService onlinePageService;
+    @Autowired
     private OnlineOperationService onlineOperationService;
     @Autowired
     private OnlineProperties onlineProperties;
@@ -64,6 +71,8 @@ public class OnlineOperationHelper {
     private UpDownloaderFactory upDownloaderFactory;
     @Autowired
     private SessionCacheHelper cacheHelper;
+    @Resource(name = "caffeineCacheManager")
+    private CacheManager cacheManager;
 
     /**
      * 验证并获取数据源数据。
@@ -359,6 +368,37 @@ public class OnlineOperationHelper {
         responseInfo.setDownloadUri(null);
         cacheHelper.putSessionUploadFile(responseInfo.getFilename());
         ResponseResult.output(ResponseResult.success(responseInfo));
+    }
+
+    /**
+     * 将与指定数据源Id关联的OnlinePage对象中，配置的在线表单后台扩展执行器对象写入本地现成。
+     *
+     * @param datasourceId 数据源Id。
+     */
+    public void enableOnlineExtendExecutor(Long datasourceId) {
+        Cache cache = cacheManager.getCache(CacheConfig.CacheEnum.ONLINE_EXTEND_EXECUTOR_CACHE.name());
+        Assert.notNull(cache, "Cache ONLINE_EXTEND_EXECUTOR_CACHE can't be NULL");
+        BaseOnlineExtendExecutor executor = cache.get(datasourceId, BaseOnlineExtendExecutor.class);
+        if (executor != null) {
+            OnlineExtendExecutorUtil.setOnlineExtendExecutorToLocal(executor);
+        }
+        OnlinePage page = onlinePageService.getOnlinePageListByDatasourceId(datasourceId).get(0);
+        if (StrUtil.isNotBlank(page.getExtraJson())) {
+            OnlinePageExtra pageExtra = JSON.parseObject(page.getExtraJson(), OnlinePageExtra.class);
+            if (StrUtil.isNotBlank(pageExtra.getExtendClass())) {
+                try {
+                    Object extendClass = ApplicationContextHolder.getBean(Class.forName(pageExtra.getExtendClass()));
+                    if (!(extendClass instanceof BaseOnlineExtendExecutor)) {
+                        throw new MyRuntimeException("在线表单扩展类没有实现 [BaseOnlineExtendExecutor] 接口！");
+                    }
+                    executor = (BaseOnlineExtendExecutor) extendClass;
+                } catch (ClassNotFoundException e) {
+                    throw new MyRuntimeException("在线表单扩展类没有实现 [BaseOnlineExtendExecutor] 接口！");
+                }
+            }
+        }
+        cache.put(datasourceId, executor);
+        OnlineExtendExecutorUtil.setOnlineExtendExecutorToLocal(executor);
     }
 
     private ResponseResult<OnlineColumn> doVerifyUpDownloadFileColumn(

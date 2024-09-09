@@ -269,6 +269,7 @@ public class FlowOnlineOperationController {
             }
             taskVariableData.put(FlowConstant.COPY_DATA_KEY, copyData);
         }
+        onlineOperationHelper.enableOnlineExtendExecutor(datasource.getDatasourceId());
         FlowTaskComment flowTaskComment = BeanUtil.copyProperties(flowTaskCommentDto, FlowTaskComment.class);
         if (StrUtil.isBlank(dataId)) {
             return this.submitNewTask(processInstanceId, taskId,
@@ -660,6 +661,7 @@ public class FlowOnlineOperationController {
             taskVariableData.put(FlowConstant.COPY_DATA_KEY, copyData);
         }
         FlowTaskComment flowTaskComment = BeanUtil.copyProperties(flowTaskCommentDto, FlowTaskComment.class);
+        onlineOperationHelper.enableOnlineExtendExecutor(datasource.getDatasourceId());
         // 保存在线表单提交的数据，同时启动流程和自动完成第一个用户任务。
         if (slaveData == null) {
             flowOnlineOperationService.saveNewAndStartProcess(
@@ -853,6 +855,7 @@ public class FlowOnlineOperationController {
 
     private JSONObject buildUserTaskData(
             String businessKey, OnlineDatasource datasource, List<OnlineDatasourceRelation> relationList) {
+        onlineOperationHelper.enableOnlineExtendExecutor(datasource.getDatasourceId());
         OnlineTable masterTable = datasource.getMasterTable();
         JSONObject jsonData = new JSONObject();
         List<OnlineDatasourceRelation> oneToOneRelationList = relationList.stream()

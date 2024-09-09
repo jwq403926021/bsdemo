@@ -56,6 +56,12 @@ public class OnlinePage {
     private Integer pageType;
 
     /**
+     * 扩展数据。
+     */
+    @Column(value = "extra_json")
+    private String extraJson;
+
+    /**
      * 页面编辑状态。
      */
     @Column(value = "status")

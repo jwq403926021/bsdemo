@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : hw-test
- Source Server Type    : MySQL
- Source Server Version : 80024
- Source Host           : localhost:3306
- Source Schema         : zzdemo-online-open
-
- Target Server Type    : MySQL
- Target Server Version : 80024
- File Encoding         : 65001
-
- Date: 05/07/2024 22:26:38
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -1896,6 +1880,7 @@ CREATE TABLE `zz_online_page` (
   `page_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '页面编码',
   `page_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '页面名称',
   `page_type` int NOT NULL COMMENT '页面类型',
+  `extra_json` varchar(2048) COLLATE utf8mb4_bin COMMENT '扩展数据',
   `status` int NOT NULL COMMENT '页面编辑状态',
   `published` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否发布',
   `create_time` datetime NOT NULL COMMENT '创建时间',

@@ -111,6 +111,7 @@ public class OnlineOperationController {
             return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
         }
         OnlineTable masterTable = datasource.getMasterTable();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         if (slaveData == null) {
             onlineOperationService.saveNew(masterTable, masterData);
         } else {
@@ -146,8 +147,8 @@ public class OnlineOperationController {
         if (!verifyResult.isSuccess()) {
             return ResponseResult.errorFrom(verifyResult);
         }
-        OnlineDatasourceRelation relation = verifyResult.getData();
-        onlineOperationService.saveNew(relation.getSlaveTable(), slaveData);
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
+        onlineOperationService.saveNew(verifyResult.getData().getSlaveTable(), slaveData);
         return ResponseResult.success();
     }
 
@@ -179,6 +180,7 @@ public class OnlineOperationController {
             return ResponseResult.error(ErrorCodeEnum.NO_OPERATION_PERMISSION);
         }
         OnlineTable masterTable = datasource.getMasterTable();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         if (slaveData == null) {
             if (!onlineOperationService.update(masterTable, masterData)) {
                 return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
@@ -218,6 +220,7 @@ public class OnlineOperationController {
             return ResponseResult.errorFrom(verifyResult);
         }
         OnlineTable slaveTable = verifyResult.getData().getSlaveTable();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         if (!onlineOperationService.update(slaveTable, slaveData)) {
             return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
         }
@@ -329,6 +332,7 @@ public class OnlineOperationController {
         List<OnlineDatasourceRelation> allRelationList = relationListResult.getData();
         List<OnlineDatasourceRelation> oneToOneRelationList = allRelationList.stream()
                 .filter(r -> r.getRelationType().equals(RelationType.ONE_TO_ONE)).collect(Collectors.toList());
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         Map<String, Object> result = onlineOperationService.getMasterData(
                 datasource.getMasterTable(), oneToOneRelationList, allRelationList, dataId);
         return ResponseResult.success(result);
@@ -355,6 +359,7 @@ public class OnlineOperationController {
         if (!verifyResult.isSuccess()) {
             return ResponseResult.errorFrom(verifyResult);
         }
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         Map<String, Object> result = onlineOperationService.getSlaveData(verifyResult.getData(), dataId);
         return ResponseResult.success(result);
     }
@@ -547,6 +552,7 @@ public class OnlineOperationController {
             return ResponseResult.errorFrom(orderByResult);
         }
         String orderBy = orderByResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         MyPageData<Map<String, Object>> pageData = onlineOperationService.getMasterDataList(
                 masterTable, oneToOneRelationList, allRelationList, filterDtoList, orderBy, pageParam);
         return ResponseResult.success(pageData);
@@ -606,6 +612,7 @@ public class OnlineOperationController {
             ResponseResult.output(HttpServletResponse.SC_BAD_REQUEST, orderByResult);
         }
         String orderBy = orderByResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         MyPageData<Map<String, Object>> pageData = onlineOperationService.getMasterDataList(
                 masterTable, oneToOneRelationList, allRelationList, filterDtoList, orderBy, null);
         Map<String, String> headerMap = this.makeExportHeaderMap(masterTable, allRelationList, exportInfoList);
@@ -664,6 +671,7 @@ public class OnlineOperationController {
             return ResponseResult.errorFrom(orderByResult);
         }
         String orderBy = orderByResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         MyPageData<Map<String, Object>> pageData =
                 onlineOperationService.getSlaveDataList(relation, filterDtoList, orderBy, pageParam);
         return ResponseResult.success(pageData);
@@ -716,6 +724,7 @@ public class OnlineOperationController {
             return;
         }
         String orderBy = orderByResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         MyPageData<Map<String, Object>> pageData =
                 onlineOperationService.getSlaveDataList(relation, filterDtoList, orderBy, null);
         Map<String, String> headerMap =
@@ -813,6 +822,7 @@ public class OnlineOperationController {
             return ResponseResult.errorFrom(relationListResult);
         }
         List<OnlineDatasourceRelation> relationList = relationListResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         for (String dataId : dataIdList) {
             if (!onlineOperationService.delete(masterTable, relationList, dataId)) {
                 return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);
@@ -829,6 +839,7 @@ public class OnlineOperationController {
             return ResponseResult.errorFrom(verifyResult);
         }
         OnlineDatasourceRelation relation = verifyResult.getData();
+        onlineOperationHelper.enableOnlineExtendExecutor(datasourceId);
         for (String dataId : dataIdList) {
             if (!onlineOperationService.delete(relation.getSlaveTable(), null, dataId)) {
                 return ResponseResult.error(ErrorCodeEnum.DATA_NOT_EXIST);

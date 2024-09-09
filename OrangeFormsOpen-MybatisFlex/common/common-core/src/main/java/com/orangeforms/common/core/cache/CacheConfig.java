@@ -54,6 +54,10 @@ public class CacheConfig {
          */
         ONLINE_FORM_RENDER_CACCHE(300, 100),
         /**
+         * 在线表单扩展执行器对象的缓存。
+         */
+        ONLINE_EXTEND_EXECUTOR_CACHE(300, 100),
+        /**
          * 报表表单组件渲染数据缓存。
          */
         REPORT_FORM_RENDER_CACCHE(300, 100),

@@ -440,6 +440,9 @@ const initPageInfo = () => {
     published: false,
     pageType: SysOnlinePageType.BIZ,
     status: SysOnlinePageStatus.BASIC,
+    extraJson: {
+      extendClass: undefined,
+    },
   };
   activeStep.value = SysOnlinePageSettingStep.BASIC;
   let pageId = props.pageId || thirdParams.value.pageId;
@@ -718,8 +721,12 @@ onMounted(() => {
       return initPageInfo();
     })
     .then(res => {
+      let extraJson = JSON.parse((res.data.extraJson as string) || '{}');
       formPageData.value = {
         ...res.data,
+        extraJson: {
+          extendClass: extraJson.extendClass,
+        },
       };
     })
     .catch(e => {

@@ -7,7 +7,7 @@
       :model="formPageData"
       :rules="formRules"
       label-position="right"
-      label-width="80px"
+      label-width="90px"
       @submit.prevent
     >
       <el-col :span="24">
@@ -89,7 +89,7 @@ watch(
   () => props.modelValue,
   (newVal, oldVal) => {
     if (newVal != oldVal) {
-      formPageData.value = { ...newVal };
+      formPageData.value = { ...formPageData.value, ...newVal };
     }
   },
   {

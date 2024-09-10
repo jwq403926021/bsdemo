@@ -58,7 +58,17 @@ import { OnlinePageController } from '@/api/online';
 const props = defineProps<{ modelValue: FormPage }>();
 
 const form = ref();
-const formPageData = ref<FormPage>({} as FormPage);
+const formPageData = ref<FormPage>({
+  pageId: undefined,
+  pageCode: undefined,
+  pageName: undefined,
+  published: false,
+  pageType: SysOnlinePageType.BIZ,
+  status: SysOnlinePageStatus.BASIC,
+  extraJson: {
+    extendClass: undefined,
+  },
+});
 const dirty = ref(false);
 const formRules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   pageCode: [
@@ -133,6 +143,6 @@ defineExpose({
 });
 
 onMounted(() => {
-  formPageData.value = { ...props.modelValue };
+  formPageData.value = { ...formPageData.value, ...props.modelValue };
 });
 </script>

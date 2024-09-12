@@ -1897,7 +1897,7 @@ CREATE TABLE `zz_online_page` (
 -- Records of zz_online_page
 -- ----------------------------
 BEGIN;
-INSERT INTO `zz_online_page` VALUES (1809132177523216384, NULL, NULL, 'flowLeave', '请假申请', 10, 2, b'1', '2024-07-05 15:48:18', 1808020007993479168, '2024-07-05 16:34:27', 1808020007993479168);
+INSERT INTO `zz_online_page` VALUES (1809132177523216384, NULL, NULL, 'flowLeave', '请假申请', 10, NULL, 2, b'1', '2024-07-05 15:48:18', 1808020007993479168, '2024-07-05 16:34:27', 1808020007993479168);
 COMMIT;
 
 -- ----------------------------

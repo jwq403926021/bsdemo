@@ -271,7 +271,7 @@ public class SaTokenUtil {
         Cache cache = cacheManager.getCache(CacheConfig.CacheEnum.USER_PERMISSION_CACHE.name());
         Assert.notNull(cache, "Cache USER_PERMISSION_CACHE can't be NULL.");
         Cache.ValueWrapper wrapper = cache.get(permKey);
-        if (wrapper == null) {
+        if (wrapper == null || CollUtil.isEmpty((Set<String>) wrapper.get())) {
             RSet<String> permSet = redissonClient.getSet(permKey);
             localPermSet = permSet.readAll();
             cache.put(permKey, localPermSet);

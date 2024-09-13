@@ -278,7 +278,7 @@ public class OnlineFormServiceImpl extends BaseService<OnlineForm, Long> impleme
 
     @Override
     public List<OnlineForm> getOnlineFormListByPageIds(Set<Long> pageIdSet) {
-        return onlineFormMapper.selectListByQuery(new QueryWrapper().eq(OnlineForm::getPageId, pageIdSet));
+        return onlineFormMapper.selectListByQuery(new QueryWrapper().in(OnlineForm::getPageId, pageIdSet));
     }
 
     /**

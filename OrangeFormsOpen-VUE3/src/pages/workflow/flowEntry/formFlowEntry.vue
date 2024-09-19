@@ -403,6 +403,7 @@ const onAddFlowEntryClick = () => {
     })
     .catch(e => {
       console.log(e);
+      refreshFormFlowEntry();
     });
 };
 /**
@@ -430,6 +431,7 @@ const onEditFlowEntryClick = (row: ANY_OBJECT) => {
     })
     .catch(e => {
       console.warn(e);
+      refreshFormFlowEntry();
     });
 };
 /**

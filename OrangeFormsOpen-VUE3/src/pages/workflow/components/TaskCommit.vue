@@ -108,9 +108,13 @@
         <el-col
           :span="24"
           v-if="
-            dialogParams.operation.type !== SysFlowTaskOperationType.CO_SIGN &&
-            dialogParams.operation.type !== SysFlowTaskOperationType.SIGN_REDUCTION &&
-            dialogParams.operation.type !== SysFlowTaskOperationType.MULTI_SIGN
+            [
+              SysFlowTaskOperationType.CO_SIGN,
+              SysFlowTaskOperationType.SIGN_REDUCTION,
+              SysFlowTaskOperationType.BFORE_CONSIGN,
+              SysFlowTaskOperationType.AFTER_CONSIGN,
+              SysFlowTaskOperationType.MULTI_SIGN,
+            ].indexOf(dialogParams.operation.type) === -1
           "
         >
           <el-form-item label="审批意见" prop="message">
@@ -206,7 +210,7 @@ const loadTaskWidgetDropdownData = (): Promise<ListData<ANY_OBJECT>> => {
       taskId: dialogParams.value.taskId,
     })
       .then(res => {
-        resolve({ dataList: res.data.dataList });
+        resolve({ dataList: res.data });
       })
       .catch(e => {
         reject(e);
@@ -238,6 +242,8 @@ const showAssignSelect = computed(() => {
     [
       SysFlowTaskOperationType.TRANSFER,
       SysFlowTaskOperationType.CO_SIGN,
+      SysFlowTaskOperationType.BFORE_CONSIGN,
+      SysFlowTaskOperationType.AFTER_CONSIGN,
       SysFlowTaskOperationType.SET_ASSIGNEE,
     ].indexOf(dialogParams.value.operation.type) !== -1 || showAssignSelect
   );
@@ -248,6 +254,8 @@ const multiSelect = computed(() => {
     [
       SysFlowTaskOperationType.CO_SIGN,
       SysFlowTaskOperationType.MULTI_SIGN,
+      SysFlowTaskOperationType.BFORE_CONSIGN,
+      SysFlowTaskOperationType.AFTER_CONSIGN,
       SysFlowTaskOperationType.TRANSFER,
       SysFlowTaskOperationType.SET_ASSIGNEE,
     ].indexOf(dialogParams.value.operation.type) !== -1
@@ -287,7 +295,9 @@ const onSelectAssignee = () => {
       showAssignee: false,
       showStartUser:
         dialogParams.value.operation.type !== SysFlowTaskOperationType.CO_SIGN &&
-        dialogParams.value.operation.type !== SysFlowTaskOperationType.SIGN_REDUCTION,
+        dialogParams.value.operation.type !== SysFlowTaskOperationType.SIGN_REDUCTION &&
+        dialogParams.value.operation.type !== SysFlowTaskOperationType.BFORE_CONSIGN &&
+        dialogParams.value.operation.type !== SysFlowTaskOperationType.BFORE_CONSIGN,
       multiple: multiSelect.value,
       usedUserIdList,
       filterObject: otherFilterObject,

@@ -50,7 +50,7 @@
             >
               <el-option label="不更新" :value="undefined" />
               <el-option
-                v-for="item in dialogParams.validStatusList.value"
+                v-for="item in dialogParams.validStatusList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
@@ -178,12 +178,12 @@ import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 interface IProps extends ThirdProps {
   rowData?: ANY_OBJECT;
-  validStatusList?: Ref<ANY_OBJECT[]>;
+  validStatusList?: ANY_OBJECT[];
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
   dialog?: DialogProp<ANY_OBJECT | ANY_OBJECT[] | undefined>;
 }
 const props = withDefaults(defineProps<IProps>(), {
-  validStatusList: () => ref([]),
+  validStatusList: () => [],
 });
 const { thirdParams, onCloseThirdDialog } = useThirdParty(props);
 
@@ -215,7 +215,7 @@ const userName = ref<ANY_OBJECT[]>([]);
 const dialogParams = computed(() => {
   return {
     rowData: props.rowData || thirdParams.value.rowData,
-    validStatusList: props.validStatusList.value || thirdParams.value.validStatusList || [],
+    validStatusList: props.validStatusList || thirdParams.value.validStatusList || [],
   };
 });
 const multiSignGroupList = computed(() => {

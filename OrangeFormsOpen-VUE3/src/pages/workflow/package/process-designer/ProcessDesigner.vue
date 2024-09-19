@@ -230,7 +230,7 @@ import camundaModdleDescriptor from './plugins/descriptor/camundaDescriptor.json
 import activitiModdleDescriptor from './plugins/descriptor/activitiDescriptor.json';
 import flowableModdleDescriptor from './plugins/descriptor/flowableDescriptor.json';
 // 标签解析 Extension
-import flowableModdleExtension from './plugins/extension-moddle/flowable/index';
+import flowableModdleExtension from './plugins/extension-moddle/flowable/index.js';
 
 const emit = defineEmits<{
   [key: string]: [ANY_OBJECT | string | null, (ANY_OBJECT | null)?, (ANY_OBJECT | null)?];
@@ -553,7 +553,9 @@ const onSave = () => {
           emit('save', xml);
         });
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log('取消保存');
+      });
   } else {
     bpmnModeler.saveXML({ format: true }).then(({ xml }: { xml: string }) => {
       emit('save', xml);

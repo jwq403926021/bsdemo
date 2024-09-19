@@ -354,7 +354,7 @@ const onEditOperation = (operation: ANY_OBJECT) => {
     },
     {
       rowData: operation,
-      validStatusList: getFlowEntryValidStatus,
+      validStatusList: getFlowEntryValidStatus.value,
       path: 'thirdEditOperation',
     },
     {

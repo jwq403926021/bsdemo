@@ -256,6 +256,8 @@ const getButtonType = (type: string) => {
     case SysFlowTaskOperationType.TRANSFER:
     case SysFlowTaskOperationType.CO_SIGN:
     case SysFlowTaskOperationType.SIGN_REDUCTION:
+    case SysFlowTaskOperationType.BFORE_CONSIGN:
+    case SysFlowTaskOperationType.AFTER_CONSIGN:
     case SysFlowTaskOperationType.MULTI_AGREE:
     case SysFlowTaskOperationType.MULTI_SIGN:
     case SysFlowTaskOperationType.SET_ASSIGNEE:

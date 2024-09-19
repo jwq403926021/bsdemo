@@ -1170,6 +1170,23 @@
       ]
     },
     {
+      "name": "TaskInfo",
+      "superClass": [ "Element" ],
+      "meta": {
+        "allowedIn": [
+          "bpmn:ServiceTask",
+          "bpmn:ReceiveTask"
+        ]
+      },
+      "properties": [
+        {
+          "name": "data",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
       "name": "UserCandidateGroups",
       "superClass": ["Element"],
       "meta": {

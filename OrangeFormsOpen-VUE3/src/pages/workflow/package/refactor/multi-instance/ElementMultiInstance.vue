@@ -11,6 +11,12 @@
           />
         </template>
       </el-form-item>
+      <el-form-item v-if="isCountersign" label="会签类型" style="margin-bottom: 4px">
+        <el-radio-group v-model="loopCharacteristics" @change="changeLoopCharacteristicsType">
+          <el-radio label="ParallelMultiInstance">并行会签</el-radio>
+          <el-radio label="SequentialMultiInstance">串行会签</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <div v-if="isCountersign">
         <el-form-item label="内置变量" style="margin-bottom: 5px">
           <template #label>
@@ -57,6 +63,7 @@
             <el-input
               v-model="loopInstanceForm.completionCondition"
               clearable
+              :disabled="loopCharacteristics === 'SequentialMultiInstance'"
               @change="updateLoopCondition"
             />
           </el-form-item>
@@ -163,6 +170,7 @@ const defaultLoopInstanceForm = {
 const loopInstanceForm = ref<ANY_OBJECT>({
   collection: 'assigneeList',
   elementVariable: 'assignee',
+  completionCondition: '',
 });
 const variableList = [
   {
@@ -299,7 +307,10 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
   }
 };
 const changeLoopCharacteristicsType = (type: string) => {
-  // loopInstanceForm.value = { ...defaultLoopInstanceForm }; // 切换类型取消原表单配置
+  if (type === 'SequentialMultiInstance') {
+    // eslint-disable-next-line no-template-curly-in-string
+    loopInstanceForm.value.completionCondition = '${nrOfInstances == nrOfCompletedInstances}';
+  }
   // 取消多实例配置
   if (type === 'Null') {
     win.bpmnInstances.modeling.updateProperties(bpmnElement, {
@@ -332,6 +343,7 @@ const changeLoopCharacteristicsType = (type: string) => {
   });
 
   updateLoopBase();
+  updateLoopCondition(loopInstanceForm.value.completionCondition);
 };
 // 循环基数
 

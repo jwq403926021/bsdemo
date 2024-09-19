@@ -178,10 +178,22 @@ const preHandlerOperationThen = (
 ) => {
   // 加签、减签操作
   if (
-    operation.type === SysFlowTaskOperationType.CO_SIGN ||
-    operation.type === SysFlowTaskOperationType.SIGN_REDUCTION
+    [
+      SysFlowTaskOperationType.CO_SIGN,
+      SysFlowTaskOperationType.SIGN_REDUCTION,
+      SysFlowTaskOperationType.BFORE_CONSIGN,
+      SysFlowTaskOperationType.AFTER_CONSIGN,
+    ].includes(operation.type)
   ) {
-    submitConsign((res || {}).assignee, operation.type === SysFlowTaskOperationType.CO_SIGN)
+    // 串行会签前后加签参数
+    let before;
+    if (
+      operation.type === SysFlowTaskOperationType.BFORE_CONSIGN ||
+      operation.type === SysFlowTaskOperationType.AFTER_CONSIGN
+    ) {
+      before = operation.type === SysFlowTaskOperationType.BFORE_CONSIGN;
+    }
+    submitConsign((res || {}).assignee, operation.type === SysFlowTaskOperationType.CO_SIGN, before)
       .then(() => {
         handlerClose();
       })

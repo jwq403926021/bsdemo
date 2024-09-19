@@ -573,6 +573,7 @@ const loadUserInfo = (params: ANY_OBJECT) => {
     }
   });
 };
+let bpmnElement: ANY_OBJECT = {};
 const resetTaskForm = () => {
   userTaskForm.value = {
     assignee: '',
@@ -585,16 +586,15 @@ const resetTaskForm = () => {
   };
   candidateGroupIds.value = [];
   sendMessageType.value = [];
-  let data =
-    win.bpmnInstances.bpmnElement && win.bpmnInstances.bpmnElement.businessObject
-      ? win.bpmnInstances.bpmnElement.businessObject.formKey
-      : '';
-  let formObj = data ? JSON.parse(data) : {};
+  bpmnElement = win.bpmnInstances.bpmnElement;
+  let formKey = bpmnElement.businessObject.formKey;
+  let formObj = formKey ? JSON.parse(formKey) : undefined;
   if (formObj) {
     formData.value = {
       formId: formObj.formId,
       routerName: formObj.routerName,
       editable: !formObj.readOnly,
+      formAuth: formObj.formAuth || {},
       groupType: formObj.groupType || 'ASSIGNEE',
     };
   } else {
@@ -712,15 +712,16 @@ const updateFormKey = () => {
   if (formData.value == null) return;
   let formKeyString = JSON.stringify({
     formId:
-      flowEntry().bindFormType === SysFlowEntryBindFormType.ONLINE_FORM
+      flowEntry().value.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM
         ? formData.value.formId
         : undefined,
     routerName:
-      flowEntry().bindFormType === SysFlowEntryBindFormType.ONLINE_FORM
+      flowEntry().value.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM
         ? undefined
         : formData.value.routerName,
     readOnly: !formData.value.editable,
     groupType: formData.value.groupType || 'ASSIGNEE',
+    formAuth: formData.value.formAuth,
   });
   win.bpmnInstances.modeling.updateProperties(win.bpmnInstances.bpmnElement, {
     formKey: formKeyString,

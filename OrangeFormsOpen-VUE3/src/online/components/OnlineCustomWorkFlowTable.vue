@@ -390,6 +390,7 @@ const getPrintParamItem = (row: ANY_OBJECT, printParamList: ANY_OBJECT[]) => {
   return param;
 };
 const formatListData = (data: ANY_OBJECT) => {
+  if (data == null) return;
   Object.keys(data).forEach(key => {
     let subData = data[key];
     if (typeof subData === 'object' && key.indexOf('DictMap') === -1) {

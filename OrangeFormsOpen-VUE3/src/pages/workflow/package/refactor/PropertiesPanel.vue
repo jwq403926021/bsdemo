@@ -28,9 +28,21 @@
             :type="elementType"
             :key="elementBusinessObject.id"
             v-if="
-              elementType && (elementType.indexOf('Task') !== -1 || elementType === 'SubProcess')
+              formVisible &&
+              elementType &&
+              (elementType.indexOf('Task') !== -1 || elementType === 'SubProcess')
             "
           />
+          <service-task
+            :id="elementId"
+            :type="elementType"
+            :tabType="activeName"
+            v-if="elementType === 'ServiceTask' && activeName === 'baseInfo'"
+          />
+        </div>
+
+        <div v-if="formVisible" key="goback">
+          <GoBack :id="elementId" :isCountersign="isCountersign" />
         </div>
 
         <div v-if="conditionFormVisible" key="condition">
@@ -133,6 +145,7 @@
  * @Date 2021年3月31日18:57:51
  */
 import { ANY_OBJECT } from '@/types/generic';
+import RightAddBtn from '@/components/Btns/RightAddBtn.vue';
 import ElementBaseInfo from './base/ElementBaseInfo.vue';
 import ElementTask from './task/ElementTask.vue';
 import ElementMultiInstance from './multi-instance/ElementMultiInstance.vue';
@@ -142,12 +155,11 @@ import ElementListeners from './listeners/ElementListeners.vue';
 import ElementProperties from './properties/ElementProperties.vue';
 import SetApproveStatus from './properties/SetApproveStatus.vue';
 import ElementForm from './form/flowFormConfig.vue';
+import ServiceTask from './form/ServiceTask';
 import FormVariable from './form-variable/index.vue';
 import CopyForSelect from './copy-for/index.vue';
 import UserTaskListeners from './listeners/UserTaskListeners.vue';
 import AutoAgree from './autoAgree/index.vue';
-import RightAddBtn from '@/components/Btns/RightAddBtn.vue';
-
 const props = withDefaults(
   defineProps<{
     bpmnModeler: ANY_OBJECT;

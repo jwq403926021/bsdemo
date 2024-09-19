@@ -44,19 +44,23 @@ export const useFlowAction = (props: IProp) => {
           : props.variableList || thirdParams.value.variableList,
     };
   });
-  // 加签
-  const submitConsign = (assignee: Array<string> | string, isAdd = true) => {
+  const submitConsign = (
+    assignee: Array<string> | string,
+    isAdd = true,
+    before: boolean | undefined = undefined,
+  ) => {
     return new Promise((resolve, reject) => {
       const params = {
         taskId: dialogParams.value.taskId,
         processInstanceId: dialogParams.value.processInstanceId,
         newAssignees: Array.isArray(assignee) ? assignee : assignee.split(','),
         isAdd,
+        before,
       };
 
       FlowOperationController.submitConsign(params)
         .then(() => {
-          ElMessage.success(isAdd ? '加签成功！' : '减签成功！');
+          ElMessage.success(before != null || isAdd ? '加签成功！' : '减签成功！');
           resolve(true);
         })
         .catch(e => {
@@ -102,6 +106,8 @@ export const useFlowAction = (props: IProp) => {
           switch (operation.type) {
             case SysFlowTaskOperationType.CO_SIGN:
             case SysFlowTaskOperationType.SIGN_REDUCTION:
+            case SysFlowTaskOperationType.BFORE_CONSIGN:
+            case SysFlowTaskOperationType.AFTER_CONSIGN:
               title = SysFlowTaskOperationType.getValue(operation.type);
               break;
             default:

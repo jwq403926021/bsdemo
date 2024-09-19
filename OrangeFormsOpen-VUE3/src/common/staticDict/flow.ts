@@ -128,6 +128,16 @@ const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
     name: '指定审批人',
     symbol: 'SET_ASSIGNEE',
   },
+  {
+    id: 'multi_before_consign',
+    name: '前加签（串行会签）',
+    symbol: 'BFORE_CONSIGN',
+  },
+  {
+    id: 'multi_after_consign',
+    name: '后加签（串行会签）',
+    symbol: 'AFTER_CONSIGN',
+  },
 ]);
 
 const SysFlowTaskType = new DictionaryBase('工作流任务类型', [
@@ -277,6 +287,21 @@ const FlowNodeType = new DictionaryBase('钉钉节点类型', [
     id: 5,
     name: '并行分支',
     symbol: 'PARALLEL_BRANCH',
+  },
+  {
+    id: 6,
+    name: '服务任务',
+    symbol: 'SERVICE_TASK',
+  },
+  {
+    id: 7,
+    name: '接收任务',
+    symbol: 'RECEIVE_TASK',
+  },
+  {
+    id: 100,
+    name: '子流程',
+    symbol: 'SUB_PROCESS',
   },
 ]);
 

@@ -320,6 +320,41 @@ public class FlowOperationController {
     }
 
     /**
+     * 提交串行多实例加签或减签。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @param taskId            当前多实例任务中正在审批的实例。
+     * @param newAssignees      加签减签人列表，多个指派人之间逗号分隔。
+     * @param before            是否为前加签，true是前加签，否则后加签。
+     * @return 应答结果。
+     */
+    @PostMapping("/submitSequenceConsign")
+    public ResponseResult<Void> submitSequenceConsign(
+            @MyRequestBody(required = true) String processInstanceId,
+            @MyRequestBody(required = true) String taskId,
+            @MyRequestBody(required = true) String newAssignees,
+            @MyRequestBody(required = true) Boolean before) {
+        String errorMessage;
+        ResponseResult<Task> verifyResult = this.doVerifySequenceMultiSign(processInstanceId, taskId);
+        if (!verifyResult.isSuccess()) {
+            return ResponseResult.errorFrom(verifyResult);
+        }
+        Task activeMultiInstanceTask = verifyResult.getData();
+        ResponseResult<Void> assigneeVerifyResult =
+                this.doVerifyConsignAssignee(activeMultiInstanceTask, newAssignees, true);
+        if (!assigneeVerifyResult.isSuccess()) {
+            return ResponseResult.errorFrom(assigneeVerifyResult);
+        }
+        try {
+            flowApiService.submitSequenceConsign(activeMultiInstanceTask, newAssignees, before);
+        } catch (FlowOperationException e) {
+            errorMessage = e.getMessage();
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        return ResponseResult.success();
+    }
+
+    /**
      * 提交多实例加签或减签。
      * NOTE: 白名单接口。
      *
@@ -350,28 +385,10 @@ public class FlowOperationController {
         if (isAdd == null) {
             isAdd = true;
         }
-        if (!isAdd) {
-            List<FlowTaskComment> commentList =
-                    flowTaskCommentService.getFlowTaskCommentListByMultiInstanceExecId(multiInstanceExecId);
-            if (CollUtil.isNotEmpty(commentList)) {
-                Set<String> approvedAssigneeSet = commentList.stream()
-                        .map(FlowTaskComment::getCreateLoginName).collect(Collectors.toSet());
-                String loginName = this.findExistAssignee(approvedAssigneeSet, assigneeArray);
-                if (loginName != null) {
-                    errorMessage = "数据验证失败，用户 [" + loginName + "] 已经审批，不能减签该用户！";
-                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
-                }
-            }
-        } else {
-            // 避免同一人被重复加签。
-            FlowMultiInstanceTrans trans =
-                    flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
-            Set<String> assigneeSet = new HashSet<>(StrUtil.split(trans.getAssigneeList(), ","));
-            String loginName = this.findExistAssignee(assigneeSet, assigneeArray);
-            if (loginName != null) {
-                errorMessage = "数据验证失败，用户 [" + loginName + "] 已经是会签人，不能重复指定！";
-                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
-            }
+        ResponseResult<Void> assigneeVerifyResult =
+                this.doVerifyConsignAssignee(activeMultiInstanceTask, newAssignees, isAdd);
+        if (!assigneeVerifyResult.isSuccess()) {
+            return ResponseResult.errorFrom(assigneeVerifyResult);
         }
         try {
             flowApiService.submitConsign(taskInstance, activeMultiInstanceTask, newAssignees, isAdd);
@@ -937,6 +954,58 @@ public class FlowOperationController {
         return taskCommentList;
     }
 
+    private ResponseResult<Void> doVerifyConsignAssignee(Task activeMultiInstanceTask, String newAssignees, Boolean isAdd) {
+        String errorMessage;
+        String multiInstanceExecId = flowApiService.getExecutionVariableStringWithSafe(
+                activeMultiInstanceTask.getExecutionId(), FlowConstant.MULTI_SIGN_TASK_EXECUTION_ID_VAR);
+        JSONArray assigneeArray = JSON.parseArray(newAssignees);
+        if (BooleanUtil.isFalse(isAdd)) {
+            List<FlowTaskComment> commentList =
+                    flowTaskCommentService.getFlowTaskCommentListByMultiInstanceExecId(multiInstanceExecId);
+            if (CollUtil.isNotEmpty(commentList)) {
+                Set<String> approvedAssigneeSet = commentList.stream()
+                        .map(FlowTaskComment::getCreateLoginName).collect(Collectors.toSet());
+                String existAssignee = this.findExistAssignee(approvedAssigneeSet, assigneeArray);
+                if (existAssignee != null) {
+                    errorMessage = "数据验证失败，用户 [" + existAssignee + "] 已经审批，不能减签该用户！";
+                    return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+                }
+            }
+        } else {
+            // 避免同一人被重复加签。
+            FlowMultiInstanceTrans trans =
+                    flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
+            Set<String> assigneeSet = new HashSet<>(StrUtil.split(trans.getAssigneeList(), ","));
+            String existAssignee = this.findExistAssignee(assigneeSet, assigneeArray);
+            if (existAssignee != null) {
+                errorMessage = "数据验证失败，用户 [" + existAssignee + "] 已经是会签人，不能重复指定！";
+                return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+            }
+        }
+        return ResponseResult.success();
+    }
+
+    private ResponseResult<Task> doVerifySequenceMultiSign(String processInstanceId, String taskId) {
+        String errorMessage;
+        if (!flowApiService.existActiveProcessInstance(processInstanceId)) {
+            errorMessage = "数据验证失败，当前流程实例已经结束，不能执行加签！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        List<Task> activeTaskList = flowApiService.getProcessInstanceActiveTaskList(processInstanceId);
+        Task task = activeTaskList.stream().filter(t -> t.getId().equals(taskId)).findFirst().orElse(null);
+        if (task == null) {
+            errorMessage = "数据验证失败，当前任务已经不是待审批任务！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        Map<String, UserTask> userTaskMap = flowApiService.getAllUserTaskMap(task.getProcessDefinitionId());
+        UserTask userTask = userTaskMap.get(task.getTaskDefinitionKey());
+        if (!userTask.hasMultiInstanceLoopCharacteristics() || !userTask.getLoopCharacteristics().isSequential()) {
+            errorMessage = "数据验证失败，当前任务不是串行会签多实例任务！";
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
+        }
+        return ResponseResult.success(task);
+    }
+
     private ResponseResult<JSONObject> doVerifyMultiSign(String processInstanceId, String taskId) {
         String errorMessage;
         if (!flowApiService.existActiveProcessInstance(processInstanceId)) {
@@ -959,7 +1028,7 @@ public class FlowOperationController {
         for (Task activeTask : activeTaskList) {
             UserTask userTask = userTaskMap.get(activeTask.getTaskDefinitionKey());
             if (!userTask.hasMultiInstanceLoopCharacteristics()) {
-                errorMessage = "数据验证失败，指定加签任务不存在或已审批完毕！";
+                errorMessage = "数据验证失败，当前任务不是会签多实例任务！";
                 return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, errorMessage);
             }
             String startTaskId = flowApiService.getTaskVariableStringWithSafe(

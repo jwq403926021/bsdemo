@@ -57,6 +57,14 @@ public final class FlowApprovalType {
      */
     public static final String MULTI_MINUS_SIGN = "multi_minus_sign";
     /**
+     * 串行多实例前加签。
+     */
+    public static final String MULTI_BEFORE_CONSIGN = "multi_before_consign";
+    /**
+     * 串行多实例后加签。
+     */
+    public static final String MULTI_AFTER_CONSIGN = "multi_after_consign";
+    /**
      * 中止。
      */
     public static final String STOP = "stop";

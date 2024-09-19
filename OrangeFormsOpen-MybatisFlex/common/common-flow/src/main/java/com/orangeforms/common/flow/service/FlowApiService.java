@@ -80,6 +80,15 @@ public interface FlowApiService {
     void submitConsign(HistoricTaskInstance startTaskInstance, Task multiInstanceActiveTask, String newAssignees, boolean isAdd);
 
     /**
+     * 串行多实例加签减签。
+     *
+     * @param multiInstanceActiveTask 正在执行的多实例任务对象。
+     * @param newAssignees            新指派人，多个指派人之间逗号分隔。
+     * @param before                  是否为前加签，true是前加签，否则后加签。
+     */
+    void submitSequenceConsign(Task multiInstanceActiveTask, String newAssignees, boolean before);
+
+    /**
      * 完成任务，同时提交审批数据。
      *
      * @param task             工作流任务对象。

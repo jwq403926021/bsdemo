@@ -17,6 +17,7 @@ import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.MyDateUtil;
 import com.orangeforms.common.core.util.MyCommonUtil;
 import com.orangeforms.common.core.util.DefaultDataSourceResolver;
+import com.orangeforms.common.flow.cmd.AddSequenceMultiInstanceCmd;
 import com.orangeforms.common.flow.exception.FlowOperationException;
 import com.orangeforms.common.flow.object.*;
 import com.orangeforms.common.flow.constant.FlowConstant;
@@ -195,6 +196,31 @@ public class FlowApiServiceImpl implements FlowApiService {
         flowTaskComment.setApprovalType(isAdd ? FlowApprovalType.MULTI_CONSIGN : FlowApprovalType.MULTI_MINUS_SIGN);
         String showName = TokenData.takeFromRequest().getLoginName();
         String comment = String.format("用户 [%s] [%s] [%s]。", isAdd ? "加签" : "减签", showName, newAssignees);
+        flowTaskComment.setTaskComment(comment);
+        flowTaskCommentService.saveNew(flowTaskComment);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void submitSequenceConsign(Task multiInstanceActiveTask, String newAssignees, boolean before) {
+        JSONArray assigneeArray = JSON.parseArray(newAssignees);
+        List<String> newAssigneeList = new LinkedList<>();
+        for (int i = 0; i < assigneeArray.size(); i++) {
+            newAssigneeList.add(assigneeArray.getString(i));
+        }
+        String multiInstanceExecId = this.getExecutionVariableStringWithSafe(
+                multiInstanceActiveTask.getExecutionId(), FlowConstant.MULTI_SIGN_TASK_EXECUTION_ID_VAR);
+        FlowMultiInstanceTrans trans =
+                flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
+        List<String> updatedAssignees = managementService.executeCommand(
+                new AddSequenceMultiInstanceCmd(trans.getAssigneeList(), multiInstanceActiveTask.getId(), newAssigneeList, before));
+        trans.setAssigneeList(StrUtil.join(",", updatedAssignees));
+        flowMultiInstanceTransService.updateById(trans);
+        FlowTaskComment flowTaskComment = new FlowTaskComment();
+        flowTaskComment.fillWith(multiInstanceActiveTask);
+        flowTaskComment.setApprovalType(before ? FlowApprovalType.MULTI_BEFORE_CONSIGN : FlowApprovalType.MULTI_AFTER_CONSIGN);
+        String showName = TokenData.takeFromRequest().getLoginName();
+        String comment = String.format("用户 [%s] [%s] [%s]。", before ? "前加签" : "后加签", showName, newAssignees);
         flowTaskComment.setTaskComment(comment);
         flowTaskCommentService.saveNew(flowTaskComment);
     }

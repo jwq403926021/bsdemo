@@ -143,6 +143,7 @@
 <script setup lang="ts">
 import { inject, reactive, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysDeptPost } from '@/types/upms/department';
 import { usePermissions } from '@/common/hooks/usePermission';
@@ -159,9 +160,11 @@ import FormSetDeptPost from './formSetDeptPost.vue';
 const Dialog = useDialog();
 const props = defineProps<{ closeVisible: string; deptId: string }>();
 const layoutStore = useLayoutStore();
+const router = useRouter();
 
 const onClose = () => {
   console.log('返回父级页面');
+  router.go(-1);
 };
 
 const { checkPermCodeExist } = usePermissions();

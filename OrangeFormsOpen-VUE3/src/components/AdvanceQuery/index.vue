@@ -220,7 +220,7 @@ onMounted(() => {
   flex: 1;
   height: 35px;
   line-height: 35px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .advance-query .module-node-menu {
   text-align: right;
@@ -236,5 +236,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 0px 16px;
 }
 </style>

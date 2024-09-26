@@ -86,7 +86,7 @@
     <vxe-column title="流程创建时间" field="createTime" :min-width="180" />
     <vxe-column title="流程状态" field="latestApprovalStatusDictMap.name" :min-width="100" />
     <vxe-column title="工单状态" field="flowStatusShowName" :min-width="100" />
-    <vxe-column title="操作" :width="160" fixed="right" :show-overflow="false">
+    <vxe-column title="操作" :width="180" fixed="right" :show-overflow="false">
       <template #default="{ row }">
         <el-button
           link

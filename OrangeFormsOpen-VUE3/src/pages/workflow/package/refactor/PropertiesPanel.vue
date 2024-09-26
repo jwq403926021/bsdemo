@@ -50,7 +50,7 @@
         </div>
 
         <div v-if="conditionFormVisible" key="status">
-          <div class="panel-title">更新工单状态</div>
+          <div class="panel-title">工单状态</div>
           <SetApproveStatus :id="elementId" :type="elementType" />
         </div>
       </div>
@@ -295,7 +295,7 @@ onBeforeUnmount(() => {
     }
   }
   .el-tabs__header {
-    margin-bottom: 10px !important;
+    margin-bottom: 15px !important;
   }
   .el-tabs__content {
     overflow: auto;
@@ -326,7 +326,7 @@ onBeforeUnmount(() => {
   }
 
   .el-form-item__label {
-    font-size: 12px;
+    font-size: 14px;
     color: #333;
   }
 
@@ -338,7 +338,7 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   color: #333;
   line-height: 32px;
 }
@@ -350,7 +350,7 @@ onBeforeUnmount(() => {
   margin-top: 0;
 }
 .el-table th {
-  font-size: 12px;
+  font-size: 14px;
   color: #666 !important;
   background-color: #f6f7f9 !important;
   font-weight: normal;

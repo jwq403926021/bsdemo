@@ -80,7 +80,11 @@ const showText = computed(() => {
         ? 'XXXXX 至 XXXXX'
         : undefined;
     case SysCustomWidgetType.Switch:
-      return props.value ? '是' : '否';
+      if (typeof props.value === 'boolean') {
+        return props.value ? '是' : '否';
+      } else {
+        return props.value;
+      }
     default:
       return '';
   }

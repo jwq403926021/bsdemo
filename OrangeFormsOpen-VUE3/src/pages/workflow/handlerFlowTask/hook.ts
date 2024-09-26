@@ -18,6 +18,11 @@ export const useFlowAction = (props: IProp) => {
 
   const dialogParams = computed(() => {
     console.log('dialogParams props', props);
+    let operationList =
+      props.operationList == null || props.operationList === ''
+        ? thirdParams.value.operationList
+        : props.operationList;
+    operationList = typeof operationList == 'string' ? JSON.parse(operationList) : operationList;
     return {
       isRuntime: props.isRuntime === 'true' || thirdParams.value.isRuntime || false,
       isDraft: props.isDraft === 'true' || thirdParams.value.isDraft || false,
@@ -34,16 +39,14 @@ export const useFlowAction = (props: IProp) => {
       processInstanceInitiator:
         props.processInstanceInitiator || thirdParams.value.processInstanceInitiator,
       taskName: props.taskName || thirdParams.value.taskName,
-      operationList:
-        typeof props.operationList == 'string'
-          ? JSON.parse(props.operationList)
-          : props.operationList, // || thirdParams.value.operationList,
+      operationList: operationList,
       variableList:
         typeof props.variableList == 'string'
           ? JSON.parse(props.variableList)
           : props.variableList || thirdParams.value.variableList,
     };
   });
+  // 加签
   const submitConsign = (
     assignee: Array<string> | string,
     isAdd = true,

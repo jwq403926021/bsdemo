@@ -5,7 +5,7 @@
       :model="formData"
       class="full-width-input form-box"
       style="width: 100%"
-      label-width="150px"
+      label-width="90px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent

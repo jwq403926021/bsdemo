@@ -183,7 +183,7 @@ const formType = computed(() => {
   return formConfig().form.formType;
 });
 const getValidTableList = computed(() => {
-  if (data.value.parent != null) {
+  if (data.value.hasParent) {
     return formConfig().getTableWidgetTableList;
   } else if (
     data.value.widgetType === SysCustomWidgetType.Table ||

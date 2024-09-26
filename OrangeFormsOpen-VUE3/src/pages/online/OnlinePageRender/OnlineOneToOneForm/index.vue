@@ -299,6 +299,7 @@ const activeOperationList = computed(() => {
 //   };
 // });
 const primaryColumnName = computed(() => {
+  if (dialogParams.value.isEdit) return;
   let table = form.value.tableMap.get(queryTable.value.bindData.tableId);
   if (table && Array.isArray(table.columnList)) {
     for (let i = 0; i < table.columnList.length; i++) {
@@ -496,7 +497,7 @@ const onOperationClick = (operation: ANY_OBJECT, row: ANY_OBJECT | null) => {
   } else if (operation.type === SysCustomWidgetOperationType.EXPORT) {
     onExport(operation);
   } else if (operation.type === SysCustomWidgetOperationType.PRINT) {
-    if (row) onPrint(operation, row, null, queryTable.value.showName + '.pdf');
+    if (row) onPrint(operation, row, null, queryTable.value.showName);
   } else {
     handlerOperation(operation, {
       isEdit: dialogParams.value.isEdit,

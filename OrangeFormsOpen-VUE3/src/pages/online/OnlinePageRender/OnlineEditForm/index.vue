@@ -118,7 +118,6 @@
               v-show="isReady"
               ref="root"
               v-model:value="form.widgetList"
-              @input="onInput"
               :height="height"
               :isEdit="dialogParams.isEdit"
               :showBorder="false"

@@ -44,7 +44,7 @@ export const useTable = <T>(options: TableOptions<T>) => {
         })
         .catch(() => {
           currentPage.value = oldPage;
-          pageSize.value = oldVal;
+          pageSize.value = oldPageSize;
         });
     }
   });

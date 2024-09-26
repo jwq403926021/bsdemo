@@ -41,7 +41,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="更新工单状态">
+          <el-form-item label="工单状态">
             <el-select
               class="input-item"
               v-model="formData.latestApprovalStatus"

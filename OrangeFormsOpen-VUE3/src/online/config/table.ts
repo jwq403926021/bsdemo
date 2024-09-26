@@ -32,11 +32,47 @@ const table = {
     value: 0,
     min: 0,
   },
+  treeFlag: {
+    name: '树形表格',
+    widgetType: SysCustomWidgetType.Switch,
+    visible: function (formConfig) {
+      return formConfig && formConfig.form.formType === SysOnlineFormType.QUERY;
+    },
+  },
+  parentIdColumn: {
+    name: '树形表主键父字段',
+    widgetType: SysCustomWidgetType.Select,
+    value: '',
+    visible: function (formConfig) {
+      return (
+        formConfig && formConfig.currentWidget && formConfig.currentWidget.props.treeFlag === true
+      );
+    },
+    dropdownList: function (formConfig) {
+      if (
+        formConfig &&
+        formConfig.currentWidget &&
+        formConfig.currentWidget.bindData &&
+        formConfig.currentWidget.bindData.table
+      ) {
+        return formConfig.currentWidget.bindData.table.columnList.map(item => {
+          return {
+            id: item.columnName,
+            name: item.columnComment,
+          };
+        });
+      } else {
+        return [];
+      }
+    },
+  },
   paged: {
     name: '支持分页',
     widgetType: SysCustomWidgetType.Switch,
     value: true,
     visible: function (formConfig: ANY_OBJECT) {
+      if (formConfig && formConfig.currentWidget && formConfig.currentWidget.props.treeFlag)
+        return false;
       return formConfig && formConfig.form.formType === SysOnlineFormType.QUERY;
     },
   },
@@ -45,6 +81,8 @@ const table = {
     widgetType: SysCustomWidgetType.Select,
     value: 10,
     visible: function (formConfig: ANY_OBJECT) {
+      if (formConfig && formConfig.currentWidget && formConfig.currentWidget.props.treeFlag)
+        return false;
       return formConfig && formConfig.form.formType === SysOnlineFormType.QUERY;
     },
     dropdownList: [

@@ -62,8 +62,8 @@
           <el-form-item label="完成条件" key="completionCondition">
             <el-input
               v-model="loopInstanceForm.completionCondition"
-              clearable
               :disabled="loopCharacteristics === 'SequentialMultiInstance'"
+              clearable
               @change="updateLoopCondition"
             />
           </el-form-item>
@@ -170,7 +170,7 @@ const defaultLoopInstanceForm = {
 const loopInstanceForm = ref<ANY_OBJECT>({
   collection: 'assigneeList',
   elementVariable: 'assignee',
-  completionCondition: '',
+  completionCondition: '${nrOfInstances == nrOfCompletedInstances}',
 });
 const variableList = [
   {
@@ -290,7 +290,9 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
   loopInstanceForm.value = {
     ...defaultLoopInstanceForm,
     ...businessObject.loopCharacteristics,
-    completionCondition: businessObject.loopCharacteristics?.completionCondition?.body ?? '',
+    completionCondition:
+      businessObject.loopCharacteristics?.completionCondition?.body ??
+      '${nrOfInstances == nrOfCompletedInstances}',
     loopCardinality: businessObject.loopCharacteristics?.loopCardinality?.body ?? '',
   };
   // 保留当前元素 businessObject 上的 loopCharacteristics 实例
@@ -307,7 +309,7 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
   }
 };
 const changeLoopCharacteristicsType = (type: string) => {
-  if (type === 'SequentialMultiInstance') {
+  if (type === 'SequentialMultiInstance' || loopInstanceForm.value.completionCondition === '') {
     // eslint-disable-next-line no-template-curly-in-string
     loopInstanceForm.value.completionCondition = '${nrOfInstances == nrOfCompletedInstances}';
   }

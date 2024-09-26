@@ -1,6 +1,9 @@
 <template>
   <div>
     <el-form :size="layoutStore.defaultFormItemSize" @submit.prevent label-position="top">
+      <el-form-item label="流程名称">
+        <el-input :value="flowEntry().value.processDefinitionName" :disabled="true" />
+      </el-form-item>
       <el-form-item label="任务ID">
         <el-input
           v-model="elementBaseInfo.id"
@@ -34,14 +37,17 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount, watch, nextTick, inject } from 'vue';
 import { ANY_OBJECT } from '@/types/generic';
+import { useLayoutStore } from '@/store';
 
+const layoutStore = useLayoutStore();
 const props = withDefaults(
   defineProps<{ businessObject: ANY_OBJECT; type?: string; idEditDisabled?: boolean }>(),
   { idEditDisabled: true },
 );
 
-import { useLayoutStore } from '@/store';
-const layoutStore = useLayoutStore();
+const flowEntry = inject('flowEntry', () => {
+  return {} as ANY_OBJECT;
+});
 
 const elementBaseInfo = ref<ANY_OBJECT>({});
 let bpmnElement: ANY_OBJECT | null = null;

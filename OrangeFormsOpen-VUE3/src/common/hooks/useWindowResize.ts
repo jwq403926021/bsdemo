@@ -17,8 +17,8 @@ export const useWindowResize = () => {
       layoutStore.defaultFormItemSize = 'default';
       document.body.className = 'orange-project container-default';
     } else {
-      layoutStore.defaultFormItemSize = 'large';
-      document.body.className = 'orange-project container-large';
+      layoutStore.defaultFormItemSize = 'default';
+      document.body.className = 'orange-project container-default';
     }
 
     layoutStore.documentClientHeight = document.documentElement.clientHeight;

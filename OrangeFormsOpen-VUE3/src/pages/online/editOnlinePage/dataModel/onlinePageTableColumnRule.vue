@@ -112,7 +112,7 @@
       >
         <div v-if="currentColumn != null" style="padding: 20px" class="attibute-box">
           <el-col class="attribute-item">
-            <el-form-item label="字段名：">
+            <el-form-item label="字段名">
               <span :title="currentColumn.columnComment">{{ currentColumn.columnName }}</span>
               <el-tag
                 :size="formItemSize"
@@ -124,7 +124,7 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="字段类型：">
+            <el-form-item label="字段类型">
               <span>{{ currentColumn.fullColumnType }}</span>
               <el-tag :size="formItemSize" type="success" effect="dark" style="margin-left: 10px">{{
                 currentColumn.tag.objectFieldType
@@ -132,12 +132,12 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="是否必填：">
+            <el-form-item label="是否必填">
               <el-switch v-model="currentColumn.required" />
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="显示名称：">
+            <el-form-item label="显示名称">
               <el-input
                 v-model="currentColumn.columnComment"
                 style="width: 278px"
@@ -147,7 +147,7 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="字典数据：">
+            <el-form-item label="字典数据">
               <el-select
                 v-model="currentColumn.dictId"
                 placeholder="选择字段绑定的字典"
@@ -167,7 +167,7 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="过滤支持：">
+            <el-form-item label="过滤支持">
               <el-radio-group v-model="currentColumn.filterType" @change="dirty = true">
                 <el-radio-button
                   v-for="item in SysOnlineColumnFilterType.getList()"
@@ -184,7 +184,7 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="数据权限过滤：">
+            <el-form-item label="数据权限过滤">
               <el-select
                 v-model="dataPermFilterType"
                 placeholder="字段用于数据权限过滤规则"
@@ -202,7 +202,7 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="字段类别：">
+            <el-form-item label="字段类别">
               <el-select
                 v-model="currentColumn.fieldKind"
                 clearable
@@ -227,7 +227,7 @@
               currentColumn.fieldKind === SysOnlineFieldKind.UPLOAD_IMAGE
             "
           >
-            <el-form-item label="存储类型：">
+            <el-form-item label="存储类型">
               <el-select
                 v-model="currentColumn.uploadFileSystemType"
                 clearable
@@ -247,7 +247,7 @@
               currentColumn.fieldKind === SysOnlineFieldKind.UPLOAD_IMAGE
             "
           >
-            <el-form-item label="上传文件数量：">
+            <el-form-item label="上传文件数量">
               <el-input-number
                 v-model="currentColumn.maxFileCount"
                 style="width: 278px"
@@ -778,7 +778,7 @@ onMounted(() => {
   height: 35px;
   padding: 0 10px;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: #043254;
   background: #f4f7fa;
   border: 1px dashed #f3f9ff;

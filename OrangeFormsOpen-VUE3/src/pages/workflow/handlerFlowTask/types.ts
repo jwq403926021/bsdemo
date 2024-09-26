@@ -13,7 +13,7 @@ export interface IProp extends ThirdProps {
   // 路由名称
   routerName?: string;
   // 只读页面
-  readOnly: boolean | string;
+  readOnly?: boolean | string;
   // 消息id，用于抄送消息回显
   messageId?: string;
   // 流程实例id

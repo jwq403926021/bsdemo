@@ -157,13 +157,14 @@
                     :getTableIndex="queryTableWidget.getTableIndex"
                     :sortChange="queryTableWidget.onSortChange"
                     :onSelectChange="onSelectRowChange"
+                    :treeConfig="getTableTreeConfig"
                     @operationClick="onOperationClick"
                   >
                     <template #pagination>
                       <el-row
                         justify="end"
                         style="margin-top: 10px"
-                        v-if="queryTable && queryTable.props.paged"
+                        v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"
                       >
                         <el-pagination
                           :total="queryTableWidget.totalCount"
@@ -261,6 +262,7 @@
               :getTableIndex="queryTableWidget.getTableIndex"
               :sortChange="queryTableWidget.onSortChange"
               :onSelectChange="onSelectRowChange"
+              :treeConfig="getTableTreeConfig"
               @operationClick="onOperationClick"
               @refresh="refreshTable(false)"
             >
@@ -268,7 +270,7 @@
                 <el-row
                   justify="end"
                   style="margin-top: 10px"
-                  v-if="queryTable && queryTable.props.paged"
+                  v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"
                 >
                   <el-pagination
                     :total="queryTableWidget.totalCount"
@@ -293,7 +295,7 @@
 import { nextTick } from 'vue';
 import { Close, Search, Plus, Delete, Download, Upload } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { findItemFromList } from '@/common/utils';
+import { findItemFromList, treeDataTranslate } from '@/common/utils';
 import OnlineCustomWidget from '@/online/components/OnlineCustomWidget.vue';
 import OnlineCustomTable from '@/online/components/OnlineCustomTable.vue';
 import { DialogProp } from '@/components/Dialog/types';
@@ -504,6 +506,17 @@ const loadTableData = (params: ANY_OBJECT) => {
 
     httpCall
       .then(res => {
+        if (
+          queryTable.value &&
+          queryTable.value.props.treeFlag &&
+          queryTable.value.props.parentIdColumn
+        ) {
+          res.data.dataList = treeDataTranslate(
+            res.data.dataList,
+            primaryColumnName.value,
+            queryTable.value.props.parentIdColumn,
+          );
+        }
         resolve({
           dataList: res.data.dataList,
           totalCount: res.data.totalCount,
@@ -537,6 +550,7 @@ const activeOperationList = computed(() => {
   return form.value.operationList;
 });
 const primaryColumnName = computed(() => {
+  if (dialogParams.value.isEdit) return;
   let table = form.value.tableMap.get(queryTable.value.bindData.tableId);
   if (table && Array.isArray(table.columnList)) {
     for (let i = 0; i < table.columnList.length; i++) {
@@ -549,14 +563,26 @@ const primaryColumnName = computed(() => {
   return null;
 });
 
+const getTableTreeConfig = computed(() => {
+  if (
+    queryTable.value &&
+    queryTable.value.props.treeFlag &&
+    queryTable.value.props.parentIdColumn
+  ) {
+    return {
+      rowField: primaryColumnName.value,
+      parentField: queryTable.value.props.parentIdColumn,
+    };
+  } else {
+    return null;
+  }
+});
+
 // TODO 弹窗关闭
 const onCancel = () => {
   if (props.dialog) {
     props.dialog.cancel();
   }
-  // else {
-  //   this.onCloseThirdDialog();
-  // }
 };
 const onCopyWidget = (widget: ANY_OBJECT) => {
   activeWidgetList.value.push(widget);

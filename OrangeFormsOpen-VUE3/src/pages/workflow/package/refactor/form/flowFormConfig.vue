@@ -56,7 +56,7 @@
               <span>表单权限设置</span>
               <el-button
                 type="primary"
-                size="mini"
+                size="default"
                 style="margin-left: 18px"
                 @click="onSetOnlineFormAuth"
                 >设置</el-button
@@ -79,7 +79,7 @@
           <vxe-column title="序号" width="70px" type="seq" />
           <vxe-column title="按钮名称" min-width="100px">
             <template v-slot="scope">
-              <span style="font-size: 12px">{{ scope.row.label }}</span>
+              <span>{{ scope.row.label }}</span>
             </template>
           </vxe-column>
           <vxe-column title="按钮类型" min-width="100px">
@@ -138,15 +138,11 @@ const layoutStore = useLayoutStore();
 
 const props = defineProps<{ id: string; type: string; tabType: string }>();
 const flowEntry = inject('flowEntry', () => {
-  console.warn('flowFormConfig not inject flowEntry yet.');
   return {} as ANY_OBJECT;
 });
-console.log('flowEntry()', flowEntry());
 const formList = inject('formList', () => {
-  console.warn('flowFormConfig not inject formList yet.');
   return {} as ANY_OBJECT;
 });
-console.log('formList()', formList());
 const prefix = inject('prefix');
 
 const win: ANY_OBJECT = window;
@@ -249,6 +245,12 @@ const onSetOnlineFormAuth = () => {
     {
       formAuth: formData.value.formAuth || {},
       formWidgetConfig: tempConfig,
+      path: 'thirdSetOnlineFormAuth',
+    },
+    {
+      width: '1000px',
+      height: '700px',
+      pathName: '/thirdParty/formSetOnlineFormAuth',
     },
   )
     .then(res => {

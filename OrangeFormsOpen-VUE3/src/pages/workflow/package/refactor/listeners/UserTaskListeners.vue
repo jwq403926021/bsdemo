@@ -12,13 +12,12 @@
           {{ listenerEventTypeObject[scope.row.event] }}
         </template>
       </vxe-column>
-      <vxe-column title="监听器ID" min-width="80px" field="id" show-overflow-tooltip />
       <vxe-column title="监听器类型" min-width="80px" show-overflow-tooltip>
         <template v-slot="scope">
           {{ listenerTypeObject[scope.row.listenerType] }}
         </template>
       </vxe-column>
-      <vxe-column title="操作" width="90px">
+      <vxe-column title="操作" width="110px">
         <template v-slot="{ row, $rowIndex }">
           <el-button
             :size="layoutStore.defaultFormItemSize"
@@ -332,10 +331,10 @@ import { ElMessageBox } from 'element-plus';
 import { Menu } from '@element-plus/icons-vue';
 import { VxeTable, VxeColumn } from 'vxe-table';
 import { ANY_OBJECT } from '@/types/generic';
+import { useLayoutStore } from '@/store';
 import { createListenerObject, updateElementExtensions } from '../../utils';
 import { initListenerType, initListenerForm, eventType, listenerType, fieldType } from './utilSelf';
 
-import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 
 const props = defineProps<{ id: string; type: string }>();

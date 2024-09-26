@@ -58,7 +58,7 @@
             </template>
           </vxe-column>
           <vxe-column title="发布时间" field="publishTime" min-width="150px" />
-          <vxe-column title="操作" fixed="right" width="200px">
+          <vxe-column title="操作" fixed="right" width="220px">
             <template v-slot="scope">
               <el-button
                 @click.stop="onSetActiveStatus(scope.row)"
@@ -83,7 +83,7 @@
                 link
                 :size="formItemSize"
               >
-                设置为主版本
+                设置主版本
               </el-button>
             </template>
           </vxe-column>

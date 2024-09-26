@@ -18,7 +18,7 @@
           <template #default="scope">
             <el-switch
               v-model="scope.row.disabled"
-              size="mini"
+              size="default"
               @change="val => onWidgetDisableChange(scope.row, val)"
             />
           </template>
@@ -27,7 +27,7 @@
           <template #default="scope">
             <el-switch
               v-model="scope.row.hidden"
-              size="mini"
+              size="default"
               @change="val => onWidgetHideChange(scope.row, val)"
             />
           </template>

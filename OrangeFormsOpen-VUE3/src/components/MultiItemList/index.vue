@@ -199,7 +199,7 @@ const getItemLabel = (item: ANY_OBJECT) => {
   position: relative;
   z-index: 9;
   margin-left: 5px;
-  font-size: 12px;
+  font-size: 14px;
   color: $color-primary;
 }
 

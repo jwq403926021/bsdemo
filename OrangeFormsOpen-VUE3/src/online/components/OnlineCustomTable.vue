@@ -11,6 +11,7 @@
     :hasImageColumn="hasImageColumn"
     :size="layoutStore.defaultFormItemSize"
     :keep-source="rowEdit"
+    :tree-config="treeConfig"
     :edit-config="{
       trigger: 'manual',
       mode: 'row',
@@ -80,9 +81,15 @@
         >{{ getOperation(SysCustomWidgetOperationType.ADD).name || '新建' }}</el-button
       >
     </template>
-    <vxe-column v-if="hasBatchOperation && !form().readOnly" type="checkbox" :width="50" />
+    <vxe-column v-if="hasBatchOperation && !form().readOnly" type="checkbox" :width="40" />
     <vxe-column v-if="singleSelect" type="radio" align="center" :width="50" />
-    <vxe-column v-if="tableColumnList.length > 0" type="seq" title="序号" :width="50" />
+    <vxe-column
+      v-if="tableColumnList.length > 0"
+      type="seq"
+      title="序号"
+      :width="treeConfig != null ? 90 : 50"
+      :tree-node="treeConfig != null"
+    />
     <template v-for="tableColumn in tableColumnList" :key="tableColumn.column?.columnId">
       <!-- Boolean类型字段 -->
       <vxe-column
@@ -232,6 +239,7 @@ const props = withDefaults(
     onSelectChange?: (values: Array<ANY_OBJECT>) => void;
     // 单选中改变
     onRadioChange?: (value: ANY_OBJECT) => void;
+    treeConfig?: ANY_OBJECT;
   }>(),
   {
     dataList: () => [],
@@ -241,6 +249,7 @@ const props = withDefaults(
     multiSelect: false,
     singleSelect: false,
     operationList: () => [],
+    treeConfig: undefined,
   },
 );
 

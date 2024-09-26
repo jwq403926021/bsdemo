@@ -132,29 +132,29 @@
             </el-form-item>
           </el-col>
           <el-col class="attribute-item">
-            <el-form-item label="结果字段类型" prop="objectFieldType">
-              <el-select
-                v-model="currentColumn.objectFieldType"
-                placeholder="结果字段类型"
-                @change="currentColumn.aggregationType = undefined"
-              >
-                <el-option
-                  v-for="item in getVirtualColumnFieldType"
-                  :key="item"
-                  :value="item"
-                  :label="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col class="attribute-item">
             <el-form-item label="聚合计算规则" prop="relationId">
-              <el-select v-model="currentColumn.aggregationType" placeholder="聚合字段计算规则">
+              <el-select
+                v-model="currentColumn.aggregationType"
+                placeholder="聚合字段计算规则"
+                @change="currentColumn.objectFieldType = undefined"
+              >
                 <el-option
                   v-for="item in getAggregationTypeList"
                   :key="item.id"
                   :value="item.id"
                   :label="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="attribute-item">
+            <el-form-item label="结果字段类型" prop="objectFieldType">
+              <el-select v-model="currentColumn.objectFieldType" placeholder="结果字段类型">
+                <el-option
+                  v-for="item in getVirtualColumnFieldType"
+                  :key="item"
+                  :value="item"
+                  :label="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -306,6 +306,11 @@ const aggregationColumn = computed(() => {
 });
 const getVirtualColumnFieldType = computed(() => {
   if (!aggregationColumn.value) return [];
+  if (
+    currentColumn.value &&
+    currentColumn.value.aggregationType === SysOnlineAggregationType.GROUP_CONCAT
+  )
+    return ['String'];
 
   switch (aggregationColumn.value.objectFieldType) {
     case 'String':
@@ -346,6 +351,8 @@ const getAggregationTypeList = computed(() => {
             ) !== -1
           );
         }
+      case SysOnlineAggregationType.GROUP_CONCAT:
+        return true;
       default:
         return false;
     }

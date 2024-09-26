@@ -9,7 +9,7 @@
   >
     <template v-slot:table>
       <table-box
-        class="page-table"
+        style="padding-bottom: 16px"
         :data="onlineDblinkWidget.dataList"
         :size="layoutStore.defaultFormItemSize"
         header-cell-class-name="table-header-gray"

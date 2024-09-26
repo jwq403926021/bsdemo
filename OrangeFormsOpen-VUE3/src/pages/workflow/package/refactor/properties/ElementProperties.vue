@@ -11,7 +11,7 @@
       <vxe-column title="序号" width="70px" type="seq" />
       <vxe-column title="属性名" field="name" min-width="100px" show-overflow-tooltip />
       <vxe-column title="属性值" field="value" min-width="90px" show-overflow-tooltip />
-      <vxe-column title="操作" width="100px">
+      <vxe-column title="操作" width="110px">
         <template v-slot="{ row, $rowIndex }">
           <el-button
             type="primary"

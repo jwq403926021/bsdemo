@@ -3,7 +3,7 @@
     <slot />
     <div class="tag-box" v-if="selectValues.length">
       <el-tag
-        :size="layoutStore.defaultFormItemSize"
+        size="large"
         effect="dark"
         v-for="item in selectValues"
         :key="item.id"
@@ -80,7 +80,6 @@ watch(
 <style lang="scss" scoped>
 .task-multiple-select {
   :deep(.el-tag) {
-    padding-right: 4px;
     margin-right: 8px;
     color: #666;
     background-color: #f6f6f6;

@@ -263,6 +263,13 @@ export const routers: Array<RouteRecordRaw> = [
         props: getProps,
         component: () => import('@/pages/workflow/components/TaskUserSelect.vue'),
       },
+      // 选择用户-跳转节点
+      {
+        path: 'thirdSelectUserTask',
+        name: 'thirdSelectUserTask',
+        props: getProps,
+        component: () => import('@/pages/workflow/components/UserTaskSelect/userTaskSelectDlg.vue'),
+      },
       // 流程设计
       {
         path: 'thirdFormFlowEntry',

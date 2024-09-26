@@ -275,7 +275,7 @@
           link
           size="default"
           :icon="Refresh"
-          style="font-size: 12px; color: #999; font-weight: normal"
+          style="font-size: 14px; color: #999; font-weight: normal"
           @click="onClearWidget"
           >重置表单</el-button
         >
@@ -362,7 +362,7 @@
             <span>属性</span>
           </template>
           <el-scrollbar :style="{ height: getClientHeight - 138 + 'px' }">
-            <el-row style="padding: 10px 16px">
+            <el-row style="padding: 16px">
               <template v-if="currentWidget != null">
                 <CustomWidgetBindData v-model:value="currentWidget" />
                 <CustomWidgetAttributeSetting
@@ -381,7 +381,7 @@
             <span>操作</span>
           </template>
           <el-scrollbar :style="{ height: getClientHeight - 138 + 'px' }">
-            <el-row style="width: 100%; padding: 10px 16px">
+            <el-row style="width: 100%; padding: 16px">
               <!-- 组件操作 -->
               <CustomFormOperateSetting
                 v-if="
@@ -1105,7 +1105,7 @@ defineExpose({
     span {
       overflow: hidden;
       max-width: 100px;
-      font-size: 12px;
+      font-size: 14px;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #333;
@@ -1115,7 +1115,7 @@ defineExpose({
     .tag {
       padding: 3px 8px;
       margin-left: 8px;
-      font-size: 12px;
+      font-size: 14px;
       color: #999;
       background: #f6f7f9;
       border-radius: 4px;
@@ -1299,7 +1299,7 @@ defineExpose({
 }
 .attribute-panel :deep(.el-form-item__label) {
   padding-right: 0;
-  font-size: 12px;
+  font-size: 14px;
   color: #666;
 }
 .attribute-panel :deep(.el-tabs__nav-wrap::after) {

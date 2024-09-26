@@ -12,7 +12,7 @@
       label-position="right"
       @submit.prevent
     >
-      <el-form-item label="字段名：">
+      <el-form-item label="字段名">
         <span :title="formData.columnComment">{{ formData.columnName }}</span>
         <el-tag
           :size="formItemSize"
@@ -22,16 +22,16 @@
           >主键</el-tag
         >
       </el-form-item>
-      <el-form-item label="字段类型：">
+      <el-form-item label="字段类型">
         <span>{{ formData.fullColumnType }}</span>
         <el-tag :size="formItemSize" type="success" effect="dark" style="margin-left: 10px">{{
           formData.objectFieldType
         }}</el-tag>
       </el-form-item>
-      <el-form-item label="是否必填：">
+      <el-form-item label="是否必填">
         <el-switch v-model="formData.required" />
       </el-form-item>
-      <el-form-item label="显示名称：">
+      <el-form-item label="显示名称">
         <el-input
           v-model="formData.columnComment"
           style="width: 100%"
@@ -39,7 +39,7 @@
           placeholder="字段在表单上的显示名称"
         />
       </el-form-item>
-      <el-form-item label="字典数据：">
+      <el-form-item label="字典数据">
         <el-select
           v-model="formData.dictId"
           placeholder="选择字段绑定的字典"
@@ -57,7 +57,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="过滤支持：">
+      <el-form-item label="过滤支持">
         <el-radio-group v-model="formData.filterType" @change="dirty = true">
           <el-radio-button
             v-for="item in SysOnlineColumnFilterType.getList()"
@@ -72,7 +72,7 @@
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="字段类别：">
+      <el-form-item label="字段类别">
         <el-select
           v-model="formData.fieldKind"
           clearable
@@ -94,7 +94,7 @@
           formData.fieldKind === SysOnlineFieldKind.UPLOAD ||
           formData.fieldKind === SysOnlineFieldKind.UPLOAD_IMAGE
         "
-        label="存储类型："
+        label="存储类型"
       >
         <el-select
           v-model="formData.uploadFileSystemType"

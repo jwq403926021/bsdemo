@@ -9,67 +9,7 @@ $color-text-secondary: #909399 !default;
     'primary': (
       'base': $color-primary,
     ),
-  ),
-  $common-component-size: (
-    'large': 36px,
-    'default': 32px,
-    'small': 32px,
-  ),
-  $tag: (
-    'font-size': 14px,
-  ),
-  $tag-height: (
-    'large': 28px,
-    'default': 28px,
-  ),
-  $radio-bordered-input-height: (
-    'large': 14px,
-    'default': 14px,
-    'small': 14px,
-  ),
-  $radio-bordered-input-width: (
-    'large': 14px,
-    'default': 14px,
-    'small': 14px,
-  ),
-  $button-padding-vertical: (
-    'large': 11px,
-    'default': 9px,
-    'small': 6px,
-  ),
-  $button-padding-horizontal: (
-    'large': 18px,
-    'default': 16px,
-    'small': 12px,
   )
-);
-
-$form-item-margin-bottom: () !default;
-$form-item-margin-bottom: map.merge(
-  (
-    'large': 18px,
-    'default': 18px,
-    'small': 18px,
-  ),
-  $form-item-margin-bottom
-);
-
-$form-item-line-height: () !default;
-$form-item-line-height: map.merge(
-  (
-    'large': 36px,
-    'default': 32px,
-    'small': 24px,
-  ),
-  $form-item-line-height
-);
-$radio-font-size: () !default;
-$radio-font-size: map.merge(
-  (
-    'large': 14px,
-    'small': 14px,
-  ),
-  $radio-font-size
 );
 @use '@/assets/style/base.scss';
 

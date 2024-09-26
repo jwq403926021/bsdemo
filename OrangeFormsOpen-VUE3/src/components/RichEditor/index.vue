@@ -155,7 +155,8 @@ const handleCreated = (editor: ANY_OBJECT) => {
 watch(
   () => props.value,
   newValue => {
-    if (editorRef.value) editorRef.value.txt.html(newValue);
+    if (editorRef.value && newValue !== editorRef.value.txt.html())
+      editorRef.value.txt.html(newValue);
   },
   {
     deep: true,

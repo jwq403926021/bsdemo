@@ -109,7 +109,7 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="流程主版本" field="mainFlowEntryPublish">
+      <vxe-column title="流程主版本" field="mainFlowEntryPublish" width="200px">
         <template v-slot="scope">
           <el-tag
             v-if="scope.row.mainFlowEntryPublish"

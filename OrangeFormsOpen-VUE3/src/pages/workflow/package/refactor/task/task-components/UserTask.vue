@@ -908,7 +908,7 @@ watch(candidateGroupIds, () => {
     }
     .el-radio__label {
       padding-left: 4px;
-      font-size: 12px;
+      font-size: 14px;
       color: #333;
       font-weight: normal;
     }
@@ -929,7 +929,7 @@ watch(candidateGroupIds, () => {
   display: inline-block;
   float: right;
   i {
-    font-size: 12px;
+    font-size: 14px;
     transform: scale(0.8);
   }
   & > .icon {

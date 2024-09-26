@@ -84,6 +84,8 @@ const buildAttributeList = () => {
             attributeKey: attributeKey,
           },
         );
+        temp.disabled =
+          typeof temp.disabled === 'function' ? temp.disabled(formConfig()) : temp.disabled;
         if (temp.visible == null || temp.visible) attributeList.value.push(temp);
       }
     });
@@ -94,18 +96,17 @@ const buildAttributeList = () => {
 watch(
   () => currentWidget.value,
   () => {
-    console.log('CustomWidgetAttributeSetting.currentWidget change');
     buildAttributeList();
   },
   {
     immediate: true,
+    deep: true,
   },
 );
 
 watch(
   () => props.widget,
   () => {
-    console.log('CustomWidgetAttributeSetting.widget change');
     buildAttributeList();
   },
   {

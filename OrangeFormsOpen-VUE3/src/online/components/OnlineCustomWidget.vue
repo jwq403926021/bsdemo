@@ -242,6 +242,26 @@ const isDictWidget = computed(() => {
     ].indexOf(pps.widget.widgetType) !== -1
   );
 });
+
+const getColumnDataType = computed(() => {
+  if (pps.widget == null || pps.widget.column == null) return undefined;
+  switch (pps.widget.column.objectFieldType) {
+    case 'String':
+      return 'String';
+    case 'Date':
+      return 'Date';
+    case 'Boolean':
+      return 'Boolean';
+    case 'Integer':
+    case 'Long':
+    case 'Float':
+    case 'Double':
+    case 'BigDecimal':
+      return 'Number';
+    default:
+      return undefined;
+  }
+});
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const bindValue = computed<string | number | boolean | any[] | ANY_OBJECT | Date | undefined>({
   get() {
@@ -254,6 +274,18 @@ const bindValue = computed<string | number | boolean | any[] | ANY_OBJECT | Date
           return item != null && item !== '';
         });
       }
+    }
+    // 开关组件根据绑定字段类型转换值
+    let bindColumnType = getColumnDataType.value;
+    if (pps.widget.widgetType === SysCustomWidgetType.Switch) {
+      if (bindColumnType === 'Number') {
+        tempValue = tempValue !== 0 && tempValue != null;
+      } else if (bindColumnType === 'String') {
+        tempValue = tempValue === 'true';
+      } else if (bindColumnType !== 'Boolean') {
+        tempValue = false;
+      }
+      return tempValue;
     }
     if (pps.widget.widgetType === SysCustomWidgetType.CheckBox) {
       return tempValue || [];
@@ -553,7 +585,6 @@ watch(
 );
 
 onMounted(() => {
-  //propsWidget.value.widgetImpl = getCurrentInstance();
-  //propsWidget.value.parent = parentWidget;
+  propsWidget.value.hasParent = parentWidget != null;
 });
 </script>

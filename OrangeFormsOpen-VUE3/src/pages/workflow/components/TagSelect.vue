@@ -20,10 +20,10 @@
 
 <script setup lang="ts">
 import { ANY_OBJECT } from '@/types/generic';
+import { useLayoutStore } from '@/store';
 
 const emit = defineEmits<{ 'update:value': ANY_OBJECT[] | string[] }>();
 const props = defineProps<{ value: string | Array<ANY_OBJECT> }>();
-import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 
 const selectValues = ref<ANY_OBJECT[]>([]);

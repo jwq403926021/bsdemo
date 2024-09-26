@@ -15,7 +15,7 @@
       style="position: relative; width: 100%"
       :style="{
         border: isEdit && !isAdvance ? '1px solid #e8eaec' : 'none',
-        'min-height': isEdit && widgetList.length <= 0 ? '70px' : '0px',
+        'min-height': isEdit && widgetList.length <= 0 ? '86px' : '0px',
       }"
       :disabled="!isEdit"
     >

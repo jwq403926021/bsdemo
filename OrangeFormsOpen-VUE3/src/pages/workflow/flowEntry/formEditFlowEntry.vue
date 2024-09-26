@@ -96,187 +96,189 @@
                 label-width="80px"
                 @submit.prevent
               >
-                <el-col :span="24">
-                  <el-form-item label="表单类型" prop="bindFormType">
-                    <el-select
-                      v-model="formFlowEntryData.bindFormType"
-                      placeholder=""
-                      @change="onBindFormTypeChange"
-                      :disabled="isEdit"
-                    >
-                      <el-option
-                        :label="
-                          SysFlowEntryBindFormType.getValue(SysFlowEntryBindFormType.ROUTER_FORM)
-                        "
-                        :value="SysFlowEntryBindFormType.ROUTER_FORM"
-                      />
-                      <el-option
-                        :label="
-                          SysFlowEntryBindFormType.getValue(SysFlowEntryBindFormType.ONLINE_FORM)
-                        "
-                        :value="SysFlowEntryBindFormType.ONLINE_FORM"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                  <el-form-item label="流程名称" prop="processDefinitionName">
-                    <el-input v-model="formFlowEntryData.processDefinitionName" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                  <el-form-item label="流程标识" prop="processDefinitionKey">
-                    <el-input v-model="formFlowEntryData.processDefinitionKey" :disabled="isEdit" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                  <el-form-item label="流程分类" prop="categoryId">
-                    <el-select
-                      v-model="formFlowEntryData.categoryId"
-                      placeholder=""
-                      :loading="categoryIdWidget.loading"
-                      @visible-change="categoryIdWidget.onVisibleChange"
-                    >
-                      <el-option
-                        v-for="item in categoryIdWidget.dropdownList"
-                        :key="item.id"
-                        :value="item.id"
-                        :label="item.name"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                  <el-form-item label="工单编码">
-                    <el-row type="flex" align="middle" style="flex-wrap: nowrap">
-                      <el-input
-                        v-model="formFlowEntryData.encodedRule.prefix"
-                        style="width: 150px"
-                        placeholder="前缀"
-                        :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
-                      >
-                        <template v-slot:prepend>
-                          <el-checkbox v-model="formFlowEntryData.encodedRule.calculateWhenView" />
-                        </template>
-                      </el-input>
+                <el-row :gutter="16">
+                  <el-col :span="24">
+                    <el-form-item label="表单类型" prop="bindFormType">
                       <el-select
-                        v-model="formFlowEntryData.encodedRule.precisionTo"
-                        style="width: 160px; margin-left: 5px"
-                        placeholder="日期精度"
-                        :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
+                        v-model="formFlowEntryData.bindFormType"
+                        placeholder=""
+                        @change="onBindFormTypeChange"
+                        :disabled="isEdit"
                       >
                         <el-option
-                          v-for="item in SysAutoCodeType.getList()"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id"
+                          :label="
+                            SysFlowEntryBindFormType.getValue(SysFlowEntryBindFormType.ROUTER_FORM)
+                          "
+                          :value="SysFlowEntryBindFormType.ROUTER_FORM"
+                        />
+                        <el-option
+                          :label="
+                            SysFlowEntryBindFormType.getValue(SysFlowEntryBindFormType.ONLINE_FORM)
+                          "
+                          :value="SysFlowEntryBindFormType.ONLINE_FORM"
                         />
                       </el-select>
-                      <el-input
-                        v-model="formFlowEntryData.encodedRule.middle"
-                        style="width: 80px; margin-left: 5px"
-                        placeholder="后缀"
-                        :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
-                      />
-                      <el-input-number
-                        v-model="formFlowEntryData.encodedRule.idWidth"
-                        style="width: 100px; margin-left: 5px"
-                        :controls="false"
-                        placeholder="序号宽度"
-                        :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
-                      />
-                    </el-row>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :span="24"
-                  v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
-                >
-                  <el-form-item label="流程页面" prop="pageId">
-                    <el-select
-                      v-model="formFlowEntryData.pageId"
-                      :disabled="isEdit"
-                      placeholder=""
-                      :loading="pageIdWidget.loading"
-                      @visible-change="pageIdWidget.onVisibleChange"
-                      @change="onEntryPageChange"
-                    >
-                      <el-option
-                        v-for="item in pageIdWidget.dropdownList"
-                        :key="item.pageId"
-                        :value="item.pageId"
-                        :label="item.pageName"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :span="24"
-                  v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
-                >
-                  <el-form-item label="默认表单" prop="defaultFormId">
-                    <el-select
-                      v-model="formFlowEntryData.defaultFormId"
-                      placeholder=""
-                      :loading="defaultFormIdWidget.loading"
-                      @visible-change="defaultFormIdWidget.onVisibleChange"
-                    >
-                      <el-option
-                        v-for="item in defaultFormIdWidget.dropdownList"
-                        :key="item.formId"
-                        :value="item.formId"
-                        :label="item.formName"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :span="24"
-                  v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM"
-                >
-                  <el-form-item label="默认表单" prop="defaultRouterName">
-                    <el-input
-                      v-model="formFlowEntryData.defaultRouterName"
-                      clearable
-                      placeholder="请填写路由名称"
-                    />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="通知类型">
-                    <el-select
-                      v-model="formFlowEntryData.notifyTypes"
-                      placeholder=""
-                      clearable
-                      multiple
-                    >
-                      <el-option label="邮件" value="email" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="级联删除业务数据" label-width="128px">
-                    <el-switch v-model="formFlowEntryData.cascadeDeleteBusinessData" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24" v-if="isEdit && shareFormList.length > 0">
-                  <el-form-item label="工单分享">
-                    <el-row type="flex">
-                      <el-button
-                        v-for="form in (defaultFormIdWidget.dropdownList || []).filter(
-                          item => item.formType === SysOnlineFormType.WORK_ORDER,
-                        )"
-                        :key="form.formId"
-                        :class="form.formCode"
-                        :data-clipboard-text="getFormShareInfo(form)"
-                        title="生成分享链接"
-                        @click="handleShare(form.formCode)"
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item label="流程名称" prop="processDefinitionName">
+                      <el-input v-model="formFlowEntryData.processDefinitionName" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item label="流程标识" prop="processDefinitionKey">
+                      <el-input v-model="formFlowEntryData.processDefinitionKey" :disabled="isEdit" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item label="流程分类" prop="categoryId">
+                      <el-select
+                        v-model="formFlowEntryData.categoryId"
+                        placeholder=""
+                        :loading="categoryIdWidget.loading"
+                        @visible-change="categoryIdWidget.onVisibleChange"
                       >
-                        {{ form.formName }}
-                      </el-button>
-                    </el-row>
-                  </el-form-item>
-                </el-col>
+                        <el-option
+                          v-for="item in categoryIdWidget.dropdownList"
+                          :key="item.id"
+                          :value="item.id"
+                          :label="item.name"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item label="工单编码">
+                      <el-row type="flex" align="middle" style="flex-wrap: nowrap">
+                        <el-input
+                          v-model="formFlowEntryData.encodedRule.prefix"
+                          style="width: 150px"
+                          placeholder="前缀"
+                          :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
+                        >
+                          <template v-slot:prepend>
+                            <el-checkbox v-model="formFlowEntryData.encodedRule.calculateWhenView" />
+                          </template>
+                        </el-input>
+                        <el-select
+                          v-model="formFlowEntryData.encodedRule.precisionTo"
+                          style="width: 160px; margin-left: 5px"
+                          placeholder="日期精度"
+                          :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
+                        >
+                          <el-option
+                            v-for="item in SysAutoCodeType.getList()"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                          />
+                        </el-select>
+                        <el-input
+                          v-model="formFlowEntryData.encodedRule.middle"
+                          style="width: 80px; margin-left: 5px"
+                          placeholder="后缀"
+                          :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
+                        />
+                        <el-input-number
+                          v-model="formFlowEntryData.encodedRule.idWidth"
+                          style="width: 100px; margin-left: 5px"
+                          :controls="false"
+                          placeholder="序号宽度"
+                          :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
+                        />
+                      </el-row>
+                    </el-form-item>
+                  </el-col>
+                  <el-col
+                    :span="24"
+                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
+                  >
+                    <el-form-item label="流程页面" prop="pageId">
+                      <el-select
+                        v-model="formFlowEntryData.pageId"
+                        :disabled="isEdit"
+                        placeholder=""
+                        :loading="pageIdWidget.loading"
+                        @visible-change="pageIdWidget.onVisibleChange"
+                        @change="onEntryPageChange"
+                      >
+                        <el-option
+                          v-for="item in pageIdWidget.dropdownList"
+                          :key="item.pageId"
+                          :value="item.pageId"
+                          :label="item.pageName"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col
+                    :span="24"
+                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
+                  >
+                    <el-form-item label="默认表单" prop="defaultFormId">
+                      <el-select
+                        v-model="formFlowEntryData.defaultFormId"
+                        placeholder=""
+                        :loading="defaultFormIdWidget.loading"
+                        @visible-change="defaultFormIdWidget.onVisibleChange"
+                      >
+                        <el-option
+                          v-for="item in defaultFormIdWidget.dropdownList"
+                          :key="item.formId"
+                          :value="item.formId"
+                          :label="item.formName"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col
+                    :span="24"
+                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM"
+                  >
+                    <el-form-item label="默认表单" prop="defaultRouterName">
+                      <el-input
+                        v-model="formFlowEntryData.defaultRouterName"
+                        clearable
+                        placeholder="请填写路由名称"
+                      />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="通知类型">
+                      <el-select
+                        v-model="formFlowEntryData.notifyTypes"
+                        placeholder=""
+                        clearable
+                        multiple
+                      >
+                        <el-option label="邮件" value="email" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="级联删除业务数据" label-width="128px">
+                      <el-switch v-model="formFlowEntryData.cascadeDeleteBusinessData" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24" v-if="isEdit && shareFormList.length > 0">
+                    <el-form-item label="工单分享">
+                      <el-row type="flex">
+                        <el-button
+                          v-for="form in (defaultFormIdWidget.dropdownList || []).filter(
+                            item => item.formType === SysOnlineFormType.WORK_ORDER,
+                          )"
+                          :key="form.formId"
+                          :class="form.formCode"
+                          :data-clipboard-text="getFormShareInfo(form)"
+                          title="生成分享链接"
+                          @click="handleShare(form.formCode)"
+                        >
+                          {{ form.formName }}
+                        </el-button>
+                      </el-row>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
               </el-form>
             </el-col>
             <!-- 流程变量设置 -->
@@ -313,9 +315,9 @@
                     <el-tag
                       :size="formItemSize"
                       effect="dark"
-                      :type="scope.row.builtIn ? 'success' : 'danger'"
+                      :type="scope.row.builtin ? 'success' : 'danger'"
                     >
-                      {{ scope.row.builtIn ? '是' : '否' }}
+                      {{ scope.row.builtin ? '是' : '否' }}
                     </el-tag>
                   </template>
                 </vxe-column>

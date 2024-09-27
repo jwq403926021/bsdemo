@@ -53,6 +53,7 @@
 强烈推荐贺波老师的《深入Flowable流程引擎：核心原理与高阶实战》，Flowable 创始人 Tijs Rademakers 亲笔作序，该书对系统学习和深入掌握 Flowable 极有帮助，书中涵盖很多大型流程中心平台所涉及的技术架构和场景案例。橙单团队作为贺老师的忠实粉丝，我们希望这本书可以帮助到更多对工作流有兴趣的开发者们。[推荐购买链接](https://item.jd.com/14804836.html) 
 
 ![](images/book2.jpg)
+
 ![](images/book1.jpg)
 
 ### 感谢支持

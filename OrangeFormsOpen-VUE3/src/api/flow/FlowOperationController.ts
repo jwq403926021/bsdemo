@@ -286,4 +286,8 @@ export default class FlowOperationController extends BaseController {
       httpOptions,
     );
   }
+  // 启动自动化任务
+  static startAutoTask(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.post(API_CONTEXT + '/flow/flowOperation/startAuto', params, httpOptions);
+  }
 }

@@ -1,6 +1,12 @@
 import { ANY_OBJECT } from '@/types/generic';
 import { uuid } from '../../utils';
-export default (key: string, name: string, type: string, diagramType: number): string => {
+export default (
+  key: string,
+  name: string,
+  type: string,
+  diagramType: number,
+  flowType: number,
+): string => {
   if (!type) type = 'camunda';
   const TYPE_TARGET: ANY_OBJECT = {
     activiti: 'http://activiti.org/bpmn',
@@ -19,10 +25,10 @@ export default (key: string, name: string, type: string, diagramType: number): s
     <bpmn2:startEvent id="Event_${startId}">
       <bpmn2:outgoing>Flow_${lineId1}</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:userTask id="Activity_${userTaskId}">
+    <bpmn2:${flowType === 1 ? 'receiveTask' : 'userTask'} id="Activity_${userTaskId}">
       <bpmn2:incoming>Flow_${lineId1}</bpmn2:incoming>
       <bpmn2:outgoing>Flow_${lineId2}</bpmn2:outgoing>
-    </bpmn2:userTask>
+    </bpmn2:${flowType === 1 ? 'receiveTask' : 'userTask'}>
     <bpmn2:sequenceFlow id="Flow_${lineId1}" sourceRef="Event_${startId}" targetRef="Activity_${userTaskId}" />
     <bpmn2:endEvent id="Event_${endId}">
       <bpmn2:incoming>Flow_${lineId2}</bpmn2:incoming>

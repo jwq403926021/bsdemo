@@ -544,16 +544,6 @@ const initFormData = () => {
 onMounted(() => {
   initFormData();
 });
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdTaskCommit' && data.isSuccess) {
-    preHandlerOperationThen(data.rowData.operation, data.rowData.copyItemList, data.data);
-  }
-};
-
-defineExpose({
-  refreshData,
-});
 </script>
 
 <style scoped>

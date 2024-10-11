@@ -65,11 +65,6 @@ const pps = withDefaults(
 const widgetId = ref(getUUID());
 const selectedItems = ref<ANY_OBJECT[]>([]);
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdSelectUser/' + widgetId.value && data.isSuccess) {
-    handlerEditOperate(data.data);
-  }
-};
 const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
   selectedItems.value = [];
   if (pps.multiple) {
@@ -194,10 +189,6 @@ watch(
     immediate: true,
   },
 );
-
-defineExpose({
-  refreshData,
-});
 </script>
 
 <style scoped>

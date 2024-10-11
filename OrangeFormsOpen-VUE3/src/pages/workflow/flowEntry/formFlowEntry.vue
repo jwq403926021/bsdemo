@@ -27,6 +27,22 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="流程类型" prop="formFilter.flowType">
+          <el-select
+            class="filter-item"
+            v-model="formFlowEntry.formFilter.flowType"
+            :clearable="true"
+            filterable
+            placeholder="流程类型"
+          >
+            <el-option
+              v-for="item in FlowEntryType.getList()"
+              :key="item.id"
+              :value="item.id"
+              :label="item.name"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="流程名称" prop="formFilter.processDefinitionName">
           <el-input
             class="filter-item"
@@ -87,6 +103,16 @@
       <vxe-column title="流程名称" field="processDefinitionName"> </vxe-column>
       <vxe-column title="流程标识" field="processDefinitionKey"> </vxe-column>
       <vxe-column title="流程分类" field="flowCategory.name"> </vxe-column>
+      <vxe-column title="流程类型">
+        <template v-slot="scope">
+          <el-tag
+            :size="layoutStore.defaultFormItemSize"
+            :type="scope.row.flowType === FlowEntryType.FLOW ? 'success' : 'primary'"
+          >
+            {{ FlowEntryType.getValue(scope.row.flowType || FlowEntryType.NORMAL) }}
+          </el-tag>
+        </template>
+      </vxe-column>
       <vxe-column title="流程图类型">
         <template v-slot="scope">
           <el-tag
@@ -212,6 +238,7 @@ import {
   DiagramType,
   SysFlowEntryPublishedStatus,
   SysFlowTaskOperationType,
+  FlowEntryType,
 } from '@/common/staticDict/flow';
 import { useLayoutStore } from '@/store';
 import FormPublishedFlowEntry from './formPublishedFlowEntry.vue';
@@ -251,6 +278,7 @@ const loadFlowEntryWidgetData = (params: ANY_OBJECT) => {
       categoryId: formFlowEntry.formFilterCopy.categoryId,
       processDefinitionName: formFlowEntry.formFilterCopy.processDefinitionName,
       processDefinitionKey: formFlowEntry.formFilterCopy.processDefinitionKey,
+      flowType: formFlowEntry.formFilterCopy.flowType,
       status: formFlowEntry.formFilterCopy.status,
     },
   };
@@ -272,6 +300,7 @@ const loadFlowEntryWidgetData = (params: ANY_OBJECT) => {
  */
 const loadFlowEntryVerify = () => {
   formFlowEntry.formFilterCopy.categoryId = formFlowEntry.formFilter.categoryId;
+  formFlowEntry.formFilterCopy.flowType = formFlowEntry.formFilter.flowType;
   formFlowEntry.formFilterCopy.processDefinitionName =
     formFlowEntry.formFilter.processDefinitionName;
   formFlowEntry.formFilterCopy.processDefinitionKey = formFlowEntry.formFilter.processDefinitionKey;
@@ -291,12 +320,14 @@ const formFlowEntry = reactive({
     categoryId: undefined,
     processDefinitionName: undefined,
     processDefinitionKey: undefined,
+    flowType: undefined,
   },
   formFilterCopy: {
     status: undefined,
     categoryId: undefined,
     processDefinitionName: undefined,
     processDefinitionKey: undefined,
+    flowType: undefined,
   },
   categoryIdWidget: reactive(useDropdown(dropdownOptions)),
   flowEntryWidget: reactive(useTable(tableOptions)),
@@ -331,8 +362,16 @@ const onStartFlowEntryClick = (row: ANY_OBJECT) => {
   let params = {
     processDefinitionKey: row.processDefinitionKey,
   };
-  FlowOperationController.viewInitialTaskInfo(params)
+  let httpCall =
+    row.flowType === FlowEntryType.AUTO_TASK
+      ? FlowOperationController.startAutoTask(params)
+      : FlowOperationController.viewInitialTaskInfo(params);
+  httpCall
     .then(res => {
+      if (row.flowType === FlowEntryType.AUTO_TASK) {
+        ElMessage.success('启动成功！');
+        return;
+      }
       if (res.data && res.data.taskType === SysFlowTaskType.USER_TASK && res.data.assignedMe) {
         let params = {
           processDefinitionKey: row.processDefinitionKey || '',
@@ -390,9 +429,7 @@ const onAddFlowEntryClick = () => {
       area: ['100vw', '100vh'],
       skin: 'fullscreen-dialog',
     },
-    {
-      //path: 'thirdFormEditFlowEntry',
-    },
+    {},
     {
       fullscreen: true,
       pathName: '/thirdParty/thirdFormEditFlowEntry',
@@ -418,7 +455,6 @@ const onEditFlowEntryClick = (row: ANY_OBJECT) => {
       skin: 'fullscreen-dialog',
     },
     {
-      //path: 'thirdFormEditFlowEntry',
       flowEntry: row,
     },
     {
@@ -523,9 +559,6 @@ const onDeleteFlowEntryClick = (row: ANY_OBJECT) => {
     });
 };
 
-const refreshData = () => {
-  refreshFormFlowEntry(true);
-};
 const onResume = () => {
   refreshFormFlowEntry();
 };
@@ -537,7 +570,6 @@ onMounted(() => {
   formInit();
 });
 defineExpose({
-  refreshData,
   onResume,
 });
 </script>

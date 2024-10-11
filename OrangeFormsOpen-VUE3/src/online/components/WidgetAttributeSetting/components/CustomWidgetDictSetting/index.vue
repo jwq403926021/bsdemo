@@ -76,13 +76,6 @@ const dictId = computed({
   },
 });
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdEditDictParamValue' && data.isSuccess) {
-    handlerEditOperate(data.rowData, data.data);
-  }
-};
-defineExpose({ refreshData });
-
 const onDictChange = (val: ANY_OBJECT) => {
   emitChange({
     dictId: val,

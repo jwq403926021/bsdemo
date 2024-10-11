@@ -30,7 +30,12 @@
       />
     </el-row>
     <el-row v-if="inputWidgetType === SysCustomWidgetType.Radio" type="flex" align="middle">
-      <el-radio-group size="default" v-model="valNum" v-bind="attributeProps" @change="onValueChange">
+      <el-radio-group
+        size="default"
+        v-model="valNum"
+        v-bind="attributeProps"
+        @change="onValueChange"
+      >
         <el-radio-button
           v-for="item in dropdownData"
           :key="item.id"

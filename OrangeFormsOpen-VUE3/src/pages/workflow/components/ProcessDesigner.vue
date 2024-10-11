@@ -21,6 +21,8 @@
       :bpmn-modeler="modeler"
       :prefix="controlForm.prefix"
       :width="600"
+      :autoTaskVariableList="autoTaskVariableList"
+      :flowVariableList="flowVariableList"
       class="process-panel"
     />
   </div>
@@ -62,6 +64,9 @@ const controlForm = ref<ANY_OBJECT>({
   headerButtonSize: 'default',
   additionalModel: [CustomContentPadProvider, CustomPaletteProvider],
 });
+
+const autoTaskVariableList = ref<ANY_OBJECT[]>([]);
+const flowVariableList = ref<ANY_OBJECT[]>([]);
 
 const elementClick = (element: ANY_OBJECT) => {
   console.log('ProcessDesigner main', element);

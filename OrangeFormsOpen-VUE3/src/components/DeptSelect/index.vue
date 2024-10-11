@@ -66,11 +66,6 @@ const widgetId = ref(getUUID());
 const selectedItems = ref<ANY_OBJECT[]>([]);
 const pps = computed(() => props.props);
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdSelectDept/' + widgetId.value && data.isSuccess) {
-    handlerEditOperate(data.data);
-  }
-};
 const handlerEditOperate = (items: Ref<ANY_OBJECT>) => {
   selectedItems.value = [];
   if (props.multiple) {
@@ -187,10 +182,6 @@ watch(
     immediate: true,
   },
 );
-
-defineExpose({
-  refreshData,
-});
 </script>
 
 <style scoped>

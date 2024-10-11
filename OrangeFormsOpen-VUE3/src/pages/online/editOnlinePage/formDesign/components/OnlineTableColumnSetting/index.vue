@@ -30,13 +30,6 @@ const formConfig = inject('formConfig', () => {
   return {} as ANY_OBJECT;
 });
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdEditOnlineTableColumn' && data.isSuccess) {
-    handlerEditOperate(data.rowData, data.data);
-  }
-};
-defineExpose({ refreshData });
-
 const emit = defineEmits<{ 'update:value': [ANY_OBJECT[]] }>();
 const handlerEditOperate = (row: ANY_OBJECT | null, res: ANY_OBJECT) => {
   let tempList: ANY_OBJECT[] = [];

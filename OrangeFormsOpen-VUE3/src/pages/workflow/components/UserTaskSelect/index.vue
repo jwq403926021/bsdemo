@@ -108,13 +108,6 @@ const emitChange = () => {
   emit('change', tempValue);
   //emit('input', tempValue);
 };
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdSelectUserTask/' + widgetId && data.isSuccess) {
-    handlerEditOperate(data.data);
-  }
-};
-defineExpose({ refreshData });
 </script>
 
 <style scoped>

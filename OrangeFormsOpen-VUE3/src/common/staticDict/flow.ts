@@ -164,6 +164,16 @@ const SysFlowVariableType = new DictionaryBase('工作流变量类型', [
     name: '任务变量',
     symbol: 'TASK',
   },
+  {
+    id: 2,
+    name: '系统内置变量',
+    symbol: 'SYSTEM',
+  },
+  {
+    id: 4,
+    name: '自定义变量',
+    symbol: 'CUSTOM',
+  },
 ]);
 
 const SysFlowWorkOrderStatus = new DictionaryBase('工单状态', [
@@ -340,6 +350,64 @@ const SysAutoCodeType = new DictionaryBase('自动编码类型', [
     symbol: 'SECONDS',
   },
 ]);
+const FlowEntryType = new DictionaryBase('流程类型', [
+  {
+    id: 0,
+    name: '审批流程',
+    symbol: 'NORMAL',
+  },
+  {
+    id: 1,
+    name: '自动化任务',
+    symbol: 'AUTO_TASK',
+  },
+]);
+
+const AutoTaskValueType = new DictionaryBase('自动化任务值类型', [
+  {
+    id: 0,
+    name: '固定值',
+    symbol: 'FIXED',
+  },
+  {
+    id: 1,
+    name: '源表字段',
+    symbol: 'FIELD',
+  },
+  {
+    id: 2,
+    name: '流程变量',
+    symbol: 'VARIABLE',
+  },
+]);
+
+const AutoTaskActionType = new DictionaryBase('自动化任务动作类型', [
+  {
+    id: 0,
+    name: '数据插入',
+    symbol: 'INSERT',
+  },
+  {
+    id: 1,
+    name: '数据更新',
+    symbol: 'UPDATE',
+  },
+  {
+    id: 2,
+    name: '数据删除',
+    symbol: 'DELETE',
+  },
+  {
+    id: 3,
+    name: '数据查询',
+    symbol: 'QUERY_SINGLE_DATA',
+  },
+  {
+    id: 10,
+    name: 'HTTP请求',
+    symbol: 'HTTP',
+  },
+]);
 
 export {
   SysFlowEntryPublishedStatus,
@@ -353,4 +421,7 @@ export {
   DiagramType,
   FlowNodeType,
   SysAutoCodeType,
+  FlowEntryType,
+  AutoTaskValueType,
+  AutoTaskActionType,
 };

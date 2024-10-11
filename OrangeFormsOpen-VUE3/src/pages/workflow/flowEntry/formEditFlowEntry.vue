@@ -17,11 +17,13 @@
                   >基础信息</StepBarItem
                 >
                 <StepBarItem
+                  v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL"
                   icon="online-icon icon-operator"
                   :name="SysFlowEntryStep.PROCESS_VARIABLE"
                   >流程变量</StepBarItem
                 >
                 <StepBarItem
+                  v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL"
                   icon="online-icon icon-flow-stauts"
                   :name="SysFlowEntryStep.PROCESS_STATUS"
                   >流程状态</StepBarItem
@@ -98,6 +100,19 @@
               >
                 <el-row :gutter="16">
                   <el-col :span="24">
+                    <el-form-item label="流程类型" prop="flowType">
+                      <el-radio-group v-model="formFlowEntryData.flowType" :disabled="isEdit">
+                        <el-radio
+                          v-for="item in FlowEntryType.getList()"
+                          :key="item.id"
+                          :label="item.id"
+                        >
+                          {{ item.name }}
+                        </el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24" v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL">
                     <el-form-item label="表单类型" prop="bindFormType">
                       <el-select
                         v-model="formFlowEntryData.bindFormType"
@@ -127,7 +142,10 @@
                   </el-col>
                   <el-col :span="24">
                     <el-form-item label="流程标识" prop="processDefinitionKey">
-                      <el-input v-model="formFlowEntryData.processDefinitionKey" :disabled="isEdit" />
+                      <el-input
+                        v-model="formFlowEntryData.processDefinitionKey"
+                        :disabled="isEdit"
+                      />
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
@@ -147,7 +165,7 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="24">
+                  <el-col :span="24" v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL">
                     <el-form-item label="工单编码">
                       <el-row type="flex" align="middle" style="flex-wrap: nowrap">
                         <el-input
@@ -157,7 +175,9 @@
                           :disabled="!formFlowEntryData.encodedRule.calculateWhenView"
                         >
                           <template v-slot:prepend>
-                            <el-checkbox v-model="formFlowEntryData.encodedRule.calculateWhenView" />
+                            <el-checkbox
+                              v-model="formFlowEntryData.encodedRule.calculateWhenView"
+                            />
                           </template>
                         </el-input>
                         <el-select
@@ -191,7 +211,10 @@
                   </el-col>
                   <el-col
                     :span="24"
-                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
+                    v-if="
+                      formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM &&
+                      formFlowEntryData.flowType === FlowEntryType.NORMAL
+                    "
                   >
                     <el-form-item label="流程页面" prop="pageId">
                       <el-select
@@ -213,7 +236,10 @@
                   </el-col>
                   <el-col
                     :span="24"
-                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
+                    v-if="
+                      formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM &&
+                      formFlowEntryData.flowType === FlowEntryType.NORMAL
+                    "
                   >
                     <el-form-item label="默认表单" prop="defaultFormId">
                       <el-select
@@ -233,7 +259,10 @@
                   </el-col>
                   <el-col
                     :span="24"
-                    v-if="formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM"
+                    v-if="
+                      formFlowEntryData.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM &&
+                      formFlowEntryData.flowType === FlowEntryType.NORMAL
+                    "
                   >
                     <el-form-item label="默认表单" prop="defaultRouterName">
                       <el-input
@@ -243,7 +272,7 @@
                       />
                     </el-form-item>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="12" v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL">
                     <el-form-item label="通知类型">
                       <el-select
                         v-model="formFlowEntryData.notifyTypes"
@@ -255,12 +284,19 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="12">
+                  <el-col :span="12" v-if="formFlowEntryData.flowType === FlowEntryType.NORMAL">
                     <el-form-item label="级联删除业务数据" label-width="128px">
                       <el-switch v-model="formFlowEntryData.cascadeDeleteBusinessData" />
                     </el-form-item>
                   </el-col>
-                  <el-col :span="24" v-if="isEdit && shareFormList.length > 0">
+                  <el-col
+                    :span="24"
+                    v-if="
+                      isEdit &&
+                      shareFormList.length > 0 &&
+                      formFlowEntryData.flowType === FlowEntryType.NORMAL
+                    "
+                  >
                     <el-form-item label="工单分享">
                       <el-row type="flex">
                         <el-button
@@ -454,6 +490,7 @@ import {
   SysFlowEntryBindFormType,
   SysFlowEntryStep,
   SysFlowVariableType,
+  FlowEntryType,
 } from '@/common/staticDict/flow';
 import { SysOnlineFormType } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
@@ -499,6 +536,7 @@ const formFlowEntryData = ref<ANY_OBJECT>({
   entryId: undefined,
   processDefinitionName: undefined,
   processDefinitionKey: undefined,
+  flowType: FlowEntryType.NORMAL,
   categoryId: undefined,
   bindFormType: SysFlowEntryBindFormType.ROUTER_FORM,
   pageId: undefined,
@@ -537,6 +575,7 @@ const formRules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   ],
   processDefinitionName: [{ required: true, message: '流程名称不能为空！', trigger: 'blur' }],
   categoryId: [{ required: true, message: '流程分类不能为空！', trigger: 'blur' }],
+  flowType: [{ required: true, message: '流程类型不能为空！', trigger: 'blur' }],
   pageId: [{ required: true, message: '流程页面不能为空！', trigger: 'blur' }],
   defaultFormId: [
     {
@@ -650,7 +689,11 @@ const onPrevClick = () => {
       activeStep.value = SysFlowEntryStep.PROCESS_VARIABLE;
       break;
     case SysFlowEntryStep.PROCESS_DESIGN:
-      activeStep.value = SysFlowEntryStep.PROCESS_STATUS;
+      if (formFlowEntryData.value.flowType === FlowEntryType.AUTO_TASK) {
+        activeStep.value = SysFlowEntryStep.BASIC;
+      } else {
+        activeStep.value = SysFlowEntryStep.PROCESS_STATUS;
+      }
       break;
   }
 };
@@ -738,7 +781,9 @@ const loadDatasourceAllColumnList = (res: ResponseDataType<TableData<ANY_OBJECT>
 // 获取流程绑定页面数据源信息
 const initFlowDatasourceInfo = () => {
   return new Promise((resolve, reject) => {
-    if (entryDatasource != null) return resolve(null);
+    if (entryDatasource != null || formFlowEntryData.value.flowType === FlowEntryType.AUTO_TASK) {
+      return resolve(null);
+    }
     if (formFlowEntryData.value.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM) {
       OnlinePageController.listOnlinePageDatasource({
         pageId: formFlowEntryData.value.pageId,
@@ -819,12 +864,6 @@ const onNextClick = () => {
       entryBasicInfo.value.validate((valid: boolean) => {
         if (!valid) return;
         if (formFlowEntryData.value.encodedRule.calculateWhenView) {
-          /*
-        if (formFlowEntryData.value.encodedRule.prefix == null || formFlowEntryData.value.encodedRule.prefix === '') {
-          ElMessage.error('工单编码前缀不能为空！');
-          return;
-        }
-        */
           if (
             formFlowEntryData.value.encodedRule.precisionTo == null ||
             formFlowEntryData.value.encodedRule.precisionTo === ''
@@ -845,6 +884,11 @@ const onNextClick = () => {
           .then(res => {
             if (!isEdit.value) formFlowEntryData.value.entryId = res.data;
             ElMessage.success('保存成功');
+            // 自动化任务直接跳转到流程设计页面
+            if (formFlowEntryData.value.flowType === FlowEntryType.AUTO_TASK) {
+              activeStep.value = SysFlowEntryStep.PROCESS_DESIGN;
+              return;
+            }
             // 获取流程页面数据源信息
             initFlowDatasourceInfo()
               .then(() => {
@@ -900,8 +944,8 @@ const onBindFormTypeChange = () => {
 };
 // 流程绑定表单页面改变
 const onEntryPageChange = () => {
-  formFlowEntryData.value.defaultFormId = undefined;
   defaultFormIdWidget.setDirty(true);
+  formFlowEntryData.value.defaultFormId = undefined;
   entryDatasource = null;
 };
 const getFormShareInfo = (form: ANY_OBJECT) => {
@@ -1088,6 +1132,7 @@ const initFlowEntryInfo = () => {
     processDefinitionName: undefined,
     processDefinitionKey: undefined,
     categoryId: undefined,
+    flowType: FlowEntryType.NORMAL,
     bindFormType: SysFlowEntryBindFormType.ONLINE_FORM,
     pageId: undefined,
     defaultFormId: undefined,
@@ -1157,24 +1202,6 @@ onMounted(() => {
 provide('flowEntry', () => formFlowEntryData);
 provide('formList', () => (defaultFormIdWidget ? defaultFormIdWidget.dropdownList : []));
 provide('allVariableList', () => processVariableList);
-
-// 获取流程绑定页面数据源信息
-// const initFlowEntryDatasourceInfo = (entryId: string) => {
-//   return FlowEntryController.viewDatasource({
-//     entryId,
-//   });
-// };
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdFormEditFlowEntryVariable' && data.isSuccess) {
-    loadEntryVariableList();
-  } else if (data.path === 'thirdFormEditFlowEntryStatus' && data.isSuccess) {
-    formFlowEntryData.value.extensionData.approvalStatusDict = [...data.data];
-  }
-};
-defineExpose({
-  refreshData,
-});
 </script>
 
 <style scoped>

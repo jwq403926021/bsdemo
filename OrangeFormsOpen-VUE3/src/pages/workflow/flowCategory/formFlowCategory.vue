@@ -102,7 +102,6 @@ import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
 import FlowCategoryController from '@/api/flow/FlowCategoryController';
-import { usePermissions } from '@/common/hooks/usePermission';
 import { useDate } from '@/common/hooks/useDate';
 import { useLayoutStore } from '@/store';
 import formEditFlowCategory from './formEditFlowCategory.vue';
@@ -179,10 +178,6 @@ const refreshFormFlowCategory = (reloadData = false) => {
     // 初始化下拉数据
   }
   formFlowCategory.isInit = true;
-};
-
-const refreshData = () => {
-  refreshFormFlowCategory();
 };
 const onReset = () => {
   form.value.resetFields();
@@ -286,7 +281,6 @@ onMounted(() => {
 });
 
 defineExpose({
-  refreshData,
   onResume,
 });
 </script>

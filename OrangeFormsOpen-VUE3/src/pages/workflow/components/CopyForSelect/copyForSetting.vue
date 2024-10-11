@@ -383,13 +383,6 @@ onBeforeUnmount(() => {
   postMap = null;
   deptPostMap = null;
 });
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdAddCopyForItem' && data.isSuccess) {
-    updateEditCopyForItem(data.data);
-  }
-};
-defineExpose({ refreshData });
 </script>
 
 <style lang="scss" scoped>

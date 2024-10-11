@@ -617,7 +617,8 @@ const createNewDiagram = async (xml: string | ArrayBuffer | null) => {
   // 将字符串转换成图显示出来
   let newId = props.processId || `Process_${new Date().getTime()}`;
   let newName = props.processName || `业务流程_${new Date().getTime()}`;
-  let xmlString = xml || DefaultEmptyXML(newId, newName, props.prefix, diagramType.value);
+  let flowType = props.flowEntryInfo?.flowType || 0;
+  let xmlString = xml || DefaultEmptyXML(newId, newName, props.prefix, diagramType.value, flowType);
   try {
     if (bpmnModeler) {
       let { warnings } = await bpmnModeler.importXML(xmlString);

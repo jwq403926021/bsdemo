@@ -103,11 +103,11 @@ import { onBeforeUnmount, shallowRef } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { ANY_OBJECT } from '@/types/generic';
 
-const emit = defineEmits<{ 'update:value': [string | undefined] }>();
+const emit = defineEmits<{ 'update:modelValue': [string | undefined] }>();
 
 const props = withDefaults(
   defineProps<{
-    value?: string;
+    modelValue?: string;
     editorConfig?: ANY_OBJECT;
     toolbarConfig?: ANY_OBJECT;
     height?: string;
@@ -127,16 +127,7 @@ const props = withDefaults(
 const editorRef = shallowRef();
 const mode = ref('default');
 
-// 内容 HTML
-const valueHtml = computed({
-  get() {
-    return props.value;
-  },
-  set(val) {
-    console.log('richeditor value input', val);
-    emit('update:value', val);
-  },
-});
+const valueHtml = ref(props.modelValue);
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
@@ -147,16 +138,17 @@ onBeforeUnmount(() => {
 
 const handleCreated = (editor: ANY_OBJECT) => {
   editorRef.value = editor; // 记录 editor 实例，重要！
-
+  editor.setHtml(valueHtml.value);
   console.log('editor', editor);
   console.log(editor.getAllMenuKeys());
 };
 
 watch(
-  () => props.value,
+  () => props.modelValue,
   newValue => {
-    if (editorRef.value && newValue !== editorRef.value.txt.html())
-      editorRef.value.txt.html(newValue);
+    if (newValue !== valueHtml.value) {
+      valueHtml.value = newValue;
+    }
   },
   {
     deep: true,
@@ -164,8 +156,15 @@ watch(
   },
 );
 
+watch(
+  () => valueHtml.value,
+  newValue => {
+    emit('update:modelValue', newValue);
+  },
+);
+
 const getHtml = () => {
-  return editorRef.value ? editorRef.value.txt.html() : undefined;
+  return editorRef.value ? editorRef.value.getHtml() : undefined;
 };
 
 defineExpose({ getHtml });

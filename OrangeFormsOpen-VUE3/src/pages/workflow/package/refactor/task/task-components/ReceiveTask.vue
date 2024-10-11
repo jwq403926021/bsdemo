@@ -38,7 +38,7 @@
         :model="newMessageForm"
         :size="layoutStore.defaultFormItemSize"
         label-width="90px"
-        @submit.native.prevent
+        @submit.prevent
       >
         <el-form-item label="消息ID">
           <el-input v-model="newMessageForm.id" clearable />

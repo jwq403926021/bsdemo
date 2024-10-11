@@ -168,7 +168,7 @@ import { SysCommonBizController } from '@/api/system';
 import { findTreeNodePath, treeDataTranslate, findItemFromList } from '@/common/utils';
 import TaskGroupSelect from '@/pages/workflow/components/TaskGroupSelect.vue';
 import TagSelect from '@/pages/workflow/components/TagSelect.vue';
-import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
+import { SysFlowTaskOperationType, FlowEntryType } from '@/common/staticDict/flow';
 import { Dialog } from '@/components/Dialog';
 import { DialogProp } from '@/components/Dialog/types';
 import { useThirdParty } from '@/components/thirdParty/hooks';
@@ -179,11 +179,15 @@ const layoutStore = useLayoutStore();
 interface IProps extends ThirdProps {
   rowData?: ANY_OBJECT;
   validStatusList?: ANY_OBJECT[];
+  flowType?: string | number;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
   dialog?: DialogProp<ANY_OBJECT | ANY_OBJECT[] | undefined>;
 }
 const props = withDefaults(defineProps<IProps>(), {
-  validStatusList: () => [],
+  rowData: undefined,
+  validStatusList: undefined,
+  flowType: undefined,
+  dialog: undefined,
 });
 const { thirdParams, onCloseThirdDialog } = useThirdParty(props);
 
@@ -216,6 +220,7 @@ const dialogParams = computed(() => {
   return {
     rowData: props.rowData || thirdParams.value.rowData,
     validStatusList: props.validStatusList || thirdParams.value.validStatusList || [],
+    flowType: props.flowType || thirdParams.value.flowType,
   };
 });
 const multiSignGroupList = computed(() => {
@@ -235,7 +240,18 @@ const multiSignGroupList = computed(() => {
   }
 });
 const getValidOperationList = computed(() => {
+  let autoSupportOperationList = [
+    SysFlowTaskOperationType.REJECT,
+    SysFlowTaskOperationType.REJECT_TO_TASK,
+    SysFlowTaskOperationType.MULTI_SIGN,
+    SysFlowTaskOperationType.MULTI_AGREE,
+    SysFlowTaskOperationType.MULTI_REFUSE,
+    SysFlowTaskOperationType.MULTI_ABSTAIN,
+  ];
   return SysFlowTaskOperationType.getList().filter(item => {
+    if (dialogParams.value.flowType === FlowEntryType.AUTO_TASK) {
+      return autoSupportOperationList.indexOf(item.id) !== -1;
+    }
     return (
       [
         SysFlowTaskOperationType.INTERVENE,
@@ -653,15 +669,6 @@ onMounted(() => {
     }
   }
 });
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdTaskUserSelect' && data.isSuccess) {
-    updateSelectUser(data.data);
-  } else if (data.path === 'thirdTaskGroupSelect' && data.isSuccess) {
-    updateSelectDept(data.data);
-  }
-};
-defineExpose({ refreshData });
 </script>
 
 <style scoped>

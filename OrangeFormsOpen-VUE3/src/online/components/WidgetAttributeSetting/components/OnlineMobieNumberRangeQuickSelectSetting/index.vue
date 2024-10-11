@@ -75,10 +75,4 @@ const onRemoveTableColumn = (row: ANY_OBJECT) => {
       console.warn(e);
     });
 };
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdEditOnlineMobileNumberRangeQuick' && data.isSuccess) {
-    handlerEditOperate(data.rowData, data.data);
-  }
-};
-defineExpose({ refreshData });
 </script>

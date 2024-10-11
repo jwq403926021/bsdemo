@@ -331,15 +331,6 @@ watch(
     deep: true,
   },
 );
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdTaskUserSelect' && data.isSuccess) {
-    updateSelectUser(data.data);
-  } else if (data.path === 'thirdTaskGroupSelect' && data.isSuccess) {
-    updateSelectDept(data.data);
-  }
-};
-defineExpose({ refreshData });
 </script>
 
 <style scoped>

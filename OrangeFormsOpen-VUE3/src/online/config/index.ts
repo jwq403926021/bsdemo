@@ -1,5 +1,3 @@
-import { ANY_OBJECT } from '@/types/generic';
-import { SysCustomWidgetType } from '@/common/staticDict/index';
 import blockConfig from './customBlock';
 import baseCardConfig from './baseCard';
 import tabsConfig from './tabs';
@@ -23,6 +21,9 @@ import richEditorConfig from './richEditor';
 import tableConfig from './table';
 import linkConfig from './link';
 import treeConfig from './tree';
+import { ANY_OBJECT } from '@/types/generic';
+import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
+import { SysCustomWidgetBindValueType } from '@/common/staticDict/online';
 
 const formWidgetGroupList: ANY_OBJECT = {
   pc: [
@@ -231,9 +232,14 @@ function getWidgetObject(widget: ANY_OBJECT): ANY_OBJECT {
     // ...widget,
     widgetType: widget.widgetType,
     bindData: {
-      //...bindDataConfig,
+      dataType: SysCustomWidgetBindDataType.Column,
       defaultValue: {
-        //...bindDataConfig.defaultValue,
+        valueType: SysCustomWidgetBindValueType.INPUT_DATA,
+        // 默认值是字典，字典ID
+        dictId: undefined,
+        value: undefined,
+        // 内置系统变量
+        systemVariable: undefined,
       },
     },
     operationList: widget.operationList

@@ -261,15 +261,6 @@ const onSetOnlineFormAuth = () => {
       console.warn(e);
     });
 };
-
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdEditOperation' && data.isSuccess) {
-    updateEditOperation(data.data);
-  } else if (data.path === 'thirdSetOnlineFormAuth' && data.isSuccess) {
-    formData.value.formAuth = data.data;
-    updateElementFormKey();
-  }
-};
 const resetFormList = () => {
   bpmnElement = win.bpmnInstances.bpmnElement;
   let formKey = bpmnElement.businessObject.formKey;
@@ -420,7 +411,7 @@ watch(
   },
 );
 
-defineExpose({ refreshData, onEditOperation });
+defineExpose({ onEditOperation });
 </script>
 
 <style lang="scss" scoped>

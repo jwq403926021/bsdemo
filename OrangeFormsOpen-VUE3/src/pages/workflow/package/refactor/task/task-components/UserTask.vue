@@ -774,19 +774,6 @@ const updateElementTask = (key: string) => {
   win.bpmnInstances.modeling.updateProperties(win.bpmnInstances.bpmnElement, taskAttr);
 };
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdTaskUserSelect' && data.isSuccess) {
-    updateAssignee(data.data);
-  } else if (data.path === 'thirdTaskUserSelectCandidateUsers' && data.isSuccess) {
-    updateCandidateUsers(data.data);
-  } else if (data.path === 'thirdTaskGroupSelect' && data.isSuccess) {
-    updateDept(data.data);
-  } else if (data.path === 'thirdTaskPostSelect' && data.isSuccess) {
-    updatePost(data.data);
-  }
-};
-defineExpose({ refreshData });
-
 onBeforeUnmount(() => {
   groupMap = null;
   postMap = null;

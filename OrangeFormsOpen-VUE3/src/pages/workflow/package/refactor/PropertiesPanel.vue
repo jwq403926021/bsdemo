@@ -37,12 +37,11 @@
             :id="elementId"
             :type="elementType"
             :tabType="activeName"
-            v-if="elementType === 'ServiceTask' && activeName === 'baseInfo'"
+            v-if="
+              (elementType === 'ServiceTask' || elementType === 'ReceiveTask') &&
+              activeName === 'baseInfo'
+            "
           />
-        </div>
-
-        <div v-if="formVisible" key="goback">
-          <GoBack :id="elementId" :isCountersign="isCountersign" />
         </div>
 
         <div v-if="conditionFormVisible" key="condition">
@@ -166,16 +165,22 @@ const props = withDefaults(
     prefix?: string;
     width?: number;
     idEditDisabled?: boolean;
+    autoTaskVariableList: ANY_OBJECT[];
+    flowVariableList: ANY_OBJECT[];
   }>(),
   {
     prefix: 'camunda',
     width: 480,
     idEditDisabled: false,
+    autoTaskVariableList: () => [],
+    flowVariableList: () => [],
   },
 );
 
 provide('prefix', props.prefix);
 provide('width', props.width);
+provide('flowVariableList', () => props.flowVariableList);
+provide('autoTaskVariableList', () => props.autoTaskVariableList);
 
 // refs
 const elementForm = ref();
@@ -328,6 +333,8 @@ onBeforeUnmount(() => {
   .el-form-item__label {
     font-size: 14px;
     color: #333;
+    width: 100%;
+    text-align: left;
   }
 
   .el-button {

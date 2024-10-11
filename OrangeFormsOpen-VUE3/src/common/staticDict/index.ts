@@ -924,6 +924,68 @@ const DblinkType = new DictionaryBase('数据库连接类型', [
   */
 ]);
 
+const CriteriaFilterType = new DictionaryBase('条件过滤类型', [
+  {
+    id: 0,
+    name: '等于',
+    symbol: 'EQ',
+  },
+  {
+    id: 1,
+    name: '不等于',
+    symbol: 'NOT_EQ',
+  },
+  {
+    id: 2,
+    name: '大于等于',
+    symbol: 'GE',
+  },
+  {
+    id: 3,
+    name: '大于',
+    symbol: 'GT',
+  },
+  {
+    id: 4,
+    name: '小于等于',
+    symbol: 'LE',
+  },
+  {
+    id: 5,
+    name: '小于',
+    symbol: 'LT',
+  },
+  {
+    id: 6,
+    name: 'LIKE',
+    symbol: 'LIKE',
+  },
+  {
+    id: 7,
+    name: 'IN',
+    symbol: 'IN',
+  },
+  {
+    id: 8,
+    name: 'NOT IN',
+    symbol: 'NOT_IN',
+  },
+  {
+    id: 9,
+    name: 'BETWEEN',
+    symbol: 'BETWEEN',
+  },
+  {
+    id: 100,
+    name: '不为空',
+    symbol: 'NOT_NULL',
+  },
+  {
+    id: 101,
+    name: '为空',
+    symbol: 'IS_NULL',
+  },
+]);
 export {
   SysUserStatus,
   SysUserType,
@@ -943,4 +1005,5 @@ export {
   SysCustomWidgetBindDataType,
   DirectionType,
   DblinkType,
+  CriteriaFilterType,
 };

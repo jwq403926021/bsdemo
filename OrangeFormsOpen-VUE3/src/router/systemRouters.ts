@@ -152,7 +152,7 @@ export const routers: Array<RouteRecordRaw> = [
         props: getProps,
         meta: { title: '在线表单' },
       },
-      // 流模管理
+      // 工作流模块
       {
         path: 'formMessage',
         component: () => import('@/pages/workflow/formMessage/index.vue'),
@@ -272,6 +272,12 @@ export const routers: Array<RouteRecordRaw> = [
       },
       // 流程设计
       {
+        path: 'thirdEditFlowDblink',
+        name: 'thirdEditFlowDblink',
+        props: getProps,
+        component: () => import('@/pages/workflow/formFlowDblink/editFlowDblink.vue'),
+      },
+      {
         path: 'thirdFormFlowEntry',
         name: 'thirdFormFlowEntry',
         props: getProps,
@@ -337,7 +343,7 @@ export const routers: Array<RouteRecordRaw> = [
         props: getProps,
         component: () => import('@/pages/workflow/flowEntry/formEditFlowEntryVariable.vue'),
       },
-      // 流程设计-新建状态
+      // 流程设计- 新建状态
       {
         path: 'thirdFormEditFlowEntryStatus',
         name: 'thirdFormEditFlowEntryStatus',
@@ -350,6 +356,41 @@ export const routers: Array<RouteRecordRaw> = [
         name: 'thirdTaskCommit',
         props: getProps,
         component: () => import('@/pages/workflow/components/TaskCommit.vue'),
+      },
+      // 自动化任务 - 编辑过滤条件
+      {
+        path: 'thirdEditTableFilter',
+        name: 'thirdEditTableFilter',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/editSrcTableFilter.vue'),
+      },
+      // 自动化任务 - 编辑更新字段
+      {
+        path: 'thirdEditFieldUpdateData',
+        name: 'thirdEditFieldUpdateData',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/editInsertData.vue'),
+      },
+      // 自动化任务 - 编辑响应字段
+      {
+        path: 'thirdEditResponseData',
+        name: 'thirdEditResponseData',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/editResponseData.vue'),
+      },
+      // 自动化任务 - 编辑HTTP请求参数
+      {
+        path: 'thirdEditHttpRequestParam',
+        name: 'thirdEditHttpRequestParam',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/editHttpParameter.vue'),
+      },
+      // 自动化任务 - 编辑HTTP请求头
+      {
+        path: 'thirdEditHttpHeader',
+        name: 'thirdEditHttpHeader',
+        props: getProps,
+        component: () => import('@/pages/workflow/package/refactor/form/editHttpHeader.vue'),
       },
       // 待办任务
       {

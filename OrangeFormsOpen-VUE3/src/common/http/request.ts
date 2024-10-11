@@ -293,8 +293,7 @@ export const downloadBlob = (
     commonRequest<Blob>(requestUrl(url), params, method, options, axiosOption)
       .then(res => {
         if (res instanceof Blob) {
-          const blobData = new Blob([res.data], { type: 'application/octet-stream' });
-          resolve(blobData);
+          resolve(res);
         } else {
           console.warn('下载文件失败', res);
           reject(new Error('下载文件失败'));

@@ -80,6 +80,7 @@ watch(
 <style lang="scss" scoped>
 .task-multiple-select {
   :deep(.el-tag) {
+    padding-right: 4px;
     margin-right: 8px;
     color: #666;
     background-color: #f6f6f6;

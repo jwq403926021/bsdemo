@@ -3,6 +3,7 @@
   <div class="form-single-fragment" style="position: relative">
     <el-row>
       <ProcessViewer
+        v-if="finishedInfo != null"
         :xml="taskProcessXml"
         :finishedInfo="finishedInfo"
         :allCommentList="flowTaskCommentList"

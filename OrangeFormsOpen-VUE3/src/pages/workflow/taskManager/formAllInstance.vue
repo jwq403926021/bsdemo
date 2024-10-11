@@ -77,10 +77,7 @@
             :size="layoutStore.defaultFormItemSize"
             type="danger"
             link
-            :disabled="
-              scope.row.endTime != null ||
-              !checkPermCodeExist('formAllInstance:formAllInstance:stop')
-            "
+            :disabled="scope.row.endTime != null"
             @click="onStopTask(scope.row)"
           >
             终止
@@ -89,10 +86,7 @@
             :size="layoutStore.defaultFormItemSize"
             type="danger"
             link
-            :disabled="
-              scope.row.endTime == null ||
-              !checkPermCodeExist('formAllInstance:formAllInstance:delete')
-            "
+            :disabled="scope.row.endTime == null"
             @click="onDeleteTask(scope.row)"
           >
             删除
@@ -123,14 +117,13 @@ import { Dialog } from '@/components/Dialog';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { FlowOperationController } from '@/api/flow';
+import { FlowEntryType } from '@/common/staticDict/flow';
 import { ANY_OBJECT } from '@/types/generic';
-import { usePermissions } from '@/common/hooks/usePermission';
 import { useLayoutStore } from '@/store';
-import FormTaskProcessViewer from './formTaskProcessViewer.vue';
 import StopTask from './stopTask.vue';
+import FormTaskProcessViewer from './formTaskProcessViewer.vue';
 
 const layoutStore = useLayoutStore();
-const { checkPermCodeExist } = usePermissions();
 
 const form = ref();
 const formFilter = reactive({
@@ -275,14 +268,10 @@ onMounted(() => {
   formInit();
 });
 
-const refreshData = () => {
-  refreshFormAllInstance();
-};
 const onResume = () => {
   refreshFormAllInstance();
 };
 defineExpose({
-  refreshData,
   onResume,
 });
 </script>

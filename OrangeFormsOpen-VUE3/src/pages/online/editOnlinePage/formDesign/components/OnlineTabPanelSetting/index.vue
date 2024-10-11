@@ -28,13 +28,6 @@ const formConfig = inject('formConfig', () => {
   return {} as ANY_OBJECT;
 });
 
-const refreshData = (data: ANY_OBJECT) => {
-  if (data.path === 'thirdEditOnlineTabPanel' && data.isSuccess) {
-    handlerEditOperate(data.rowData, data.data);
-  }
-};
-defineExpose({ refreshData });
-
 const handlerEditOperate = (row: ANY_OBJECT | null, res: ANY_OBJECT) => {
   if (row == null) {
     res = createTabPanel(res);

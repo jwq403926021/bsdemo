@@ -175,6 +175,13 @@ export const routers: Array<RouteRecordRaw> = [
         meta: { title: '流程设计' },
       },
       {
+        path: 'formFlowDblink',
+        component: () => import('@/pages/workflow/formFlowDblink/index.vue'),
+        name: 'formFlowDblink',
+        props: getProps,
+        meta: { title: '流程数据库链接' },
+      },
+      {
         path: 'formAllInstance',
         component: () => import('@/pages/workflow/taskManager/formAllInstance.vue'),
         name: 'formAllInstance',

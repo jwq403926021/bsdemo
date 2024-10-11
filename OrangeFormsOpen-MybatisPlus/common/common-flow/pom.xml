@@ -22,6 +22,11 @@
         </dependency>
         <dependency>
             <groupId>com.orangeforms</groupId>
+            <artifactId>common-dbutil</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.orangeforms</groupId>
             <artifactId>common-datafilter</artifactId>
             <version>1.0.0</version>
         </dependency>

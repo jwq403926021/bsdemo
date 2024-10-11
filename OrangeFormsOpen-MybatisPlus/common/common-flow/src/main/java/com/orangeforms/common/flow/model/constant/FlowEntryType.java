@@ -4,36 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 流程变量类型。
+ * 流程类型。
  *
  * @author Jerry
  * @date 2024-07-02
  */
-public final class FlowVariableType {
+public final class FlowEntryType {
 
     /**
-     * 流程实例变量。
+     * 普通审批。
      */
-    public static final int INSTANCE = 0;
+    public static final int NORMAL_TYPE = 0;
     /**
-     * 任务变量。
+     * 自动化流程。
      */
-    public static final int TASK = 1;
-    /**
-     * 系统内置变量。
-     */
-    public static final int SYSTEM = 2;
-    /**
-     * 自定义变量。
-     */
-    public static final int CUSTOM = 4;
+    public static final int AUTO_TYPE = 1;
 
     private static final Map<Object, String> DICT_MAP = new HashMap<>(2);
     static {
-        DICT_MAP.put(INSTANCE, "流程实例变量");
-        DICT_MAP.put(TASK, "任务变量");
-        DICT_MAP.put(SYSTEM, "系统内置变量");
-        DICT_MAP.put(CUSTOM, "自定义变量");
+        DICT_MAP.put(NORMAL_TYPE, "普通审批");
+        DICT_MAP.put(AUTO_TYPE, "自动化流程");
     }
 
     /**
@@ -49,6 +39,6 @@ public final class FlowVariableType {
     /**
      * 私有构造函数，明确标识该常量类的作用。
      */
-    private FlowVariableType() {
+    private FlowEntryType() {
     }
 }

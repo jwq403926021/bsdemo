@@ -79,6 +79,10 @@ public final class ApplicationConstant {
      */
     public static final String HTTP_HEADER_TRACE_ID = "traceId";
     /**
+     * 请求头业务流水号id名。
+     */
+    public static final String HTTP_HEADER_TRANS_ID = "transId";
+    /**
      * 请求头菜单Id。
      */
     public static final String HTTP_HEADER_MENU_ID = "MenuId";

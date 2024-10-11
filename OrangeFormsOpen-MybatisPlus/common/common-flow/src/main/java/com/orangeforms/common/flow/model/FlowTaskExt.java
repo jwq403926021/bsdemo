@@ -84,4 +84,10 @@ public class FlowTaskExt {
      */
     @TableField(value = "extra_data_json")
     private String extraDataJson;
+
+    /**
+     * 自动化任务配置数据，存储为JSON的字符串格式。
+     */
+    @TableField(value = "auto_config_json")
+    private String autoConfigJson;
 }

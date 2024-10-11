@@ -433,7 +433,20 @@ public class MyCommonUtil {
         builder.append("'");
         return builder.toString();
     }
-   
+
+    /**
+     * 获取当前请求的traceId。
+     *
+     * @return 当前请求的traceId。
+     */
+    public static String getTraceId() {
+        HttpServletRequest request = ContextUtil.getHttpRequest();
+        if (request == null) {
+            return null;
+        }
+        return request.getHeader(ApplicationConstant.HTTP_HEADER_TRACE_ID);
+    }
+
     /**
      * 私有构造函数，明确标识该常量类的作用。
      */

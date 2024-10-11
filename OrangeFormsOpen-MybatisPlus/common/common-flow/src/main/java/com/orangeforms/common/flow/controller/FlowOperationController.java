@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.orangeforms.common.core.annotation.DisableDataFilter;
 import com.orangeforms.common.core.annotation.MyRequestBody;
 import com.orangeforms.common.core.constant.ErrorCodeEnum;
+import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.core.object.*;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.util.MyPageUtil;
@@ -35,6 +36,7 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -111,6 +113,26 @@ public class FlowOperationController {
         }
         flowApiService.start(flowEntryPublish.getProcessDefinitionId(), null);
         return ResponseResult.success();
+    }
+
+    /**
+     * 发起一个自动化流程实例。
+     *
+     * @param processDefinitionKey 流程标识。
+     * @param variableData         变量数据。
+     * @return 应答结果对象。
+     */
+    @SaCheckPermission("flowOperation.all")
+    @OperationLog(type = SysOperationLogType.START_FLOW)
+    @PostMapping("/startAuto")
+    public ResponseResult<String> startAuto(
+            @MyRequestBody(required = true) String processDefinitionKey, @MyRequestBody JSONObject variableData) {
+        try {
+            ProcessInstance processInstance = flowApiService.startAuto(processDefinitionKey, variableData);
+            return ResponseResult.success(processInstance.getProcessInstanceId());
+        } catch (MyRuntimeException e) {
+            return ResponseResult.error(ErrorCodeEnum.DATA_VALIDATED_FAILED, e.getMessage());
+        }
     }
 
     /**

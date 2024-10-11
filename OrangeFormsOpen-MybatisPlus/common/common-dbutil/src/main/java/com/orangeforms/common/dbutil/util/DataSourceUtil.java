@@ -1,11 +1,14 @@
 package com.orangeforms.common.dbutil.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.orangeforms.common.core.constant.FieldFilterType;
 import com.orangeforms.common.core.exception.InvalidDblinkTypeException;
@@ -30,6 +33,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 import org.joda.time.DateTime;
 
 import javax.sql.DataSource;
+import java.io.Serializable;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,12 +54,12 @@ public abstract class DataSourceUtil {
     private static final Map<Integer, DataSourceProvider> PROVIDER_MAP = new HashMap<>(5);
     protected final Map<Long, DataSourceProvider> dblinkProviderMap = new ConcurrentHashMap<>(4);
 
-    private static final String SQL_SELECT = " SELECT ";
-    private static final String SQL_SELECT_FROM = " SELECT * FROM (";
-    private static final String SQL_AS_TMP = " ) tmp ";
-    private static final String SQL_ORDER_BY = " ORDER BY ";
-    private static final String SQL_AND = " AND ";
-    private static final String SQL_WHERE = " WHERE ";
+    public static final String SQL_SELECT = " SELECT ";
+    public static final String SQL_SELECT_FROM = " SELECT * FROM (";
+    public static final String SQL_AS_TMP = " ) tmp ";
+    public static final String SQL_ORDER_BY = " ORDER BY ";
+    public static final String SQL_AND = " AND ";
+    public static final String SQL_WHERE = " WHERE ";
     private static final String LOG_PREPARING_FORMAT = "==>  Preparing: {}";
     private static final String LOG_PARMS_FORMAT = "==> Parameters: {}";
     private static final String LOG_TOTAL_FORMAT = "<==      Total: {}";
@@ -357,6 +361,27 @@ public abstract class DataSourceUtil {
     }
 
     /**
+     * 执行包含参数变量的增删改操作。
+     *
+     * @param connection 数据库链接。
+     * @param sql        SQL语句。
+     * @param paramList  参数列表。
+     * @return 影响的行数。
+     */
+    public int execute(Connection connection, String sql, List<Object> paramList) {
+        try (PreparedStatement stat = connection.prepareStatement(sql)) {
+            for (int i = 0; i < paramList.size(); i++) {
+                stat.setObject(i + 1, paramList.get(i));
+            }
+            stat.execute();
+            return stat.getUpdateCount();
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            throw new MyRuntimeException(e);
+        }
+    }
+
+    /**
      * 在指定数据库链接上执行查询语句，并返回指定映射对象类型的单条数据对象。
      *
      * @param dblinkId  数据库链接Id。
@@ -414,6 +439,87 @@ public abstract class DataSourceUtil {
         try (Connection conn = dataSource.getConnection()) {
             return this.query(conn, query, paramList);
         }
+    }
+
+    /**
+     * 根据数据库链接的类型，将数据表字段类型转换为Java的字段属性类型。
+     *
+     * @param column     数据表字段对象。
+     * @param dblinkType 数据库链接类型。
+     * @return 返回与Java字段属性的类型名。
+     */
+    public String convertToJavaType(SqlTableColumn column, int dblinkType) {
+        return this.convertToJavaType(
+                column.getColumnType(), column.getNumericPrecision(), column.getNumericScale(), dblinkType);
+    }
+
+    /**
+     * 根据数据库链接的类型，将数据表字段类型转换为Java的字段属性类型。
+     *
+     * @param columnType       表字段类型。
+     * @param numericPrecision 数值的精度。
+     * @param numericScale     数值的刻度。
+     * @param dblinkType       数据库链接类型。
+     * @return 返回与Java字段属性的类型名。
+     */
+    public String convertToJavaType(String columnType, Integer numericPrecision, Integer numericScale, int dblinkType) {
+        DataSourceProvider provider = this.getProvider(dblinkType);
+        if (provider == null) {
+            throw new MyRuntimeException("Unsupported Data Type");
+        }
+        return provider.convertColumnTypeToJavaType(columnType, numericPrecision, numericScale);
+    }
+
+    /**
+     * 根据Java字段属性的类型，转换参数中的values值到与fieldType匹配的值类型数据列表。
+     *
+     * @param fieldType Java字段属性值。
+     * @param values     字符串类型的参数值列表，该参数为JSON数组。
+     * @return 目标类型的参数值列表。
+     */
+    public List<Serializable> convertToColumnValues(String fieldType, String values) {
+        List<Serializable> valueList = new LinkedList<>();
+        if (StrUtil.isBlank(values)) {
+            return valueList;
+        }
+        JSONArray valueArray = JSON.parseArray(values);
+        for (int i = 0; i < valueArray.size(); i++) {
+            String v = valueArray.getString(i);
+            valueList.add(this.convertToColumnValue(fieldType, v));
+        }
+        return valueList;
+    }
+
+    /**
+     * 根据Java字段属性的类型，转换参数中的value值到与fieldType匹配的值类型。
+     *
+     * @param fieldType Java字段属性值。
+     * @param value     参数值。
+     * @return 目标类型的参数值。
+     */
+    public Serializable convertToColumnValue(String fieldType, Serializable value) {
+        if (value == null) {
+            return null;
+        }
+        switch (fieldType) {
+            case "Long":
+                return Convert.toLong(value);
+            case "Integer":
+                return Convert.toInt(value);
+            case "BigDecimal":
+                return Convert.toBigDecimal(value);
+            case "Double":
+                return Convert.toDouble(value);
+            case "Boolean":
+                return Convert.toBool(value);
+            case "Date":
+                return value;
+            case "String":
+                return value.toString();
+            default:
+                break;
+        }
+        return null;
     }
 
     /**

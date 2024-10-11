@@ -22,7 +22,6 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.history.HistoricTaskInstance;
 
-import javax.xml.stream.XMLStreamException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +44,15 @@ public interface FlowApiService {
      * @return 新启动的流程实例。
      */
     ProcessInstance start(String processDefinitionId, Object dataId);
+
+    /**
+     * 启动自动化流程实例。
+     *
+     * @param processDefinitionKey 流程定义标识。
+     * @param variableData         变量参数数据。
+     * @return 新启动的流程实例。
+     */
+    ProcessInstance startAuto(String processDefinitionKey, JSONObject variableData);
 
     /**
      * 完成第一个用户任务。
@@ -515,9 +523,8 @@ public interface FlowApiService {
      *
      * @param bpmnXml xml格式的流程模型字符串。
      * @return 转换后的标准的流程模型。
-     * @throws XMLStreamException XML流处理异常
      */
-    BpmnModel convertToBpmnModel(String bpmnXml) throws XMLStreamException;
+    BpmnModel convertToBpmnModel(String bpmnXml);
 
     /**
      * 回退到上一个用户任务节点。如果没有指定，则回退到上一个任务。
@@ -557,6 +564,14 @@ public interface FlowApiService {
      */
     Tuple2<Set<String>, Set<String>> getDeptPostIdAndPostIds(
             FlowTaskExt flowTaskExt, String processInstanceId, boolean historic);
+
+    /**
+     * 获取指定流程实例中正在运行是的任务Id列表。
+     *
+     * @param processInstanceId 流程实例Id。
+     * @return 指定流程实例中正在运行是的任务Id列表。
+     */
+    List<String> getCurrentActivityIds(String processInstanceId);
 
     /**
      * 获取流程图中所有用户任务的映射。

@@ -2,6 +2,7 @@ package com.orangeforms.common.flow.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.text.StrFormatter;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -15,7 +16,9 @@ import com.orangeforms.common.core.exception.MyRuntimeException;
 import com.orangeforms.common.core.object.Tuple2;
 import com.orangeforms.common.core.util.DefaultDataSourceResolver;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
+import com.orangeforms.common.flow.constant.FlowAutoActionType;
 import com.orangeforms.common.flow.constant.FlowConstant;
+import com.orangeforms.common.flow.object.AutoTaskConfig;
 import com.orangeforms.common.flow.object.FlowElementExtProperty;
 import com.orangeforms.common.flow.object.FlowTaskMultiSignAssign;
 import com.orangeforms.common.flow.object.FlowUserTaskExtData;
@@ -221,16 +224,29 @@ public class FlowTaskExtServiceImpl extends BaseService<FlowTaskExt, String> imp
         return resultUserMapList;
     }
 
-    private void buildUserMapList(
-            List<FlowUserInfoVo> userInfoList, Set<String> loginNameSet, List<FlowUserInfoVo> userMapList) {
-        if (CollUtil.isEmpty(userInfoList)) {
+    @Override
+    public void verifyAutoTaskConfig(FlowTaskExt taskExt) {
+        if (StrUtil.isBlank(taskExt.getAutoConfigJson())) {
             return;
         }
-        for (FlowUserInfoVo userInfo : userInfoList) {
-            if (!loginNameSet.contains(userInfo.getLoginName())) {
-                loginNameSet.add(userInfo.getLoginName());
-                userMapList.add(userInfo);
+        AutoTaskConfig taskConfig = JSON.parseObject(taskExt.getAutoConfigJson(), AutoTaskConfig.class);
+        this.verifyDataOperationTask(taskConfig);
+        String errorMessage;
+        if (taskConfig.getActionType().equals(FlowAutoActionType.SELECT_ONE)) {
+            this.verifySrcTableNameEmpty(taskConfig);
+        } else if (taskConfig.getActionType().equals(FlowAutoActionType.AGGREGATION_CALC)) {
+            this.verifySrcTableNameEmpty(taskConfig);
+            if (CollUtil.isEmpty(taskConfig.getAggregationDataList())) {
+                errorMessage = StrFormatter.format("任务 [{}] 的聚合计算配置不能为空！", taskConfig.getTaskName());
+                throw new MyRuntimeException(errorMessage);
             }
+        } else if (taskConfig.getActionType().equals(FlowAutoActionType.NUMBER_CALC)) {
+            if (StrUtil.isBlank(taskConfig.getCalculateFormula())) {
+                errorMessage = StrFormatter.format("任务 [{}] 的数值计算公式不能为空！", taskConfig.getTaskName());
+                throw new MyRuntimeException(errorMessage);
+            }
+        } else if (taskConfig.getActionType().equals(FlowAutoActionType.HTTP)) {
+            this.verifyHttpConfig(taskConfig);
         }
     }
 
@@ -372,9 +388,92 @@ public class FlowTaskExtServiceImpl extends BaseService<FlowTaskExt, String> imp
         return propertiesData;
     }
 
+    private void verifyDataOperationTask(AutoTaskConfig taskConfig) {
+        String errorMessage;
+        if (taskConfig.getActionType().equals(FlowAutoActionType.ADD_NEW)) {
+            this.verifyDestTableNameEmpty(taskConfig);
+            if (CollUtil.isEmpty(taskConfig.getInsertDataList())) {
+                errorMessage = StrFormatter.format("任务 [{}] 的数据新增配置不能为空！", taskConfig.getTaskName());
+                throw new MyRuntimeException(errorMessage);
+            }
+        } else if (taskConfig.getActionType().equals(FlowAutoActionType.UPDATE)) {
+            this.verifyDestTableNameEmpty(taskConfig);
+            if (CollUtil.isEmpty(taskConfig.getUpdateDataList())) {
+                errorMessage = StrFormatter.format("任务 [{}] 的数据更新配置不能为空！", taskConfig.getTaskName());
+                throw new MyRuntimeException(errorMessage);
+            }
+        } else if (taskConfig.getActionType().equals(FlowAutoActionType.DELETE)) {
+            this.verifyDestTableNameEmpty(taskConfig);
+
+        }
+    }
+
+    private void verifyDestTableNameEmpty(AutoTaskConfig taskConfig) {
+        if (StrUtil.isBlank(taskConfig.getDestTableName())) {
+            String errorMessage = StrFormatter.format("任务 [{}] 的目标表不能为空！", taskConfig.getTaskName());
+            throw new MyRuntimeException(errorMessage);
+        }
+    }
+
+    private void verifySrcTableNameEmpty(AutoTaskConfig taskConfig) {
+        if (StrUtil.isBlank(taskConfig.getSrcTableName())) {
+            String errorMessage = StrFormatter.format("任务 [{}] 的源表不能为空！", taskConfig.getTaskName());
+            throw new MyRuntimeException(errorMessage);
+        }
+    }
+
+    private void verifyHttpConfig(AutoTaskConfig taskConfig) {
+        if (StrUtil.isBlank(taskConfig.getHttpRequestInfo().getUrl())) {
+            String errorMessage = StrFormatter.format("任务 [{}] 的URL不能为空！", taskConfig.getTaskName());
+            throw new MyRuntimeException(errorMessage);
+        }
+    }
+
+    private void buildUserMapList(
+            List<FlowUserInfoVo> userInfoList, Set<String> loginNameSet, List<FlowUserInfoVo> userMapList) {
+        if (CollUtil.isEmpty(userInfoList)) {
+            return;
+        }
+        for (FlowUserInfoVo userInfo : userInfoList) {
+            if (!loginNameSet.contains(userInfo.getLoginName())) {
+                loginNameSet.add(userInfo.getLoginName());
+                userMapList.add(userInfo);
+            }
+        }
+    }
+
+    private FlowTaskExt buildTaskExtByAutoTask(Task task) {
+        FlowTaskExt flowTaskExt = new FlowTaskExt();
+        flowTaskExt.setTaskId(task.getId());
+        flowTaskExt.setGroupType(FlowConstant.GROUP_TYPE_AUTO_EXEC);
+        Map<String, List<ExtensionElement>> extensionMap = task.getExtensionElements();
+        List<ExtensionElement> autoConfigElements = extensionMap.get("taskInfo");
+        if (CollUtil.isEmpty(autoConfigElements)) {
+            return flowTaskExt;
+        }
+        ExtensionElement autoConfigElement = autoConfigElements.get(0);
+        Map<String, List<ExtensionAttribute>> attributesMap = autoConfigElement.getAttributes();
+        if (attributesMap != null) {
+            List<ExtensionAttribute> attributes = attributesMap.get("data");
+            if (CollUtil.isNotEmpty(attributes)) {
+                ExtensionAttribute attribute = attributes.get(0);
+                if (StrUtil.isNotBlank(attribute.getValue())) {
+                    AutoTaskConfig taskConfig = JSONObject.parseObject(attribute.getValue(), AutoTaskConfig.class);
+                    taskConfig.setTaskKey(task.getId());
+                    taskConfig.setTaskName(task.getName());
+                    flowTaskExt.setAutoConfigJson(JSON.toJSONString(taskConfig));
+                }
+            }
+        }
+        return flowTaskExt;
+    }
+
     private void doBuildTaskExtList(FlowElement element, List<FlowTaskExt> flowTaskExtList) {
         if (element instanceof UserTask) {
             FlowTaskExt flowTaskExt = this.buildTaskExtByUserTask((UserTask) element);
+            flowTaskExtList.add(flowTaskExt);
+        } else if (element instanceof ServiceTask || element instanceof ReceiveTask) {
+            FlowTaskExt flowTaskExt = this.buildTaskExtByAutoTask((Task) element);
             flowTaskExtList.add(flowTaskExt);
         } else if (element instanceof SubProcess) {
             Collection<FlowElement> flowElements = ((SubProcess) element).getFlowElements();

@@ -96,6 +96,10 @@ public final class FlowApprovalType {
      * 空审批人自动退回。
      */
     public static final String EMPTY_USER_AUTO_REJECT = "empty_user_auto_reject";
+    /**
+     * 自动化任务。
+     */
+    public static final String AUTO_FLOW_TASK = "auto_flow_task";
 
     /**
      * 私有构造函数，明确标识该常量类的作用。

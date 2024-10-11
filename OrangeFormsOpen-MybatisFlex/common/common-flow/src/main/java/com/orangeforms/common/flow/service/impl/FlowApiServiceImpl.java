@@ -19,15 +19,14 @@ import com.orangeforms.common.core.util.MyCommonUtil;
 import com.orangeforms.common.core.util.DefaultDataSourceResolver;
 import com.orangeforms.common.flow.cmd.AddSequenceMultiInstanceCmd;
 import com.orangeforms.common.flow.exception.FlowOperationException;
+import com.orangeforms.common.flow.model.constant.FlowEntryType;
 import com.orangeforms.common.flow.object.*;
 import com.orangeforms.common.flow.constant.FlowConstant;
 import com.orangeforms.common.flow.constant.FlowApprovalType;
 import com.orangeforms.common.flow.constant.FlowTaskStatus;
 import com.orangeforms.common.flow.model.*;
 import com.orangeforms.common.flow.service.*;
-import com.orangeforms.common.flow.util.BaseFlowIdentityExtHelper;
-import com.orangeforms.common.flow.util.CustomChangeActivityStateBuilderImpl;
-import com.orangeforms.common.flow.util.FlowCustomExtFactory;
+import com.orangeforms.common.flow.util.*;
 import com.orangeforms.common.flow.vo.FlowTaskVo;
 import com.orangeforms.common.flow.vo.FlowUserInfoVo;
 import lombok.Cleanup;
@@ -107,6 +106,14 @@ public class FlowApiServiceImpl implements FlowApiService {
     private FlowCustomExtFactory flowCustomExtFactory;
     @Autowired
     private FlowMultiInstanceTransService flowMultiInstanceTransService;
+    @Autowired
+    private FlowTransProducerService flowTransProducerService;
+    @Autowired
+    private FlowAutoVariableLogService flowAutoVariableLogService;
+    @Autowired
+    private FlowOperationHelper flowOperationHelper;
+    @Autowired
+    private AutoFlowHelper autoFlowHelper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -125,6 +132,45 @@ public class FlowApiServiceImpl implements FlowApiService {
             }
         }
         return builder.start();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ProcessInstance startAuto(String processDefinitionKey, JSONObject variableData) {
+        ResponseResult<FlowEntry> flowEntryResult = flowOperationHelper.verifyAndGetFlowEntry(processDefinitionKey);
+        if (!flowEntryResult.isSuccess()) {
+            throw new MyRuntimeException(flowEntryResult.getErrorMessage());
+        }
+        FlowEntry flowEntry = flowEntryResult.getData();
+        if (!flowEntry.getFlowType().equals(FlowEntryType.AUTO_TYPE)) {
+            throw new MyRuntimeException("数据验证失败，该接口只能启动自动化流程！");
+        }
+        JSONObject systemVariables = autoFlowHelper.getNonRealtimeSystemVariables();
+        if (variableData == null) {
+            variableData = new JSONObject();
+        }
+        variableData.putAll(systemVariables);
+        AutoFlowHelper.setStartAutoInitVariables(variableData);
+        TokenData tokenData = TokenData.takeFromRequest();
+        Authentication.setAuthenticatedUserId(tokenData.getLoginName());
+        String businessKey = variableData.getString("businessKey");
+        String processDefinitionId = flowEntry.getMainFlowEntryPublish().getProcessDefinitionId();
+        ProcessInstanceBuilder builder =
+                runtimeService.createProcessInstanceBuilder()
+                        .processDefinitionId(processDefinitionId).businessKey(businessKey);
+        if (tokenData.getTenantId() != null) {
+            builder.tenantId(tokenData.getTenantId().toString());
+        } else {
+            if (tokenData.getAppCode() != null) {
+                builder.tenantId(tokenData.getAppCode());
+            }
+        }
+        ProcessInstance instance = builder.start();
+        FlowAutoVariableLog data = new FlowAutoVariableLog();
+        data.setProcessInstanceId(instance.getProcessInstanceId());
+        data.setVariableData(variableData.toJSONString());
+        flowAutoVariableLogService.saveNew(data);
+        return instance;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -976,6 +1022,12 @@ public class FlowApiServiceImpl implements FlowApiService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CallResult stopProcessInstance(String processInstanceId, String stopReason, int status) {
+        ProcessInstance instance = this.getProcessInstance(processInstanceId);
+        FlowEntry flowEntry = flowEntryService.getFlowEntryFromCache(instance.getProcessDefinitionKey());
+        if (flowEntry.getFlowType().equals(FlowEntryType.AUTO_TYPE)) {
+            runtimeService.deleteProcessInstance(processInstanceId, stopReason);
+            return CallResult.ok();
+        }
         List<Task> taskList = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
         if (CollUtil.isEmpty(taskList)) {
             return CallResult.error("数据验证失败，当前流程尚未开始或已经结束！");
@@ -1085,11 +1137,15 @@ public class FlowApiServiceImpl implements FlowApiService {
     }
 
     @Override
-    public BpmnModel convertToBpmnModel(String bpmnXml) throws XMLStreamException {
-        BpmnXMLConverter converter = new BpmnXMLConverter();
-        InputStream in = new ByteArrayInputStream(bpmnXml.getBytes(StandardCharsets.UTF_8));
-        @Cleanup XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(in);
-        return converter.convertToBpmnModel(reader);
+    public BpmnModel convertToBpmnModel(String bpmnXml) {
+        try {
+            BpmnXMLConverter converter = new BpmnXMLConverter();
+            InputStream in = new ByteArrayInputStream(bpmnXml.getBytes(StandardCharsets.UTF_8));
+            @Cleanup XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(in);
+            return converter.convertToBpmnModel(reader);
+        } catch (XMLStreamException e) {
+            throw new MyRuntimeException(e);
+        }
     }
 
     @Transactional
@@ -1713,6 +1769,15 @@ public class FlowApiServiceImpl implements FlowApiService {
             this.buildDeptPostIdAndPostIdsForPost(flowTaskExt, processInstanceId, historic, postIdSet, deptPostIdSet);
         }
         return new Tuple2<>(deptPostIdSet, postIdSet);
+    }
+
+    @Override
+    public List<String> getCurrentActivityIds(String processInstanceId) {
+        List<Execution> runExecutionList =
+                runtimeService.createExecutionQuery().processInstanceId(processInstanceId).list();
+        return runExecutionList.stream()
+                .map(Execution::getActivityId)
+                .filter(StrUtil::isNotBlank).collect(Collectors.toList());
     }
 
     @Override

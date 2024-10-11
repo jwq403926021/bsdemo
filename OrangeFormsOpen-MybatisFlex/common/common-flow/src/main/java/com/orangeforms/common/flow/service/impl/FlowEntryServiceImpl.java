@@ -16,6 +16,7 @@ import com.orangeforms.common.core.object.MyRelationParam;
 import com.orangeforms.common.core.object.TokenData;
 import com.orangeforms.common.core.util.MyModelUtil;
 import com.orangeforms.common.core.util.DefaultDataSourceResolver;
+import com.orangeforms.common.flow.model.constant.FlowEntryType;
 import com.orangeforms.common.redis.util.CommonRedisUtil;
 import com.orangeforms.common.sequence.wrapper.IdGeneratorWrapper;
 import com.orangeforms.common.flow.listener.*;
@@ -29,9 +30,7 @@ import com.orangeforms.common.flow.model.*;
 import com.orangeforms.common.flow.service.*;
 import com.orangeforms.common.flow.model.constant.FlowEntryStatus;
 import com.orangeforms.common.flow.model.constant.FlowVariableType;
-import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
-import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.*;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Deployment;
@@ -40,12 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,19 +104,16 @@ public class FlowEntryServiceImpl extends BaseService<FlowEntry, Long> implement
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void publish(FlowEntry flowEntry, String initTaskInfo) throws XMLStreamException {
-        commonRedisUtil.evictFormCache(
-                FlowRedisKeyUtil.makeFlowEntryKey(flowEntry.getProcessDefinitionKey()));
+    public void publish(FlowEntry flowEntry, String initTaskInfo) {
+        commonRedisUtil.evictFormCache(FlowRedisKeyUtil.makeFlowEntryKey(flowEntry.getProcessDefinitionKey()));
         FlowCategory flowCategory = flowCategoryService.getById(flowEntry.getCategoryId());
-        InputStream xmlStream = new ByteArrayInputStream(
-                flowEntry.getBpmnXml().getBytes(StandardCharsets.UTF_8));
-        @Cleanup XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(xmlStream);
-        BpmnXMLConverter converter = new BpmnXMLConverter();
-        BpmnModel bpmnModel = converter.convertToBpmnModel(reader);
+        BpmnModel bpmnModel = flowApiService.convertToBpmnModel(flowEntry.getBpmnXml());
         bpmnModel.getMainProcess().setName(flowEntry.getProcessDefinitionName());
         bpmnModel.getMainProcess().setId(flowEntry.getProcessDefinitionKey());
+        this.processAutomaticTask(flowEntry, bpmnModel);
         flowApiService.addProcessInstanceEndListener(bpmnModel, FlowFinishedListener.class);
         List<FlowTaskExt> flowTaskExtList = flowTaskExtService.buildTaskExtList(bpmnModel);
+        flowTaskExtList.forEach(t ->  flowTaskExtService.verifyAutoTaskConfig(t));
         if (StrUtil.isNotBlank(flowEntry.getExtensionData())) {
             FlowEntryExtensionData flowEntryExtensionData =
                     JSON.parseObject(flowEntry.getExtensionData(), FlowEntryExtensionData.class);
@@ -338,6 +328,18 @@ public class FlowEntryServiceImpl extends BaseService<FlowEntry, Long> implement
         return CallResult.ok();
     }
 
+    private void processAutomaticTask(FlowEntry flowEntry, BpmnModel bpmnModel) {
+        if (flowEntry.getFlowType().equals(FlowEntryType.NORMAL_TYPE)) {
+            return;
+        }
+        List<ReceiveTask> receiveTasks = bpmnModel.getMainProcess().getFlowElements()
+                .stream().filter(ReceiveTask.class::isInstance).map(ReceiveTask.class::cast).toList();
+        receiveTasks.forEach(r -> {
+            flowApiService.addExecutionListener(r, ReceiveTaskStartListener.class, "start", null);
+            flowApiService.addExecutionListener(r, ReceiveTaskEndListener.class, "end", null);
+        });
+    }
+
     private void insertBuiltinEntryVariables(Long entryId) {
         Date now = new Date();
         FlowEntryVariable operationTypeVariable = new FlowEntryVariable();
@@ -442,6 +444,9 @@ public class FlowEntryServiceImpl extends BaseService<FlowEntry, Long> implement
                 .filter(UserTask.class::isInstance).collect(Collectors.toMap(FlowElement::getId, c -> c));
         BaseFlowIdentityExtHelper flowIdentityExtHelper = flowCustomExtFactory.getFlowIdentityExtHelper();
         for (FlowTaskExt t : flowTaskExtList) {
+            if (!elementMap.containsKey(t.getTaskId())) {
+                continue;
+            }
             UserTask userTask = (UserTask) elementMap.get(t.getTaskId());
             flowApiService.addTaskCreateListener(userTask, FlowUserTaskListener.class);
             Map<String, List<ExtensionAttribute>> attributes = userTask.getAttributes();

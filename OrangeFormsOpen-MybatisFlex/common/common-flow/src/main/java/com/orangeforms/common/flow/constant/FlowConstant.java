@@ -154,6 +154,11 @@ public class FlowConstant {
     public static final String GROUP_TYPE_DEPT_POST_LEADER = "DEPT_POST_LEADER";
 
     /**
+     * 自动执行。
+     */
+    public static final String GROUP_TYPE_AUTO_EXEC = "AUTO_EXEC";
+
+    /**
      * 本部门岗位前缀。
      */
     public static final String SELF_DEPT_POST_PREFIX = "SELF_DEPT_";
@@ -257,6 +262,11 @@ public class FlowConstant {
      * 空处理人时指定的审批人。
      */
     public static final String EMPTY_USER_TO_ASSIGNEE = "emptyUserToAssignee";
+
+    /**
+     * 自动化任务中用于传递的生产者日志对象变量。
+     */
+    public static final String AUTO_FLOW_TRANS_PRODUCER_VAR = "transProducer";
 
     /**
      * 私有构造函数，明确标识该常量类的作用。

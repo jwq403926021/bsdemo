@@ -1290,6 +1290,7 @@ CREATE TABLE `zz_flow_entry` (
   `bpmn_xml` longtext COMMENT '流程定义的xml',
   `diagram_type` int NOT NULL COMMENT '流程图类型',
   `bind_form_type` int NOT NULL COMMENT '绑定表单类型',
+  `flow_type` int NOT NULL COMMENT '流程类型',
   `page_id` bigint DEFAULT NULL COMMENT '在线表单的页面Id',
   `default_form_id` bigint DEFAULT NULL COMMENT '在线表单Id',
   `default_router_name` varchar(255) DEFAULT NULL COMMENT '静态表单的缺省路由名称',
@@ -1517,6 +1518,7 @@ CREATE TABLE `zz_flow_task_ext` (
   `candidate_usernames` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '保存候选组用户名数据',
   `copy_list_json` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '抄送相关的数据',
   `extra_data_json` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '用户任务的扩展属性，存储为JSON的字符串格式',
+  `auto_config_json` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '自动化任务配置数据，存储为JSON的字符串格式',
   PRIMARY KEY (`process_definition_id`,`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='流程流程图任务扩展表';
 
@@ -1578,6 +1580,72 @@ CREATE TABLE `zz_flow_work_order_ext` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_work_order_id` (`work_order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='流程工单扩展表';
+
+-- ----------------------------
+-- Table structure for zz_flow_auto_variable_log
+-- ----------------------------
+DROP TABLE IF EXISTS `zz_flow_auto_variable_log`;
+CREATE TABLE `zz_flow_auto_variable_log` (
+  `id` bigint NOT NULL COMMENT '主键Id',
+  `process_instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '流程实例Id',
+  `execution_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '执行实例Id',
+  `task_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务Id',
+  `task_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务标识',
+  `trace_id` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '当前请求的traceId',
+  `variable_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '变量数据',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_process_instance_id` (`process_instance_id`,`task_key`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='流程变量日志表';
+
+-- ----------------------------
+-- Table structure for zz_flow_dblink
+-- ----------------------------
+DROP TABLE IF EXISTS `zz_flow_dblink`;
+CREATE TABLE `zz_flow_dblink` (
+  `dblink_id` bigint NOT NULL COMMENT '主键Id',
+  `app_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '应用编码',
+  `dblink_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '链接中文名称',
+  `dblink_description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '链接描述',
+  `dblink_type` int NOT NULL COMMENT '数据源类型',
+  `configuration` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '配置信息',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `create_user_id` bigint NOT NULL COMMENT '创建者',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `update_user_id` bigint NOT NULL COMMENT '更新者',
+  PRIMARY KEY (`dblink_id`) USING BTREE,
+  KEY `idx_dblink_type` (`dblink_type`) USING BTREE,
+  KEY `idx_app_code` (`app_code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='在线表单数据库链接表';
+
+-- ----------------------------
+-- Table structure for zz_flow_trans_producer
+-- ----------------------------
+DROP TABLE IF EXISTS `zz_flow_trans_producer`;
+CREATE TABLE `zz_flow_trans_producer` (
+  `trans_id` bigint NOT NULL COMMENT '主键Id',
+  `app_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '应用Id',
+  `dblink_id` bigint DEFAULT NULL COMMENT '数据库链接Id',
+  `process_instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '流程实例Id',
+  `execution_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '执行实例Id',
+  `task_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务Id',
+  `task_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务标识',
+  `task_name` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务名称',
+  `task_comment` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '批注内容',
+  `url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '当前请求的url',
+  `init_method` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '创建该事务性事件对象的初始方法',
+  `trace_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '当前请求的traceId',
+  `sql_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '和SQL操作相关的数据',
+  `auto_task_config` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '自动化任务需要执行的数据',
+  `try_times` int NOT NULL COMMENT '尝试次数',
+  `error_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '提交业务数据时的错误信息',
+  `create_login_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建者登录名',
+  `create_username` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建者中文用户名',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`trans_id`) USING BTREE,
+  KEY `idx_app_code` (`app_code`) USING BTREE,
+  KEY `idx_process_instance_id` (`process_instance_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- ----------------------------
 -- Table structure for zz_global_dict

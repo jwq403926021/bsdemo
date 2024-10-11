@@ -1,6 +1,7 @@
 package com.orangeforms.common.flow.model;
 
 import com.mybatisflex.annotation.*;
+import com.orangeforms.common.flow.model.constant.FlowVariableType;
 import lombok.Data;
 
 import java.util.Date;
@@ -74,4 +75,13 @@ public class FlowEntryVariable {
      */
     @Column(value = "create_time")
     private Date createTime;
+
+    public static FlowEntryVariable createSystemVariable(String variableName, String showName) {
+        FlowEntryVariable variable = new FlowEntryVariable();
+        variable.variableName = variableName;
+        variable.showName = showName;
+        variable.variableType = FlowVariableType.SYSTEM;
+        variable.builtin = true;
+        return variable;
+    }
 }

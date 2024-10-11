@@ -89,6 +89,12 @@ public class FlowEntry {
     private Integer bindFormType;
 
     /**
+     * 流程类型。
+     */
+    @Column(value = "flow_type")
+    private Integer flowType;
+
+    /**
      * 在线表单的页面Id。
      */
     @Column(value = "page_id")

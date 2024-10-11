@@ -14,6 +14,7 @@
         <result column="candidate_usernames" jdbcType="VARCHAR" property="candidateUsernames"/>
         <result column="copy_list_json" jdbcType="VARCHAR" property="copyListJson"/>
         <result column="extra_data_json" jdbcType="VARCHAR" property="extraDataJson"/>
+        <result column="auto_config_json" jdbcType="VARCHAR" property="autoConfigJson"/>
     </resultMap>
 
     <insert id="insertList">
@@ -30,7 +31,8 @@
             #{item.deptIds},
             #{item.candidateUsernames},
             #{item.copyListJson},
-            #{item.extraDataJson})
+            #{item.extraDataJson},
+            #{item.autoConfigJson})
         </foreach>
     </insert>
 </mapper>

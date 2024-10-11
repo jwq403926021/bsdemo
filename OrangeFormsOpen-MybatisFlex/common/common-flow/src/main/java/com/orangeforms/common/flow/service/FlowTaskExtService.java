@@ -77,6 +77,13 @@ public interface FlowTaskExtService extends IBaseService<FlowTaskExt, String> {
             FlowTaskExt flowTaskExt);
 
     /**
+     * 验证自动化任务的配置，如果有问题直接抛出MyRuntimeException异常。
+     *
+     * @param taskExt 流程任务的扩展。
+     */
+    void verifyAutoTaskConfig(FlowTaskExt taskExt);
+
+    /**
      * 通过UserTask对象中的扩展节点信息，构建FLowTaskExt对象。
      *
      * @param userTask 流程图中定义的用户任务对象。

@@ -4,12 +4,19 @@
 ### 良心开源
 - 功能完整、开箱即用、BUG 极少。
 - 代码质量，行业翘楚，全部通过 SonarQube 扫描 0 警告。
-- 支持工作流、在线表单、数据权限和用户权限。
+- 支持工作流、业务流编排、在线表单、数据权限和用户权限。
 - 全部主流技术栈 Boot3 + Flowable7 + Sa-Token + Vue3。
 - 后端提供 Mybatis-Flex 和 Mybatis-Plus 双版本。
 - 高颜值的在线表单和流程编辑器，以及精致统一的前端样式规范。
 - 环境搭建文档 [https://www.orangeforms.com/article/open-setup](https://www.orangeforms.com/article/open-setup)。
 - 若依集成橙单 [https://www.orangeforms.com/article/open-setup#若依集成](https://www.orangeforms.com/article/open-setup#%E8%8B%A5%E4%BE%9D%E9%9B%86%E6%88%90)。
+
+### 亮点功能
+- 基于 Flowable 的业务流编排，是全网极其少见的开源功能。
+- 橙单不仅提供了高质量的源码，同时还提供了极好的扩展能力，让您真正从中受益。
+
+|![](images/autoFlow.png)|![](images/autoFlowDingding.png)|
+|---|---|
 
 ### 联系我们
 - 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。

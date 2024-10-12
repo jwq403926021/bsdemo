@@ -84,6 +84,12 @@ public class FlowEntryVo {
     private Integer bindFormType;
 
     /**
+     * 流程类型。
+     */
+    @Schema(description = "流程类型")
+    private Integer flowType;
+
+    /**
      * 在线表单的页面Id。
      */
     @Schema(description = "在线表单的页面Id")

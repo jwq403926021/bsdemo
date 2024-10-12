@@ -16,7 +16,7 @@
 - 橙单不仅提供了高质量的源码，同时还提供了极好的扩展能力，让您真正从中受益。
 - 提供对「若依」的第三方集成示例，方便开发者集成到自有系统。
 
-|![](images/autoFlow.png)|![](images/autoFlowDingding2.png)|![](images/autoFlowRuoyi.png)|
+|![](images/autoFlow.png)|![](images/autoFlowDingding2.png)|![](images/autoFlowRuoyi2.png)|
 |---|---|---|
 
 ### 联系我们

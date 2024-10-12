@@ -5,6 +5,7 @@ import com.orangeforms.common.core.validator.ConstDictRef;
 import com.orangeforms.common.core.validator.UpdateGroup;
 import com.orangeforms.common.flow.model.constant.FlowBindFormType;
 import com.orangeforms.common.flow.model.constant.FlowEntryStatus;
+import com.orangeforms.common.flow.model.constant.FlowEntryType;
 import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
@@ -74,6 +75,14 @@ public class FlowEntryDto {
     @ConstDictRef(constDictClass = FlowBindFormType.class, message = "数据验证失败，工作流绑定表单类型为无效值！")
     @NotNull(message = "数据验证失败，工作流绑定表单类型不能为空！")
     private Integer bindFormType;
+
+    /**
+     * 流程类型。
+     */
+    @Schema(description = "流程类型")
+    @ConstDictRef(constDictClass = FlowEntryType.class, message = "数据验证失败，工作流绑定表单类型为无效值！")
+    @NotNull(message = "数据验证失败，流程类型不能为空！")
+    private Integer flowType;
 
     /**
      * 在线表单的页面Id。

@@ -14,9 +14,10 @@
 ### 亮点功能
 - 基于 Flowable 的业务流编排，是全网极其少见的开源功能。
 - 橙单不仅提供了高质量的源码，同时还提供了极好的扩展能力，让您真正从中受益。
+- 提供对「若依」的第三方集成示例，方便开发者集成到自有系统。
 
-|![](images/autoFlow.png)|![](images/autoFlowDingding2.png)|
-|---|---|
+|![](images/autoFlow.png)|![](images/autoFlowDingding2.png)|![](images/autoFlowRuoyi.png)|
+|---|---|---|
 
 ### 联系我们
 - 如橙单开源对您确有帮助，希望得到您的 Star，让更多同行知道我们的存在。

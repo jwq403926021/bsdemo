@@ -15,7 +15,7 @@
 - 基于 Flowable 的业务流编排，是全网极其少见的开源功能。
 - 橙单不仅提供了高质量的源码，同时还提供了极好的扩展能力，让您真正从中受益。
 
-|![](images/autoFlow.png)|![](images/autoFlowDingding.png)|
+|![](images/autoFlow.png)|![](images/autoFlowDingding2.png)|
 |---|---|
 
 ### 联系我们

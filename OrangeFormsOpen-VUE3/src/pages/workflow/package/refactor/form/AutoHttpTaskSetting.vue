@@ -9,6 +9,7 @@
         <template #prepend>
           <el-select
             class="url-select"
+            style="width: 100px"
             v-model="formData.httpRequestInfo.httpMethod"
             placeholder="请选择"
             @change="onChange"

@@ -399,7 +399,7 @@ const AutoTaskActionType = new DictionaryBase('自动化任务动作类型', [
   },
   {
     id: 3,
-    name: '数据查询',
+    name: '单条查询',
     symbol: 'QUERY_SINGLE_DATA',
   },
   {

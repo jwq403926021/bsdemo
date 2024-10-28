@@ -784,9 +784,9 @@ const operationDisabled = (type: string) => {
   return checkOperationDisabled(operation) || !checkOperationPermCode(operation);
 };
 const onLeftWidgetChange = (val: ANY_OBJECT | undefined, dictData: ANY_OBJECT | null) => {
+  onValueChange(leftWidget.value, val);
   onWidgetValueChange(leftWidget.value, val, dictData);
   nextTick(() => {
-    console.log('onLeftWidgetChange', val, formData.dsTeacher.level);
     refreshTable(true);
   });
 };

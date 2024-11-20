@@ -39,10 +39,10 @@
 - 业务表单生成 [https://www.bilibili.com/video/BV16ESuYxEm7/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV16ESuYxEm7/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 - 流程表单生成 [https://www.bilibili.com/video/BV1nESuYxEm2/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1nESuYxEm2/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 - 统计表单生成 [https://www.bilibili.com/video/BV1BpSuYXECt/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1BpSuYXECt/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
-- 代码生成能力 [https://www.bilibili.com/video/BV1nm421G7o8/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1nm421G7o8/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
-- 租户架构应用 [https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 - 流程表单演示 [https://www.bilibili.com/video/BV1qfSUYhELU/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1qfSUYhELU/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 - 在线表单演示 [https://www.bilibili.com/video/BV1BZSUYwEwF/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1BZSUYwEwF/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
+- 代码生成能力 [https://www.bilibili.com/video/BV1nm421G7o8/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1nm421G7o8/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
+- 租户架构应用 [https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3](https://www.bilibili.com/video/BV1aZ421g7Zh/?vd_source=83bce1401008f7ee3c485dbbb91cd4c3)
 
 ### 图和真相
 ![](images/sonar.png)

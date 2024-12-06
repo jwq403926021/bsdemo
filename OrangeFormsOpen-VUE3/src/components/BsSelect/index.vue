@@ -41,11 +41,9 @@ const emitChange = value => {
 
 const getSelectList = (isClear = false) => {
   const formInstance = form();
+  if (formInstance.isEdit) return
   const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
   const dependValue = formInstance.getWidgetValue(dependWidget);
-  console.log(formInstance, '11');
-  console.log(dependWidget, '22');
-  console.log(dependValue, '33');
   if (isClear) {
     emit('update:modelValue', '');
   }

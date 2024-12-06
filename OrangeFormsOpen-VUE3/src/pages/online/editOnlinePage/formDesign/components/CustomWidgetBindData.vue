@@ -146,6 +146,7 @@ const { columnIsValidByWidgetType } = useWidgetToolkit();
 
 const data = computed({
   get() {
+    init()
     console.log('widgetBindData >>>>>>>>>>', props.value);
     return props.value;
   },
@@ -245,6 +246,22 @@ const getValidColumnList = computed(() => {
     : [];
   return temp;
 });
+const init = () => {
+  nextTick(() => {
+    if (props.value.props.tableName && !data.value.bindData.tableId) {
+      const item = getValidTableList.value.find(i => i.tableName === props.value.props.tableName)
+      data.value.bindData.tableId = item.tableId
+      onBindTableChange(item.tableId)
+    }
+    nextTick(() => {
+      if (props.value.props.columnName && !data.value.bindData.columnId) {
+        const item = getValidColumnList.value.find(i => i.columnName === props.value.props.columnName)
+        data.value.bindData.columnId = item.columnId;
+        onBindColumnChange(item.columnId);
+      }
+    })
+  })
+}
 const getWidgetAttributeConfig = computed(() => {
   // return (widgetData.getWidgetAttribute(data.value.widgetType) || {}).attribute;
   return (formConfig().getWidgetAttribute(data.value.widgetType) || {}).attribute;
@@ -334,22 +351,6 @@ watch(
     immediate: true,
   },
 );
-onMounted(() => {
-  nextTick(() => {
-    if (props.value.props.tableName && !data.value.bindData.tableId) {
-      const item = getValidTableList.value.find(i => i.tableName === props.value.props.tableName)
-      data.value.bindData.tableId = item.tableId
-      onBindTableChange(item.tableId)
-    }
-    nextTick(() => {
-      if (props.value.props.columnName && !data.value.bindData.columnId) {
-        const item = getValidColumnList.value.find(i => i.columnName === props.value.props.columnName)
-        data.value.bindData.columnId = item.columnId;
-        onBindColumnChange(item.columnId);
-      }
-    })
-  })
-})
 </script>
 
 <style scoped>

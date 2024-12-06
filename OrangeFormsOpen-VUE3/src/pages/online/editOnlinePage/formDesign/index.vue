@@ -157,7 +157,6 @@
                       class="group-widget-item"
                       v-for="widget in group.widgetList"
                       :key="widget.id"
-                      @click="onAddWidget(widget)"
                     >
                       <div class="icon" :title="SysCustomWidgetType.getValue(widget.widgetType)">
                         <i class="" :class="widget.icon || ''" />

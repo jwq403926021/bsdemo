@@ -15,7 +15,6 @@
             v-if="!layoutStore.supportColumn"
             style="padding-left: 8px; margin-right: 8px"
           >
-            <img src="@/assets/img/login_logo.png" alt="" />
           </div>
           <div class="title">{{ projectName }}</div>
           <bread-crumb class="breadcrumb-container" />

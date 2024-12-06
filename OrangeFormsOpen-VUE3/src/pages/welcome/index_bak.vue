@@ -1,14 +1,14 @@
 <template>
   <div style="padding: 16px; background-color: white">
     <div class="title">
-      <p>您看到的所有演示功能，无需手写一行代码，这一切都由<span> 橙单 </span>为您生成。</p>
+      <p>您看到的所有演示功能，无需手写一行代码，这一切都由<span>  </span>为您生成。</p>
     </div>
     <el-row type="flex">
       <el-col :span="16">
         <div style="width: 100%">
           <el-card class="box-card" shadow="never" :body-style="{ padding: '0px 20px' }">
             <el-collapse v-model="currentItem">
-              <el-collapse-item title="选择橙单" name="1">
+              <el-collapse-item title="选择" name="1">
                 <ul class="item-list">
                   <li>
                     <strong>承诺</strong
@@ -31,7 +31,7 @@
                     最严格的代码扫描，0 警告。
                   </li>
                   <li>
-                    <strong>支持</strong>，30 万字的线上文档和技术专栏，助您快速吃透橙单。活跃的 VIP
+                    <strong>支持</strong>，30 万字的线上文档和技术专栏，助您快速吃透。活跃的 VIP
                     微信群技术支持，必要时可提供远程协助服务。
                   </li>
                 </ul>
@@ -74,12 +74,7 @@
           shadow="never"
           :body-style="{ padding: '0px 20px' }"
         >
-          <div class="item">
-            <span style="width: 120px">产品名称</span>
-            <el-tag effect="dark" size="large" style="padding-right: 30px; padding-left: 30px"
-              >橙单代码生成器</el-tag
-            >
-          </div>
+
           <el-divider></el-divider>
           <div class="item">
             <span style="width: 120px">网站首页</span>

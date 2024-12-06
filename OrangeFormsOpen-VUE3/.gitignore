@@ -2,3 +2,4 @@ node_modules
 dist
 .stylelintcache
 .DS_Store
+.idea

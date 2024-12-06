@@ -1,11 +1,7 @@
 <template>
   <div class="login-form">
     <div class="logo-box logo-right">
-      <img src="@/assets/img/login_logo2.png" style="height: 40px" alt="" />
       <div class="el-space" style="align-items: center; gap: 8px">
-        <a href="https://www.orangeforms.com/" target="_blank">橙单官网</a>
-        <span style="color: #999 !important">|</span>
-        <a href="https://code.orangeforms.com/" target="_blank">代码生成</a>
       </div>
     </div>
     <div class="login-box">
@@ -16,7 +12,7 @@
       <div class="login-input">
         <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
         <span class="title">欢迎登录</span>
-        <span class="desc">橙单代码生成演示工程</span>
+        <span class="desc">代码生成演示工程</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"

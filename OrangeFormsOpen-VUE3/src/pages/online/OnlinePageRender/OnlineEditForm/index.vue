@@ -2,32 +2,6 @@
   <div class="online-edit-form" style="position: relative; height: 100%; min-height: 200px">
     <template v-if="dialogParams.fullscreen && !dialogParams.isEdit">
       <el-container>
-        <el-header style="height: 72px; background: white">
-          <el-row
-            type="flex"
-            align="middle"
-            style="justify-content: space-between; width: 100%; height: 100%"
-          >
-            <div style="display: flex; height: 40px; line-height: 40px">
-              <i
-                class="header-logo online-icon icon-orange-icon"
-                style="font-size: 40px; color: #fda834; background: rgb(255 119 0 / 10%)"
-              />
-              <span style="font-size: 22px; color: #333; font-weight: bold">橙单</span>
-              <el-divider direction="vertical" style="height: 26px; margin: 7px 8px" />
-              <span style="font-size: 18px; color: #333; font-weight: bold">{{
-                form.formName
-              }}</span>
-            </div>
-            <el-button
-              link
-              size="default"
-              :icon="Close"
-              style="font-size: 24px; color: #909399"
-              @click="onCancel"
-            />
-          </el-row>
-        </el-header>
         <el-main style="width: 100%; padding: 25px; background: #f9f9f9">
           <el-row
             type="flex"

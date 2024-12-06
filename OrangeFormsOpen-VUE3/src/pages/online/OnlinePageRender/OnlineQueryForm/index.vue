@@ -13,7 +13,7 @@
                 class="header-logo online-icon icon-orange-icon"
                 style="font-size: 40px; color: #fda834; background: rgb(255 119 0 / 10%)"
               />
-              <span style="font-size: 22px; color: #333; font-weight: bold">橙单</span>
+              <span style="font-size: 22px; color: #333; font-weight: bold"></span>
               <el-divider direction="vertical" style="height: 26px; margin: 7px 8px" />
               <span style="font-size: 18px; color: #333; font-weight: bold">{{
                 form.formName

@@ -6,8 +6,6 @@
     >
       <el-row type="flex" justify="space-between" align="middle" style="height: 100%">
         <div class="title" style="display: flex; width: 200px; height: 40px; line-height: 40px">
-          <i class="header-logo logo online-icon icon-orange-icon" style="font-size: 40px" />
-          <span style="font-size: 22px; color: #333; font-weight: bold">橙单在线表单</span>
         </div>
         <!-- v-model:value 可以双向绑定，不需要双向绑定时使用:value即可 -->
         <StepBar class="step" :value="activeStep">

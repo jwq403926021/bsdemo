@@ -9,7 +9,6 @@
                 class="header-logo logo online-icon icon-orange-icon"
                 style="font-size: 40px; color: #fda834"
               />
-              <span style="font-size: 22px; color: #333; font-weight: bold">橙单流程设计</span>
             </el-col>
             <div>
               <StepBar class="step" :value="activeStep" style="margin-top: 14px">

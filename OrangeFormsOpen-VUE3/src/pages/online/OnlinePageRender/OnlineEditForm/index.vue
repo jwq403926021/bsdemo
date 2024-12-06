@@ -59,9 +59,11 @@
             >
               {{ operation.name || SysCustomWidgetOperationType.getValue(operation.type) }}
             </el-button>
+            <el-button :disabled="active === 3" @click="next">Next</el-button>
             <el-button
               v-if="!dialogParams.readOnly"
               type="primary"
+              :disabled="active != 3"
               size="default"
               style="margin-right: 16px"
               @click="onSubmit"
@@ -196,8 +198,13 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const layoutStore = useLayoutStore();
 const { onCloseThirdDialog } = useThirdParty(props);
-
+const active = ref(1);
 const formRef = ref();
+const next = () => {
+  if (active.value < 3) {
+    active.value += 1
+  }
+}
 
 const { getDictDataList } = useDict();
 const {
@@ -230,7 +237,7 @@ const {
   initWidgetLinkage,
   onPrint,
 } = useForm(props);
-
+provide('step', active);
 provide('form', () => {
   return {
     ...form.value,

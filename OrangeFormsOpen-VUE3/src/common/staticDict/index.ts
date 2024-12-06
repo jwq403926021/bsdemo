@@ -584,6 +584,21 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'UserSelect',
   },
   {
+    id: 404,
+    name: 'bs选择父',
+    symbol: 'BsParentSelect',
+  },
+  {
+    id: 405,
+    name: 'bs选择子',
+    symbol: 'BsSelect',
+  },
+  {
+    id: 406,
+    name: 'bsinput',
+    symbol: 'BsInput',
+  },
+  {
     id: 401,
     name: '部门选择',
     symbol: 'DeptSelect',

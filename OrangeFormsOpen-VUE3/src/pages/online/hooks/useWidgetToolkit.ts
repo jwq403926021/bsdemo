@@ -82,6 +82,9 @@ export const useWidgetToolkit = () => {
         case SysCustomWidgetType.Image:
           disabled = column.fieldKind !== SysOnlineFieldKind.UPLOAD_IMAGE;
           break;
+        case SysCustomWidgetType.BsSelect:
+        case SysCustomWidgetType.BsParentSelect:
+        case SysCustomWidgetType.BsInput:
         case SysCustomWidgetType.Input:
           disabled = columnFieldType !== 'String' && columnFieldType !== 'Number';
           break;

@@ -1,5 +1,26 @@
 <template>
   <el-row class="online-custom-block" :gutter="0">
+    <el-col>
+      <el-row>
+        <el-steps style="max-width: 600px; margin: 0 auto" :active="active">
+          <el-step description="Some description">
+            <template v-slot:title>
+              <div @click="changeActive(1)" style="cursor: pointer">Step 1</div>
+            </template>
+          </el-step>
+          <el-step description="Some description">
+            <template v-slot:title>
+              <div @click="changeActive(2)" style="cursor: pointer">Step 2</div>
+            </template>
+          </el-step>
+          <el-step description="Some description">
+            <template v-slot:title>
+              <div @click="changeActive(3)" style="cursor: pointer">Step 3</div>
+            </template>
+          </el-step>
+        </el-steps>
+      </el-row>
+    </el-col>
     <el-col :span="24">
       <el-row :gutter="form().gutter">
         <VueDraggable
@@ -11,7 +32,7 @@
           ghostClass="ghost"
           chosenClass="chosen"
           :style="getDrableBoxStyle"
-          style="position: relative; display: contents; overflow: hidden; width: 100%"
+          style="position: relative; overflow: hidden; width: 100%"
           :disabled="!isEdit"
           :move="onDragMove"
           @add="onDragAdd"
@@ -99,32 +120,34 @@
                   }"
                   @widgetClick="onWidgetClick"
                 />
-                <component
-                  :is="form().mode === 'pc' ? ElFormItem : 'div'"
-                  v-else
-                  :label="subWidget.showName"
-                  inset
-                  :prop="subWidget.propString"
-                  :class="{
-                    'rich-input': subWidget.widgetType === SysCustomWidgetType.RichEditor,
-                  }"
-                  :label-width="
-                    subWidget.showName == null || subWidget.showName === ''
-                      ? isEdit
-                        ? '0px'
-                        : '0px'
-                      : undefined
-                  "
-                  @click.stop="onWidgetClick(subWidget)"
-                >
-                  <OnlineCustomWidget
-                    :widget="subWidget"
-                    :ref="subWidget.variableName"
-                    :value="getWidgetValue(subWidget)"
-                    @input="val => onValueChange(subWidget, val)"
-                    @change="(val: ANY_OBJECT|undefined, detail: ANY_OBJECT|null) => onWidgetValueChange(subWidget, val, detail)"
-                  />
-                </component>
+                <template v-else>
+                  <component
+                    v-show="subWidget.props.activeStep === active"
+                    :is="form().mode === 'pc' ? ElFormItem : 'div'"
+                    :label="subWidget.showName"
+                    inset
+                    :prop="subWidget.propString"
+                    :class="{
+                      'rich-input': subWidget.widgetType === SysCustomWidgetType.RichEditor,
+                    }"
+                    :label-width="
+                      subWidget.showName == null || subWidget.showName === ''
+                        ? isEdit
+                          ? '0px'
+                          : '0px'
+                        : undefined
+                    "
+                    @click.stop="onWidgetClick(subWidget)"
+                  >
+                    <OnlineCustomWidget
+                      :widget="subWidget"
+                      :ref="subWidget.variableName"
+                      :value="getWidgetValue(subWidget)"
+                      @input="val => onValueChange(subWidget, val)"
+                      @change="(val: ANY_OBJECT|undefined, detail: ANY_OBJECT|null) => onWidgetValueChange(subWidget, val, detail)"
+                    />
+                  </component>
+                </template>
                 <ActiveWidgetMenu
                   v-if="isEdit && form().isActive(subWidget)"
                   :widget="subWidget"
@@ -135,13 +158,13 @@
               </div>
             </el-col>
           </template>
-          <div v-else-if="isEdit" class="info mover">
-            <div style="width: 100px; height: 100px">
-              <el-icon><UploadFilled /></el-icon>
-            </div>
-            <span>请拖入组件进行编辑</span>
-          </div>
         </VueDraggable>
+        <div v-if="isEmptyInStep && isEdit" class="info mover">
+          <div style="width: 100px; height: 100px">
+            <el-icon><UploadFilled /></el-icon>
+          </div>
+          <span>请拖入组件进行编辑</span>
+        </div>
       </el-row>
     </el-col>
   </el-row>
@@ -184,14 +207,18 @@ const form = inject('form', () => {
   console.error('OnlineCustomBlock: form not injected');
   return { isEdit: false } as ANY_OBJECT;
 });
-
+const active = inject('step');
+const changeActive = num => {
+  active.value = num;
+};
 const getDrableBoxStyle = computed(() => {
   let tempHeight = props.height;
   if (props.height == null || props.height === '') {
-    tempHeight = props.isEdit && props.value.length <= 0 ? '150px' : '0px';
+    tempHeight = isEmptyInStep.value ? '150px' : '0px';
   }
   return {
     'min-height': tempHeight,
+    display: isEmptyInStep.value ? 'block' : 'contents',
   };
 });
 const getTableStyle = (widget: ANY_OBJECT) => {
@@ -223,12 +250,28 @@ const values = computed({
     emit('update:value', val);
   },
 });
-
+const isEmptyInStep = computed(() => {
+  return !(Array.isArray(props.value) &&
+    props.value.filter(i => {
+      return i.props.activeStep === active.value;
+    }).length > 0)
+})
 const onWidgetClick = (widget: ANY_OBJECT | null = null) => {
   emit('widgetClick', widget);
 };
 const onDragAdd = (e: DragEvent) => {
-  console.log('block onDragAdd', e);
+  console.log('block onDragAdd', e, props.value, e.newIndex);
+  const addItem = props.value[e.newIndex];
+  const isExist = props.value.filter(i => i.widgetType === addItem.widgetType).length > 1;
+  if (isExist) {
+    emit(
+      'update:value',
+      props.value.filter((item, index) => index !== e.newIndex),
+    );
+    ElMessageBox('你不能添加已经存在的组件');
+    return;
+  }
+  addItem.props.activeStep = active.value
   emit('dragAdd', { list: props.value, dragEvent: e });
 };
 const onDragMove = (e: ANY_OBJECT) => {
@@ -289,7 +332,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ghost {
   height: 30px;
   border-radius: 3px;
@@ -301,6 +344,7 @@ onMounted(() => {
   align-items: center;
   width: 100%;
   height: 100%;
+  margin-top: -400px;
   text-align: center;
   color: #999;
   flex-direction: column;

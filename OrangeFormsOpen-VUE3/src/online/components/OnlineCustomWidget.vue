@@ -74,6 +74,8 @@ import {
 } from '@/common/utils';
 import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
+import BsSelect from '@/components/BsSelect/index.vue';
+import BsParentSelect from '@/components/BsParentSelect/index.vue';
 import DeptSelect from '@/components/DeptSelect/index.vue';
 import InputNumberRange from '@/components/InputNumberRange/index.vue';
 import OnlineCustomLabel from './OnlineCustomLabel.vue';
@@ -184,6 +186,8 @@ const getComponent = computed(() => {
   switch (pps.widget.widgetType) {
     case SysCustomWidgetType.Label:
       return OnlineCustomLabel;
+    case SysCustomWidgetType.BsInput:
+      return ElInput;
     case SysCustomWidgetType.Input:
       return ElInput;
     case SysCustomWidgetType.NumberInput:
@@ -212,6 +216,10 @@ const getComponent = computed(() => {
       return ElLink;
     case SysCustomWidgetType.UserSelect:
       return UserSelect;
+    case SysCustomWidgetType.BsParentSelect:
+      return BsParentSelect;
+    case SysCustomWidgetType.BsSelect:
+      return BsSelect;
     case SysCustomWidgetType.DeptSelect:
       return DeptSelect;
     case SysCustomWidgetType.Tree:

@@ -1,3 +1,7 @@
+import { ANY_OBJECT } from '@/types/generic';
+import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
+import { SysCustomWidgetBindValueType } from '@/common/staticDict/online';
+import bsInputConfig from './bsInput';
 import blockConfig from './customBlock';
 import baseCardConfig from './baseCard';
 import tabsConfig from './tabs';
@@ -21,62 +25,66 @@ import richEditorConfig from './richEditor';
 import tableConfig from './table';
 import linkConfig from './link';
 import treeConfig from './tree';
-import { ANY_OBJECT } from '@/types/generic';
-import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
-import { SysCustomWidgetBindValueType } from '@/common/staticDict/online';
+import bsSelectConfig from './bsSelect';
+import bsParentSelectConfig from './bsParentSelect';
 
 const formWidgetGroupList: ANY_OBJECT = {
   pc: [
-    {
-      id: 'layout',
-      groupName: '布局组件',
-      widgetList: [blockConfig, baseCardConfig, tabsConfig, textConfig, imageConfig],
-    },
-    {
-      id: 'filter',
-      groupName: '过滤组件',
-      widgetList: [
-        labelConfig,
-        inputConfig,
-        numberInputConfig,
-        numberRangeConfig,
-        switchConfig,
-        radioConfig,
-        checkboxConfig,
-        selectConfig,
-        cascaderConfig,
-        dateConfig,
-        dateRangeConfig,
-        userSelectConfig,
-        deptSelectConfig,
-      ],
-    },
-    {
-      id: 'base',
-      groupName: '基础组件',
-      widgetList: [
-        labelConfig,
-        inputConfig,
-        numberInputConfig,
-        numberRangeConfig,
-        switchConfig,
-        radioConfig,
-        checkboxConfig,
-        selectConfig,
-        cascaderConfig,
-        dateConfig,
-        dateRangeConfig,
-        uploadConfig,
-        richEditorConfig,
-        tableConfig,
-        linkConfig,
-      ],
-    },
+    // {
+    //   id: 'layout',
+    //   groupName: '布局组件',
+    //   widgetList: [blockConfig, baseCardConfig, tabsConfig, textConfig, imageConfig],
+    // },
+    // {
+    //   id: 'filter',
+    //   groupName: '过滤组件',
+    //   widgetList: [
+    //     labelConfig,
+    //     inputConfig,
+    //     numberInputConfig,
+    //     numberRangeConfig,
+    //     switchConfig,
+    //     radioConfig,
+    //     checkboxConfig,
+    //     selectConfig,
+    //     cascaderConfig,
+    //     dateConfig,
+    //     dateRangeConfig,
+    //     userSelectConfig,
+    //     deptSelectConfig,
+    //   ],
+    // },
+    // {
+    // id: 'base',
+    // groupName: '基础组件',
+    // widgetList: [
+    // labelConfig,
+    // inputConfig,
+    // numberInputConfig,
+    // numberRangeConfig,
+    // switchConfig,
+    // radioConfig,
+    // checkboxConfig,
+    // selectConfig,
+    // cascaderConfig,
+    // dateConfig,
+    // dateRangeConfig,
+    // uploadConfig,
+    // richEditorConfig,
+    // tableConfig,
+    // linkConfig,
+    // ],
+    // },
+    // {
+    //   id: 'advance',
+    //   groupName: '高级组件',
+    //   widgetList: [userSelectConfig, deptSelectConfig],
+    // },
     {
       id: 'advance',
-      groupName: '高级组件',
-      widgetList: [userSelectConfig, deptSelectConfig],
-    },
+      groupName: '波士顿组件',
+      widgetList: [bsParentSelectConfig, bsSelectConfig, bsInputConfig],
+    }
   ],
 };
 
@@ -214,6 +222,12 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return linkConfig;
     case SysCustomWidgetType.UserSelect:
       return userSelectConfig;
+    case SysCustomWidgetType.BsSelect:
+      return bsSelectConfig;
+    case SysCustomWidgetType.BsParentSelect:
+      return bsParentSelectConfig;
+    case SysCustomWidgetType.BsInput:
+      return bsInputConfig;
     case SysCustomWidgetType.DeptSelect:
       return deptSelectConfig;
     case SysCustomWidgetType.Card:

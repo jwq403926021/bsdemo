@@ -2,28 +2,28 @@
   <el-row style="width: 100%">
     <el-form label-position="top" size="default" style="width: 100%" @submit.prevent>
       <el-col :span="24">
-        <el-form-item label="组件类型">
-          <el-input :model-value="SysCustomWidgetType.getValue(data.widgetType)" :disabled="true" />
-        </el-form-item>
-        <el-form-item
-          label="绑定类型"
-          v-if="
-            (supportBindTable || supportBindColumn) && data.widgetType !== SysCustomWidgetType.Table
-          "
-        >
-          <el-select
-            v-model="data.bindData.dataType"
-            @change="onBindDataTypeChange"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in getValidBindDataType"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="组件类型">-->
+<!--          <el-input :model-value="SysCustomWidgetType.getValue(data.widgetType)" :disabled="true" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item-->
+<!--          label="绑定类型"-->
+<!--          v-if="-->
+<!--            (supportBindTable || supportBindColumn) && data.widgetType !== SysCustomWidgetType.Table-->
+<!--          "-->
+<!--        >-->
+<!--          <el-select-->
+<!--            v-model="data.bindData.dataType"-->
+<!--            @change="onBindDataTypeChange"-->
+<!--            style="width: 100%"-->
+<!--          >-->
+<!--            <el-option-->
+<!--              v-for="item in getValidBindDataType"-->
+<!--              :key="item.id"-->
+<!--              :label="item.name"-->
+<!--              :value="item.id"-->
+<!--            />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item
           label="绑定表"
           v-if="data.bindData?.dataType === SysCustomWidgetBindDataType.Column && supportBindTable"
@@ -334,6 +334,22 @@ watch(
     immediate: true,
   },
 );
+onMounted(() => {
+  nextTick(() => {
+    if (props.value.props.tableName && !data.value.bindData.tableId) {
+      const item = getValidTableList.value.find(i => i.tableName === props.value.props.tableName)
+      data.value.bindData.tableId = item.tableId
+      onBindTableChange(item.tableId)
+    }
+    nextTick(() => {
+      if (props.value.props.columnName && !data.value.bindData.columnId) {
+        const item = getValidColumnList.value.find(i => i.columnName === props.value.props.columnName)
+        data.value.bindData.columnId = item.columnId;
+        onBindColumnChange(item.columnId);
+      }
+    })
+  })
+})
 </script>
 
 <style scoped>

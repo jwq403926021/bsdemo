@@ -10,9 +10,7 @@ const bsParentSelect = {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
     value: 24,
-    visible: function (formConfig: ANY_OBJECT) {
-      return formConfig && formConfig.form.formType !== SysOnlineFormType.QUERY;
-    },
+    visible: false,
     min: 1,
     max: 24,
   },
@@ -21,6 +19,16 @@ const bsParentSelect = {
     widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
     value: ''
+  },
+  tableName: {
+    name: '默认表',
+    visible: false,
+    value: "zz_test_order_first"
+  },
+  columnName: {
+    name: '默认列',
+    visible: false,
+    value: 'order_select_parent'
   }
 };
 

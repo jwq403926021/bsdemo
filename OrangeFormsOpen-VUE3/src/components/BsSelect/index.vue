@@ -39,35 +39,45 @@ const emitChange = value => {
   emit('change', value);
 };
 
-const getSelectUserList = () => {
-  selectedItems.value = [];
+const getSelectList = (isClear = false) => {
+  const formInstance = form();
+  const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
+  const dependValue = formInstance.getWidgetValue(dependWidget);
+  console.log(formInstance, '11');
+  console.log(dependWidget, '22');
+  console.log(dependValue, '33');
+  if (isClear) {
+    emit('update:modelValue', '');
+  }
+  selectedItems.value = [
+    {
+      label: `child option 1 base on '${dependValue}'`,
+      value: 'c1',
+    },
+    {
+      label: `child option 2 base on '${dependValue}'`,
+      value: 'c2',
+    },
+  ];
 };
+
 onMounted(() => {
   eventbus.on(`bs:${pps.depend}`, d => {
-    const formInstance = form();
-    const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
-    const dependValue = formInstance.getWidgetValue(dependWidget);
-    console.log('child get option from api:', dependValue);
-    emit('update:modelValue', '');
-    selectedItems.value = [
-      {
-        label: `child option 1 base on '${dependValue}'`,
-        value: 'c1',
-      },
-      {
-        label: `child option 2 base on '${dependValue}'`,
-        value: 'c2',
-      },
-    ]
+    getSelectList(true);
   });
-  getSelectUserList();
-  console.log(step, '!!!!');
+  nextTick(() => {
+    getSelectList(false);
+  });
 });
-watch(() => step.value, (v) => {
-  console.log('watch step:', v);
-}, {
-  immediate: true
-})
+watch(
+  () => step.value,
+  v => {
+    console.log('watch step:', v);
+  },
+  {
+    immediate: true,
+  },
+);
 onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });

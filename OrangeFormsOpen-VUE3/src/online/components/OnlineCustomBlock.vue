@@ -273,6 +273,9 @@ const onDragAdd = (e: DragEvent) => {
   }
   addItem.props.activeStep = active.value
   emit('dragAdd', { list: props.value, dragEvent: e });
+  nextTick(() => {
+    onWidgetClick(addItem)
+  })
 };
 const onDragMove = (e: ANY_OBJECT) => {
   console.log('block dragMove', e);

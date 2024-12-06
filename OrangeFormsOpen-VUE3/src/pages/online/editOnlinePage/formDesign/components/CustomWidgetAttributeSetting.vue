@@ -70,8 +70,6 @@ const getAttributeItemValue = (attributeItem: ANY_OBJECT) => {
   }
 };
 const buildAttributeList = () => {
-  console.log('props.widget::', props.widget);
-  console.log('props.value::', props.value);
   attributeList.value = [];
   if (getWidgetAttributeConfig.value != null) {
     Object.keys(getWidgetAttributeConfig.value).forEach(attributeKey => {

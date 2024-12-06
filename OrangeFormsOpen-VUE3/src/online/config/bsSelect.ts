@@ -9,7 +9,7 @@ const bsSelect = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
-    value: 24,
+    value: 13,
     visible: false,
     min: 1,
     max: 24,
@@ -33,7 +33,7 @@ const bsSelect = {
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'order_select_child'
+    value: 'ship_to'
   }
 };
 

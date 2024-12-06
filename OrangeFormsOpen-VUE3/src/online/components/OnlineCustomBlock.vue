@@ -2,20 +2,20 @@
   <el-row class="online-custom-block" :gutter="0">
     <el-col>
       <el-row>
-        <el-steps style="max-width: 600px; margin: 0 auto" :active="active">
-          <el-step description="Some description">
+        <el-steps style="width: 500px; margin: 0 auto 20px;" :active="active">
+          <el-step>
             <template v-slot:title>
-              <div @click="changeActive(1)" style="cursor: pointer">Step 1</div>
+              <div @click="changeActive(1)" style="cursor: pointer">Shipping Order</div>
             </template>
           </el-step>
-          <el-step description="Some description">
+          <el-step>
             <template v-slot:title>
-              <div @click="changeActive(2)" style="cursor: pointer">Step 2</div>
+              <div @click="changeActive(2)" style="cursor: pointer">Select Order</div>
             </template>
           </el-step>
-          <el-step description="Some description">
+          <el-step>
             <template v-slot:title>
-              <div @click="changeActive(3)" style="cursor: pointer">Step 3</div>
+              <div @click="changeActive(3)" style="cursor: pointer">Confirm Order</div>
             </template>
           </el-step>
         </el-steps>

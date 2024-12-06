@@ -82,7 +82,6 @@
       "
     >
       <p style="padding: 0; margin: 0; text-align: center; line-height: 44px">
-        Copyright © 2024 知视科技 津 ICP 备 20006136 号-1 津公网安备 12011602000454 号
       </p>
     </div>
   </div>

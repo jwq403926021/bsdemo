@@ -27,6 +27,7 @@
     "jsencrypt": "^3.3.2",
     "json-bigint": "^1.0.0",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.1",
     "pinia": "^2.1.6",
     "pinia-plugin-persist": "^1.0.0",
     "print-js": "^1.6.0",
@@ -40,8 +41,6 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "bpmn-js": "7.5.0",
-    "bpmn-js-properties-panel": "0.37.6",
     "@types/ejs": "^3.1.5",
     "@types/json-bigint": "^1.0.4",
     "@types/node": "^18.11.17",
@@ -55,6 +54,8 @@
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "autoprefixer": "^10.4.16",
+    "bpmn-js": "7.5.0",
+    "bpmn-js-properties-panel": "0.37.6",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.6.1",

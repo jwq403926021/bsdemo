@@ -250,14 +250,18 @@ const init = () => {
   nextTick(() => {
     if (props.value.props.tableName && !data.value.bindData.tableId) {
       const item = getValidTableList.value.find(i => i.tableName === props.value.props.tableName)
-      data.value.bindData.tableId = item.tableId
-      onBindTableChange(item.tableId)
+      if (item) {
+        data.value.bindData.tableId = item.tableId
+        onBindTableChange(item.tableId)
+      }
     }
     nextTick(() => {
       if (props.value.props.columnName && !data.value.bindData.columnId) {
         const item = getValidColumnList.value.find(i => i.columnName === props.value.props.columnName)
-        data.value.bindData.columnId = item.columnId;
-        onBindColumnChange(item.columnId);
+        if (item) {
+          data.value.bindData.columnId = item.columnId;
+          onBindColumnChange(item.columnId);
+        }
       }
     })
   })

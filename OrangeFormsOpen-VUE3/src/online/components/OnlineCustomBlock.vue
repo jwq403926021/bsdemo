@@ -120,6 +120,18 @@
                   }"
                   @widgetClick="onWidgetClick"
                 />
+                <OnlineCustomWidget
+                  v-show="subWidget.props.activeStep === active"
+                  v-else-if="subWidget.widgetType === SysCustomWidgetType.BsProduct"
+                  :ref="subWidget.variableName"
+                  :widget="subWidget"
+                  :isEdit="isEdit"
+                  :value="getWidgetValue(subWidget)"
+                  :style="{
+                    'margin-bottom': (subWidget.props.paddingBottom || 0) + 'px',
+                  }"
+                  @widgetClick="onWidgetClick"
+                />
                 <template v-else>
                   <component
                     v-show="subWidget.props.activeStep === active"
@@ -273,6 +285,9 @@ const onDragAdd = (e: DragEvent) => {
   }
   addItem.props.activeStep = active.value
   emit('dragAdd', { list: props.value, dragEvent: e });
+  if (addItem.widgetType === 409) {
+    addItem.variableName = 'product'
+  }
   nextTick(() => {
     onWidgetClick(addItem)
   })

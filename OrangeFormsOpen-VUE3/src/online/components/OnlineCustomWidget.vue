@@ -76,6 +76,9 @@ import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
 import BsSelect from '@/components/BsSelect/index.vue';
 import BsParentSelect from '@/components/BsParentSelect/index.vue';
+import BsContactInfo from '@/components/BsContactInfo/index.vue';
+import BsStockLocation from '@/components/BsStockLocation/index.vue';
+import BsProduct from '@/components/BsProduct/index.vue';
 import DeptSelect from '@/components/DeptSelect/index.vue';
 import InputNumberRange from '@/components/InputNumberRange/index.vue';
 import OnlineCustomLabel from './OnlineCustomLabel.vue';
@@ -220,6 +223,12 @@ const getComponent = computed(() => {
       return BsParentSelect;
     case SysCustomWidgetType.BsSelect:
       return BsSelect;
+    case SysCustomWidgetType.BsContactInfo:
+      return BsContactInfo;
+    case SysCustomWidgetType.BsStockLocation:
+      return BsStockLocation;
+    case SysCustomWidgetType.BsProduct:
+      return BsProduct;
     case SysCustomWidgetType.DeptSelect:
       return DeptSelect;
     case SysCustomWidgetType.Tree:
@@ -591,8 +600,13 @@ watch(
     immediate: true,
   },
 );
-
+const bswidgetList = inject('widgetList')
 onMounted(() => {
   propsWidget.value.hasParent = parentWidget != null;
+  const refs = (getCurrentInstance()?.refs || {}) as ANY_OBJECT;
+  const widget = form().widgetList.find(i => i.variableName)
+  if (widget) {
+    bswidgetList[pps.widget.variableName] = refs[pps.widget.variableName]
+  }
 });
 </script>

@@ -27,6 +27,9 @@ import linkConfig from './link';
 import treeConfig from './tree';
 import bsSelectConfig from './bsSelect';
 import bsParentSelectConfig from './bsParentSelect';
+import bsContactInfoConfig from './bsContactInfo';
+import bsStockLocationConfig from './bsStockLocation';
+import bsProductConfig from './bsProduct';
 
 const formWidgetGroupList: ANY_OBJECT = {
   pc: [
@@ -83,8 +86,15 @@ const formWidgetGroupList: ANY_OBJECT = {
     {
       id: 'advance',
       groupName: '波士顿组件',
-      widgetList: [bsParentSelectConfig, bsSelectConfig, bsInputConfig],
-    }
+      widgetList: [
+        labelConfig,
+        bsParentSelectConfig,
+        bsSelectConfig,
+        bsContactInfoConfig,
+        bsStockLocationConfig,
+        bsProductConfig
+      ],
+    },
   ],
 };
 

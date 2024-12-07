@@ -585,13 +585,28 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
   },
   {
     id: 404,
-    name: 'bs选择父',
+    name: 'Account Name',
     symbol: 'BsParentSelect',
   },
   {
     id: 405,
-    name: 'bs选择子',
+    name: 'Ship To',
     symbol: 'BsSelect',
+  },
+  {
+    id: 407,
+    name: 'Contact Info',
+    symbol: 'BsContactInfo',
+  },
+  {
+    id: 408,
+    name: 'Stock Location',
+    symbol: 'BsStockLocation',
+  },
+  {
+    id: 409,
+    name: 'Product',
+    symbol: 'BsProduct',
   },
   {
     id: 406,

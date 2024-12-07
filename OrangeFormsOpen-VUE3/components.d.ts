@@ -8,8 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AdvanceQuery: typeof import('./src/components/AdvanceQuery/index.vue')['default']
+    BsContactInfo: typeof import('./src/components/BsContactInfo/index.vue')['default']
     BsParentSelect: typeof import('./src/components/BsParentSelect/index.vue')['default']
+    BsProduct: typeof import('./src/components/BsProduct/index.vue')['default']
     BsSelect: typeof import('./src/components/BsSelect/index.vue')['default']
+    BsStockLocation: typeof import('./src/components/BsStockLocation/index.vue')['default']
     BtnsRightAddBtn: typeof import('./src/components/Btns/RightAddBtn.vue')['default']
     DateRange: typeof import('./src/components/DateRange/index.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']

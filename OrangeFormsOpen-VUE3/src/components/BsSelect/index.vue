@@ -41,8 +41,12 @@ const emitChange = value => {
 
 const getSelectList = (isClear = false) => {
   const formInstance = form();
+  if (!pps.depend) {
+    console.error('depend argument is not config')
+  }
   if (formInstance.isEdit) return
   const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
+  if (!dependWidget) return
   const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     emit('update:modelValue', '');

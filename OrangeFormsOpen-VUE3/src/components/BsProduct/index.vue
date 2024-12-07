@@ -80,7 +80,8 @@ const handleSelectionChange = (val) => {
   multipleSelection.value = val
 }
 const getValue = () => {}
-defineExpose({ getValue });
+const setValue = () => {}
+defineExpose({ getValue, setValue });
 onMounted(() => {
 });
 </script>

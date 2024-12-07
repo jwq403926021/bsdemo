@@ -2,7 +2,7 @@
   <el-row class="online-custom-block" :gutter="0">
     <el-col>
       <el-row>
-        <el-steps style="width: 500px; margin: 0 auto 20px;" :active="active">
+        <el-steps style="width: 500px; margin: 0 auto 20px" :active="active">
           <el-step>
             <template v-slot:title>
               <div @click="changeActive(1)" style="cursor: pointer">Shipping Order</div>
@@ -146,7 +146,9 @@
                 />
                 <OnlineCustomWidget
                   v-show="subWidget.props.activeStep === active"
-                  v-else-if="subWidget.widgetType === SysCustomWidgetType.BsContactInfoForPackingList"
+                  v-else-if="
+                    subWidget.widgetType === SysCustomWidgetType.BsContactInfoForPackingList
+                  "
                   :ref="subWidget.variableName"
                   :widget="subWidget"
                   :isEdit="isEdit"
@@ -287,11 +289,13 @@ const values = computed({
   },
 });
 const isEmptyInStep = computed(() => {
-  return !(Array.isArray(props.value) &&
+  return !(
+    Array.isArray(props.value) &&
     props.value.filter(i => {
       return i.props.activeStep === active.value;
-    }).length > 0)
-})
+    }).length > 0
+  );
+});
 const onWidgetClick = (widget: ANY_OBJECT | null = null) => {
   emit('widgetClick', widget);
 };
@@ -307,14 +311,14 @@ const onDragAdd = (e: DragEvent) => {
     ElMessageBox('你不能添加已经存在的组件');
     return;
   }
-  addItem.props.activeStep = active.value
+  addItem.props.activeStep = active.value;
   emit('dragAdd', { list: props.value, dragEvent: e });
   if (addItem.widgetType === 409) {
-    addItem.variableName = 'product'
+    addItem.variableName = 'product';
   }
   nextTick(() => {
-    onWidgetClick(addItem)
-  })
+    onWidgetClick(addItem);
+  });
 };
 const onDragMove = (e: ANY_OBJECT) => {
   console.log('block dragMove', e);

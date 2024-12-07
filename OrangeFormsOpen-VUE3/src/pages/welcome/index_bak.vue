@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 16px; background-color: white">
     <div class="title">
-      <p>您看到的所有演示功能，无需手写一行代码，这一切都由<span>  </span>为您生成。</p>
+      <p>您看到的所有演示功能，无需手写一行代码，这一切都由<span> </span>为您生成。</p>
     </div>
     <el-row type="flex">
       <el-col :span="16">
@@ -74,7 +74,6 @@
           shadow="never"
           :body-style="{ padding: '0px 20px' }"
         >
-
           <el-divider></el-divider>
           <div class="item">
             <span style="width: 120px">网站首页</span>

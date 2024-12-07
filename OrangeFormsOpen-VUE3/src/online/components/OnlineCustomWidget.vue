@@ -76,10 +76,11 @@ import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
 import BsSr from '@/components/BsSr/index.vue';
 import BsDivision from '@/components/BsDivision/index.vue';
+import BsRequestDeliveryDate from '@/components/BsRequestDeliveryDate/index.vue';
 import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
 import BsAccountName from '@/components/BsAccountName/index.vue';
 import BsShipTo from '@/components/BsShipTo/index.vue';
-import BsContactInfoForPackingList from '@/components/BsContactInfoForPackingList/index.vue';
+// import BsContactInfoForPackingList from '@/components/BsContactInfoForPackingList/index.vue';
 import BsContactInfo from '@/components/BsContactInfo/index.vue';
 import BsStockLocation from '@/components/BsStockLocation/index.vue';
 import BsProduct from '@/components/BsProduct/index.vue';
@@ -223,6 +224,8 @@ const getComponent = computed(() => {
       return UserSelect;
     case SysCustomWidgetType.BsDivision:
       return BsDivision;
+    case SysCustomWidgetType.BsRequestDeliveryDate:
+      return BsRequestDeliveryDate;
     case SysCustomWidgetType.BsSr:
       return BsSr;
     case SysCustomWidgetType.BsAccountName:
@@ -231,8 +234,8 @@ const getComponent = computed(() => {
       return BsShipTo;
     case SysCustomWidgetType.BsShippingOrderInfo:
       return BsShippingOrderInfo;
-    case SysCustomWidgetType.BsContactInfoForPackingList:
-      return BsContactInfoForPackingList;
+    // case SysCustomWidgetType.BsContactInfoForPackingList:
+    //   return BsContactInfoForPackingList;
     case SysCustomWidgetType.BsContactInfo:
       return BsContactInfo;
     case SysCustomWidgetType.BsStockLocation:
@@ -610,13 +613,13 @@ watch(
     immediate: true,
   },
 );
-const bswidgetList = inject('widgetList')
+const bswidgetList = inject('widgetList');
 onMounted(() => {
   propsWidget.value.hasParent = parentWidget != null;
   const refs = (getCurrentInstance()?.refs || {}) as ANY_OBJECT;
-  const widget = form().widgetList.find(i => i.variableName)
+  const widget = form().widgetList.find(i => i.variableName);
   if (widget) {
-    bswidgetList[pps.widget.variableName] = refs[pps.widget.variableName]
+    bswidgetList[pps.widget.variableName] = refs[pps.widget.variableName];
   }
 });
 </script>

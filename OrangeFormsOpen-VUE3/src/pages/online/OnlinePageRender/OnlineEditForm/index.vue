@@ -202,9 +202,9 @@ const active = ref(1);
 const formRef = ref();
 const next = () => {
   if (active.value < 3) {
-    active.value += 1
+    active.value += 1;
   }
-}
+};
 
 const { getDictDataList } = useDict();
 const {
@@ -237,8 +237,8 @@ const {
   initWidgetLinkage,
   onPrint,
 } = useForm(props);
-const bsWidgetList = {}
-provide('widgetList', bsWidgetList)
+const bsWidgetList = {};
+provide('widgetList', bsWidgetList);
 provide('step', active);
 provide('form', () => {
   return {
@@ -327,53 +327,53 @@ const onSaveFormData = () => {
     }, {});
   }
 
-  // 把slaveData里的relationVariableName替换成relationId
-  if (!isRelation.value && params.slaveData) {
-    let slaveDataKeyList = Object.keys(params.slaveData);
-    if (slaveDataKeyList.length > 0) {
-      let relationVariableNameMap = new Map();
-      form.value.tableMap.forEach((table: ANY_OBJECT) => {
-        if (table.relation != null) {
-          relationVariableNameMap.set(table.relation.variableName, table.relation.relationId);
-        }
-      });
-      slaveDataKeyList.forEach(key => {
-        let relationId = relationVariableNameMap.get(key);
-        if (relationId != null) {
-          params.slaveData[relationId] = params.slaveData[key];
-        }
-        params.slaveData[key] = undefined;
-      });
-    }
-  }
+  // // 把slaveData里的relationVariableName替换成relationId
+  // if (!isRelation.value && params.slaveData) {
+  //   let slaveDataKeyList = Object.keys(params.slaveData);
+  //   if (slaveDataKeyList.length > 0) {
+  //     let relationVariableNameMap = new Map();
+  //     form.value.tableMap.forEach((table: ANY_OBJECT) => {
+  //       if (table.relation != null) {
+  //         relationVariableNameMap.set(table.relation.variableName, table.relation.relationId);
+  //       }
+  //     });
+  //     slaveDataKeyList.forEach(key => {
+  //       let relationId = relationVariableNameMap.get(key);
+  //       if (relationId != null) {
+  //         params.slaveData[relationId] = params.slaveData[key];
+  //       }
+  //       params.slaveData[key] = undefined;
+  //     });
+  //   }
+  // }
 
-  let commitUrl;
-  if (isRelation.value) {
-    // 从表提交数据
-    commitUrl =
-      dialogParams.value.rowData == null || dialogParams.value.isCopy
-        ? API_CONTEXT + '/online/onlineOperation/addOneToManyRelation/'
-        : API_CONTEXT + '/online/onlineOperation/updateOneToManyRelation/';
-  } else {
-    // 主表提交数据
-    commitUrl =
-      dialogParams.value.rowData == null || dialogParams.value.isCopy
-        ? API_CONTEXT + '/online/onlineOperation/addDatasource/'
-        : API_CONTEXT + '/online/onlineOperation/updateDatasource/';
-  }
-  commitUrl += masterTable.value.datasource.variableName;
-  post(commitUrl, params)
-    .then(res => {
-      ElMessage.success('保存成功！');
-      if (props.dialog) {
-        props.dialog.submit(res);
-      } else {
-        onCloseThirdDialog(true, dialogParams.value.rowData, res);
-      }
-    })
-    .catch(e => {
-      console.warn(e);
-    });
+  // let commitUrl;
+  // if (isRelation.value) {
+  //   // 从表提交数据
+  //   commitUrl =
+  //     dialogParams.value.rowData == null || dialogParams.value.isCopy
+  //       ? API_CONTEXT + '/online/onlineOperation/addOneToManyRelation/'
+  //       : API_CONTEXT + '/online/onlineOperation/updateOneToManyRelation/';
+  // } else {
+  //   // 主表提交数据
+  //   commitUrl =
+  //     dialogParams.value.rowData == null || dialogParams.value.isCopy
+  //       ? API_CONTEXT + '/online/onlineOperation/addDatasource/'
+  //       : API_CONTEXT + '/online/onlineOperation/updateDatasource/';
+  // }
+  // commitUrl += masterTable.value.datasource.variableName;
+  // post(commitUrl, params)
+  //   .then(res => {
+  //     ElMessage.success('保存成功！');
+  //     if (props.dialog) {
+  //       props.dialog.submit(res);
+  //     } else {
+  //       onCloseThirdDialog(true, dialogParams.value.rowData, res);
+  //     }
+  //   })
+  //   .catch(e => {
+  //     console.warn(e);
+  //   });
 };
 // 提交
 const onSubmit = () => {
@@ -565,14 +565,17 @@ onMounted(() => {
   border-radius: 8px;
   line-height: 40px;
 }
+
 .el-divider--vertical {
   height: 26px;
   margin: 7px 15px;
 }
+
 .online-edit-form {
   display: flex;
   flex-direction: column;
 }
+
 .online-edit-form .info {
   position: absolute;
   top: 30%;
@@ -580,11 +583,13 @@ onMounted(() => {
   text-align: center;
   vertical-align: middle;
 }
+
 .form-box {
   flex-grow: 1;
   flex-shrink: 1;
   height: 300px;
 }
+
 .menu-box {
   flex-grow: 0;
   flex-shrink: 0;

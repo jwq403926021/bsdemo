@@ -96,7 +96,10 @@ const dialogParams = computed(() => {
   };
 });
 const parentNode = computed(() => {
-  let parentNodePath = findTreeNodeObjectPath(dialogParams.value.usedFieldList, formData.value.parentId);
+  let parentNodePath = findTreeNodeObjectPath(
+    dialogParams.value.usedFieldList,
+    formData.value.parentId,
+  );
   return parentNodePath ? parentNodePath[parentNodePath.length - 1] : null;
 });
 

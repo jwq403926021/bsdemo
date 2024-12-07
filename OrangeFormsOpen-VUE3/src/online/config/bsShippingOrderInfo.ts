@@ -18,8 +18,8 @@ const bsShippingOrderInfo = {
     name: '归属',
     widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
-    value: ''
-  }
+    value: '',
+  },
 };
 
 const bsShippingOrderInfoConfig = {

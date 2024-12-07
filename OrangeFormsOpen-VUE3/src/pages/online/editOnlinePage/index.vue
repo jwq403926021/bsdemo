@@ -5,8 +5,10 @@
       style="overflow: hidden; height: 72px; background: white; border-bottom: 1px solid #ebeef5"
     >
       <el-row type="flex" justify="space-between" align="middle" style="height: 100%">
-        <div class="title" style="display: flex; width: 200px; height: 40px; line-height: 40px">
-        </div>
+        <div
+          class="title"
+          style="display: flex; width: 200px; height: 40px; line-height: 40px"
+        ></div>
         <!-- v-model:value 可以双向绑定，不需要双向绑定时使用:value即可 -->
         <StepBar class="step" :value="activeStep">
           <StepBarItem icon="online-icon icon-basic-info" :name="SysOnlinePageSettingStep.BASIC"

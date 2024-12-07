@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h2 style="margin-bottom: 10px;">Shipping Order Info</h2>
+    <h2 style="margin-bottom: 10px">Shipping Order Info</h2>
     <ul>
-      <li style="line-height: 24px;" v-for="item in data">{{ item.label }}: {{ item.valueHuman }}</li>
+      <li style="line-height: 24px" v-for="item in data">
+        {{ item.label }}: {{ item.valueHuman }}
+      </li>
     </ul>
   </div>
 </template>

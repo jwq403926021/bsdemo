@@ -23,18 +23,18 @@ const bsSr = {
     name: '归属',
     widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
-    value: ''
+    value: '',
   },
   tableName: {
     name: '默认表',
     visible: false,
-    value: "zz_test_order_first"
+    value: 'zz_test_order_first',
   },
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'sr'
-  }
+    value: 'sr',
+  },
 };
 
 const bsSrConfig = {

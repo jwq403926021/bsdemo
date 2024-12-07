@@ -26,6 +26,7 @@ import linkConfig from './link';
 import treeConfig from './tree';
 import bsSrConfig from './bsSr';
 import bsDivisionConfig from './bsDivision';
+import bsRequestDeliveryDateConfig from './bsRequestDeliveryDate';
 import bsAccountNameConfig from './bsAccountName';
 import bsShipToConfig from './bsShipTo';
 import bsStockLocationConfig from './bsStockLocation';
@@ -98,7 +99,8 @@ const formWidgetGroupList: ANY_OBJECT = {
         bsContactInfoConfig,
         bsProductConfig,
         bsShippingOrderInfoConfig,
-        bsContactInfoForPackingListConfig
+        bsContactInfoForPackingListConfig,
+        bsRequestDeliveryDateConfig,
       ],
     },
   ],
@@ -244,6 +246,8 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return bsDivisionConfig;
     case SysCustomWidgetType.BsAccountName:
       return bsAccountNameConfig;
+    case SysCustomWidgetType.BsRequestDeliveryDate:
+      return bsRequestDeliveryDateConfig;
     case SysCustomWidgetType.BsShipTo:
       return bsShipToConfig;
     case SysCustomWidgetType.BsStockLocation:

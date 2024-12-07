@@ -5,7 +5,7 @@ import {
 } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
 
-const bsContactInfo = {
+const bsRequestDeliveryDate = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
@@ -13,11 +13,6 @@ const bsContactInfo = {
     visible: false,
     min: 1,
     max: 24,
-  },
-  depend: {
-    name: '依赖于',
-    widgetType: SysCustomWidgetType.Input,
-    value: '',
   },
   activeStep: {
     name: '归属',
@@ -33,14 +28,14 @@ const bsContactInfo = {
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'contact_info',
+    value: 'request_delivery_date',
   },
 };
 
-const bsContactInfoConfig = {
-  widgetType: SysCustomWidgetType.BsContactInfo,
+const bsRequestDeliveryDateConfig = {
+  widgetType: SysCustomWidgetType.BsRequestDeliveryDate,
   icon: 'online-icon icon-dept',
-  attribute: bsContactInfo,
+  attribute: bsRequestDeliveryDate,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -50,4 +45,4 @@ const bsContactInfoConfig = {
   supportBindColumn: true,
 };
 
-export default bsContactInfoConfig;
+export default bsRequestDeliveryDateConfig;

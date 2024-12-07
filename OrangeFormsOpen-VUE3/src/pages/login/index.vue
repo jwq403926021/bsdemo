@@ -1,8 +1,7 @@
 <template>
   <div class="login-form">
     <div class="logo-box logo-right">
-      <div class="el-space" style="align-items: center; gap: 8px">
-      </div>
+      <div class="el-space" style="align-items: center; gap: 8px"></div>
     </div>
     <div class="login-box">
       <div class="img-box">
@@ -81,8 +80,7 @@
         background-color: #f7fafe;
       "
     >
-      <p style="padding: 0; margin: 0; text-align: center; line-height: 44px">
-      </p>
+      <p style="padding: 0; margin: 0; text-align: center; line-height: 44px"></p>
     </div>
   </div>
 </template>

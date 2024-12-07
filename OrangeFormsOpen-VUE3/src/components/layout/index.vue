@@ -14,8 +14,7 @@
             class="logo"
             v-if="!layoutStore.supportColumn"
             style="padding-left: 8px; margin-right: 8px"
-          >
-          </div>
+          ></div>
           <div class="title">{{ projectName }}</div>
           <bread-crumb class="breadcrumb-container" />
           <div class="header-menu" style="flex-grow: 1">

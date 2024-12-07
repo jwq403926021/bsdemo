@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
 import { eventbus } from '@/common/utils/mitt';
-import axios from "axios";
-import { serverDefaultCfg } from "@/common/http/config";
+import { serverDefaultCfg } from '@/common/http/config';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -39,7 +39,7 @@ const step = inject('step');
 const emitChange = value => {
   emit('update:modelValue', value);
   emit('change', value);
-  const selectedItem = selectedItems.value.find(i => i.value === value)
+  const selectedItem = selectedItems.value.find(i => i.value === value);
   eventbus.emit(`bs:${pps.widget.variableName}`, selectedItem);
 };
 
@@ -54,16 +54,18 @@ const getSelectList = async (isClear = false, data) => {
   const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     emit('update:modelValue', '');
-    selectedItems.value = []
+    selectedItems.value = [];
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
   console.log('bsaccountname receive', data);
   if (data) {
-    const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.code}`)
+    const res = await axios.get(
+      `${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.code}`,
+    );
     selectedItems.value = res?.data?.map(i => ({
       ...i,
       label: i.fullName + ' - ' + i.stockLocName,
-      value: i.stockLocId
+      value: i.stockLocId,
     }));
   }
 };

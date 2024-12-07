@@ -84,7 +84,7 @@ export const useWidgetToolkit = () => {
           break;
         case SysCustomWidgetType.BsSelect:
         case SysCustomWidgetType.BsParentSelect:
-        case SysCustomWidgetType.BsInput:
+        case SysCustomWidgetType.BsRecipient:
         case SysCustomWidgetType.BsContactInfo:
         case SysCustomWidgetType.BsStockLocation:
         case SysCustomWidgetType.BsProduct:

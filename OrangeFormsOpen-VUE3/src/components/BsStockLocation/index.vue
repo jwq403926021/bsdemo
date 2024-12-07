@@ -52,4 +52,11 @@ const getSelectUserList = () => {
 onMounted(() => {
   getSelectUserList();
 });
+const getValue = () => {
+  return {
+    value: pps.modelValue,
+    valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
+  };
+};
+defineExpose({ getValue });
 </script>

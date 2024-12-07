@@ -42,11 +42,11 @@ const emitChange = value => {
 const getSelectList = (isClear = false) => {
   const formInstance = form();
   if (!pps.depend) {
-    console.error('depend argument is not config')
+    console.error('depend argument is not config');
   }
-  if (formInstance.isEdit) return
+  if (formInstance.isEdit) return;
   const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
-  if (!dependWidget) return
+  if (!dependWidget) return;
   const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     emit('update:modelValue', '');
@@ -83,4 +83,11 @@ watch(
 onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
+const getValue = () => {
+  return {
+    value: pps.modelValue,
+    valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
+  };
+};
+defineExpose({ getValue });
 </script>

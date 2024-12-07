@@ -1,7 +1,7 @@
 import { ANY_OBJECT } from '@/types/generic';
 import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
 import { SysCustomWidgetBindValueType } from '@/common/staticDict/online';
-import bsInputConfig from './bsInput';
+import bsRecipientConfig from './bsRecipient';
 import blockConfig from './customBlock';
 import baseCardConfig from './baseCard';
 import tabsConfig from './tabs';
@@ -30,6 +30,7 @@ import bsParentSelectConfig from './bsParentSelect';
 import bsContactInfoConfig from './bsContactInfo';
 import bsStockLocationConfig from './bsStockLocation';
 import bsProductConfig from './bsProduct';
+import bsShippingOrderInfoConfig from './bsShippingOrderInfo';
 
 const formWidgetGroupList: ANY_OBJECT = {
   pc: [
@@ -87,12 +88,13 @@ const formWidgetGroupList: ANY_OBJECT = {
       id: 'advance',
       groupName: '波士顿组件',
       widgetList: [
-        labelConfig,
         bsParentSelectConfig,
         bsSelectConfig,
         bsContactInfoConfig,
         bsStockLocationConfig,
-        bsProductConfig
+        bsProductConfig,
+        bsShippingOrderInfoConfig,
+        // bsRecipientConfig,
       ],
     },
   ],
@@ -236,8 +238,8 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return bsSelectConfig;
     case SysCustomWidgetType.BsParentSelect:
       return bsParentSelectConfig;
-    case SysCustomWidgetType.BsInput:
-      return bsInputConfig;
+    case SysCustomWidgetType.BsRecipient:
+      return bsRecipientConfig;
     case SysCustomWidgetType.DeptSelect:
       return deptSelectConfig;
     case SysCustomWidgetType.Card:

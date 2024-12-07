@@ -12,6 +12,7 @@ declare module 'vue' {
     BsParentSelect: typeof import('./src/components/BsParentSelect/index.vue')['default']
     BsProduct: typeof import('./src/components/BsProduct/index.vue')['default']
     BsSelect: typeof import('./src/components/BsSelect/index.vue')['default']
+    BsShippingOrderInfo: typeof import('./src/components/BsShippingOrderInfo/index.vue')['default']
     BsStockLocation: typeof import('./src/components/BsStockLocation/index.vue')['default']
     BtnsRightAddBtn: typeof import('./src/components/Btns/RightAddBtn.vue')['default']
     DateRange: typeof import('./src/components/DateRange/index.vue')['default']

@@ -76,6 +76,7 @@ import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
 import BsSelect from '@/components/BsSelect/index.vue';
 import BsParentSelect from '@/components/BsParentSelect/index.vue';
+import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
 import BsContactInfo from '@/components/BsContactInfo/index.vue';
 import BsStockLocation from '@/components/BsStockLocation/index.vue';
 import BsProduct from '@/components/BsProduct/index.vue';
@@ -189,7 +190,7 @@ const getComponent = computed(() => {
   switch (pps.widget.widgetType) {
     case SysCustomWidgetType.Label:
       return OnlineCustomLabel;
-    case SysCustomWidgetType.BsInput:
+    case SysCustomWidgetType.BsRecipient:
       return ElInput;
     case SysCustomWidgetType.Input:
       return ElInput;
@@ -221,6 +222,8 @@ const getComponent = computed(() => {
       return UserSelect;
     case SysCustomWidgetType.BsParentSelect:
       return BsParentSelect;
+    case SysCustomWidgetType.BsShippingOrderInfo:
+      return BsShippingOrderInfo;
     case SysCustomWidgetType.BsSelect:
       return BsSelect;
     case SysCustomWidgetType.BsContactInfo:

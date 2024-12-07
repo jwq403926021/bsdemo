@@ -296,8 +296,6 @@ const onCancel = () => {
 };
 // 提交表单数据
 const onSaveFormData = () => {
-  console.log(bsWidgetList, 'form.value.widgetList');
-  return
   if (masterTable.value == null || masterTable.value.datasource == null) {
     ElMessage.error('表单使用主数据源或主表不存在！');
     return;

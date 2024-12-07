@@ -5,7 +5,7 @@ import {
 } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
 
-const bsContactInfo = {
+const bsAccountName = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
@@ -33,14 +33,14 @@ const bsContactInfo = {
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'contact_info'
-  }
+    value: 'account_name'
+  },
 };
 
-const bsContactInfoConfig = {
-  widgetType: SysCustomWidgetType.BsContactInfo,
+const bsAccountNameConfig = {
+  widgetType: SysCustomWidgetType.BsAccountName,
   icon: 'online-icon icon-dept',
-  attribute: bsContactInfo,
+  attribute: bsAccountName,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -50,4 +50,4 @@ const bsContactInfoConfig = {
   supportBindColumn: true,
 };
 
-export default bsContactInfoConfig;
+export default bsAccountNameConfig;

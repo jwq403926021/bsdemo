@@ -5,42 +5,27 @@ import {
 } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
 
-const bsSelect = {
+const bsContactInfoForPackingList = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
-    value: 13,
+    value: 24,
     visible: false,
     min: 1,
     max: 24,
-  },
-  depend: {
-    name: '依赖于',
-    widgetType: SysCustomWidgetType.Input,
-    value: '',
   },
   activeStep: {
     name: '归属',
     widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
     value: ''
-  },
-  tableName: {
-    name: '默认表',
-    visible: false,
-    value: "zz_test_order_first"
-  },
-  columnName: {
-    name: '默认列',
-    visible: false,
-    value: 'ship_to'
   }
 };
 
-const bsSelectConfig = {
-  widgetType: SysCustomWidgetType.BsSelect,
+const bsContactInfoForPackingListConfig = {
+  widgetType: SysCustomWidgetType.BsContactInfoForPackingList,
   icon: 'online-icon icon-dept',
-  attribute: bsSelect,
+  attribute: bsContactInfoForPackingList,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -50,4 +35,4 @@ const bsSelectConfig = {
   supportBindColumn: true,
 };
 
-export default bsSelectConfig;
+export default bsContactInfoForPackingListConfig;

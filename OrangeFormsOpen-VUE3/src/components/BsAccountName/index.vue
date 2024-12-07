@@ -34,14 +34,12 @@ const pps = withDefaults(
   },
 );
 const selectedItems = ref<ANY_OBJECT[]>([]);
-const selectedContactInfo = ref(null)
 const form = inject('form');
 const step = inject('step');
 const emitChange = value => {
   emit('update:modelValue', value);
   emit('change', value);
   const selectedItem = selectedItems.value.find(i => i.value === value)
-  selectedContactInfo.value = selectedItem
   eventbus.emit(`bs:${pps.widget.variableName}`, selectedItem);
 };
 
@@ -57,16 +55,15 @@ const getSelectList = async (isClear = false, data) => {
   if (isClear) {
     emit('update:modelValue', '');
     selectedItems.value = []
-    selectedContactInfo.value = null
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
-  console.log('bscontactinfo receive', data);
+  console.log('bsaccountname receive', data);
   if (data) {
-    const res = await axios.get(`${serverDefaultCfg.baseURL}order/customer?code=${data.stockLocId}`)
+    const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.code}`)
     selectedItems.value = res?.data?.map(i => ({
       ...i,
-      label: i.name + ' - ' + i.recipient + ' - ' + i.telNo,
-      value: i.code
+      label: i.fullName + ' - ' + i.stockLocName,
+      value: i.stockLocId
     }));
   }
 };
@@ -83,7 +80,10 @@ onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
-  return selectedContactInfo.value || {};
+  return {
+    value: pps.modelValue,
+    valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
+  };
 };
 defineExpose({ getValue });
 </script>

@@ -15,6 +15,8 @@
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
 import { eventbus } from '@/common/utils/mitt';
+import axios from "axios";
+import { serverDefaultCfg } from "@/common/http/config";
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -37,9 +39,11 @@ const step = inject('step');
 const emitChange = value => {
   emit('update:modelValue', value);
   emit('change', value);
+  const selectedItem = selectedItems.value.find(i => i.code === value)
+  eventbus.emit(`bs:${pps.widget.variableName}`, selectedItem);
 };
 
-const getSelectList = (isClear = false) => {
+const getSelectList = async (isClear = false, data) => {
   const formInstance = form();
   if (!pps.depend) {
     console.error('depend argument is not config');
@@ -48,38 +52,29 @@ const getSelectList = (isClear = false) => {
   const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
   if (!dependWidget) return;
   const dependValue = formInstance.getWidgetValue(dependWidget);
-  if (isClear) {
+  if (isClear) { // 向下传递
     emit('update:modelValue', '');
+    selectedItems.value = []
+    eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
-  selectedItems.value = [
-    {
-      label: `child option 1 base on '${dependValue}'`,
-      value: 'c1',
-    },
-    {
-      label: `child option 2 base on '${dependValue}'`,
-      value: 'c2',
-    },
-  ];
+  if (data) {
+    const res = await axios.get(`${serverDefaultCfg.baseURL}order/saleRep?userDivision=${data.name}`)
+    selectedItems.value = res?.data?.map(i => ({
+      ...i,
+      label: i.name,
+      value: i.code
+    }));
+  }
 };
 
 onMounted(() => {
   eventbus.on(`bs:${pps.depend}`, d => {
-    getSelectList(true);
+    getSelectList(true, d);
   });
   nextTick(() => {
     getSelectList(false);
   });
 });
-watch(
-  () => step.value,
-  v => {
-    console.log('watch step:', v);
-  },
-  {
-    immediate: true,
-  },
-);
 onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });

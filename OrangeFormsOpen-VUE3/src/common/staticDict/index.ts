@@ -585,13 +585,23 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
   },
   {
     id: 404,
-    name: 'Account Name',
-    symbol: 'BsParentSelect',
+    name: 'Division',
+    symbol: 'BsDivision',
   },
   {
     id: 405,
+    name: 'SR',
+    symbol: 'BsSr',
+  },
+  {
+    id: 406,
+    name: 'Account Name',
+    symbol: 'BsAccountName',
+  },
+  {
+    id: 412,
     name: 'Ship To',
-    symbol: 'BsSelect',
+    symbol: 'BsShipTo',
   },
   {
     id: 407,
@@ -604,9 +614,9 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'BsStockLocation',
   },
   {
-    id: 409,
-    name: 'Product',
-    symbol: 'BsProduct',
+    id: 409, // do not change
+    name: 'Product', // do not change
+    symbol: 'BsProduct', // do not change
   },
   {
     id: 410,
@@ -614,9 +624,9 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'BsShippingOrderInfo',
   },
   {
-    id: 406,
-    name: 'Recipient',
-    symbol: 'BsRecipient',
+    id: 411,
+    name: 'Contact Info For Packing List',
+    symbol: 'BsContactInfoForPackingList',
   },
   {
     id: 401,

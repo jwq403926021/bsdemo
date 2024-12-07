@@ -1,7 +1,6 @@
 import { ANY_OBJECT } from '@/types/generic';
 import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
 import { SysCustomWidgetBindValueType } from '@/common/staticDict/online';
-import bsRecipientConfig from './bsRecipient';
 import blockConfig from './customBlock';
 import baseCardConfig from './baseCard';
 import tabsConfig from './tabs';
@@ -25,12 +24,15 @@ import richEditorConfig from './richEditor';
 import tableConfig from './table';
 import linkConfig from './link';
 import treeConfig from './tree';
-import bsSelectConfig from './bsSelect';
-import bsParentSelectConfig from './bsParentSelect';
-import bsContactInfoConfig from './bsContactInfo';
+import bsSrConfig from './bsSr';
+import bsDivisionConfig from './bsDivision';
+import bsAccountNameConfig from './bsAccountName';
+import bsShipToConfig from './bsShipTo';
 import bsStockLocationConfig from './bsStockLocation';
 import bsProductConfig from './bsProduct';
 import bsShippingOrderInfoConfig from './bsShippingOrderInfo';
+import bsContactInfoConfig from './bsContactInfo';
+import bsContactInfoForPackingListConfig from './bsContactInfoForPackingList';
 
 const formWidgetGroupList: ANY_OBJECT = {
   pc: [
@@ -88,13 +90,15 @@ const formWidgetGroupList: ANY_OBJECT = {
       id: 'advance',
       groupName: '波士顿组件',
       widgetList: [
-        bsParentSelectConfig,
-        bsSelectConfig,
-        bsContactInfoConfig,
+        bsDivisionConfig,
+        bsSrConfig,
+        bsAccountNameConfig,
+        bsShipToConfig,
         bsStockLocationConfig,
+        bsContactInfoConfig,
         bsProductConfig,
         bsShippingOrderInfoConfig,
-        // bsRecipientConfig,
+        bsContactInfoForPackingListConfig
       ],
     },
   ],
@@ -234,12 +238,18 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return linkConfig;
     case SysCustomWidgetType.UserSelect:
       return userSelectConfig;
-    case SysCustomWidgetType.BsSelect:
-      return bsSelectConfig;
-    case SysCustomWidgetType.BsParentSelect:
-      return bsParentSelectConfig;
-    case SysCustomWidgetType.BsRecipient:
-      return bsRecipientConfig;
+    case SysCustomWidgetType.BsSr:
+      return bsSrConfig;
+    case SysCustomWidgetType.BsDivision:
+      return bsDivisionConfig;
+    case SysCustomWidgetType.BsAccountName:
+      return bsAccountNameConfig;
+    case SysCustomWidgetType.BsShipTo:
+      return bsShipToConfig;
+    case SysCustomWidgetType.BsStockLocation:
+      return bsStockLocationConfig;
+    case SysCustomWidgetType.BsContactInfo:
+      return bsContactInfoConfig;
     case SysCustomWidgetType.DeptSelect:
       return deptSelectConfig;
     case SysCustomWidgetType.Card:

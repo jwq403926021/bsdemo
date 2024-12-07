@@ -82,11 +82,13 @@ export const useWidgetToolkit = () => {
         case SysCustomWidgetType.Image:
           disabled = column.fieldKind !== SysOnlineFieldKind.UPLOAD_IMAGE;
           break;
-        case SysCustomWidgetType.BsSelect:
-        case SysCustomWidgetType.BsParentSelect:
-        case SysCustomWidgetType.BsRecipient:
+        case SysCustomWidgetType.BsDivision:
+        case SysCustomWidgetType.BsSr:
+        case SysCustomWidgetType.BsAccountName:
+        case SysCustomWidgetType.BsShipTo:
         case SysCustomWidgetType.BsContactInfo:
         case SysCustomWidgetType.BsStockLocation:
+        case SysCustomWidgetType.BsContactInfoForPackingList:
         case SysCustomWidgetType.BsProduct:
         case SysCustomWidgetType.Input:
           disabled = columnFieldType !== 'String' && columnFieldType !== 'Number';

@@ -1,6 +1,6 @@
 <template>
   <div class="user-select">
-    <el-input :model-value="stockLocName" disabled />
+    <el-input :model-value="soldToName" disabled />
   </div>
 </template>
 
@@ -24,22 +24,22 @@ const pps = withDefaults(
     depend: '',
   },
 );
-const stockLocName = ref('');
+const soldToName = ref('');
 const form = inject('form');
 const step = inject('step');
 const emitChange = value => {};
 
 onMounted(() => {
   eventbus.on(`bs:${pps.depend}`, d => {
-    console.log('bs stocklocation receive:', d);
+    console.log('bsshipto receive:', d);
     if (d) {
-      emit('update:modelValue', d.stockLocId);
-      emit('change', d.stockLocId);
-      stockLocName.value = d.stockLocName;
+      emit('update:modelValue', d.soldToNum);
+      emit('change', d.soldToNum);
+      soldToName.value = d.soldToName;
     } else {
       emit('update:modelValue', '');
       emit('change', '');
-      stockLocName.value = '';
+      soldToName.value = '';
     }
   });
 });
@@ -49,7 +49,7 @@ onUnmounted(() => {
 const getValue = () => {
   return {
     value: pps.modelValue,
-    valueHuman: stockLocName.value,
+    valueHuman: soldToName.value,
   };
 };
 defineExpose({ getValue });

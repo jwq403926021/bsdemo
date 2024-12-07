@@ -74,9 +74,12 @@ import {
 } from '@/common/utils';
 import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
-import BsSelect from '@/components/BsSelect/index.vue';
-import BsParentSelect from '@/components/BsParentSelect/index.vue';
+import BsSr from '@/components/BsSr/index.vue';
+import BsDivision from '@/components/BsDivision/index.vue';
 import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
+import BsAccountName from '@/components/BsAccountName/index.vue';
+import BsShipTo from '@/components/BsShipTo/index.vue';
+import BsContactInfoForPackingList from '@/components/BsContactInfoForPackingList/index.vue';
 import BsContactInfo from '@/components/BsContactInfo/index.vue';
 import BsStockLocation from '@/components/BsStockLocation/index.vue';
 import BsProduct from '@/components/BsProduct/index.vue';
@@ -190,8 +193,6 @@ const getComponent = computed(() => {
   switch (pps.widget.widgetType) {
     case SysCustomWidgetType.Label:
       return OnlineCustomLabel;
-    case SysCustomWidgetType.BsRecipient:
-      return ElInput;
     case SysCustomWidgetType.Input:
       return ElInput;
     case SysCustomWidgetType.NumberInput:
@@ -220,12 +221,18 @@ const getComponent = computed(() => {
       return ElLink;
     case SysCustomWidgetType.UserSelect:
       return UserSelect;
-    case SysCustomWidgetType.BsParentSelect:
-      return BsParentSelect;
+    case SysCustomWidgetType.BsDivision:
+      return BsDivision;
+    case SysCustomWidgetType.BsSr:
+      return BsSr;
+    case SysCustomWidgetType.BsAccountName:
+      return BsAccountName;
+    case SysCustomWidgetType.BsShipTo:
+      return BsShipTo;
     case SysCustomWidgetType.BsShippingOrderInfo:
       return BsShippingOrderInfo;
-    case SysCustomWidgetType.BsSelect:
-      return BsSelect;
+    case SysCustomWidgetType.BsContactInfoForPackingList:
+      return BsContactInfoForPackingList;
     case SysCustomWidgetType.BsContactInfo:
       return BsContactInfo;
     case SysCustomWidgetType.BsStockLocation:

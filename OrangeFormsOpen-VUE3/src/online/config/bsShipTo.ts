@@ -5,18 +5,35 @@ import {
 } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
 
-const bsRecipient = {
+const bsShipTo = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
     value: 13,
-    visible: false,
+    visible: function (formConfig: ANY_OBJECT) {
+      return (
+        formConfig &&
+        formConfig.form.formType !== SysOnlineFormType.QUERY &&
+        formConfig.activeMode === 'pc'
+      );
+    },
     disabled: false,
     min: 1,
     max: 24,
   },
+  placeholder: {
+    name: '占位文本',
+    widgetType: SysCustomWidgetType.Input,
+    value: '',
+  },
+  depend: {
+    name: '依赖于',
+    widgetType: SysCustomWidgetType.Input,
+    value: '',
+  },
   activeStep: {
     name: '归属',
+    widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
     value: ''
   },
@@ -28,14 +45,14 @@ const bsRecipient = {
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'recipient'
-  }
+    value: 'ship_to'
+  },
 };
 
-const bsRecipientConfig = {
-  widgetType: SysCustomWidgetType.BsRecipient,
+const bsShipToConfig = {
+  widgetType: SysCustomWidgetType.BsShipTo,
   icon: 'online-icon icon-input',
-  attribute: bsRecipient,
+  attribute: bsShipTo,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -45,4 +62,4 @@ const bsRecipientConfig = {
   supportBindColumn: true,
 };
 
-export default bsRecipientConfig;
+export default bsShipToConfig;

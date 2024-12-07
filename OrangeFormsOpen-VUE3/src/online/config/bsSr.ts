@@ -5,7 +5,7 @@ import {
 } from '@/common/staticDict/index';
 import { ANY_OBJECT } from '@/types/generic';
 
-const bsParentSelect = {
+const bsSr = {
   span: {
     name: '组件宽度',
     widgetType: SysCustomWidgetType.Slider,
@@ -13,6 +13,11 @@ const bsParentSelect = {
     visible: false,
     min: 1,
     max: 24,
+  },
+  depend: {
+    name: '依赖于',
+    widgetType: SysCustomWidgetType.Input,
+    value: '',
   },
   activeStep: {
     name: '归属',
@@ -28,14 +33,14 @@ const bsParentSelect = {
   columnName: {
     name: '默认列',
     visible: false,
-    value: 'account_name'
+    value: 'sr'
   }
 };
 
-const bsParentSelectConfig = {
-  widgetType: SysCustomWidgetType.BsParentSelect,
+const bsSrConfig = {
+  widgetType: SysCustomWidgetType.BsSr,
   icon: 'online-icon icon-dept',
-  attribute: bsParentSelect,
+  attribute: bsSr,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -45,4 +50,4 @@ const bsParentSelectConfig = {
   supportBindColumn: true,
 };
 
-export default bsParentSelectConfig;
+export default bsSrConfig;

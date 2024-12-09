@@ -83,6 +83,7 @@ export const useWidgetToolkit = () => {
           disabled = column.fieldKind !== SysOnlineFieldKind.UPLOAD_IMAGE;
           break;
         case SysCustomWidgetType.BsDivision:
+        case SysCustomWidgetType.BsProductLevel:
         case SysCustomWidgetType.BsRequestDeliveryDate:
         case SysCustomWidgetType.BsUpnProductName:
         case SysCustomWidgetType.BsSr:

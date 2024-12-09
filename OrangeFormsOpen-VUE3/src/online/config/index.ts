@@ -26,6 +26,7 @@ import linkConfig from './link';
 import treeConfig from './tree';
 import bsSrConfig from './bsSr';
 import bsDivisionConfig from './bsDivision';
+import bsProductLevelConfig from './bsProductLevel';
 import bsRequestDeliveryDateConfig from './bsRequestDeliveryDate';
 import bsUpnProductNameConfig from './bsUpnProductName';
 import bsAccountNameConfig from './bsAccountName';
@@ -94,6 +95,7 @@ const formWidgetGroupList: ANY_OBJECT = {
       groupName: '波士顿组件',
       widgetList: [
         bsDivisionConfig,
+        bsProductLevelConfig,
         bsSrConfig,
         bsAccountNameConfig,
         bsShipToConfig,
@@ -248,6 +250,8 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return bsSrConfig;
     case SysCustomWidgetType.BsDivision:
       return bsDivisionConfig;
+    case SysCustomWidgetType.BsProductLevel:
+      return bsProductLevelConfig;
     case SysCustomWidgetType.BsAccountName:
       return bsAccountNameConfig;
     case SysCustomWidgetType.BsRequestDeliveryDate:

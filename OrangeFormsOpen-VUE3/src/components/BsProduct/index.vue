@@ -63,6 +63,7 @@ const pps = withDefaults(
 );
 const formInject = inject('form');
 const productName = ref('');
+const productLevel = ref('');
 const tableData = ref([]); // 初始化为空数组
 const multipleSelection = ref([]);
 const selectable = (row, index) => {
@@ -79,7 +80,10 @@ const handleSelectionChange = val => {
 const fetchData = async () => {
   try {
     const response = await axios.get(`${serverDefaultCfg.baseURL}order/product`, {
-      params: { productName: productName.value },
+      params: {
+        productName: productName.value,
+        productLevel: productLevel.value,
+      },
     });
 
     // 添加 selectedQty 字段以保存用户选择的数量
@@ -108,5 +112,13 @@ onMounted(() => {
     productName.value = d.value;
     fetchData();
   });
+  eventbus.on(`bs:productLevel`, d => {
+    productLevel.value = d.value;
+    fetchData();
+  });
+});
+onUnmounted(() => {
+  eventbus.off('bs:upnProductName');
+  eventbus.off('bs:productLevel');
 });
 </script>

@@ -76,6 +76,7 @@ import RichEditor from '@/components/RichEditor/index.vue';
 import UserSelect from '@/components/UserSelect/index.vue';
 import BsSr from '@/components/BsSr/index.vue';
 import BsDivision from '@/components/BsDivision/index.vue';
+import BsProductLevel from '@/components/BsProductLevel/index.vue';
 import BsRequestDeliveryDate from '@/components/BsRequestDeliveryDate/index.vue';
 import BsUpnProductName from '@/components/BsUpnProductName/index.vue';
 import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
@@ -226,6 +227,8 @@ const getComponent = computed(() => {
       return UserSelect;
     case SysCustomWidgetType.BsDivision:
       return BsDivision;
+    case SysCustomWidgetType.BsProductLevel:
+      return BsProductLevel;
     case SysCustomWidgetType.BsRequestDeliveryDate:
       return BsRequestDeliveryDate;
     case SysCustomWidgetType.BsUpnProductName:

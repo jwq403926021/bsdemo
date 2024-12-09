@@ -325,7 +325,7 @@ const onSaveFormData = async () => {
     recipient: params.recipient,
     phone: params.phone,
     shipment: params.soldToName,
-    delivery_date: params.a, // todo
+    delivery_date: params.requestDeliveryDate,
   }
   console.log('real params::::', params)
   const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)

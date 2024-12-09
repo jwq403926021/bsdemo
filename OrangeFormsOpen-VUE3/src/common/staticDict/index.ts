@@ -594,6 +594,11 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'BsProductLevel',
   },
   {
+    id: 417,
+    name: 'Product Level Name',
+    symbol: 'BsProductLevelName',
+  },
+  {
     id: 405,
     name: 'SR',
     symbol: 'BsSr',

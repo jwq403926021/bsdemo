@@ -64,6 +64,7 @@ const pps = withDefaults(
 const formInject = inject('form');
 const productName = ref('');
 const productLevel = ref('');
+const productLevelName = ref('');
 const tableData = ref([]); // 初始化为空数组
 const multipleSelection = ref([]);
 const selectable = (row, index) => {
@@ -83,6 +84,7 @@ const fetchData = async () => {
       params: {
         productName: productName.value,
         productLevel: productLevel.value,
+        productLevelName: productLevelName.value,
       },
     });
 
@@ -118,9 +120,18 @@ onMounted(() => {
     productLevel.value = d.value;
     fetchData();
   });
+  eventbus.on(`bs:productLevelName`, d => {
+    if (!d) {
+      productLevelName.value = '';
+    } else {
+      productLevelName.value = d.value;
+      fetchData();
+    }
+  });
 });
 onUnmounted(() => {
   eventbus.off('bs:upnProductName');
   eventbus.off('bs:productLevel');
+  eventbus.off('bs:productLevelName');
 });
 </script>

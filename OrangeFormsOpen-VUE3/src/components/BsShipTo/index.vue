@@ -27,6 +27,7 @@ const pps = withDefaults(
 const soldToName = ref('');
 const form = inject('form');
 const step = inject('step');
+const selected = ref({})
 const emitChange = value => {};
 
 onMounted(() => {
@@ -36,6 +37,7 @@ onMounted(() => {
       emit('update:modelValue', d.soldToNum);
       emit('change', d.soldToNum);
       soldToName.value = d.soldToName;
+      selected.value = d
     } else {
       emit('update:modelValue', '');
       emit('change', '');
@@ -48,6 +50,7 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
+    ...selected.value,
     value: pps.modelValue,
     valueHuman: soldToName.value,
   };

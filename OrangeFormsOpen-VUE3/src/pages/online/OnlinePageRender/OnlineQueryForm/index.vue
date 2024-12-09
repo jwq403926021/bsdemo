@@ -117,39 +117,122 @@
         :style="{ padding: dialogParams.isEdit ? '0' : '' }"
         @click.stop="onTableClick"
       >
-        <OnlineCustomTable
-          :dataList="queryTableWidget.dataList"
-          style="height: 100%"
-          :isEdit="dialogParams.isEdit"
-          :widget="queryTable"
-          :multiSelect="batchDelete"
-          :operationList="activeOperationList"
-          :getTableIndex="queryTableWidget.getTableIndex"
-          :sortChange="queryTableWidget.onSortChange"
-          :onSelectChange="onSelectRowChange"
-          :treeConfig="getTableTreeConfig"
-          @operationClick="onOperationClick"
-          @refresh="refreshTable(false)"
+        <el-row
+          type="flex"
+          justify="space-between"
+          align="middle"
+          class="operator-box"
         >
-          <template v-slot:pagination>
-            <el-row
-              type="flex"
-              justify="end"
-              style="margin-top: 16px"
-              v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"
+          <div>
+            <el-button
+              class="table-operation"
+              type="primary"
+              @click="onOperationClick(getOperation(SysCustomWidgetOperationType.ADD))"
+              :icon="Plus"
             >
-              <el-pagination
-                :total="queryTableWidget.totalCount"
-                :current-page="queryTableWidget.currentPage"
-                :page-size="queryTableWidget.pageSize"
-                :page-sizes="[10, 20, 50, 100]"
-                layout="total, prev, pager, next, sizes"
-                @current-change="queryTableWidget.onCurrentPageChange"
-                @size-change="queryTableWidget.onPageSizeChange"
-              />
-            </el-row>
-          </template>
-        </OnlineCustomTable>
+              {{ getOperation(SysCustomWidgetOperationType.ADD).name || '新建' }}
+            </el-button>
+          </div>
+        </el-row>
+        <vxe-table
+          border="inner"
+          height="100%"
+          :data="tableData"
+        >
+          <vxe-column
+            type="seq"
+            title="No."
+          />
+          <vxe-column
+            title="divisionsName"
+            field="divisionsName"
+          />
+          <vxe-column
+            title="srName"
+            field="srName"
+          />
+          <vxe-column
+            title="contactInfo"
+            field="contactInfo"
+          />
+          <vxe-column
+            title="createdAt"
+            field="createdAt"
+          />
+          <vxe-column
+            title="deliveryDate"
+            field="deliveryDate"
+          />
+          <vxe-column
+            title="phone"
+            field="phone"
+          />
+          <vxe-column
+            title="productName"
+            field="productName"
+          />
+          <vxe-column
+            title="productUpn"
+            field="productUpn"
+          />
+          <vxe-column
+            title="qty"
+            field="qty"
+          />
+          <vxe-column
+            title="recipient"
+            field="recipient"
+          />
+          <vxe-column
+            title="shipTo"
+            field="shipTo"
+          />
+          <vxe-column
+            title="shipment"
+            field="shipment"
+          />
+          <vxe-column
+            title="soldTo"
+            field="soldTo"
+          />
+          <vxe-column
+            title="stockLocName"
+            field="stockLocName"
+          />
+        </vxe-table>
+<!--        <OnlineCustomTable-->
+<!--          :dataList="queryTableWidget.dataList"-->
+<!--          style="height: 100%"-->
+<!--          :isEdit="dialogParams.isEdit"-->
+<!--          :widget="queryTable"-->
+<!--          :multiSelect="batchDelete"-->
+<!--          :operationList="activeOperationList"-->
+<!--          :getTableIndex="queryTableWidget.getTableIndex"-->
+<!--          :sortChange="queryTableWidget.onSortChange"-->
+<!--          :onSelectChange="onSelectRowChange"-->
+<!--          :treeConfig="getTableTreeConfig"-->
+<!--          @operationClick="onOperationClick"-->
+<!--          @refresh="refreshTable(false)"-->
+<!--        >-->
+<!--          <template v-slot:pagination>-->
+<!--            <el-row-->
+<!--              type="flex"-->
+<!--              justify="end"-->
+<!--              style="margin-top: 16px"-->
+<!--              v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"-->
+<!--            >-->
+<!--              <el-pagination-->
+<!--                :total="queryTableWidget.totalCount"-->
+<!--                :current-page="queryTableWidget.currentPage"-->
+<!--                :page-size="queryTableWidget.pageSize"-->
+<!--                :page-sizes="[10, 20, 50, 100]"-->
+<!--                layout="total, prev, pager, next, sizes"-->
+<!--                @current-change="queryTableWidget.onCurrentPageChange"-->
+<!--                @size-change="queryTableWidget.onPageSizeChange"-->
+<!--              />-->
+<!--            </el-row>-->
+<!--          </template>-->
+<!--        </OnlineCustomTable>-->
       </div>
     </template>
   </div>
@@ -157,8 +240,8 @@
 
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Close } from '@element-plus/icons-vue';
-import { treeDataTranslate } from '@/common/utils';
+import { Close, Plus } from "@element-plus/icons-vue";
+import { findItemFromList, treeDataTranslate } from "@/common/utils";
 import { ANY_OBJECT } from '@/types/generic';
 import OnlineCustomTable from '@/online/components/OnlineCustomTable.vue';
 import { TableOptions } from '@/common/types/pagination';
@@ -181,6 +264,9 @@ import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
 import OnlineFilterBox from './OnlineFilterBox.vue';
+import { VxeColumn, VxeTable } from "vxe-table";
+import axios from "axios";
+import { serverDefaultCfg } from "@/common/http/config";
 
 interface IProps extends ThirdProps {
   formConfig: ANY_OBJECT;
@@ -212,7 +298,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const { onCloseThirdDialog } = useThirdParty(props);
 const { fetchUpload } = useUpload();
-
+const tableData = ref([])
 const batchDelete = ref(false);
 const selectRows = ref<ANY_OBJECT[]>([]);
 
@@ -275,7 +361,9 @@ const queryTable = computed(() => {
 const activeWidgetList = computed(() => {
   return form.value.widgetList;
 });
-
+const getOperation = (type: string) => {
+  return findItemFromList(activeOperationList.value, type, 'type') || {};
+};
 const getQueryParams = () => {
   if (Array.isArray(activeWidgetList.value)) {
     return activeWidgetList.value
@@ -633,8 +721,11 @@ const initFormData = () => {
   refreshTable(true);
 };
 
-onMounted(() => {
+onMounted(async () => {
   isReady.value = false;
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`)
+  console.log(res?.data, '?!@#?!@#?');
+  tableData.value = res?.data || []
   if (!dialogParams.value.isEdit) {
     initFormData();
     initWidgetLinkage();

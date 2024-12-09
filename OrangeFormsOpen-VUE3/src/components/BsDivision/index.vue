@@ -56,6 +56,7 @@ const getValue = () => {
   const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
   return {
     ...selected,
+    divisionsName: selected?.name || '',
     value: pps.modelValue,
     valueHuman: selected?.label || '',
   };

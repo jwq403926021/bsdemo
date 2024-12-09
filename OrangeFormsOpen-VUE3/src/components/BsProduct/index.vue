@@ -99,7 +99,9 @@ const updateSelectedQuantity = row => {
 };
 
 const getValue = () => {
-  return multipleSelection.value;
+  return {
+    products: multipleSelection.value
+  };
 };
 const setValue = () => {
   return null;

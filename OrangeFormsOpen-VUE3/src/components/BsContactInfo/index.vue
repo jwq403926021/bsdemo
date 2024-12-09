@@ -83,7 +83,12 @@ onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
-  return selectedContactInfo.value || {};
+  return {
+    contactInfo: selectedContactInfo.value.name,
+    recipient: selectedContactInfo.value.recipient,
+    phone: selectedContactInfo.value.telNo,
+    ...selectedContactInfo.value
+  };
 };
 defineExpose({ getValue });
 </script>

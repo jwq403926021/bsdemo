@@ -158,6 +158,8 @@ import { useLayoutStore, useLoginStore } from '@/store';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
+import axios from "axios";
+import { serverDefaultCfg } from "@/common/http/config";
 
 const loginStore = useLoginStore();
 
@@ -295,85 +297,39 @@ const onCancel = () => {
   }
 };
 // 提交表单数据
-const onSaveFormData = () => {
-  if (masterTable.value == null || masterTable.value.datasource == null) {
-    ElMessage.error('表单使用主数据源或主表不存在！');
-    return;
-  }
-  let params: ANY_OBJECT = {
-    datasourceId: masterTable.value.datasource.datasourceId,
-    relationId: (masterTable.value.relation || {}).relationId,
-    masterData: isRelation.value ? undefined : formData[masterTable.value.datasource.variableName],
-  };
-  if (isRelation.value) {
-    // 从表数据添加或更新
-    params.slaveData = {
-      ...formData[masterTable.value.relation.variableName],
-    };
-    // 设置关联字段的值
-    let slaveColumnValue = (dialogParams.value.masterTableData || {})[
-      masterTable.value.relation.masterColumn.columnName
-    ];
-    if (slaveColumnValue != null) {
-      params.slaveData[masterTable.value.relation.slaveColumn.columnName] = slaveColumnValue;
-    }
-  } else {
-    // 设置一对多从表数据
-    params.slaveData = tableWidgetList.reduce((retObj, widget) => {
-      if (widget.relation != null) {
-        retObj[widget.relation.variableName] = formData[widget.relation.variableName];
+const onSaveFormData = async () => {
+  let params = {}
+  for (const key in bsWidgetList) {
+    if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
+      const value = bsWidgetList[key]?.getValue() || {}
+      console.log(`${key}::!@#!@#!@#!@#::`, value);
+      params = {
+        ...params,
+        ...value
       }
-      return retObj;
-    }, {});
+    }
   }
-
-  // // 把slaveData里的relationVariableName替换成relationId
-  // if (!isRelation.value && params.slaveData) {
-  //   let slaveDataKeyList = Object.keys(params.slaveData);
-  //   if (slaveDataKeyList.length > 0) {
-  //     let relationVariableNameMap = new Map();
-  //     form.value.tableMap.forEach((table: ANY_OBJECT) => {
-  //       if (table.relation != null) {
-  //         relationVariableNameMap.set(table.relation.variableName, table.relation.relationId);
-  //       }
-  //     });
-  //     slaveDataKeyList.forEach(key => {
-  //       let relationId = relationVariableNameMap.get(key);
-  //       if (relationId != null) {
-  //         params.slaveData[relationId] = params.slaveData[key];
-  //       }
-  //       params.slaveData[key] = undefined;
-  //     });
-  //   }
-  // }
-
-  // let commitUrl;
-  // if (isRelation.value) {
-  //   // 从表提交数据
-  //   commitUrl =
-  //     dialogParams.value.rowData == null || dialogParams.value.isCopy
-  //       ? API_CONTEXT + '/online/onlineOperation/addOneToManyRelation/'
-  //       : API_CONTEXT + '/online/onlineOperation/updateOneToManyRelation/';
-  // } else {
-  //   // 主表提交数据
-  //   commitUrl =
-  //     dialogParams.value.rowData == null || dialogParams.value.isCopy
-  //       ? API_CONTEXT + '/online/onlineOperation/addDatasource/'
-  //       : API_CONTEXT + '/online/onlineOperation/updateDatasource/';
-  // }
-  // commitUrl += masterTable.value.datasource.variableName;
-  // post(commitUrl, params)
-  //   .then(res => {
-  //     ElMessage.success('保存成功！');
-  //     if (props.dialog) {
-  //       props.dialog.submit(res);
-  //     } else {
-  //       onCloseThirdDialog(true, dialogParams.value.rowData, res);
-  //     }
-  //   })
-  //   .catch(e => {
-  //     console.warn(e);
-  //   });
+  console.log('all field::!@#!@#!@#!@#', params);
+  params = {
+    order_type: params.a, // todo
+    divisionsName: params.divisionsName,
+    srName: params.srName,
+    soldToName: params.soldToName,
+    shipTo: params.shipTo,
+    stockLocName: params.stockLocName,
+    contactInfo: params.contactInfo,
+    products: params.products,
+    product_upn: params.a, // todo
+    product_name: params.a, // todo
+    qty: params.a, // todo
+    recipient: params.recipient,
+    phone: params.phone,
+    shipment: params.soldToName,
+    delivery_date: params.a, // todo
+  }
+  console.log('real params::::', params)
+  const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)
+  console.log(res);
 };
 // 提交
 const onSubmit = () => {

@@ -71,7 +71,7 @@ watch(
       if (step.value === 3 && i.widgetType === 409) {
         console.log('i.variableName==========', i.variableName, ':', widgetList[i.variableName]);
         if (widgetList[i.variableName].getValue) {
-          tableData.value = widgetList[i.variableName].getValue();
+          tableData.value = widgetList[i.variableName].getValue().products;
         }
       }
     });

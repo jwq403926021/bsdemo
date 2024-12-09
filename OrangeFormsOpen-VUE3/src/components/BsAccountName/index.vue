@@ -80,9 +80,14 @@ onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
   return {
+    ...selected,
+    soldToName: selected.soldToName || '',
+    shipTo: selected.soldToName || '',
+    stockLocName: selected.stockLocName || '',
     value: pps.modelValue,
-    valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
+    valueHuman: selected?.label || '',
   };
 };
 defineExpose({ getValue });

@@ -27,6 +27,7 @@ const pps = withDefaults(
 const stockLocName = ref('');
 const form = inject('form');
 const step = inject('step');
+const selected = ref({})
 const emitChange = value => {};
 
 onMounted(() => {
@@ -36,6 +37,7 @@ onMounted(() => {
       emit('update:modelValue', d.stockLocId);
       emit('change', d.stockLocId);
       stockLocName.value = d.stockLocName;
+      selected.value = d
     } else {
       emit('update:modelValue', '');
       emit('change', '');
@@ -48,6 +50,7 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
+    ...selected.value,
     value: pps.modelValue,
     valueHuman: stockLocName.value,
   };

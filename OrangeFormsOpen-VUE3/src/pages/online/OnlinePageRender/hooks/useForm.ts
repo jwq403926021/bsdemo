@@ -358,7 +358,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
             height: formConfigData.height,
             width: formConfigData.width,
             step1Name: formConfigData?.step1Name,
-            step2Name: formConfigData?.step3Name,
+            step2Name: formConfigData?.step2Name,
             step3Name: formConfigData?.step3Name,
             fullscreen: formConfigData.fullscreen,
             advanceQuery: formConfigData.advanceQuery,

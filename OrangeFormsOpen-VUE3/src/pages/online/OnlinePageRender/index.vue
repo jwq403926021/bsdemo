@@ -97,7 +97,7 @@ const loadOnlineFormConfig = () => {
         height: formConfigData.height,
         width: formConfigData.width,
         step1Name: formConfigData?.step1Name,
-        step2Name: formConfigData?.step3Name,
+        step2Name: formConfigData?.step2Name,
         step3Name: formConfigData?.step3Name,
         widgetList: formConfigData.widgetList,
         operationList: (formConfigData.operationList || []).sort(

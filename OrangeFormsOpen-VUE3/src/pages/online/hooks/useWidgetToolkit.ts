@@ -91,6 +91,7 @@ export const useWidgetToolkit = () => {
         case SysCustomWidgetType.BsStockLocation:
         case SysCustomWidgetType.BsContactInfoForPackingList:
         case SysCustomWidgetType.BsProduct:
+        case SysCustomWidgetType.BsProductConfirm:
         case SysCustomWidgetType.Input:
           disabled = columnFieldType !== 'String' && columnFieldType !== 'Number';
           break;

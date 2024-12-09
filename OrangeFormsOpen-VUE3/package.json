@@ -26,6 +26,7 @@
     "highlight.js": "^11.9.0",
     "jsencrypt": "^3.3.2",
     "json-bigint": "^1.0.0",
+    "less-loader": "^12.2.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "pinia": "^2.1.6",

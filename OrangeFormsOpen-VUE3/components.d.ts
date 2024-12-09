@@ -13,6 +13,7 @@ declare module 'vue' {
     BsContactInfoForPackingList: typeof import('./src/components/BsContactInfoForPackingList/index.vue')['default']
     BsDivision: typeof import('./src/components/BsDivision/index.vue')['default']
     BsProduct: typeof import('./src/components/BsProduct/index.vue')['default']
+    BsProductConfirm: typeof import('./src/components/BsProductConfirm/index.vue')['default']
     BsRequestDeliveryDate: typeof import('./src/components/BsRequestDeliveryDate/index.vue')['default']
     BsShippingOrderInfo: typeof import('./src/components/BsShippingOrderInfo/index.vue')['default']
     BsShipTo: typeof import('./src/components/BsShipTo/index.vue')['default']

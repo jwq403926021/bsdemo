@@ -31,6 +31,7 @@ import bsAccountNameConfig from './bsAccountName';
 import bsShipToConfig from './bsShipTo';
 import bsStockLocationConfig from './bsStockLocation';
 import bsProductConfig from './bsProduct';
+import bsProductConfirmConfig from './bsProductConfirm';
 import bsShippingOrderInfoConfig from './bsShippingOrderInfo';
 import bsContactInfoConfig from './bsContactInfo';
 import bsContactInfoForPackingListConfig from './bsContactInfoForPackingList';
@@ -98,6 +99,7 @@ const formWidgetGroupList: ANY_OBJECT = {
         bsStockLocationConfig,
         bsContactInfoConfig,
         bsProductConfig,
+        bsProductConfirmConfig,
         bsShippingOrderInfoConfig,
         bsContactInfoForPackingListConfig,
         bsRequestDeliveryDateConfig,

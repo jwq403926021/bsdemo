@@ -134,6 +134,18 @@
                 />
                 <OnlineCustomWidget
                   v-show="subWidget.props.activeStep === active"
+                  v-else-if="subWidget.widgetType === SysCustomWidgetType.BsProductConfirm"
+                  :ref="subWidget.variableName"
+                  :widget="subWidget"
+                  :isEdit="isEdit"
+                  :value="getWidgetValue(subWidget)"
+                  :style="{
+                    'margin-bottom': (subWidget.props.paddingBottom || 0) + 'px',
+                  }"
+                  @widgetClick="onWidgetClick"
+                />
+                <OnlineCustomWidget
+                  v-show="subWidget.props.activeStep === active"
                   v-else-if="subWidget.widgetType === SysCustomWidgetType.BsShippingOrderInfo"
                   :ref="subWidget.variableName"
                   :widget="subWidget"

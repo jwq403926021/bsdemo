@@ -84,6 +84,7 @@ import BsShipTo from '@/components/BsShipTo/index.vue';
 import BsContactInfo from '@/components/BsContactInfo/index.vue';
 import BsStockLocation from '@/components/BsStockLocation/index.vue';
 import BsProduct from '@/components/BsProduct/index.vue';
+import BsProductConfirm from '@/components/BsProductConfirm/index.vue';
 import DeptSelect from '@/components/DeptSelect/index.vue';
 import InputNumberRange from '@/components/InputNumberRange/index.vue';
 import OnlineCustomLabel from './OnlineCustomLabel.vue';
@@ -242,6 +243,8 @@ const getComponent = computed(() => {
       return BsStockLocation;
     case SysCustomWidgetType.BsProduct:
       return BsProduct;
+    case SysCustomWidgetType.BsProductConfirm:
+      return BsProductConfirm;
     case SysCustomWidgetType.DeptSelect:
       return DeptSelect;
     case SysCustomWidgetType.Tree:

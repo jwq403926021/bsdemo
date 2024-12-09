@@ -20,12 +20,12 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" :selectable="selectable" width="55" />
-      <el-table-column label="Product Name" width="450">
+      <el-table-column label="Product Name" min-width="50%">
         <template #default="scope">
           {{ scope.row.productUpn }} - {{ scope.row.productName }}
         </template>
       </el-table-column>
-      <el-table-column label="Inventory">
+      <el-table-column label="Inventory" min-width="25%">
         <template #default="scope">
           <div style="display: flex; align-items: center">
             <span
@@ -41,7 +41,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Quantity">
+      <el-table-column label="Quantity" min-width="25%">
         <template #default="scope">
           <el-input-number
             v-model="scope.row.selectedQty"

@@ -160,6 +160,7 @@ import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
 import axios from "axios";
 import { serverDefaultCfg } from "@/common/http/config";
+import { eventbus } from "@/common/utils/mitt";
 
 const loginStore = useLoginStore();
 
@@ -325,13 +326,14 @@ const onSaveFormData = async () => {
     recipient: params.recipient,
     phone: params.phone,
     shipment: params.soldToName,
-    delivery_date: params.requestDeliveryDate,
+    // delivery_date: params.requestDeliveryDate,
   }
   console.log('real params::::', params)
   const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)
   console.log(res);
   if (res.status === 200) {
     onCancel()
+    eventbus.emit('refreshTable')
   }
 };
 // 提交

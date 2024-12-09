@@ -267,6 +267,7 @@ import OnlineFilterBox from './OnlineFilterBox.vue';
 import { VxeColumn, VxeTable } from "vxe-table";
 import axios from "axios";
 import { serverDefaultCfg } from "@/common/http/config";
+import { eventbus } from "@/common/utils/mitt";
 
 interface IProps extends ThirdProps {
   formConfig: ANY_OBJECT;
@@ -720,12 +721,17 @@ const onReset = () => {
 const initFormData = () => {
   refreshTable(true);
 };
-
-onMounted(async () => {
-  isReady.value = false;
+const refresh = async () => {
   const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`)
   console.log(res?.data, '?!@#?!@#?');
   tableData.value = res?.data || []
+}
+onMounted(async () => {
+  isReady.value = false;
+
+  eventbus.on('refreshTable', () => {
+    refresh()
+  })
   if (!dialogParams.value.isEdit) {
     initFormData();
     initWidgetLinkage();

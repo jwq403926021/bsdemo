@@ -330,6 +330,9 @@ const onSaveFormData = async () => {
   console.log('real params::::', params)
   const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)
   console.log(res);
+  if (res.status === 200) {
+    onCancel()
+  }
 };
 // 提交
 const onSubmit = () => {

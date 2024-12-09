@@ -77,6 +77,7 @@ import UserSelect from '@/components/UserSelect/index.vue';
 import BsSr from '@/components/BsSr/index.vue';
 import BsDivision from '@/components/BsDivision/index.vue';
 import BsRequestDeliveryDate from '@/components/BsRequestDeliveryDate/index.vue';
+import BsUpnProductName from '@/components/BsUpnProductName/index.vue';
 import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
 import BsAccountName from '@/components/BsAccountName/index.vue';
 import BsShipTo from '@/components/BsShipTo/index.vue';
@@ -227,6 +228,8 @@ const getComponent = computed(() => {
       return BsDivision;
     case SysCustomWidgetType.BsRequestDeliveryDate:
       return BsRequestDeliveryDate;
+    case SysCustomWidgetType.BsUpnProductName:
+      return BsUpnProductName;
     case SysCustomWidgetType.BsSr:
       return BsSr;
     case SysCustomWidgetType.BsAccountName:

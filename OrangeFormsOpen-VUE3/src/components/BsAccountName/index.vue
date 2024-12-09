@@ -59,9 +59,7 @@ const getSelectList = async (isClear = false, data) => {
   }
   console.log('bsaccountname receive', data);
   if (data) {
-    const res = await axios.get(
-      `${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.code}`,
-    );
+    const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.value}`)
     selectedItems.value = res?.data?.map(i => ({
       ...i,
       label: i.fullName + ' - ' + i.stockLocName,

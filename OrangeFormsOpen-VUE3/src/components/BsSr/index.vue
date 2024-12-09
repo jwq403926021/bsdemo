@@ -59,9 +59,7 @@ const getSelectList = async (isClear = false, data) => {
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
   if (data) {
-    const res = await axios.get(
-      `${serverDefaultCfg.baseURL}order/saleRep?userDivision=${data.name}`,
-    );
+    const res = await axios.get(`${serverDefaultCfg.baseURL}order/saleRep?userDivision=${data.value}`)
     selectedItems.value = res?.data?.map(i => ({
       ...i,
       label: i.name,

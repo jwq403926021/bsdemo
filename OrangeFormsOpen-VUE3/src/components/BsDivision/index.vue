@@ -46,16 +46,18 @@ const getSelectUserList = async () => {
   selectedItems.value = res?.data?.map(i => ({
     ...i,
     label: i.name,
-    value: i.code,
+    value: i.name
   }));
 };
 onMounted(() => {
   getSelectUserList();
 });
 const getValue = () => {
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
   return {
+    ...selected,
     value: pps.modelValue,
-    valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
+    valueHuman: selected?.label || '',
   };
 };
 defineExpose({ getValue });

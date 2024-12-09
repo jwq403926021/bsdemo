@@ -10,6 +10,7 @@ declare module 'vue' {
     AdvanceQuery: typeof import('./src/components/AdvanceQuery/index.vue')['default']
     BsAccountName: typeof import('./src/components/BsAccountName/index.vue')['default']
     BsContactInfo: typeof import('./src/components/BsContactInfo/index.vue')['default']
+    BsContactInfoForPackingList: typeof import('./src/components/BsContactInfoForPackingList/index.vue')['default']
     BsDivision: typeof import('./src/components/BsDivision/index.vue')['default']
     BsProduct: typeof import('./src/components/BsProduct/index.vue')['default']
     BsRequestDeliveryDate: typeof import('./src/components/BsRequestDeliveryDate/index.vue')['default']

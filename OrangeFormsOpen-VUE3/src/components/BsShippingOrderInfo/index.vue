@@ -36,7 +36,7 @@ watch(
     const form = formInject();
     console.log('form:', form);
     form.widgetList.forEach(i => {
-      const includes = [404, 405, 407, 408];
+      const includes = [404, 405, 406, 412, 408];
       if (includes.includes(i.widgetType)) {
         console.log(i.variableName, ':', widgetList[i.variableName]);
         let widgetValueObj = {};

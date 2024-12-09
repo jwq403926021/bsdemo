@@ -316,6 +316,9 @@ const initPageFormList = (pageId: string | undefined) => {
             ...item,
             ...config,
             paramList,
+            step1Name: config?.pc?.step1Name || '',
+            step2Name: config?.pc?.step2Name || '',
+            step3Name: config?.pc?.step3Name || '',
           };
         });
         resolve(res);
@@ -633,6 +636,9 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       width: tempFormConfig.width,
       height: tempFormConfig.height,
       fullscreen: tempFormConfig.fullscreen,
+      step1Name: tempFormConfig.step1Name,
+      step2Name: tempFormConfig.step2Name,
+      step3Name: tempFormConfig.step3Name,
       advanceQuery: tempFormConfig.advanceQuery,
     };
     return formConfig;
@@ -644,6 +650,9 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       formId: currentForm.formId,
       formCode: currentForm.pc.formCode,
       formName: currentForm.pc.formName,
+      step1Name: currentForm.pc.step1Name,
+      step2Name: currentForm.pc.step2Name,
+      step3Name: currentForm.pc.step3Name,
       formKind: SysOnlineFormKind.PAGE,
       formType: currentForm.formType,
       masterTableId: currentForm.masterTableId,

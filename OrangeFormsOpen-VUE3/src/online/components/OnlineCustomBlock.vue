@@ -5,17 +5,17 @@
         <el-steps style="width: 500px; margin: 0 auto 20px" :active="active">
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(1)" style="cursor: pointer">Shipping Order</div>
+              <div @click="changeActive(1)" style="cursor: pointer">{{ form().step1Name }}</div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(2)" style="cursor: pointer">Select Order</div>
+              <div @click="changeActive(2)" style="cursor: pointer">{{ form().step2Name }}</div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(3)" style="cursor: pointer">Confirm Order</div>
+              <div @click="changeActive(3)" style="cursor: pointer">{{ form().step3Name }}</div>
             </template>
           </el-step>
         </el-steps>

@@ -1,18 +1,5 @@
 <template>
   <div>
-    <el-form :inline="true">
-      <el-form-item label="Product">
-        <el-input
-          v-model="productName"
-          style="width: 240px"
-          placeholder="Please Input"
-          :suffix-icon="Search"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="fetchData">Search</el-button>
-      </el-form-item>
-    </el-form>
     <el-table
       ref="multipleTableRef"
       :data="tableData"
@@ -57,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
 import axios from 'axios';
+import { eventbus } from '@/common/utils/mitt';
 import { ref, onMounted } from 'vue';
 import { serverDefaultCfg } from '@/common/http/config';
 
@@ -117,5 +104,9 @@ defineExpose({ getValue, setValue });
 
 onMounted(() => {
   fetchData();
+  eventbus.on(`bs:upnProductName`, d => {
+    productName.value = d.value;
+    fetchData();
+  });
 });
 </script>

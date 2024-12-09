@@ -624,6 +624,11 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'BsProductConfirm',
   },
   {
+    id: 415,
+    name: 'UPN · Product Name',
+    symbol: 'BsUpnProductName',
+  },
+  {
     id: 410,
     name: 'Shipping Order Info',
     symbol: 'BsShippingOrderInfo',

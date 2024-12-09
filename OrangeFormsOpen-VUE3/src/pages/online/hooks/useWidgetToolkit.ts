@@ -84,6 +84,7 @@ export const useWidgetToolkit = () => {
           break;
         case SysCustomWidgetType.BsDivision:
         case SysCustomWidgetType.BsRequestDeliveryDate:
+        case SysCustomWidgetType.BsUpnProductName:
         case SysCustomWidgetType.BsSr:
         case SysCustomWidgetType.BsAccountName:
         case SysCustomWidgetType.BsShipTo:

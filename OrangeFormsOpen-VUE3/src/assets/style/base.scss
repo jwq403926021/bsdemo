@@ -38,7 +38,7 @@ $table-row-height: 50px;
 
 $--color-white: #FFF !default;
 $--border-color-base: #DCDFE6;
-$--color-primary: #F70 !default;
+$--color-primary: #1a457a !default;
 
 $--color-sidebar-title-text: #FFF;
 $--color-menu-background: #2D3039;
@@ -728,7 +728,7 @@ body .fullscreen-dialog .layui-layer-content {
         margin-right: 8px;
         font-size: 28px;
         text-align: center;
-        background: rgb(255 119 0 / 10%);
+        background: rgb(26 69 123 / 10%);
         border-radius: 8px;
         line-height: 40px;
       }
@@ -737,7 +737,7 @@ body .fullscreen-dialog .layui-layer-content {
         padding-left: 0;
         margin-right: 8px;
         font-size: 20px;
-        color: #FDA834;
+        color: #1a457b;
       }
     }
     .step {

@@ -521,8 +521,8 @@ onMounted(() => {
   height: 40px;
   margin-right: 8px;
   text-align: center;
-  color: #fda834;
-  background: rgb(255 119 0 / 10%);
+  color: #1a457b;
+  background: rgb(26 69 123 / 10%);
   border-radius: 8px;
   line-height: 40px;
 }

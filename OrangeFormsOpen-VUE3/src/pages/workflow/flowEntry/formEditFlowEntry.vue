@@ -7,7 +7,7 @@
             <el-col class="title header" :span="6" style="height: auto; line-height: auto">
               <i
                 class="header-logo logo online-icon icon-orange-icon"
-                style="font-size: 40px; color: #fda834"
+                style="font-size: 40px; color: #1a457b"
               />
             </el-col>
             <div>
@@ -1235,7 +1235,7 @@ provide('allVariableList', () => processVariableList);
 }
 .edit-online-form .title > i {
   margin-right: 10px;
-  color: #fda834;
+  color: #1a457b;
 }
 .edit-online-form .main-box {
   height: 100%;

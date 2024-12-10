@@ -7,7 +7,7 @@
             <div style="display: flex; height: 40px; line-height: 40px">
               <i
                 class="header-logo online-icon icon-orange-icon"
-                style="font-size: 40px; color: #fda834; background: rgb(255 119 0 / 10%)"
+                style="font-size: 40px; color: #1a457b; background: rgb(26 69 123 / 10%)"
               />
               <span style="font-size: 22px; color: #333; font-weight: bold"></span>
               <el-divider direction="vertical" style="height: 26px; margin: 7px 8px" />

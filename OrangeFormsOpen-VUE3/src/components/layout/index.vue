@@ -57,14 +57,14 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword"
-                    >修改密码</el-dropdown-item
-                  >
-                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage"
-                    >修改头像</el-dropdown-item
-                  >
+<!--                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword"-->
+<!--                    >修改密码</el-dropdown-item-->
+<!--                  >-->
+<!--                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage"-->
+<!--                    >修改头像</el-dropdown-item-->
+<!--                  >-->
                   <el-dropdown-item class="user-dropdown-item" command="logout"
-                    >退出登录</el-dropdown-item
+                    >Logout</el-dropdown-item
                   >
                 </el-dropdown-menu>
               </template>

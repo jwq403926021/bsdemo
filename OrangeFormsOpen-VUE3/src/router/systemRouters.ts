@@ -27,7 +27,7 @@ export const routers: Array<RouteRecordRaw> = [
       name: 'welcome',
     },
     meta: {
-      title: '主页',
+      title: 'Home',
       showOnly: true,
     },
     children: [

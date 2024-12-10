@@ -1,9 +1,6 @@
 <template>
   <div style="padding: 16px; font-size: 14px !important; background-color: white">
-    <div class="title" style="margin-top: -16px; margin-right: -16px; margin-left: -16px">
-      <img class="title-img" src="@/assets/img/right-icon.png" alt="" />
-    </div>
-    <el-row type="flex" style="padding: 24px 11px 0" class="about"> 演示 </el-row>
+    Welcome
   </div>
 </template>
 

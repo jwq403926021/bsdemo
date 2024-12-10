@@ -11,7 +11,6 @@
       <div class="login-input">
         <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
         <span class="title">欢迎登录</span>
-        <span class="desc">代码生成演示工程</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"

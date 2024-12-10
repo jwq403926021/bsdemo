@@ -83,9 +83,8 @@ defineExpose({
   align-items: center;
   height: 28px;
   padding: 0 10px;
-  color: #999;
-  background: white;
-  border: 1px solid #e8e8e8;
+  color: #1d1d1d;
+  background: #f0f0f0;
   border-radius: 3px;
   box-sizing: border-box;
   cursor: pointer;
@@ -109,7 +108,8 @@ defineExpose({
   color: #333;
 }
 .tags-item.active {
-  color: #333;
+  color: white;
+  background-color: #1a457b;
 }
 .tags-item + .tags-item {
   margin-left: 8px;

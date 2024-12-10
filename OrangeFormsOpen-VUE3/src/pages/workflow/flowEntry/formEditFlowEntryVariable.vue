@@ -197,7 +197,7 @@ const onSubmit = () => {
           : FlowEntryVariableController.update(params);
       httpCall
         .then(res => {
-          ElMessage.success('保存成功！');
+          ElMessage.success('Save success');
           if (props.dialog) {
             props.dialog.submit(res);
           } else {

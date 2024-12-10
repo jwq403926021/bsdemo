@@ -28,6 +28,7 @@ const hadleClick = () => {
     position: relative;
     top: -1px;
     margin-right: 4px;
+    margin-left: 1px;
     vertical-align: top;
   }
   span {

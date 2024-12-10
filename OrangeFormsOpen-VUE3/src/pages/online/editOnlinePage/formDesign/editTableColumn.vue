@@ -178,7 +178,7 @@ const onSubmit = () => {
   OnlineColumnController.update(params)
     .then(() => {
       dirty.value = false;
-      ElMessage.success('保存成功！');
+      ElMessage.success('Save success');
       if (props.dialog) {
         props.dialog.submit(true);
       } else {

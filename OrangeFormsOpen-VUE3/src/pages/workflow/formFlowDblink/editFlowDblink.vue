@@ -366,7 +366,7 @@ const onSaveClick = () => {
     httpCall
       .then(res => {
         console.log('dblink saved', res);
-        ElMessage.success('保存成功');
+        ElMessage.success('Save success');
         if (dialogParams.value.dblink == null) formData.flowDblink.dblinkId = res.data as string;
         return onTestConnect(false);
       })

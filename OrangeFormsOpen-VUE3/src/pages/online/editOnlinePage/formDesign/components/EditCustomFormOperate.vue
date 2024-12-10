@@ -7,14 +7,14 @@
         class="full-width-input"
         :rules="rules"
         style="width: 100%"
-        label-width="100px"
+        label-width="120px"
         :size="formItemSize"
         label-position="right"
         @submit.prevent
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item label="操作类型" prop="type">
+            <el-form-item label="Operate Type" prop="type">
               <el-select
                 v-model="formData.type"
                 :disabled="formData.builtin || isEdit"
@@ -30,22 +30,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="操作名称" prop="name">
+            <el-form-item label="Operate Name" prop="name">
               <el-input
                 class="input-item"
                 v-model="formData.name"
                 :clearable="true"
-                placeholder="操作按钮名称"
+                placeholder="Operate button name"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否启用">
+            <el-form-item label="Enable">
               <el-switch class="input-item" v-model="formData.enabled" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="!formData.rowOperation">
-            <el-form-item label="按钮类型" prop="btnType">
+            <el-form-item label="Button Type" prop="btnType">
               <el-select v-model="formData.btnType">
                 <el-option label="primary" value="primary" />
                 <el-option label="success" value="success" />
@@ -55,40 +55,40 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="!formData.rowOperation">
-            <el-form-item label="镂空模式" prop="btnType">
+            <el-form-item label="Plain" prop="btnType">
               <el-switch v-model="formData.plain" />
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="formData.rowOperation">
-            <el-form-item label="操作按钮类名">
+            <el-form-item label="Button Class">
               <el-input
                 class="input-item"
                 v-model="formData.btnClass"
                 :clearable="true"
-                placeholder="操作按钮类名"
+                placeholder="Button class"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="formData.type === SysCustomWidgetOperationType.START_FLOW">
-            <el-form-item label="启动流程" prop="processDefinitionKey">
+            <el-form-item label="Start Process" prop="processDefinitionKey">
               <el-cascader
                 class="input-item"
                 v-model="bindFlowPath"
                 :options="flowTree"
                 :props="{ value: 'id', label: 'name' }"
-                placeholder="请选择启动流程"
+                placeholder="Please select start process"
                 clearablebindFlowPath
                 @change="flowPathChange"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="按钮显示顺序">
+            <el-form-item label="Show Order">
               <el-input-number
                 class="input-item"
                 v-model="formData.showOrder"
                 controls-position="right"
-                placeholder="按钮显示顺序"
+                placeholder="Button show order"
               />
             </el-form-item>
           </el-col>
@@ -96,11 +96,11 @@
             :span="formData.type === SysCustomWidgetOperationType.FORM ? 16 : 24"
             v-if="showSelectForm"
           >
-            <el-form-item label="操作表单" prop="formId">
+            <el-form-item label="Operation form" prop="formId">
               <el-select
                 class="input-item"
                 v-model="formData.formId"
-                placeholder="选择操作按钮触发表单"
+                placeholder="Select button to trigger the form"
                 clearable
               >
                 <el-option
@@ -113,7 +113,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" v-if="formData.type === SysCustomWidgetOperationType.FORM">
-            <el-form-item label="只读表单">
+            <el-form-item label="Read-only form">
               <el-switch v-model="formData.readOnly" />
             </el-form-item>
           </el-col>
@@ -144,7 +144,7 @@
           @checkbox-change="onExportColumnChange"
         >
           <vxe-column type="checkbox" width="60" />
-          <vxe-column title="导出字段" field="variableName" tree-node>
+          <vxe-column title="Variable Name" field="variableName" tree-node>
             <template #default="{ row }">
               <span>{{ row.variableName }}</span>
               <el-tag
@@ -152,18 +152,18 @@
                 size="default"
                 type="danger"
                 v-if="row.aggregationColumnId"
-                >聚合字段</el-tag
+                >Aggregation Column</el-tag
               >
               <el-tag
                 style="margin-left: 10px"
                 size="default"
                 type="success"
                 v-if="row.isTable && row.relationType != null"
-                >一对一关联</el-tag
+                >Relation Type</el-tag
               >
             </template>
           </vxe-column>
-          <vxe-column title="显示名称" field="showName">
+          <vxe-column title="Show Name" field="showName">
             <template #default="{ row }">
               <el-input
                 v-if="row.isColumn"
@@ -173,7 +173,7 @@
               />
             </template>
           </vxe-column>
-          <vxe-column title="显示顺序" field="showOrder">
+          <vxe-column title="Show Order" field="showOrder">
             <template #default="{ row }">
               <el-input-number
                 v-if="row.isColumn"
@@ -187,15 +187,15 @@
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />
-              <span>暂无数据</span>
+              <span>No data</span>
             </div>
           </template>
         </vxe-table>
       </el-col>
     </div>
     <el-row class="no-scroll menu-box" type="flex" justify="end">
-      <el-button :size="formItemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-      <el-button type="primary" :size="formItemSize" @click="onSubmit"> 保存 </el-button>
+      <el-button :size="formItemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+      <el-button type="primary" :size="formItemSize" @click="onSubmit"> Save </el-button>
     </el-row>
   </div>
 </template>
@@ -253,9 +253,13 @@ const formData = ref<ANY_OBJECT>({
   eventList: [] as ANY_OBJECT[],
 });
 const rules = {
-  name: [{ required: true, message: '操作按钮名称不能为空', trigger: 'blur' }],
-  formId: [{ required: true, message: '请选择按钮触发表单', trigger: 'blur' }],
-  processDefinitionKey: [{ required: true, message: '请选择启动流程', trigger: 'blur' }],
+  name: [{ required: true, message: 'The operate button name cannot be empty', trigger: 'blur' }],
+  formId: [
+    { required: true, message: 'Please select a button to trigger the form', trigger: 'blur' },
+  ],
+  processDefinitionKey: [
+    { required: true, message: 'Please select the start process', trigger: 'blur' },
+  ],
 };
 const bindFlowPath = ref<CascaderValue>([]);
 const flowTree = ref<CascaderOption[]>([]);
@@ -346,7 +350,7 @@ const onSubmit = () => {
   form.value.validate((valid: boolean) => {
     if (!valid) return;
     if (showSelectForm.value && !formData.value.formId) {
-      ElMessage.error('请选择操作按钮触发表单');
+      ElMessage.error('Please select an operate button to trigger the form');
       return;
     }
     if (formData.value.type === SysCustomWidgetOperationType.EXPORT) {

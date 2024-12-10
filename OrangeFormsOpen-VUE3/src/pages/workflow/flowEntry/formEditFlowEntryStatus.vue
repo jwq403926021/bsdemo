@@ -129,7 +129,7 @@ const onSubmit = () => {
     };
     FlowEntryController.update(params)
       .then(() => {
-        ElMessage.success('保存成功！');
+        ElMessage.success('Save success');
         if (props.dialog) {
           props.dialog.submit(approvalStatusDict);
         } else {

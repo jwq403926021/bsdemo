@@ -7,9 +7,9 @@
       @submit.prevent
     >
       <MultiItemList
-        label="操作"
+        label="Operate"
         v-model:data="data"
-        addText="添加"
+        addText="Add"
         @add="onEditOperate(null)"
         @edit="onEditOperate"
         @delete="onDeleteOperate"
@@ -23,7 +23,7 @@
       >
         <template v-slot:right="scope">
           <el-tag size="default" :type="scope.data.enabled ? 'success' : 'danger'">
-            {{ scope.data.enabled ? '启动' : '禁用' }}
+            {{ scope.data.enabled ? 'Enable' : 'Disable' }}
           </el-tag>
         </template>
       </MultiItemList>
@@ -114,9 +114,9 @@ const buildFormConfig = computed(() => {
 });
 
 const onDeleteOperate = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否删除此操作？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this action?', '', {
+    confirmButtonText: 'Yse',
+    cancelButtonText: 'No',
     type: 'warning',
   })
     .then(() => {
@@ -143,7 +143,7 @@ const handlerEditOperate = (row: ANY_OBJECT | null, res: ANY_OBJECT) => {
 };
 const onEditOperate = (row: ANY_OBJECT | null) => {
   Dialog.show<ANY_OBJECT>(
-    row == null ? '添加操作' : '编辑操作',
+    row == null ? 'Add' : 'Edit',
     EditCustomFormOperate,
     {
       area: row && row.type === SysCustomWidgetOperationType.EXPORT ? '900px' : '600px',

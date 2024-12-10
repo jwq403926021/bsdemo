@@ -1167,15 +1167,15 @@ defineExpose({
       }
 
       .name {
-        overflow: hidden;
+        overflow: visible;
         width: 64px;
-        height: 26px;
+        height: auto;
         font-size: 12px;
         text-align: center;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
         color: #666;
-        line-height: 26px;
+        line-height: 1.5;
         font-weight: 400;
       }
     }

@@ -43,38 +43,44 @@ const emitChange = value => {
   eventbus.emit(`bs:${pps.widget.variableName}`, selectedItem);
 };
 
-const getProductLevelName = async (isClear = false, data) => {
+const getProductLevelName = async (isClear = false, data?) => {
   const formInstance = form();
-  if (!pps.depend) {
-    console.error('depend argument is not config');
-  }
+  // if (!pps.depend) {
+  //   console.error('depend argument is not config');
+  // }
   if (formInstance.isEdit) return;
-  const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
-  if (!dependWidget) return;
-  const dependValue = formInstance.getWidgetValue(dependWidget);
+  // const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
+  // if (!dependWidget) return;
+  // const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     // 向下传递
     emit('update:modelValue', '');
     selectedItems.value = [];
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
+  // if (data) {
+  //   debugger
+  let productLevel = ''
   if (data) {
-    const res = await axios.get(
-      `${serverDefaultCfg.baseURL}order/product?productLevel=${data.value}`,
-    );
-    selectedItems.value = res?.data
-      ?.map(i => ({
-        label: i.productLevelName,
-        value: i.productLevelName,
-      }))
-      .filter(
-        (value, index, self) =>
-          index === self.findIndex(t => t.label === value.label && t.value === value.value),
-      );
+    productLevel = data.value
   }
+  const res = await axios.get(
+    `${serverDefaultCfg.baseURL}order/product?productLevel=${productLevel}`,
+  );
+  selectedItems.value = res?.data
+    ?.map(i => ({
+      label: i.productLevelName,
+      value: i.productLevelName,
+    }))
+    .filter(
+      (value, index, self) =>
+        index === self.findIndex(t => t.label === value.label && t.value === value.value),
+    );
+  // }
 };
 
 onMounted(() => {
+  getProductLevelName(true);
   eventbus.on(`bs:${pps.depend}`, d => {
     getProductLevelName(true, d);
   });

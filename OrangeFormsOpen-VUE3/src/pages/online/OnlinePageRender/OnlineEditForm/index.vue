@@ -323,8 +323,8 @@ const onSaveFormData = async () => {
     productUpn: params.a, // todo
     productName: params.a, // todo
     qty: params.a, // todo
-    recipient: params.recipient,
-    phone: params.phone,
+    recipient: params?.recipientModify || params.recipient,
+    phone: params?.phoneModify || params.phone,
     shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
   }

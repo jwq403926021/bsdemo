@@ -49,29 +49,27 @@ const getSelectList = async (isClear = false, data) => {
     console.error('depend argument is not config');
   }
   if (formInstance.isEdit) return;
-  const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
-  if (!dependWidget) return;
-  const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     emit('update:modelValue', '');
     selectedItems.value = [];
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
   console.log('bsaccountname receive', data);
-  if (data) {
-    const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy?salesRepNum=${data.value}`)
-    selectedItems.value = res?.data?.map(i => ({
-      ...i,
-      label: i.fullName + ' - ' + i.stockLocName,
-      value: i.stockLocId,
-    }));
-  }
+  if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy${data?.value ? `?salesRepNum=${data.value}` : ''}`)
+  selectedItems.value = res?.data?.map(i => ({
+    ...i,
+    label: i.soldToNum + ' | ' + i.soldToName,
+    value: i.stockLocId,
+  }));
 };
 
 onMounted(() => {
-  eventbus.on(`bs:${pps.depend}`, d => {
-    getSelectList(true, d);
-  });
+  if (pps.depend) {
+    eventbus.on(`bs:${pps.depend}`, d => {
+      getSelectList(true, d);
+    });
+  }
   nextTick(() => {
     getSelectList(false);
   });
@@ -85,9 +83,8 @@ const getValue = () => {
     ...selected,
     soldToName: selected?.soldToName || '',
     shipTo: selected?.soldToName || '',
-    stockLocName: selected?.stockLocName || '',
     value: pps.modelValue,
-    valueHuman: selected?.label || '',
+    valueHuman: selected?.label || ''
   };
 };
 defineExpose({ getValue });

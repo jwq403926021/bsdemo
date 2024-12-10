@@ -49,29 +49,29 @@ const getSelectList = async (isClear = false, data) => {
     console.error('depend argument is not config');
   }
   if (formInstance.isEdit) return;
-  const dependWidget = formInstance.widgetList.find(i => i.variableName === pps.depend);
-  if (!dependWidget) return;
-  const dependValue = formInstance.getWidgetValue(dependWidget);
   if (isClear) {
     // 向下传递
     emit('update:modelValue', '');
     selectedItems.value = [];
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
-  if (data) {
-    const res = await axios.get(`${serverDefaultCfg.baseURL}order/saleRep?userDivision=${data.value}`)
-    selectedItems.value = res?.data?.map(i => ({
-      ...i,
-      label: i.name,
-      value: i.code,
-    }));
-  }
+  console.log('bssr receive', data);
+  if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/saleRep${data?.value ? `?userDivision=${data.value}` : ''}`)
+  selectedItems.value = res?.data?.map(i => ({
+    ...i,
+    label: i.name,
+    value: i.code,
+  }));
 };
 
 onMounted(() => {
-  eventbus.on(`bs:${pps.depend}`, d => {
-    getSelectList(true, d);
-  });
+  if (pps.depend) {
+    eventbus.on(`bs:${pps.depend}`, d => {
+      getSelectList(true, d);
+    });
+  }
+
   nextTick(() => {
     getSelectList(false);
   });

@@ -1,13 +1,22 @@
 <template>
   <div class="user-select">
-    <el-input :model-value="stockLocName" disabled />
+    <el-select :model-value="modelValue" style="width: 100%" @change="emitChange">
+      <el-option
+        v-for="item in selectedItems"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
   </div>
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
 import { eventbus } from '@/common/utils/mitt';
+import { serverDefaultCfg } from '@/common/http/config';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -24,35 +33,57 @@ const pps = withDefaults(
     depend: '',
   },
 );
-const stockLocName = ref('');
+const selectedItems = ref<ANY_OBJECT[]>([]);
 const form = inject('form');
 const step = inject('step');
-const selected = ref({})
-const emitChange = value => {};
+const emitChange = value => {
+  emit('update:modelValue', value);
+  emit('change', value);
+  const selectedItem = selectedItems.value.find(i => i.value === value);
+  eventbus.emit(`bs:${pps.widget.variableName}`, selectedItem);
+};
+
+const getSelectList = async (isClear = false, data) => {
+  const formInstance = form();
+  if (!pps.depend) {
+    console.error('depend argument is not config');
+  }
+  if (formInstance.isEdit) return;
+  if (isClear) {
+    emit('update:modelValue', '');
+    selectedItems.value = [];
+    eventbus.emit(`bs:${pps.widget.variableName}`, null);
+  }
+  console.log('bsstocklocation receive', data);
+  if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy${data?.value ? `?salesRepNum=${data.value}` : ''}`)
+  selectedItems.value = res?.data?.map(i => ({
+    ...i,
+    label: i.stockLocName,
+    value: i.stockLocId,
+  }));
+};
 
 onMounted(() => {
-  eventbus.on(`bs:${pps.depend}`, d => {
-    console.log('bs stocklocation receive:', d);
-    if (d) {
-      emit('update:modelValue', d.stockLocId);
-      emit('change', d.stockLocId);
-      stockLocName.value = d.stockLocName;
-      selected.value = d
-    } else {
-      emit('update:modelValue', '');
-      emit('change', '');
-      stockLocName.value = '';
-    }
+  if (pps.depend) {
+    eventbus.on(`bs:${pps.depend}`, d => {
+      getSelectList(true, d);
+    });
+  }
+  nextTick(() => {
+    getSelectList(false);
   });
 });
 onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
   return {
-    ...selected.value,
+    stockLocName: selected.stockLocName,
+    stockLocId: selected.stockLocId,
     value: pps.modelValue,
-    valueHuman: stockLocName.value,
+    valueHuman: selected.label,
   };
 };
 defineExpose({ getValue });

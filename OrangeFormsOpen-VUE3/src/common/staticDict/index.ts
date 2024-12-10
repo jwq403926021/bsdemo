@@ -654,6 +654,16 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'BsRequestDeliveryDate',
   },
   {
+    id: 420,
+    name: 'Recipient',
+    symbol: 'BsRecipient',
+  },
+  {
+    id: 421,
+    name: 'Phone',
+    symbol: 'BsPhone',
+  },
+  {
     id: 401,
     name: '部门选择',
     symbol: 'DeptSelect',

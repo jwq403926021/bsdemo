@@ -26,6 +26,8 @@ import linkConfig from './link';
 import treeConfig from './tree';
 import bsSrConfig from './bsSr';
 import bsDivisionConfig from './bsDivision';
+import bsRecipientConfig from './bsRecipient';
+import bsPhoneConfig from './bsPhone';
 import bsProductLevelConfig from './bsProductLevel';
 import bsProductLevelNameConfig from './bsProductLevelName';
 import bsRequestDeliveryDateConfig from './bsRequestDeliveryDate';
@@ -92,25 +94,39 @@ const formWidgetGroupList: ANY_OBJECT = {
     //   widgetList: [userSelectConfig, deptSelectConfig],
     // },
     {
-      id: 'advance',
-      groupName: '波士顿组件',
+      id: 'layout',
+      groupName: 'Order Field',
       widgetList: [
         bsDivisionConfig,
-        bsProductLevelConfig,
-        bsProductLevelNameConfig,
         bsSrConfig,
         bsAccountNameConfig,
         bsShipToConfig,
         bsStockLocationConfig,
         bsContactInfoConfig,
-        bsProductConfig,
-        bsProductConfirmConfig,
-        bsShippingOrderInfoConfig,
-        bsContactInfoForPackingListConfig,
-        bsRequestDeliveryDateConfig,
-        bsUpnProductNameConfig,
       ],
     },
+    {
+      id: 'base',
+      groupName: 'Product',
+      widgetList: [
+        bsProductLevelConfig,
+        bsProductLevelNameConfig,
+        bsUpnProductNameConfig,
+        bsProductConfig,
+      ]
+    },
+    {
+      id: 'advance',
+      groupName: 'Confirm Info',
+      widgetList: [
+        bsShippingOrderInfoConfig,
+        bsContactInfoForPackingListConfig,
+        bsProductConfirmConfig,
+        bsRecipientConfig,
+        bsPhoneConfig,
+        bsRequestDeliveryDateConfig,
+      ]
+    }
   ],
 };
 
@@ -252,6 +268,16 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return bsSrConfig;
     case SysCustomWidgetType.BsDivision:
       return bsDivisionConfig;
+    case SysCustomWidgetType.BsShippingOrderInfo:
+      return bsShippingOrderInfoConfig;
+    case SysCustomWidgetType.BsContactInfoForPackingList:
+      return bsContactInfoForPackingListConfig;
+    case SysCustomWidgetType.BsProductConfirm:
+      return bsProductConfirmConfig;
+    case SysCustomWidgetType.BsRecipient:
+      return bsRecipientConfig;
+    case SysCustomWidgetType.BsPhone:
+      return bsPhoneConfig;
     case SysCustomWidgetType.BsProductLevel:
       return bsProductLevelConfig;
     case SysCustomWidgetType.BsProductLevelName:

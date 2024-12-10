@@ -88,6 +88,8 @@ export const useWidgetToolkit = () => {
         case SysCustomWidgetType.BsUpnProductName:
         case SysCustomWidgetType.BsSr:
         case SysCustomWidgetType.BsAccountName:
+        case SysCustomWidgetType.BsRecipient:
+        case SysCustomWidgetType.BsPhone:
         case SysCustomWidgetType.BsShipTo:
         case SysCustomWidgetType.BsContactInfo:
         case SysCustomWidgetType.BsStockLocation:

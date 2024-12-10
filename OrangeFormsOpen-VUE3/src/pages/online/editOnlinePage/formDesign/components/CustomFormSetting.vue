@@ -5,15 +5,17 @@
     @submit.prevent
     style="width: 100%"
   >
-    <el-form-item label="Step 1 Label">
-      <el-input v-model="formConfig().form.step1Name" placeholder="" clearable filterable />
-    </el-form-item>
-    <el-form-item label="Step 2 Label">
-      <el-input v-model="formConfig().form.step2Name" placeholder="" clearable filterable />
-    </el-form-item>
-    <el-form-item label="Step 3 Label">
-      <el-input v-model="formConfig().form.step3Name" placeholder="" clearable filterable />
-    </el-form-item>
+    <template v-if="formConfig().form.formType !== SysOnlineFormType.QUERY">
+      <el-form-item label="Step 1 Label">
+        <el-input v-model="formConfig().form.step1Name" placeholder="" clearable filterable />
+      </el-form-item>
+      <el-form-item label="Step 2 Label">
+        <el-input v-model="formConfig().form.step2Name" placeholder="" clearable filterable />
+      </el-form-item>
+      <el-form-item label="Step 3 Label">
+        <el-input v-model="formConfig().form.step3Name" placeholder="" clearable filterable />
+      </el-form-item>
+    </template>
     <el-form-item label="Form ID">
       <el-row justify="space-between" align="middle" style="flex-wrap: nowrap; width: 100%">
         <el-input readonly :model-value="formConfig().form.formId" />

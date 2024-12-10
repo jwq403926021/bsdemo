@@ -1,39 +1,39 @@
 <template>
   <div style="position: relative">
-    <el-form
-      ref="form"
-      :model="formOnlinePage"
-      label-width="75px"
-      :size="layoutStore.defaultFormItemSize"
-      label-position="right"
-      @submit.prevent
-    >
-      <filter-box :item-width="350" @search="refreshOnlinePage(true)" @reset="onReset">
-        <el-form-item label="表单类型" prop="formFilter.pageType">
-          <el-select
-            class="filter-item"
-            v-model="formOnlinePage.formFilter.pageType"
-            placeholder="表单类型"
-            :clearable="true"
-          >
-            <el-option
-              v-for="item in SysOnlinePageType.getList()"
-              :key="item.id"
-              :value="item.id"
-              :label="item.name"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="表单名称" prop="formFilter.pageName">
-          <el-input
-            class="filter-item"
-            v-model="formOnlinePage.formFilter.pageName"
-            :clearable="true"
-            placeholder="表单名称"
-          />
-        </el-form-item>
-      </filter-box>
-    </el-form>
+<!--    <el-form-->
+<!--      ref="form"-->
+<!--      :model="formOnlinePage"-->
+<!--      label-width="75px"-->
+<!--      :size="layoutStore.defaultFormItemSize"-->
+<!--      label-position="right"-->
+<!--      @submit.prevent-->
+<!--    >-->
+<!--      <filter-box :item-width="350" @search="refreshOnlinePage(true)" @reset="onReset">-->
+<!--        <el-form-item label="表单类型" prop="formFilter.pageType">-->
+<!--          <el-select-->
+<!--            class="filter-item"-->
+<!--            v-model="formOnlinePage.formFilter.pageType"-->
+<!--            placeholder="表单类型"-->
+<!--            :clearable="true"-->
+<!--          >-->
+<!--            <el-option-->
+<!--              v-for="item in SysOnlinePageType.getList()"-->
+<!--              :key="item.id"-->
+<!--              :value="item.id"-->
+<!--              :label="item.name"-->
+<!--            />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="表单名称" prop="formFilter.pageName">-->
+<!--          <el-input-->
+<!--            class="filter-item"-->
+<!--            v-model="formOnlinePage.formFilter.pageName"-->
+<!--            :clearable="true"-->
+<!--            placeholder="表单名称"-->
+<!--          />-->
+<!--        </el-form-item>-->
+<!--      </filter-box>-->
+<!--    </el-form>-->
     <table-box
       class="page-table"
       ref="class"
@@ -52,7 +52,7 @@
           :icon="Plus"
           :size="layoutStore.defaultFormItemSize"
           @click="onCreateOnlinePage()"
-          >新建</el-button
+          >New</el-button
         >
       </template>
       <vxe-column title="序号" type="seq" width="55px" :index="pageListWidget.getTableIndex" />

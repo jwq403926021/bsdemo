@@ -34,8 +34,7 @@ export const routers: Array<RouteRecordRaw> = [
       {
         path: 'welcome',
         component: Welcome,
-        name: 'welcome',
-        meta: { title: '欢迎' },
+        name: 'welcome'
       },
       {
         path: 'formSysMenu',
@@ -43,76 +42,64 @@ export const routers: Array<RouteRecordRaw> = [
           useLayoutStore().supportColumn
             ? import('@/pages/upms/formSysMenu/formSysColumnMenu.vue')
             : import('@/pages/upms/formSysMenu/index.vue'),
-        name: 'formSysMenu',
-        meta: { title: '菜单列表' },
+        name: 'formSysMenu'
       },
       {
         path: 'formSysUser',
         component: () => import('@/pages/upms/formSysUser/index.vue'),
-        name: 'formSysUser',
-        meta: { title: '用户列表' },
+        name: 'formSysUser'
       },
       {
         path: 'formSysDept',
         component: () => import('@/pages/upms/formSysDept/index.vue'),
-        name: 'formSysDept',
-        meta: { title: '部门列表' },
+        name: 'formSysDept'
       },
       {
         path: 'formSysRole',
         component: () => import('@/pages/upms/formSysRole/index.vue'),
-        name: 'formSysRole',
-        meta: { title: '角色管理' },
+        name: 'formSysRole'
       },
       {
         path: 'formSysDataPerm',
         component: () => import('@/pages/upms/formSysDataPerm/index.vue'),
-        name: 'formSysDataPerm',
-        meta: { title: '数据权限管理' },
+        name: 'formSysDataPerm'
       },
       {
         path: 'formSysPermCode',
         component: () => import('@/pages/upms/formSysPermCode/index.vue'),
-        name: 'formSysPermCode',
-        meta: { title: '权限字管理' },
+        name: 'formSysPermCode'
       },
       {
         path: 'formSysPerm',
         component: () => import('@/pages/upms/formSysPerm/index.vue'),
-        name: 'formSysPerm',
-        meta: { title: '权限资源管理' },
+        name: 'formSysPerm'
       },
       {
         path: 'formSysLoginUser',
         component: () => import('@/pages/upms/formSysLoginUser/index.vue'),
-        name: 'formSysLoginUser',
-        meta: { title: '在线用户' },
+        name: 'formSysLoginUser'
       },
       // 岗位模块路由配置
       {
         path: 'formSysPost',
         component: () => import('@/pages/upms/formSysPost/index.vue'),
-        name: 'formSysPost',
-        meta: { title: '岗位管理' },
+        name: 'formSysPost'
       },
       {
         path: 'formSysDeptPost',
         component: () => import('@/pages/upms/formSysDeptPost/index.vue'),
         name: 'formSysDeptPost',
         props: getProps,
-        meta: { title: '设置部门岗位' },
       },
       {
         path: 'formSysDict',
         component: () => import('@/pages/upms/formSysDict/index.vue'),
         name: 'formSysDict',
-        meta: { title: '字典管理' },
       },
       {
         path: 'formSysOperationLog',
         component: () => import('@/pages/upms/formSysOperationLog/index.vue'),
         name: 'formSysOperationLog',
-        meta: { title: '操作日志' },
       },
       // 404
       {
@@ -129,28 +116,24 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/online/formOnlineDblink/index.vue'),
         name: 'formOnlineDblink',
         props: getProps,
-        meta: { title: '数据库链接' },
       },
       {
         path: 'formOnlineDict',
         component: () => import('@/pages/online/formOnlineDict/index.vue'),
         name: 'formOnlineDict',
         props: getProps,
-        meta: { title: '在线表单字典管理' },
       },
       {
         path: 'formOnlinePage',
         component: () => import('@/pages/online/formOnlinePage/index.vue'),
         name: 'formOnlinePage',
         props: getProps,
-        meta: { title: '在线表单管理' },
       },
       {
         path: 'onlineForm',
         component: () => import('@/pages/online/OnlinePageRender/index.vue'),
         name: 'onlineForm',
         props: getProps,
-        meta: { title: '在线表单' },
       },
       // 工作流模块
       {
@@ -158,42 +141,36 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/workflow/formMessage/index.vue'),
         name: 'formMessage',
         props: getProps,
-        meta: { title: '催办消息' },
       },
       {
         path: 'formFlowCategory',
         component: () => import('@/pages/workflow/flowCategory/formFlowCategory.vue'),
         name: 'formFlowCategory',
         props: getProps,
-        meta: { title: '流程分类管理' },
       },
       {
         path: 'formFlowEntry',
         component: () => import('@/pages/workflow/flowEntry/formFlowEntry.vue'),
         name: 'formFlowEntry',
         props: getProps,
-        meta: { title: '流程设计' },
       },
       {
         path: 'formFlowDblink',
         component: () => import('@/pages/workflow/formFlowDblink/index.vue'),
         name: 'formFlowDblink',
         props: getProps,
-        meta: { title: '流程数据库链接' },
       },
       {
         path: 'formAllInstance',
         component: () => import('@/pages/workflow/taskManager/formAllInstance.vue'),
         name: 'formAllInstance',
         props: getProps,
-        meta: { title: '流程实例' },
       },
       {
         path: 'handlerFlowTask',
         component: () => import('@/pages/workflow/handlerFlowTask/index.vue'),
         name: 'handlerFlowTask',
         props: getProps,
-        meta: { title: '流程处理' },
         children: [
           // 静态表单路由设置
         ],
@@ -203,21 +180,18 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/workflow/taskManager/formMyTask.vue'),
         name: 'formMyTask',
         props: getProps,
-        meta: { title: '我的待办' },
       },
       {
         path: 'formMyApprovedTask',
         component: () => import('@/pages/workflow/taskManager/formMyApprovedTask.vue'),
         name: 'formMyApprovedTask',
         props: getProps,
-        meta: { title: '已办任务' },
       },
       {
         path: 'formMyHistoryTask',
         component: () => import('@/pages/workflow/taskManager/formMyHistoryTask.vue'),
         name: 'formMyHistoryTask',
         props: getProps,
-        meta: { title: '历史流程' },
       },
     ],
   },

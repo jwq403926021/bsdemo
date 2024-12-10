@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+import zhCn from 'element-plus/dist/locale/en.mjs';
 import { useWindowResize } from '@/common/hooks/useWindowResize';
 
 const route = useRoute();

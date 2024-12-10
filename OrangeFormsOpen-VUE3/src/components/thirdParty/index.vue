@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import '@/common/staticDict/online';
 import '@/common/staticDict/flow';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+import zhCn from 'element-plus/dist/locale/en.mjs';
 import { watch } from 'vue';
 import { setToken, setAppId } from '@/common/utils/index';
 

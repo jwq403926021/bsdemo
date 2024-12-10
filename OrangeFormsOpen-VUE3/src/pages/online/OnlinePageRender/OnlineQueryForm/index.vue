@@ -33,22 +33,22 @@
             class="online-query-form"
             style="height: calc(100vh - 122px); padding: 25px; background: white"
           >
-            <OnlineFilterBox
-              class="query-filter-box"
-              :isEdit="dialogParams.isEdit"
-              ref="filterBox"
-              :itemWidth="form.filterItemWidth || 350"
-              :style="{ 'margin-bottom': dialogParams.isEdit ? '10px' : '0px' }"
-              :widgetList="activeWidgetList"
-              :formData="formData"
-              :operationList="activeOperationList"
-              @widgetClick="onWidgetClick"
-              @search="refreshTable(true)"
-              @reset="onReset"
-              @copy="onCopyWidget"
-              @delete="onDeleteWidget"
-              @operationClick="onOperationClick"
-            />
+<!--            <OnlineFilterBox-->
+<!--              class="query-filter-box"-->
+<!--              :isEdit="dialogParams.isEdit"-->
+<!--              ref="filterBox"-->
+<!--              :itemWidth="form.filterItemWidth || 350"-->
+<!--              :style="{ 'margin-bottom': dialogParams.isEdit ? '10px' : '0px' }"-->
+<!--              :widgetList="activeWidgetList"-->
+<!--              :formData="formData"-->
+<!--              :operationList="activeOperationList"-->
+<!--              @widgetClick="onWidgetClick"-->
+<!--              @search="refreshTable(true)"-->
+<!--              @reset="onReset"-->
+<!--              @copy="onCopyWidget"-->
+<!--              @delete="onDeleteWidget"-->
+<!--              @operationClick="onOperationClick"-->
+<!--            />-->
             <div
               class="query-table-box custom-widget-item widget-item"
               :class="{
@@ -125,7 +125,7 @@
               @click="onOperationClick(getOperation(SysCustomWidgetOperationType.ADD))"
               :icon="Plus"
             >
-              {{ getOperation(SysCustomWidgetOperationType.ADD).name || '新建' }}
+              {{ 'New' }}
             </el-button>
           </div>
         </el-row>

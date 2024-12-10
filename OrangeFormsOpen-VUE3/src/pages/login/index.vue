@@ -5,12 +5,9 @@
     </div>
     <div class="login-box">
       <div class="img-box">
-        <img class="img-title" style="height: 55px" src="@/assets/img/login_title.png" alt="" />
-        <img :src="bkImg" style="flex-shrink: 0; height: 100%" />
       </div>
       <div class="login-input">
-        <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
-        <span class="title">欢迎登录</span>
+        <span class="title">Welcome</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"
@@ -62,7 +59,7 @@
             @click="dataFormSubmit()"
             style="width: 100%; height: 50px; margin-top: 32px; font-size: 16px"
           >
-            登录
+            Login
           </el-button>
         </el-form>
       </div>

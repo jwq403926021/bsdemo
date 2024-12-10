@@ -68,9 +68,9 @@
               style="margin-right: 16px"
               @click="onSubmit"
             >
-              保存
+              Save
             </el-button>
-            <el-button size="default" :plain="true" @click="onCancel"> 返回 </el-button>
+            <el-button size="default" :plain="true" @click="onCancel"> Back </el-button>
           </el-row>
         </el-footer>
       </el-container>
@@ -323,8 +323,8 @@ const onSaveFormData = async () => {
     productUpn: params.a, // todo
     productName: params.a, // todo
     qty: params.a, // todo
-    recipient: params?.recipientModify || params.recipient,
-    phone: params?.phoneModify || params.phone,
+    recipient: params?.recipientModify ?? params.recipient,
+    phone: params?.phoneModify ?? params.phone,
     shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
   }

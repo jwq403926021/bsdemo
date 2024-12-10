@@ -5,7 +5,7 @@
     @submit.prevent
     style="width: 100%"
   >
-    <template v-if="formConfig().form.formType !== SysOnlineFormType.QUERY">
+    <template v-if="formConfig().form.formType === SysOnlineFormType.FORM">
       <el-form-item label="Step 1 Label">
         <el-input v-model="formConfig().form.step1Name" placeholder="" clearable filterable />
       </el-form-item>

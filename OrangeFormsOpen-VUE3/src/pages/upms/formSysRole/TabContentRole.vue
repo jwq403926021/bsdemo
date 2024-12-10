@@ -3,18 +3,17 @@
     <el-form
       ref="form"
       :model="fragmentSysRole"
-      label-width="75px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysRole(true)" @reset="onResetRole">
-        <el-form-item label="角色名称" prop="formFilter.sysRoleName">
+        <el-form-item label="Role Name" prop="formFilter.sysRoleName">
           <el-input
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysRoleName"
             :clearable="true"
-            placeholder="角色名称"
+            placeholder="Role Name"
           />
         </el-form-item>
       </filter-box>
@@ -37,17 +36,17 @@
           :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:add')"
           @click="onAddSysRoleClick()"
         >
-          新建
+          New
         </el-button>
       </template>
       <vxe-column
-        title="序号"
+        title="No."
         type="seq"
         width="50px"
         :index="fragmentSysRole.SysRole.impl.getTableIndex"
       />
-      <vxe-column title="角色名称" field="roleName"> </vxe-column>
-      <vxe-column title="操作" fixed="right" width="180px">
+      <vxe-column title="Role Name" field="roleName"> </vxe-column>
+      <vxe-column title="Operation" fixed="right" width="180px">
         <template v-slot="scope">
           <el-button
             @click="onEditSysRoleClick(scope.row)"
@@ -56,7 +55,7 @@
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:update')"
           >
-            编辑
+            Edit
           </el-button>
           <el-button
             @click="onDeleteClick(scope.row)"
@@ -65,7 +64,7 @@
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysRole:fragmentSysRole:delete')"
           >
-            删除
+            Delete
           </el-button>
         </template>
       </vxe-column>
@@ -183,7 +182,7 @@ const onAddSysRoleClick = () => {
   let params = {};
 
   Dialog.show(
-    '新建',
+    'Add Role',
     FormEditSysRole,
     {
       area: ['800px', 'auto'],
@@ -222,7 +221,7 @@ const onEditSysRoleClick = (row: Role) => {
   loadRowData(row)
     .then(rowData => {
       return Dialog.show(
-        '编辑角色',
+        'Edit Role',
         FormEditSysRole,
         {
           area: ['600px', 'auto'],

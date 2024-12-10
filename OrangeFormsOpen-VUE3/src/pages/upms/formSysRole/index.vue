@@ -2,7 +2,7 @@
   <div class="tab-dialog-box" style="position: relative">
     <el-tabs v-model="activeFragmentId" :before-leave="onFragmentChange">
       <el-tab-pane
-        label="角色管理"
+        label="Role Management"
         name="fragmentSysRole"
         style="width: 100%"
         v-if="checkPermCodeExist('formSysRole:fragmentSysRole')"
@@ -10,7 +10,7 @@
         <tab-content-role ref="tabRole" />
       </el-tab-pane>
       <el-tab-pane
-        label="用户授权"
+        label="User Authorization"
         name="fragmentSysRoleUser"
         style="width: 100%"
         v-if="checkPermCodeExist('formSysRole:fragmentSysRoleUser')"

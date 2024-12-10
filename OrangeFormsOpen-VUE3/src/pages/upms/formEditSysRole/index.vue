@@ -3,15 +3,14 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="80px"
     :size="formItemSize"
     label-position="right"
     @submit.prevent
   >
     <el-row :gutter="20">
       <el-col :span="24">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="formData.roleName" placeholder="角色名称" clearable maxlength="30" />
+        <el-form-item label="Role Name" prop="roleName">
+          <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
         </el-form-item>
         <el-form-item v-if="false" label="角色类型" :required="true">
           <el-radio-group v-model="formData.adminRole">
@@ -22,11 +21,11 @@
         <el-card shadow="never">
           <template v-slot:header>
             <div class="card-header">
-              <span>菜单权限</span>
+              <span>Menu Permissions</span>
               <el-input
                 :size="formItemSize"
                 v-model="menuNameFilter"
-                placeholder="输入菜单名称过滤"
+                placeholder="Please input menu name"
                 style="width: 250px"
                 clearable
                 :suffix-icon="Search"
@@ -54,7 +53,7 @@
     </el-row>
     <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer" style="margin-top: 20px">
-      <el-button :plain="true" @click="onCancel">取消</el-button>
+      <el-button :plain="true" @click="onCancel">Cancel</el-button>
       <el-button
         type="primary"
         @click="onSubmit"
@@ -65,7 +64,7 @@
           )
         "
       >
-        确定
+        Submit
       </el-button>
     </el-row>
   </el-form>

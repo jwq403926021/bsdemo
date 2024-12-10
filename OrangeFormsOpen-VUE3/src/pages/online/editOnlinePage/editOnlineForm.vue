@@ -50,36 +50,36 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
-          <el-form-item label="Form Date" prop="masterTableId">
-            <el-select
-              class="input-item"
-              v-model="formData.masterTableId"
-              :clearable="true"
-              placeholder="Form Date"
-              :disabled="isEdit"
-            >
-              <el-option
-                v-for="item in getValidTableList"
-                :key="item.tableId"
-                :value="item.tableId"
-                :label="item.tableName"
-              >
-                <el-row type="flex" justify="space-between" align="middle">
-                  <span>{{ item.tableName }}</span>
-                  <el-tag
-                    :size="formItemSize"
-                    :type="getDatasourceTableTagType(item.relationType)"
-                    effect="dark"
-                    style="margin-left: 30px"
-                  >
-                    {{ getDatasourceTableTagName(item.relationType) }}
-                  </el-tag>
-                </el-row>
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="24">-->
+<!--          <el-form-item label="Form Date" prop="masterTableId">-->
+<!--            <el-select-->
+<!--              class="input-item"-->
+<!--              v-model="formData.masterTableId"-->
+<!--              :clearable="true"-->
+<!--              placeholder="Form Date"-->
+<!--              :disabled="isEdit"-->
+<!--            >-->
+<!--              <el-option-->
+<!--                v-for="item in getValidTableList"-->
+<!--                :key="item.tableId"-->
+<!--                :value="item.tableId"-->
+<!--                :label="item.tableName"-->
+<!--              >-->
+<!--                <el-row type="flex" justify="space-between" align="middle">-->
+<!--                  <span>{{ item.tableName }}</span>-->
+<!--                  <el-tag-->
+<!--                    :size="formItemSize"-->
+<!--                    :type="getDatasourceTableTagType(item.relationType)"-->
+<!--                    effect="dark"-->
+<!--                    style="margin-left: 30px"-->
+<!--                  >-->
+<!--                    {{ getDatasourceTableTagName(item.relationType) }}-->
+<!--                  </el-tag>-->
+<!--                </el-row>-->
+<!--              </el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
       </el-row>
     </el-form>
     <el-row class="menu-box">
@@ -276,5 +276,6 @@ onMounted(() => {
         ? SysOnlineFormType.FLOW
         : SysOnlineFormType.QUERY;
   }
+  formData.value.masterTableId = getValidTableList.value[0].tableId
 });
 </script>

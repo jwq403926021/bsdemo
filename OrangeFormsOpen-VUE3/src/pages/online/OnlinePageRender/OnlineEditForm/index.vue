@@ -312,7 +312,7 @@ const onSaveFormData = async () => {
   }
   console.log('all field::!@#!@#!@#!@#', params);
   params = {
-    order_type: params.a, // todo
+    orderType: params.a, // todo
     divisionsName: params.divisionsName,
     srName: params.srName,
     soldToName: params.soldToName,
@@ -320,13 +320,13 @@ const onSaveFormData = async () => {
     stockLocName: params.stockLocName,
     contactInfo: params.contactInfo,
     products: params.products,
-    product_upn: params.a, // todo
-    product_name: params.a, // todo
+    productUpn: params.a, // todo
+    productName: params.a, // todo
     qty: params.a, // todo
     recipient: params.recipient,
     phone: params.phone,
     shipment: params.soldToName,
-    // delivery_date: params.requestDeliveryDate,
+    deliveryDate: params.requestDeliveryDate,
   }
   console.log('real params::::', params)
   const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)

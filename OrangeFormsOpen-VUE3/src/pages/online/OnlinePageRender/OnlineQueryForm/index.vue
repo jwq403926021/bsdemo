@@ -174,21 +174,21 @@
             field="phone"
             width="150px"
           />
-          <vxe-column
-            title="productName"
-            field="productName"
-            width="150px"
-          />
-          <vxe-column
-            title="productUpn"
-            field="productUpn"
-            width="150px"
-          />
-          <vxe-column
-            title="qty"
-            field="qty"
-            width="150px"
-          />
+<!--          <vxe-column-->
+<!--            title="productName"-->
+<!--            field="productName"-->
+<!--            width="150px"-->
+<!--          />-->
+<!--          <vxe-column-->
+<!--            title="productUpn"-->
+<!--            field="productUpn"-->
+<!--            width="150px"-->
+<!--          />-->
+<!--          <vxe-column-->
+<!--            title="qty"-->
+<!--            field="qty"-->
+<!--            width="150px"-->
+<!--          />-->
           <vxe-column
             title="recipient"
             field="recipient"
@@ -204,11 +204,11 @@
             field="shipment"
             width="150px"
           />
-          <vxe-column
-            title="soldTo"
-            field="soldTo"
-            width="150px"
-          />
+<!--          <vxe-column-->
+<!--            title="soldTo"-->
+<!--            field="soldTo"-->
+<!--            width="150px"-->
+<!--          />-->
           <vxe-column
             title="stockLocName"
             field="stockLocName"

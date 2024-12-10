@@ -58,26 +58,26 @@
       <vxe-column title="No." type="seq" width="55px" :index="pageListWidget.getTableIndex" />
       <vxe-column title="Page Name" field="pageName" />
       <vxe-column title="Page Code" field="pageCode" />
-      <vxe-column title="Page Type">
-        <template v-slot="scope">
-          <el-tag
-            :size="layoutStore.defaultFormItemSize"
-            :type="scope.row.pageType === SysOnlinePageType.BIZ ? 'success' : 'primary'"
-          >
-            {{ SysOnlinePageType.getValue(scope.row.pageType) }}
-          </el-tag>
-        </template>
-      </vxe-column>
-      <vxe-column title="Page Status" field="statusDictMap.name">
-        <template v-slot="scope">
-          <el-tag
-            :size="layoutStore.defaultFormItemSize"
-            :type="getPageStatusTagType(scope.row.status)"
-          >
-            {{ SysOnlinePageStatus.getValue(scope.row.status) }}
-          </el-tag>
-        </template>
-      </vxe-column>
+<!--      <vxe-column title="Page Type">-->
+<!--        <template v-slot="scope">-->
+<!--          <el-tag-->
+<!--            :size="layoutStore.defaultFormItemSize"-->
+<!--            :type="scope.row.pageType === SysOnlinePageType.BIZ ? 'success' : 'primary'"-->
+<!--          >-->
+<!--            {{ SysOnlinePageType.getValue(scope.row.pageType) }}-->
+<!--          </el-tag>-->
+<!--        </template>-->
+<!--      </vxe-column>-->
+<!--      <vxe-column title="Page Status" field="statusDictMap.name">-->
+<!--        <template v-slot="scope">-->
+<!--          <el-tag-->
+<!--            :size="layoutStore.defaultFormItemSize"-->
+<!--            :type="getPageStatusTagType(scope.row.status)"-->
+<!--          >-->
+<!--            {{ SysOnlinePageStatus.getValue(scope.row.status) }}-->
+<!--          </el-tag>-->
+<!--        </template>-->
+<!--      </vxe-column>-->
       <vxe-column title="Release Status">
         <template v-slot="scope">
           <el-switch v-model="scope.row.published" @change="onUpdatePagePublished(scope.row)" />

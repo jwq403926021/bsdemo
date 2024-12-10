@@ -12,7 +12,7 @@
         <!-- v-model:value 可以双向绑定，不需要双向绑定时使用:value即可 -->
         <StepBar class="step" :value="activeStep">
           <StepBarItem icon="online-icon icon-basic-info" :name="SysOnlinePageSettingStep.BASIC"
-            >基础信息</StepBarItem
+            >Basic Info</StepBarItem
           >
           <!-- <StepBarItem icon="online-icon icon-data" :name="SysOnlinePageSettingStep.DATASOURCE"
             >数据模型</StepBarItem
@@ -20,7 +20,7 @@
           <StepBarItem
             icon="online-icon icon-form-design"
             :name="SysOnlinePageSettingStep.FORM_DESIGN"
-            >表单设计</StepBarItem
+            >Form Desigh</StepBarItem
           >
         </StepBar>
         <el-row class="operation" type="flex" justify="end" style="width: 200px">
@@ -30,7 +30,7 @@
             :disabled="activeStep == SysOnlinePageSettingStep.BASIC"
             @click="onPrevClick"
           >
-            上一步
+            Previous
           </el-button>
           <el-button
             v-if="!showSaveButton"
@@ -39,13 +39,13 @@
             type="primary"
             @click="onNextClick"
           >
-            下一步
+            Next
           </el-button>
           <el-button v-if="showSaveButton" :size="formItemSize" type="primary" @click="onSaveClick">
-            保存
+            Save
           </el-button>
           <el-button @click="onClose" :size="formItemSize">{{
-            showSaveButton ? '返回' : '退出'
+            showSaveButton ? 'Return' : 'Quit'
           }}</el-button>
         </el-row>
       </el-row>
@@ -542,7 +542,7 @@ const loadDatasourceRelation = () => {
  */
 const onCreateNewForm = () => {
   Dialog.show(
-    '新建表单',
+    'Create Form',
     EditOnlineForm,
     {
       area: ['600px'],

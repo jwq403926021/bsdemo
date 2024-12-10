@@ -14,7 +14,7 @@
     <el-form-item label="Step 3 Label">
       <el-input v-model="formConfig().form.step3Name" placeholder="" clearable filterable />
     </el-form-item>
-    <el-form-item label="表单 ID">
+    <el-form-item label="Form ID">
       <el-row justify="space-between" align="middle" style="flex-wrap: nowrap; width: 100%">
         <el-input readonly :model-value="formConfig().form.formId" />
         <el-button
@@ -25,8 +25,8 @@
           :title="
             formConfig().form.formType !== SysOnlineFormType.QUERY &&
             formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY
-              ? '只允许接入查询表单'
-              : '复制接入信息'
+              ? 'Only Query Forms Are Allowed'
+              : 'Copy Access Information'
           "
           :disabled="
             formConfig().form.formType !== SysOnlineFormType.QUERY &&
@@ -37,25 +37,25 @@
         />
       </el-row>
     </el-form-item>
-    <el-form-item label="表单类型">
+    <el-form-item label="Form Type">
       <el-input v-model="(formConfig().form.formTypeDictMap || {}).name" placeholder="" disabled />
     </el-form-item>
-    <el-form-item label="表单名称">
+    <el-form-item label="Form Name">
       <el-input v-model="formConfig().form.formName" placeholder="" clearable filterable />
     </el-form-item>
-    <el-form-item label="表单编码">
+    <el-form-item label="Form Code">
       <el-input v-model="formConfig().form.formCode" placeholder="" clearable filterable />
     </el-form-item>
-    <el-form-item label="标签位置">
+    <el-form-item label="Label Position">
       <el-row type="flex" align="middle" style="width: 100%; height: 40px">
         <el-radio-group v-model="formConfig().form.labelPosition" size="default">
-          <el-radio-button value="left">居左</el-radio-button>
-          <el-radio-button value="right">居右</el-radio-button>
-          <el-radio-button value="top">顶部</el-radio-button>
+          <el-radio-button value="left">Left</el-radio-button>
+          <el-radio-button value="right">Right</el-radio-button>
+          <el-radio-button value="top">Top</el-radio-button>
         </el-radio-group>
       </el-row>
     </el-form-item>
-    <el-form-item label="标签宽度">
+    <el-form-item label="Label Width">
       <el-row type="flex" style="width: 100%">
         <el-input-number
           v-model="formConfig().form.labelWidth"
@@ -64,7 +64,7 @@
         />
       </el-row>
     </el-form-item>
-    <el-form-item label="栅格间距">
+    <el-form-item label="Gutter">
       <el-row type="flex" style="width: 100%">
         <el-input-number
           v-model="formConfig().form.gutter"
@@ -74,7 +74,7 @@
       </el-row>
     </el-form-item>
     <el-form-item
-      label="过滤组件宽度"
+      label="Filter Component Width"
       v-if="
         formConfig().form.formType === SysOnlineFormType.QUERY ||
         formConfig().form.formType === SysOnlineFormType.ADVANCE_QUERY
@@ -88,15 +88,15 @@
         />
       </el-row>
     </el-form-item>
-    <el-form-item label="是否全屏" v-if="supportDialog">
+    <el-form-item label="Full Screen" v-if="supportDialog">
       <el-row type="flex" align="middle" style="width: 100%; height: 40px">
         <el-radio-group v-model="formConfig().form.fullscreen" size="default">
-          <el-radio :value="true">全屏</el-radio>
-          <el-radio :value="false">弹窗</el-radio>
+          <el-radio :value="true">Full Screen</el-radio>
+          <el-radio :value="false">Pop Up</el-radio>
         </el-radio-group>
       </el-row>
     </el-form-item>
-    <el-form-item v-if="supportDialog && !formConfig().form.fullscreen" label="弹窗宽度">
+    <el-form-item v-if="supportDialog && !formConfig().form.fullscreen" label="Popup Width">
       <el-row type="flex" style="width: 100%">
         <el-input-number
           v-model="formConfig().form.width"
@@ -105,7 +105,7 @@
         />
       </el-row>
     </el-form-item>
-    <el-form-item v-if="supportDialog && !formConfig().form.fullscreen" label="弹窗高度">
+    <el-form-item v-if="supportDialog && !formConfig().form.fullscreen" label="Popup Height">
       <el-row type="flex" style="width: 100%">
         <el-input-number
           v-model="formConfig().form.height"
@@ -116,7 +116,7 @@
     </el-form-item>
     <MultiItemList
       v-model:data="formConfig().form.customFieldList"
-      label="自定义字段"
+      label="Custom Fields"
       :supportSort="true"
       @add="onEditFormField(null)"
       @edit="onEditFormField"
@@ -151,13 +151,13 @@ const formConfig = inject('formConfig', () => {
 
 const layoutStore = useLayoutStore();
 
-// TODO 保存变更
+// TODO Save Changes
 const handlerEditOperate = (row: ANY_OBJECT | null, fieldName: string) => {
   if (Array.isArray(formConfig().form.customFieldList)) {
     if (row == null) {
       let temp = findItemFromList(formConfig().form.customFieldList, fieldName, 'fieldName');
       if (temp != null) {
-        ElMessage.error('此字段已存在！');
+        ElMessage.error('This Field Already Exists!');
       } else {
         formConfig().form.customFieldList.push({
           fieldName: fieldName,
@@ -165,10 +165,10 @@ const handlerEditOperate = (row: ANY_OBJECT | null, fieldName: string) => {
       }
     } else {
       if (row.fieldName !== fieldName) {
-        // 修改了字段名
+        // Modified Field Name
         let temp = findItemFromList(formConfig().form.customFieldList, fieldName, 'fieldName');
         if (temp != null) {
-          ElMessage.error('此字段已存在！');
+          ElMessage.error('This Field Already Exists!');
         } else {
           formConfig().form.customFieldList = formConfig().form.customFieldList.map(
             (item: ANY_OBJECT) => {
@@ -196,7 +196,7 @@ const handlerEditOperate = (row: ANY_OBJECT | null, fieldName: string) => {
 };
 const onEditFormField = (row: ANY_OBJECT | null) => {
   Dialog.show<string>(
-    row ? '编辑字段' : '添加字段',
+    row ? 'Edit Field' : 'Add Field',
     EditFormField,
     {
       area: '600px',
@@ -219,9 +219,9 @@ const onEditFormField = (row: ANY_OBJECT | null) => {
     });
 };
 const onRemoveFormField = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否移除此字段？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are You Sure You Want to Remove This Field?', '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -250,20 +250,20 @@ const shareInfo = computed(() => {
 const onShareForm = () => {
   let clipboard = new Clipboard('.formShareBtn');
   clipboard.on('success', () => {
-    ElMessage.success('接入信息复制成功！');
+    ElMessage.success('Access Information Copied Successfully!');
     clipboard.destroy();
   });
   clipboard.on('error', () => {
-    ElMessage.error('浏览器不支持复制，请手动复制接入信息：' + shareInfo.value);
+    ElMessage.error('Browser Does Not Support Copying, Please Manually Copy Access Information: ' + shareInfo.value);
     clipboard.destroy();
   });
 };
 
 const supportDialog = computed(() => {
   return (
-    // 编辑表单支持弹窗
+    // Editing Forms Supports Popups
     formConfig().form.formType === SysOnlineFormType.FORM ||
-    // 子表查询页面支持弹窗
+    // Subtable Query Pages Support Popups
     (formConfig().form.formType === SysOnlineFormType.QUERY &&
       formConfig().getMasterTable &&
       formConfig().getMasterTable.relationType != null)
@@ -273,10 +273,10 @@ const getMaskTableList = computed(() => {
   if (formConfig().form.formType === SysOnlineFormType.FORM) {
     return formConfig().getAllTableList.filter((table: ANY_OBJECT) => {
       if (formConfig().getMasterTable.relationType == null) {
-        // 主表编辑
+        // Main Table Editing
         return true;
       } else {
-        // 从表编辑
+        // Subtable Editing
         return table.tableId === formConfig().getMasterTable.tableId;
       }
     });

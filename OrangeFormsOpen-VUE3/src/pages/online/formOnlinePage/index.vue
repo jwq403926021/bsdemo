@@ -55,10 +55,10 @@
           >New</el-button
         >
       </template>
-      <vxe-column title="序号" type="seq" width="55px" :index="pageListWidget.getTableIndex" />
-      <vxe-column title="页面名称" field="pageName" />
-      <vxe-column title="页面代码" field="pageCode" />
-      <vxe-column title="页面类型">
+      <vxe-column title="No." type="seq" width="55px" :index="pageListWidget.getTableIndex" />
+      <vxe-column title="Page Name" field="pageName" />
+      <vxe-column title="Page Code" field="pageCode" />
+      <vxe-column title="Page Type">
         <template v-slot="scope">
           <el-tag
             :size="layoutStore.defaultFormItemSize"
@@ -68,7 +68,7 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="页面状态" field="statusDictMap.name">
+      <vxe-column title="Page Status" field="statusDictMap.name">
         <template v-slot="scope">
           <el-tag
             :size="layoutStore.defaultFormItemSize"
@@ -78,27 +78,27 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="发布状态">
+      <vxe-column title="Release Status">
         <template v-slot="scope">
           <el-switch v-model="scope.row.published" @change="onUpdatePagePublished(scope.row)" />
         </template>
       </vxe-column>
-      <vxe-column title="创建时间" field="createTime" />
-      <vxe-column title="操作" width="100px" fixed="right">
+      <vxe-column title="Create Time" field="createTime" />
+      <vxe-column title="Operate" width="120px" fixed="right">
         <template v-slot="scope">
           <el-button
             link
             type="primary"
             :size="layoutStore.defaultFormItemSize"
             @click="onEditOnlinePage(scope.row)"
-            >编辑</el-button
+            >Edit</el-button
           >
           <el-button
             type="danger"
             link
             :size="layoutStore.defaultFormItemSize"
             @click="onDeleteOnlinePage(scope.row)"
-            >删除</el-button
+            >Delete</el-button
           >
         </template>
       </vxe-column>
@@ -260,7 +260,7 @@ const onCreateOnlinePage = () => {
 };
 const onEditOnlinePage = (row: ANY_OBJECT) => {
   Dialog.show(
-    '编辑页面',
+    'Edit Page',
     EditOnlinePage,
     {
       area: ['100vw', '100vh'],
@@ -286,9 +286,9 @@ const onEditOnlinePage = (row: ANY_OBJECT) => {
     });
 };
 const onDeleteOnlinePage = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm(`是否删除页面【${row.pageName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Delete the page${row.pageName}】？`, '', {
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No',
     type: 'warning',
   })
     .then(res => {
@@ -299,7 +299,7 @@ const onDeleteOnlinePage = (row: ANY_OBJECT) => {
       return OnlinePageController.delete(params);
     })
     .then(res => {
-      ElMessage.success('删除成功！');
+      ElMessage.success('Delete successful!');
       pageListWidget.refreshTable();
     })
     .catch(e => {

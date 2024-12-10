@@ -1,586 +1,586 @@
 import { DictionaryBase } from './types';
 
-const SysUserStatus = new DictionaryBase('用户状态', [
+const SysUserStatus = new DictionaryBase('User Status', [
   {
     id: 0,
-    name: '正常状态',
+    name: 'Normal',
     symbol: 'NORMAL',
   },
   {
     id: 1,
-    name: '锁定状态',
+    name: 'Locked',
     symbol: 'LOCKED',
   },
 ]);
 
-const SysUserType = new DictionaryBase('用户类型', [
+const SysUserType = new DictionaryBase('User Type', [
   {
     id: 0,
-    name: '管理员',
+    name: 'Admin',
     symbol: 'ADMIN',
   },
   {
     id: 1,
-    name: '系统操作员',
+    name: 'System',
     symbol: 'SYSTEM',
   },
   {
     id: 2,
-    name: '普通操作员',
+    name: 'Operator',
     symbol: 'OPERATOR',
   },
 ]);
 
-const SysOperationType = new DictionaryBase('操作日志操作类型', [
+const SysOperationType = new DictionaryBase('Operation Log Operation Type', [
   {
     id: 0,
-    name: '登录',
+    name: 'Login',
     symbol: 'LOGIN',
   },
   {
     id: 1,
-    name: '手机登录',
+    name: 'Mobile Login',
     symbol: 'MOBILE_LOGIN',
   },
   {
     id: 5,
-    name: '登出',
+    name: 'Logout',
     symbol: 'LOGOUT',
   },
   {
     id: 10,
-    name: '新增',
+    name: 'Add',
     symbol: 'ADD',
   },
   {
     id: 15,
-    name: '修改',
+    name: 'Update',
     symbol: 'UPDATE',
   },
   {
     id: 20,
-    name: '删除',
+    name: 'Delete',
     symbol: 'DELETE',
   },
   {
     id: 35,
-    name: '查询',
+    name: 'List',
     symbol: 'LIST',
   },
   {
     id: 40,
-    name: '分组查询',
+    name: 'List With Group',
     symbol: 'LIST_WITH_GROUP',
   },
   {
     id: 45,
-    name: '导出',
+    name: 'Export',
     symbol: 'EXPORT',
   },
   {
     id: 25,
-    name: '新增多对多关联',
+    name: 'Add M2M',
     symbol: 'ADD_M2M',
   },
   {
     id: 30,
-    name: '移除多对多关联',
+    name: 'Delete M2M',
     symbol: 'DELETE_M2M',
   },
   {
     id: 50,
-    name: '上传',
+    name: 'Upload',
     symbol: 'UPLOAD',
   },
   {
     id: 55,
-    name: '下载',
+    name: 'Download',
     symbol: 'DOWNLOAD',
   },
   {
     id: 60,
-    name: '重置缓存',
+    name: 'Reload Cache',
     symbol: 'RELOAD_CACHE',
   },
   {
     id: 65,
-    name: '发布',
+    name: 'Publish',
     symbol: 'PUBLISH',
   },
   {
     id: 70,
-    name: '取消发布',
+    name: 'Unpublish',
     symbol: 'UNPUBLISH',
   },
   {
     id: 75,
-    name: '流程挂起',
+    name: 'Suspend',
     symbol: 'SUSPEND',
   },
   {
     id: 80,
-    name: '流程恢复',
+    name: 'Resume',
     symbol: 'RESUME',
   },
   {
     id: 100,
-    name: '启动流程',
+    name: 'Start Flow',
     symbol: 'START_FLOW',
   },
   {
     id: 105,
-    name: '终止流程',
+    name: 'Stop Flow',
     symbol: 'STOP_FLOW',
   },
   {
     id: 110,
-    name: '删除流程',
+    name: 'Delete Flow',
     symbol: 'DELETE_FLOW',
   },
   {
     id: 115,
-    name: '撤销流程',
+    name: 'Cancel Flow',
     symbol: 'CANCEL_FLOW',
   },
   {
     id: 120,
-    name: '提交流程任务',
+    name: 'Submit Task',
     symbol: 'SUBMIT_TASK',
   },
   {
     id: 125,
-    name: '催办流程',
+    name: 'Remind Task',
     symbol: 'REMIND_TASK',
   },
   {
     id: 126,
-    name: '流程干预',
+    name: 'Intervene Flow',
     symbol: 'INTERVENE_FLOW',
   },
   {
     id: 127,
-    name: '流程数据补偿',
+    name: 'Fix Flow Business Data',
     symbol: 'FIX_FLOW_BUSINESS_DATA',
   },
 ]);
 
-const SysPermModuleType = new DictionaryBase('权限分组类型', [
+const SysPermModuleType = new DictionaryBase('Permission Group Type', [
   {
     id: 0,
-    name: '分组模块',
+    name: 'Group Module',
     symbol: 'GROUP',
   },
   {
     id: 1,
-    name: '接口模块',
+    name: 'Controller Module',
     symbol: 'CONTROLLER',
   },
 ]);
 
-const SysPermCodeType = new DictionaryBase('权限字类型', [
+const SysPermCodeType = new DictionaryBase('Permission Code Type', [
   {
     id: 0,
-    name: '表单',
+    name: 'Form',
     symbol: 'FORM',
   },
   {
     id: 1,
-    name: '片段',
+    name: 'Fragment',
     symbol: 'FRAGMENT',
   },
   {
     id: 2,
-    name: '操作',
+    name: 'Operation',
     symbol: 'OPERATION',
   },
 ]);
 
 /**
- * 菜单类型
+ * Menu Type
  *
- * DIRECTORY(0: 目录)
- * MENU(1: 表单)
- * FRAGMENT(2: 片段)
- * BUTTON(3: 按钮)
+ * DIRECTORY(0: Directory)
+ * MENU(1: Form)
+ * FRAGMENT(2: Fragment)
+ * BUTTON(3: Button)
  */
-const SysMenuType = new DictionaryBase('菜单类型', [
+const SysMenuType = new DictionaryBase('Menu Type', [
   {
     id: 0,
-    name: '目录',
+    name: 'Directory',
     symbol: 'DIRECTORY',
   },
   {
     id: 1,
-    name: '菜单',
+    name: 'Menu',
     symbol: 'MENU',
   },
   {
     id: 2,
-    name: '片段',
+    name: 'Fragment',
     symbol: 'FRAGMENT',
   },
   {
     id: 3,
-    name: '按钮',
+    name: 'Button',
     symbol: 'BUTTON',
   },
 ]);
 
-const MobileEntryType = new DictionaryBase('移动端首页配置项类型', [
+const MobileEntryType = new DictionaryBase('Mobile Home Page Configuration Type', [
   {
     id: 0,
-    name: '轮播图',
+    name: 'Carousel',
     symbol: 'BANNER',
   },
   {
     id: 1,
-    name: '九宫格',
+    name: 'Sudoku',
     symbol: 'SUDOKU',
   },
   {
     id: 2,
-    name: '分组',
+    name: 'Group',
     symbol: 'GROUP',
   },
 ]);
 
 /**
- * 菜单绑定类型
+ * Menu Bind Type
  *
- * ROUTER(0: 路由菜单)
- * ONLINE_FORM(1: 在线表单)
- * WORK_ORDER(2: 工单列表)
- * REPORT(3: 报表页面)
- * THRID_URL(4: 外部链接)
+ * ROUTER(0: Router Menu)
+ * ONLINE_FORM(1: Online Form)
+ * WORK_ORDER(2: Work Order List)
+ * REPORT(3: Report Page)
+ * THRID_URL(4: External Link)
  */
-const SysMenuBindType = new DictionaryBase('菜单绑定类型', [
+const SysMenuBindType = new DictionaryBase('Menu Bind Type', [
   {
     id: 0,
-    name: '路由菜单',
+    name: 'Router Menu',
     symbol: 'ROUTER',
   },
   {
     id: 1,
-    name: '在线表单',
+    name: 'Online Form',
     symbol: 'ONLINE_FORM',
   },
   {
     id: 2,
-    name: '工单列表',
+    name: 'Work Order List',
     symbol: 'WORK_ORDER',
   },
   {
     id: 3,
-    name: '报表页面',
+    name: 'Report Page',
     symbol: 'REPORT',
   },
   {
     id: 4,
-    name: '外部链接',
+    name: 'External Link',
     symbol: 'THRID_URL',
   },
 ]);
 
-const SysDataPermType = new DictionaryBase('数据权限类型', [
+const SysDataPermType = new DictionaryBase('Data Permission Type', [
   {
     id: 0,
-    name: '查看全部',
+    name: 'View All',
     symbol: 'ALL',
   },
   {
     id: 1,
-    name: '仅看自己',
+    name: 'Only Self',
     symbol: 'ONLY_USER',
   },
   {
     id: 2,
-    name: '仅看所在部门',
+    name: 'Only Department',
     symbol: 'ONLY_DEPT',
   },
   {
     id: 3,
-    name: '仅看所在部门及子部门',
+    name: 'Only Department And Child',
     symbol: 'ONLY_DEPT_AND_CHILD',
   },
   {
     id: 4,
-    name: '自选部门及子部门',
+    name: 'Custom Department And Child',
     symbol: 'CUSTOM_DEPT_AND_CHILD',
   },
   {
     id: 5,
-    name: '仅自选部门',
+    name: 'Only Custom Department',
     symbol: 'CUSTOM_DEPT',
   },
   {
     id: 6,
-    name: '本部门用户',
+    name: 'Department User',
     symbol: 'DEPT_USER',
   },
   {
     id: 7,
-    name: '本部门及子部门用户',
+    name: 'Department And Child User',
     symbol: 'DEPT_AND_CHILD_USER',
   },
 ]);
 
-const ScatterSymbolType = new DictionaryBase('纵轴位置', [
+const ScatterSymbolType = new DictionaryBase('Vertical Axis Position', [
   {
     id: 0,
-    name: '固定大小',
+    name: 'Fixed Size',
     symbol: 'FIXED',
   },
   {
     id: 1,
-    name: '值大小',
+    name: 'Value Size',
     symbol: 'VALUE',
   },
 ]);
 
-const SysCustomWidgetType = new DictionaryBase('组件类型', [
+const SysCustomWidgetType = new DictionaryBase('Component Type', [
   {
     id: 0,
-    name: '文本显示',
+    name: 'Label',
     symbol: 'Label',
   },
   {
     id: 1,
-    name: '文本输入框',
+    name: 'Input',
     symbol: 'Input',
   },
   {
     id: 3,
-    name: '数字输入框',
+    name: 'Number Input',
     symbol: 'NumberInput',
   },
   {
     id: 4,
-    name: '数字范围输入框',
+    name: 'Number Range Input',
     symbol: 'NumberRange',
   },
   {
     id: 5,
-    name: '开关组件',
+    name: 'Switch',
     symbol: 'Switch',
   },
   {
     id: 6,
-    name: '滑块组件',
+    name: 'Slider',
     symbol: 'Slider',
   },
   {
     id: 7,
-    name: '单选组件',
+    name: 'Radio',
     symbol: 'Radio',
   },
   {
     id: 8,
-    name: '复选框',
+    name: 'CheckBox',
     symbol: 'CheckBox',
   },
   {
     id: 10,
-    name: '下拉选择框',
+    name: 'Select',
     symbol: 'Select',
   },
   {
     id: 12,
-    name: '级联选择框',
+    name: 'Cascader',
     symbol: 'Cascader',
   },
   {
     id: 13,
-    name: '树形选择组件',
+    name: 'Tree',
     symbol: 'Tree',
   },
   {
     id: 14,
-    name: '评分组件',
+    name: 'Rate',
     symbol: 'Rate',
   },
   {
     id: 15,
-    name: '进步器',
+    name: 'Stepper',
     symbol: 'Stepper',
   },
   {
     id: 16,
-    name: '日历组件',
+    name: 'Calendar',
     symbol: 'Calendar',
   },
   {
     id: 20,
-    name: '日期选择框',
+    name: 'Date',
     symbol: 'Date',
   },
   {
     id: 21,
-    name: '日期范围选择框',
+    name: 'Date Range',
     symbol: 'DateRange',
   },
   {
     id: 30,
-    name: '颜色选择框',
+    name: 'Color Picker',
     symbol: 'ColorPicker',
   },
   {
     id: 31,
-    name: '上传组件',
+    name: 'Upload',
     symbol: 'Upload',
   },
   {
     id: 32,
-    name: '富文本编辑',
+    name: 'RichEditor',
     symbol: 'RichEditor',
   },
   {
     id: 40,
-    name: '分割线',
+    name: 'Divider',
     symbol: 'Divider',
   },
   {
     id: 41,
-    name: '文本',
+    name: 'Text',
     symbol: 'Text',
   },
   {
     id: 42,
-    name: '图片',
+    name: 'Image',
     symbol: 'Image',
   },
   {
     id: 43,
-    name: '超链接',
+    name: 'Link',
     symbol: 'Link',
   },
   {
     id: 100,
-    name: '表格组件',
+    name: 'Table',
     symbol: 'Table',
   },
   {
     id: 101,
-    name: '透视表',
+    name: 'Pivot Table',
     symbol: 'PivotTable',
   },
   {
     id: 102,
-    name: '数据列表',
+    name: 'List',
     symbol: 'List',
   },
   {
     id: 103,
-    name: '查询列表',
+    name: 'Query List',
     symbol: 'QueryList',
   },
   {
     id: 104,
-    name: '工单列表',
+    name: 'Work Order List',
     symbol: 'WorkOrderList',
   },
   {
     id: 200,
-    name: '折线图',
+    name: 'Line Chart',
     symbol: 'LineChart',
   },
   {
     id: 201,
-    name: '柱状图',
+    name: 'Bar Chart',
     symbol: 'BarChart',
   },
   {
     id: 202,
-    name: '饼图',
+    name: 'Pie Chart',
     symbol: 'PieChart',
   },
   {
     id: 203,
-    name: '散点图',
+    name: 'Scatter Chart',
     symbol: 'ScatterChart',
   },
   {
     id: 204,
-    name: '普通表格',
+    name: 'Data View Table',
     symbol: 'DataViewTable',
   },
   {
     id: 205,
-    name: '轮播图',
+    name: 'Carousel',
     symbol: 'Carousel',
   },
   {
     id: 206,
-    name: '富文本',
+    name: 'Rich Text',
     symbol: 'RichText',
   },
   {
     id: 207,
-    name: '仪表盘',
+    name: 'Gauge Chart',
     symbol: 'GaugeChart',
   },
   {
     id: 208,
-    name: '漏斗图',
+    name: 'Funnel Chart',
     symbol: 'FunnelChart',
   },
   {
     id: 209,
-    name: '雷达图',
+    name: 'Radar Chart',
     symbol: 'RadarChart',
   },
   {
     id: 210,
-    name: '普通进度条',
+    name: 'Progress Bar',
     symbol: 'ProgressBar',
   },
   {
     id: 211,
-    name: '环形进度条',
+    name: 'Progress Circle',
     symbol: 'ProgressCircle',
   },
   {
     id: 212,
-    name: '通用卡片',
+    name: 'Data Card',
     symbol: 'DataCard',
   },
   {
     id: 213,
-    name: '通用列表',
+    name: 'Common List',
     symbol: 'CommonList',
   },
   {
     id: 214,
-    name: '进度条卡片',
+    name: 'Data Progress Card',
     symbol: 'DataProgressCard',
   },
   {
     id: 300,
-    name: '基础块',
+    name: 'Block',
     symbol: 'Block',
   },
   {
     id: 301,
-    name: '卡片组件',
+    name: 'Card',
     symbol: 'Card',
   },
   {
     id: 302,
-    name: 'Tabs 组件',
+    name: 'Tabs',
     symbol: 'Tabs',
   },
   {
     id: 303,
-    name: '图片卡片',
+    name: 'Image Card',
     symbol: 'ImageCard',
   },
   {
     id: 304,
-    name: '分组容器',
+    name: 'Cell Group',
     symbol: 'CellGroup',
   },
   {
     id: 400,
-    name: '用户选择',
+    name: 'User Select',
     symbol: 'UserSelect',
   },
   {
@@ -665,301 +665,301 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
   },
   {
     id: 401,
-    name: '部门选择',
+    name: 'Dept Select',
     symbol: 'DeptSelect',
   },
   {
     id: 402,
-    name: '关联选择',
+    name: 'Data Select',
     symbol: 'DataSelect',
   },
   {
     id: 403,
-    name: '表格容器',
+    name: 'Table Container',
     symbol: 'TableContainer',
   },
   {
     id: 500,
-    name: '单选过滤',
+    name: 'Mobile Radio Filter',
     symbol: 'MobileRadioFilter',
   },
   {
     id: 501,
-    name: '多选过滤',
+    name: 'Mobile CheckBox Filter',
     symbol: 'MobileCheckBoxFilter',
   },
   {
     id: 502,
-    name: '文本过滤',
+    name: 'Mobile Input Filter',
     symbol: 'MobileInputFilter',
   },
   {
     id: 503,
-    name: '开关过滤',
+    name: 'Mobile Switch Filter',
     symbol: 'MobileSwitchFilter',
   },
   {
     id: 504,
-    name: '日期过滤',
+    name: 'Mobile Date Range Filter',
     symbol: 'MobileDateRangeFilter',
   },
   {
     id: 505,
-    name: '数字范围过滤',
+    name: 'Mobile Number Range Filter',
     symbol: 'MobileNumberRangeFilter',
   },
 ]);
 
-const OnlineFormEventType = new DictionaryBase('在线表单事件类型', [
+const OnlineFormEventType = new DictionaryBase('Online Form Event Type', [
   {
     id: 'change',
-    name: '数据改变',
+    name: 'Data Change',
     symbol: 'CHANGE',
   },
   {
     id: 'disable',
-    name: '是否禁用',
+    name: 'Is Disabled',
     symbol: 'DISABLE',
   },
   {
     id: 'visible',
-    name: '是否可见',
+    name: 'Is Visible',
     symbol: 'VISIBLE',
   },
   {
     id: 'dropdownChange',
-    name: '下拉数据改变',
+    name: 'Dropdown Data Change',
     symbol: 'DROPDOWN_CHANGE',
   },
   {
     id: 'linkHerf',
-    name: '链接地址',
+    name: 'Link Address',
     symbol: 'LINK_HERF',
   },
   {
     id: 'disabledDate',
-    name: '日期是否可用',
+    name: 'Date Availability',
     symbol: 'DISABLED_DATE',
   },
   {
     id: 'afterLoadTableData',
-    name: '表格加载数据后',
+    name: 'After Load Table Data',
     symbol: 'AFTER_LOAD_TABLE_DATA',
   },
   {
     id: 'beforeLoadTableData',
-    name: '表格加载数据前',
+    name: 'Before Load Table Data',
     symbol: 'BEFORE_LOAD_TABLE_DATA',
   },
   {
     id: 'afterLoadFormData',
-    name: '页面加载数据后',
+    name: 'After Load Form Data',
     symbol: 'AFTER_LOAD_FORM_DATA',
   },
   {
     id: 'beforeLoadFormData',
-    name: '页面加载数据前',
+    name: 'Before Load Form Data',
     symbol: 'BEFORE_LOAD_FORM_DATA',
   },
   {
     id: 'beforeCommitFormData',
-    name: '页面数据提交前',
+    name: 'Before Commit Form Data',
     symbol: 'BEFORE_COMMIT_FORM_DATA',
   },
   {
     id: 'formCreated',
-    name: '页面创建完毕',
+    name: 'After Create Form',
     symbol: 'AFTER_CREATE_FORM',
   },
   {
     id: 'tableOperationVisible',
-    name: '操作是否可见',
+    name: 'Operation Visibility',
     symbol: 'OPERATION_VISIBLE',
   },
   {
     id: 'tableOperationDisbled',
-    name: '操作是否禁用',
+    name: 'Operation Disabled',
     symbol: 'OPERATION_DISABLED',
   },
 ]);
 
 /**
- * 表单类型
+ * Form Type
  *
- * QUERY(1: 查询表单)
- * ADVANCE_QUERY(2: 左树右表查询)
- * ONE_TO_ONE_QUERY(3: 一对一查询)
- * FORM(5: 编辑表单)
- * FLOW(10: 流程表单)
- * WORK_ORDER(11: 工单列表)
- * REPORT(50: 报表页面)
+ * QUERY(1: Query Form)
+ * ADVANCE_QUERY(2: Left Tree Right Table Query)
+ * ONE_TO_ONE_QUERY(3: One-To-One Query)
+ * FORM(5: Edit Form)
+ * FLOW(10: Flow Form)
+ * WORK_ORDER(11: Work Order List)
+ * REPORT(50: Report Page)
  */
-const SysOnlineFormType = new DictionaryBase('表单类型', [
+const SysOnlineFormType = new DictionaryBase('Form Type', [
   {
     id: 1,
-    name: '查询表单',
+    name: 'Query Form',
     symbol: 'QUERY',
   },
   {
     id: 2,
-    name: '左树右表查询',
+    name: 'Left Tree Right Table Query',
     symbol: 'ADVANCE_QUERY',
   },
   {
     id: 3,
-    name: '一对一查询',
+    name: 'One-To-One Query',
     symbol: 'ONE_TO_ONE_QUERY',
   },
   {
     id: 5,
-    name: '编辑表单',
+    name: 'Edit Form',
     symbol: 'FORM',
   },
   {
     id: 10,
-    name: '流程表单',
+    name: 'Flow Form',
     symbol: 'FLOW',
   },
   {
     id: 11,
-    name: '工单列表',
+    name: 'Work Order List',
     symbol: 'WORK_ORDER',
   },
   {
     id: 50,
-    name: '报表页面',
+    name: 'Report Page',
     symbol: 'REPORT',
   },
 ]);
 
-const SysCustomWidgetOperationType = new DictionaryBase('操作类型', [
+const SysCustomWidgetOperationType = new DictionaryBase('Operation Type', [
   {
     id: 0,
-    name: '新建',
+    name: 'Add',
     symbol: 'ADD',
   },
   {
     id: 1,
-    name: '编辑',
+    name: 'Edit',
     symbol: 'EDIT',
   },
   {
     id: 2,
-    name: '删除',
+    name: 'Delete',
     symbol: 'DELETE',
   },
   {
     id: 3,
-    name: '导出',
+    name: 'Export',
     symbol: 'EXPORT',
   },
   {
     id: 10,
-    name: '批量删除',
+    name: 'Batch Delete',
     symbol: 'BATCH_DELETE',
   },
   {
     id: 20,
-    name: '表单操作',
+    name: 'Form Operation',
     symbol: 'FORM',
   },
   {
     id: 22,
-    name: '复制',
+    name: 'Copy',
     symbol: 'COPY',
   },
   {
     id: 30,
-    name: '保存',
+    name: 'Save',
     symbol: 'SAVE',
   },
   {
     id: 31,
-    name: '取消',
+    name: 'Cancel',
     symbol: 'CANCEL',
   },
   {
     id: 50,
-    name: '脚本操作',
+    name: 'Script Operation',
     symbol: 'SCRIPT',
   },
   {
     id: 51,
-    name: '下钻事件',
+    name: 'Drill Event',
     symbol: 'DRILL',
   },
   {
     id: 52,
-    name: '路由跳转',
+    name: 'Route Jump',
     symbol: 'ROUTE',
   },
 ]);
 
-const OnlineSystemVariableType = new DictionaryBase('系统变量类型', [
+const OnlineSystemVariableType = new DictionaryBase('System Variable Type', [
   {
     id: 0,
-    name: '登录用户',
+    name: 'Current User',
     symbol: 'CURRENT_USER',
   },
   {
     id: 1,
-    name: '所属部门',
+    name: 'Current Department',
     symbol: 'CURRENT_DEPT',
   },
   {
     id: 10,
-    name: '当前日期',
+    name: 'Current Date',
     symbol: 'CURRENT_DATE',
   },
   {
     id: 11,
-    name: '当前时间',
+    name: 'Current Time',
     symbol: 'CURRENT_TIME',
   },
   {
     id: 20,
-    name: '流程发起人',
+    name: 'Flow Initiator',
     symbol: 'FLOW_CREATE_USER',
   },
 ]);
 
-const SysCustomWidgetBindDataType = new DictionaryBase('组件绑定数据类型', [
+const SysCustomWidgetBindDataType = new DictionaryBase('Component Bind Data Type', [
   {
     id: 0,
-    name: '字段',
+    name: 'Field',
     symbol: 'Column',
   },
   {
     id: 5,
-    name: '系统变量',
+    name: 'System Variable',
     symbol: 'SYSTEM_VARIABLE',
   },
   {
     id: 10,
-    name: '自定义字段',
+    name: 'Custom Field',
     symbol: 'Custom',
   },
   {
     id: 20,
-    name: '固定值',
+    name: 'Fixed Value',
     symbol: 'Fixed',
   },
 ]);
 
-const DirectionType = new DictionaryBase('方向', [
+const DirectionType = new DictionaryBase('Direction', [
   {
     id: 0,
-    name: '横轴',
+    name: 'Horizontal',
     symbol: 'HORIZONTAL',
   },
   {
     id: 1,
-    name: '纵轴',
+    name: 'Vertical',
     symbol: 'VERTICAL',
   },
 ]);
 
-const DblinkType = new DictionaryBase('数据库连接类型', [
+const DblinkType = new DictionaryBase('Database Connection Type', [
   {
     id: 0,
     name: 'MySQL',
@@ -978,17 +978,17 @@ const DblinkType = new DictionaryBase('数据库连接类型', [
   },
   {
     id: 3,
-    name: '达梦数据库',
+    name: 'DM Database',
     symbol: 'DM_DB',
   },
   {
     id: 4,
-    name: '人大金仓',
+    name: 'Kingbase',
     symbol: 'KINGBASE',
   },
   {
     id: 5,
-    name: '华为高斯',
+    name: 'OpenGauss',
     symbol: 'OPENGAUSS',
   },
   {
@@ -1004,65 +1004,65 @@ const DblinkType = new DictionaryBase('数据库连接类型', [
   */
 ]);
 
-const CriteriaFilterType = new DictionaryBase('条件过滤类型', [
+const CriteriaFilterType = new DictionaryBase('Criteria Filter Type', [
   {
     id: 0,
-    name: '等于',
+    name: 'Equal',
     symbol: 'EQ',
   },
   {
     id: 1,
-    name: '不等于',
+    name: 'Not Equal',
     symbol: 'NOT_EQ',
   },
   {
     id: 2,
-    name: '大于等于',
+    name: 'Greater Than Or Equal',
     symbol: 'GE',
   },
   {
     id: 3,
-    name: '大于',
+    name: 'Greater Than',
     symbol: 'GT',
   },
   {
     id: 4,
-    name: '小于等于',
+    name: 'Less Than Or Equal',
     symbol: 'LE',
   },
   {
     id: 5,
-    name: '小于',
+    name: 'Less Than',
     symbol: 'LT',
   },
   {
     id: 6,
-    name: 'LIKE',
+    name: 'Like',
     symbol: 'LIKE',
   },
   {
     id: 7,
-    name: 'IN',
+    name: 'In',
     symbol: 'IN',
   },
   {
     id: 8,
-    name: 'NOT IN',
+    name: 'Not In',
     symbol: 'NOT_IN',
   },
   {
     id: 9,
-    name: 'BETWEEN',
+    name: 'Between',
     symbol: 'BETWEEN',
   },
   {
     id: 100,
-    name: '不为空',
+    name: 'Not Null',
     symbol: 'NOT_NULL',
   },
   {
     id: 101,
-    name: '为空',
+    name: 'Is Null',
     symbol: 'IS_NULL',
   },
 ]);

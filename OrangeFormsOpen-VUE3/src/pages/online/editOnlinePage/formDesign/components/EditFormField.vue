@@ -6,27 +6,27 @@
       class="full-width-input form-box"
       :rules="rules"
       style="width: 100%"
-      label-width="80px"
+      label-width="100px"
       :size="formItemSize"
       label-position="right"
       @submit.prevent
     >
       <el-row>
         <el-col :span="24">
-          <el-form-item label="字段名称" prop="fieldName">
+          <el-form-item label="Field Name" prop="fieldName">
             <el-input
               class="input-item"
               v-model="formData.fieldName"
               :clearable="true"
-              placeholder="表单自定义字段名称"
+              placeholder="Form custom field name"
             />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <el-row class="no-scroll flex-box menu-box" type="flex" justify="end">
-      <el-button :size="formItemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-      <el-button type="primary" :size="formItemSize" @click="onSubmit"> 保存 </el-button>
+      <el-button :size="formItemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+      <el-button type="primary" :size="formItemSize" @click="onSubmit"> Save </el-button>
     </el-row>
   </div>
 </template>
@@ -58,7 +58,7 @@ const rules = {
   fieldName: [
     {
       required: true,
-      message: '字段名称不能为空',
+      message: 'Field name cannot be empty',
       trigger: 'blur',
     },
   ],

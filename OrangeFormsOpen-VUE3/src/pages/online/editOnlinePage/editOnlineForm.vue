@@ -13,31 +13,31 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="表单编码" prop="formCode">
+          <el-form-item label="Form Code" prop="formCode">
             <el-input
               class="input-item"
               v-model="formData.formCode"
               :clearable="true"
-              placeholder="表单编码"
+              placeholder="Form Code"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="表单名称" prop="formName">
+          <el-form-item label="Form Name" prop="formName">
             <el-input
               class="input-item"
               v-model="formData.formName"
               :clearable="true"
-              placeholder="表单名称"
+              placeholder="Form Name"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="表单类型" prop="formType">
+          <el-form-item label="Form Type" prop="formType">
             <el-select
               class="input-item"
               v-model="formData.formType"
-              placeholder="表单类型"
+              placeholder="Form Type"
               :disabled="isEdit"
               @change="onFormTypeChange"
             >
@@ -51,12 +51,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="表单数据" prop="masterTableId">
+          <el-form-item label="Form Date" prop="masterTableId">
             <el-select
               class="input-item"
               v-model="formData.masterTableId"
               :clearable="true"
-              placeholder="表单数据"
+              placeholder="Form Date"
               :disabled="isEdit"
             >
               <el-option
@@ -85,8 +85,8 @@
     <el-row class="menu-box">
       <el-col :span="24">
         <el-row class="no-scroll flex-box" type="flex" justify="end">
-          <el-button :size="formItemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-          <el-button type="primary" :size="formItemSize" @click="onSubmit()"> 保存 </el-button>
+          <el-button :size="formItemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+          <el-button type="primary" :size="formItemSize" @click="onSubmit()"> Save </el-button>
         </el-row>
       </el-col>
     </el-row>
@@ -141,16 +141,16 @@ const formData = ref<ANY_OBJECT>({
 });
 const rules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   formCode: [
-    { required: true, message: '表单编码不能为空', trigger: 'blur' },
+    { required: true, message: 'Form code cannot be empty', trigger: 'blur' },
     {
       type: 'string',
       pattern: /^[A-Za-z0-9]+$/,
-      message: '表单编码只允许输入字母和数字',
+      message: 'Form code only allows letters and numbers',
       trigger: 'blur',
     },
   ],
-  formName: [{ required: true, message: '表单名称不能为空', trigger: 'blur' }],
-  masterTableId: [{ required: true, message: '请选择表单数据', trigger: 'blur' }],
+  formName: [{ required: true, message: 'Form name cannot be empty', trigger: 'blur' }],
+  masterTableId: [{ required: true, message: 'Please select form data', trigger: 'blur' }],
 };
 
 const getValidFormType = computed(() => {
@@ -231,7 +231,7 @@ const onSubmit = () => {
     : OnlineFormController.add(params);
   httpCall
     .then((res: ANY_OBJECT) => {
-      ElMessage.success('保存成功');
+      ElMessage.success('Saved successfully');
       if (props.dialog) {
         props.dialog.submit(res);
       } else {
@@ -255,8 +255,8 @@ const getDatasourceTableTagType = (relationType: number) => {
   }
 };
 const getDatasourceTableTagName = (relationType: number) => {
-  if (relationType == null) return '数据主表';
-  return SysOnlineRelationType.getValue(relationType) || '未知类型';
+  if (relationType == null) return 'Main Data table';
+  return SysOnlineRelationType.getValue(relationType) || 'Unknown Type';
 };
 const onFormTypeChange = (val: number) => {
   if (dialogParams.value.pageType === SysOnlinePageType.FLOW) {

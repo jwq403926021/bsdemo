@@ -7,7 +7,9 @@
       <div class="img-box">
       </div>
       <div class="login-input">
-        <span class="title">Welcome</span>
+        <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
+        <span class="title">Welcome to log in</span>
+        <span class="desc">Code Generation Demo Project</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"
@@ -20,7 +22,7 @@
               <el-input
                 v-model="dataForm.mobilePhone"
                 style="width: 100%; height: 50px"
-                placeholder="请输入帐号"
+                placeholder="Please enter account number"
               />
             </el-form-item>
           </el-col>
@@ -30,7 +32,7 @@
                 v-model="dataForm.password"
                 style="width: 100%; height: 50px"
                 :type="showPassword ? 'text' : 'password'"
-                placeholder="请输入密码"
+                placeholder="Please enter password"
                 @keyup.enter="dataFormSubmit()"
               >
                 <template v-slot:suffix>
@@ -114,8 +116,8 @@ const dataForm = reactive({
 });
 
 const dataRule = {
-  mobilePhone: [{ required: true, message: '帐号不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  mobilePhone: [{ required: true, message: 'Account cannot be empty', trigger: 'blur' }],
+  password: [{ required: true, message: 'Password cannot be empty', trigger: 'blur' }],
 };
 
 const dataFormSubmit = () => {

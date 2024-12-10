@@ -7,11 +7,11 @@
       :model="formPageData"
       :rules="formRules"
       label-position="right"
-      label-width="90px"
+      label-width="150px"
       @submit.prevent
     >
       <el-col :span="24">
-        <el-form-item label="页面类型">
+        <el-form-item label="Page Type">
           <el-select v-model="formPageData.pageType" :disabled="isEdit">
             <el-option
               :value="SysOnlinePageType.BIZ"
@@ -25,20 +25,20 @@
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item label="页面编码" prop="pageCode">
+        <el-form-item label="Page Code" prop="pageCode">
           <el-input v-model="formPageData.pageCode" :disabled="isEdit" @change="dirty = true" />
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item label="页面名称" prop="pageName">
+        <el-form-item label="Page Name" prop="pageName">
           <el-input v-model="formPageData.pageName" @change="dirty = true" />
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item label="后台扩展类">
+        <el-form-item label="Background Extend">
           <el-input
             v-model="formPageData.extraJson.extendClass"
-            placeholder="请输入包含包名的完整类名称"
+            placeholder="Please enter the full class name"
             @change="dirty = true"
           />
         </el-form-item>
@@ -80,15 +80,15 @@ const formPageData = ref<FormPage>({
 const dirty = ref(false);
 const formRules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   pageCode: [
-    { required: true, message: '页面编码不能为空！', trigger: 'blur' },
+    { required: true, message: 'Page number cannot be empty!', trigger: 'blur' },
     {
       type: 'string',
       pattern: /^[A-Za-z0-9]+$/,
-      message: '页面编码只允许输入字母和数字',
+      message: 'Page code only allows letters and numbers',
       trigger: 'blur',
     },
   ],
-  pageName: [{ required: true, message: '页面名称不能为空！', trigger: 'blur' }],
+  pageName: [{ required: true, message: 'Page name cannot be empty!', trigger: 'blur' }],
 };
 const isEdit = computed(() => {
   return !!formPageData.value.pageId;
@@ -141,7 +141,7 @@ const save = (): Promise<FormPage | undefined> => {
       }
       savePageInfo(SysOnlinePageStatus.DATASOURCE)
         .then(res => {
-          ElMessage.success('保存页面基础信息成功！');
+          ElMessage.success('The basic information saved successfully!');
           if (!isEdit.value) {
             formPageData.value.pageId = res.data;
           }
@@ -169,7 +169,7 @@ const save = (): Promise<FormPage | undefined> => {
 
             OnlineDatasourceController.add(params)
               .then(res => {
-                ElMessage.success('保存数据模型成功！');
+                ElMessage.success('The data model was saved successfully!');
                 resolve(formPageData.value);
               })
               .catch(e => {

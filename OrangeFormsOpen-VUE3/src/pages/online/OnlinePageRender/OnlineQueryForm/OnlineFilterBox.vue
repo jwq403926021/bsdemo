@@ -56,14 +56,14 @@
             :size="layoutStore.defaultFormItemSize"
             @click="onSearch"
             :icon="Search"
-            >查询</el-button
+            >Search</el-button
           >
           <el-button
             :size="layoutStore.defaultFormItemSize"
             v-show="Array.isArray(widgetList) && widgetList.length > 0"
             @click="onReset"
             style="width: 72px"
-            >重置</el-button
+            >Reset</el-button
           >
         </div>
       </template>
@@ -75,7 +75,7 @@
         <div>
           <el-icon><UploadFilled /></el-icon>
         </div>
-        <span>请拖入组件进行编辑</span>
+        <span>Please drag and drop components to edit</span>
       </div>
     </Draggable>
   </el-form>

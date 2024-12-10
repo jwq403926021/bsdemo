@@ -7,7 +7,7 @@
           class="add-btn"
           :disabled="addDisabled"
           @click.prevent.stop="onEditItem(null)"
-          >{{ addText ? addText : '添加' }}</right-add-btn
+          >{{ addText ? addText : 'Add' }}</right-add-btn
         >
       </el-row>
     </template>

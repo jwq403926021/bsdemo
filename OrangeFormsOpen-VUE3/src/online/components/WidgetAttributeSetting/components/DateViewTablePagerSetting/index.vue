@@ -6,26 +6,26 @@
     style="padding: 10px 16px 0"
     @submit.prevent
   >
-    <el-form-item class="view-attribute-item" label="是否显示">
+    <el-form-item class="view-attribute-item" label="Show">
       <el-switch v-model="pagerSetting.show" />
     </el-form-item>
-    <el-form-item class="view-attribute-item" label="尺寸">
+    <el-form-item class="view-attribute-item" label="Size">
       <el-select v-model="pagerSetting.size" placeholder="">
-        <el-option label="默认" value="default" />
-        <el-option label="小" value="small" />
+        <el-option label="Default" value="default" />
+        <el-option label="Small" value="small" />
       </el-select>
     </el-form-item>
-    <el-form-item class="view-attribute-item" label="样式">
+    <el-form-item class="view-attribute-item" label="Background">
       <el-select v-model="pagerSetting.background" placeholder="">
-        <el-option label="按钮" value="1" />
-        <el-option label="文字" value="0" />
+        <el-option label="Button" value="1" />
+        <el-option label="Text" value="0" />
       </el-select>
     </el-form-item>
-    <el-form-item class="view-attribute-item" label="对齐方式">
+    <el-form-item class="view-attribute-item" label="Align">
       <el-radio-group v-model="pagerSetting.align">
-        <el-radio-button value="left">居左</el-radio-button>
-        <el-radio-button value="center">居中</el-radio-button>
-        <el-radio-button value="right">居右</el-radio-button>
+        <el-radio-button value="left">Left</el-radio-button>
+        <el-radio-button value="center">Center</el-radio-button>
+        <el-radio-button value="right">Right</el-radio-button>
       </el-radio-group>
     </el-form-item>
   </el-form>

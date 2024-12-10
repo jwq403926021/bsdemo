@@ -16,7 +16,7 @@
           />
           <img v-else src="@/assets/img/document.png" alt="" style="width: 20px" />
         </div>
-        <span style="margin-top: 4px">表单</span>
+        <span style="margin-top: 4px">Form</span>
       </div>
       <div
         class="left-menu-item"
@@ -33,7 +33,7 @@
           />
           <img v-else src="@/assets/img/datasource.png" alt="" style="width: 20px" />
         </div>
-        <span style="margin-top: 4px">数据</span>
+        <span style="margin-top: 4px">Data</span>
       </div>
     </div>
     <!-- LEFT MENU END -->
@@ -50,7 +50,7 @@
           <template v-slot:header>
             <div class="base-card-header">
               <i class="online-icon">
-                <span>表单</span>
+                <span>Form</span>
               </i>
               <div class="base-card-operation">
                 <el-input
@@ -58,7 +58,7 @@
                   :prefix-icon="Search"
                   v-model="filter.formName"
                   clearable
-                  placeholder="表单名称查询"
+                  placeholder="Form name"
                   style="width: 140px; margin-right: 10px"
                 />
                 <el-button
@@ -103,8 +103,8 @@
                     /></el-button>
                     <template v-slot:dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item command="copy">复制</el-dropdown-item>
-                        <el-dropdown-item command="delete">删除</el-dropdown-item>
+                        <el-dropdown-item command="copy">Copy</el-dropdown-item>
+                        <el-dropdown-item command="delete">Delete</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
@@ -123,7 +123,7 @@
           <template v-slot:header>
             <div class="base-card-header">
               <i class="online-icon">
-                <span>组件</span>
+                <span>Widget</span>
               </i>
               <div class="base-card-operation">
                 <el-input
@@ -131,7 +131,7 @@
                   :prefix-icon="Search"
                   v-model="filter.widgetName"
                   clearable
-                  placeholder="组件名称查询"
+                  placeholder="Widget name"
                   style="width: 140px"
                 />
               </div>
@@ -184,7 +184,7 @@
           <template v-slot:header>
             <div class="base-card-header">
               <i class="online-icon">
-                <span>数据</span>
+                <span>Data</span>
               </i>
               <div class="base-card-operation">
                 <el-input
@@ -192,7 +192,7 @@
                   :prefix-icon="Search"
                   v-model="filter.fieldName"
                   clearable
-                  placeholder="字段名称查询"
+                  placeholder="Field Name"
                   size="default"
                   style="width: 140px"
                 />
@@ -216,7 +216,7 @@
                         size="default"
                         style="margin-top: 5px"
                       >
-                        {{ SysOnlineRelationType.getValue(table.relationType) || '数据主表' }}
+                        {{ SysOnlineRelationType.getValue(table.relationType) || 'Main data table' }}
                       </el-tag>
                     </el-row>
                   </template>
@@ -266,7 +266,7 @@
           <i
             class="device-item online-icon icon-pc"
             :class="{ active: activeMode === 'pc' }"
-            title="PC 端"
+            title="PC"
             @click="onActiveModeChange('pc')"
           />
         </div>
@@ -276,7 +276,7 @@
           :icon="Refresh"
           style="font-size: 14px; color: #999; font-weight: normal"
           @click="onClearWidget"
-          >重置表单</el-button
+          >Reset Form</el-button
         >
       </el-row>
       <div class="design-box" :key="currentFormId">
@@ -356,9 +356,9 @@
     <!-- ATTRIBUTE PANEL BEGIN -->
     <div class="attribute-panel">
       <el-tabs v-model="rightActive">
-        <el-tab-pane label="属性" name="props">
+        <el-tab-pane label="Property" name="props">
           <template v-slot:label>
-            <span>属性</span>
+            <span>Property</span>
           </template>
           <el-scrollbar :style="{ height: getClientHeight - 138 + 'px' }">
             <el-row style="padding: 16px">
@@ -375,9 +375,9 @@
             </el-row>
           </el-scrollbar>
         </el-tab-pane>
-        <el-tab-pane label="操作" name="operate" v-if="showOperationTab">
+        <el-tab-pane label="Operate" name="operate" v-if="showOperationTab">
           <template v-slot:label>
-            <span>操作</span>
+            <span>Operate</span>
           </template>
           <el-scrollbar :style="{ height: getClientHeight - 138 + 'px' }">
             <el-row style="width: 100%; padding: 16px">
@@ -653,7 +653,7 @@ const refreshColumn = (table: ANY_OBJECT, column: ColumnInfo) => {
 };
 const onEditTableColumn = (table: ANY_OBJECT, column: ColumnInfo) => {
   Dialog.show(
-    '编辑字段',
+    'Edit Field',
     EditTableColumn,
     {
       area: ['650px'],
@@ -682,7 +682,7 @@ const getDictInfo = (dictId: string) => {
 };
 const getDictName = (dictId: string) => {
   let dictInfo = getDictInfo(dictId);
-  return dictInfo ? dictInfo.dictName : '未绑定字典';
+  return dictInfo ? dictInfo.dictName : 'Unbound dictionary';
 };
 
 // DESIGN
@@ -767,9 +767,9 @@ const formatWidget = (widget: ANY_OBJECT) => {
   }
 };
 const onClearWidget = () => {
-  ElMessageBox.confirm('是否重置表单？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Reset form?', '', {
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No',
     type: 'warning',
   })
     .then(() => {

@@ -8,8 +8,8 @@
       </div>
       <div class="login-input">
         <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
-        <span class="title">Welcome to log in</span>
-        <span class="desc">Code Generation Demo Project</span>
+        <span class="title">Welcome to Log in</span>
+        <span class="desc">Configurable Order Workflow Demo</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"

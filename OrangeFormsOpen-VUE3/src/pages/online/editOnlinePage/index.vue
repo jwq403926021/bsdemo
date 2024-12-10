@@ -14,9 +14,9 @@
           <StepBarItem icon="online-icon icon-basic-info" :name="SysOnlinePageSettingStep.BASIC"
             >基础信息</StepBarItem
           >
-          <StepBarItem icon="online-icon icon-data" :name="SysOnlinePageSettingStep.DATASOURCE"
+          <!-- <StepBarItem icon="online-icon icon-data" :name="SysOnlinePageSettingStep.DATASOURCE"
             >数据模型</StepBarItem
-          >
+          > -->
           <StepBarItem
             icon="online-icon icon-form-design"
             :name="SysOnlinePageSettingStep.FORM_DESIGN"
@@ -62,10 +62,12 @@
           v-if="activeStep == SysOnlinePageSettingStep.BASIC"
           class="main-box"
           style="width: 600px"
+          :dataSource="getPageDatasource"
+          :dblinkInfo="dblinkInfo"
           v-model="formPageData"
         />
         <!-- 在线表单数据模型配置 -->
-        <DataModel
+        <!-- <DataModel
           ref="modelForm"
           :data="getPageDatasourceTableList"
           :defaultFormItemSize="formItemSize"
@@ -77,7 +79,7 @@
           @change="initPageDatasourceInfo"
           @un-saved="onUnSaved"
           v-if="activeStep == SysOnlinePageSettingStep.DATASOURCE && formPageData.pageId"
-        />
+        /> -->
         <!-- 表单设计 -->
         <FormDesign
           v-if="activeStep == SysOnlinePageSettingStep.FORM_DESIGN"
@@ -192,47 +194,43 @@ const onNextClick = () => {
             formPageData.value = { ...res };
           }
           if (formPageData.value.pageId) {
-            initPageDatasourceInfo(formPageData.value.pageId);
+            initPageDatasourceInfo(formPageData.value.pageId).then(res => {
+              onSavePageDatasourceInfo(false)
+                .then(() => {
+                  // Step 1 获取数据源所有用到的数据表的字段列表
+                  let httpCalls: ANY_OBJECT[] = [];
+                  console.log(
+                    '获取数据源所有用到的数据表的字段列表',
+                    getPageDatasourceTableList.value.length,
+                  );
+                  getPageDatasourceTableList.value.forEach(item => {
+                    httpCalls.push(loadOnlineTableColumns(item.tableId));
+                  });
+                  return Promise.all(httpCalls);
+                })
+                .then(res => {
+                  res.forEach((item, index) => {
+                    getPageDatasourceTableList.value[index].columnList = item;
+                    return getPageDatasourceTableList.value[index];
+                  });
+                  // Step 2 获取表单列表
+                  return initPageFormList(formPageData.value.pageId);
+                })
+                .then(() => {
+                  // Step 3 进入表单设计页面
+                  activeStep.value = SysOnlinePageSettingStep.FORM_DESIGN;
+                })
+                .catch(e => {
+                  console.warn(e);
+                });
+            });
           }
           return res;
-        })
-        .then(() => {
-          activeStep.value = SysOnlinePageSettingStep.DATASOURCE;
         })
         .catch((e: Error) => {
           console.warn(e);
         });
 
-      break;
-    case SysOnlinePageSettingStep.DATASOURCE:
-      onSavePageDatasourceInfo(false)
-        .then(() => {
-          // Step 1 获取数据源所有用到的数据表的字段列表
-          let httpCalls: ANY_OBJECT[] = [];
-          console.log(
-            '获取数据源所有用到的数据表的字段列表',
-            getPageDatasourceTableList.value.length,
-          );
-          getPageDatasourceTableList.value.forEach(item => {
-            httpCalls.push(loadOnlineTableColumns(item.tableId));
-          });
-          return Promise.all(httpCalls);
-        })
-        .then(res => {
-          res.forEach((item, index) => {
-            getPageDatasourceTableList.value[index].columnList = item;
-            return getPageDatasourceTableList.value[index];
-          });
-          // Step 2 获取表单列表
-          return initPageFormList(formPageData.value.pageId);
-        })
-        .then(() => {
-          // Step 3 进入表单设计页面
-          activeStep.value = SysOnlinePageSettingStep.FORM_DESIGN;
-        })
-        .catch(e => {
-          console.warn(e);
-        });
       break;
   }
 };
@@ -338,12 +336,7 @@ const onSaveClick = () => {
 };
 const onClose = () => {
   if (showSaveButton.value) {
-    if (activeStep.value == SysOnlinePageSettingStep.DATASOURCE) {
-      // 在数据模型页面状态中，点返回时，尝试取消保存返回上一状态
-      modelForm.value.cancel();
-    } else {
-      activeStep.value = SysOnlinePageSettingStep.DATASOURCE;
-    }
+    activeStep.value = SysOnlinePageSettingStep.BASIC;
   } else {
     if (props.dialog) {
       props.dialog.cancel();

@@ -53,9 +53,17 @@ import { Arrayable } from 'element-plus/es/utils';
 import { ElMessage } from 'element-plus';
 import { FormPage } from '@/types/online/page';
 import { SysOnlinePageStatus, SysOnlinePageType } from '@/common/staticDict/online';
+import { uuid } from '@/pages/workflow/package/utils';
 import { OnlinePageController } from '@/api/online';
+import { ANY_OBJECT } from '@/types/generic';
+import { OnlineDatasourceController, OnlineDblinkController } from '@/api/online';
 
-const props = defineProps<{ modelValue: FormPage }>();
+const props = defineProps<{
+  modelValue: FormPage;
+  dblinkInfo: ANY_OBJECT;
+  datasourceId: string;
+  dataSource?: ANY_OBJECT;
+}>();
 
 const form = ref();
 const formPageData = ref<FormPage>({
@@ -85,6 +93,15 @@ const formRules: Partial<Record<string, Arrayable<FormItemRule>>> = {
 const isEdit = computed(() => {
   return !!formPageData.value.pageId;
 });
+
+const dialogParams = computed(() => {
+  return {
+    pageId: formPageData.value.pageId,
+    datasourceId: props.datasourceId,
+    dblinkInfo: props.dblinkInfo,
+  };
+});
+
 watch(
   () => props.modelValue,
   (newVal, oldVal) => {
@@ -129,7 +146,36 @@ const save = (): Promise<FormPage | undefined> => {
             formPageData.value.pageId = res.data;
           }
           dirty.value = false;
-          resolve(formPageData.value);
+          let dblink: any = '';
+          OnlineDblinkController.list({}).then(res => {
+            dblink = res.data.dataList.map(item => {
+              return {
+                dblinkId: item.dblinkId,
+                label: item.dblinkName,
+                leaf: false,
+              };
+            });
+            const randomName = uuid();
+            let params = {
+              pageId: dialogParams.value.pageId,
+              onlineDatasourceDto: {
+                datasourceId: '',
+                datasourceName: randomName,
+                variableName: randomName,
+                dblinkId: dblink[0].dblinkId,
+                masterTableName: 'zz_test_order_first',
+              },
+            };
+
+            OnlineDatasourceController.add(params)
+              .then(res => {
+                ElMessage.success('保存数据模型成功！');
+                resolve(formPageData.value);
+              })
+              .catch(e => {
+                console.warn(e);
+              });
+          });
         })
         .catch(e => {
           reject(e);

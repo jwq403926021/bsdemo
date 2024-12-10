@@ -4,20 +4,20 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="90px"
+    label-width="120px"
     :size="formItemSize"
     label-position="right"
     @submit.prevent
   >
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="12">
-        <el-form-item label="上级菜单">
+        <el-form-item label="Parent Menu">
           <el-cascader
             ref="menuCascader"
             :options="menuTree"
             v-model="parentMenuPath"
             :props="menuProps"
-            placeholder="选择父菜单"
+            placeholder="Select the parent menu"
             :clearable="true"
             :change-on-select="true"
             @change="onParentMenuChange"
@@ -25,18 +25,18 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="菜单名称" prop="menuName">
-          <el-input v-model="formData.menuName" placeholder="菜单名称" clearable maxlength="30" />
+        <el-form-item label="Menu Name" prop="menuName">
+          <el-input v-model="formData.menuName" placeholder="Menu Name" clearable maxlength="30" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="菜单编码">
-          <el-input v-model="formData.menuCode" placeholder="菜单编码" clearable />
+        <el-form-item label="Menu Code">
+          <el-input v-model="formData.menuCode" placeholder="Menu Code" clearable />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="菜单类型" prop="menuType">
-          <el-select v-model="formData.menuType" :disabled="isEdit" placeholder="菜单类型">
+        <el-form-item label="Menu Type" prop="menuType">
+          <el-select v-model="formData.menuType" :disabled="isEdit" placeholder="Menu Type">
             <el-option
               v-for="item in getValidMenuType"
               :key="item.id"
@@ -47,22 +47,22 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="显示顺序" prop="showOrder">
+        <el-form-item label="Show Order" prop="showOrder">
           <el-input-number
             v-model="formData.showOrder"
             style="width: 100%"
             :min="1"
             :max="99999"
             controls-position="right"
-            placeholder="显示顺序"
+            placeholder="Show Order"
           />
         </el-form-item>
       </el-col>
       <el-col :span="12" v-if="formData.menuType === SysMenuType.MENU">
-        <el-form-item label="绑定类型">
+        <el-form-item label="Bind Type">
           <el-select
             v-model="formData.bindType"
-            plaaceholder="菜单绑定类型"
+            plaaceholder="Menu Bind Type"
             :disabled="formData.menuType !== 1 || isEdit"
             @change="onBindTypeChange"
           >
@@ -81,19 +81,19 @@
           formData.menuType === SysMenuType.MENU && formData.bindType === SysMenuBindType.ROUTER
         "
       >
-        <el-form-item label="菜单路由">
+        <el-form-item label="Menu Route">
           <el-input
             v-model="formData.formRouterName"
-            placeholder="菜单路由"
+            placeholder="Menu Route"
             :disabled="formData.menuType !== 1"
           />
         </el-form-item>
       </el-col>
       <el-col :span="12" v-if="formData.bindType === SysMenuBindType.THRID_URL">
-        <el-form-item label="链接URL" prop="targetUrl">
+        <el-form-item label="Target Url" prop="targetUrl">
           <el-input
             v-model="formData.targetUrl"
-            placeholder="链接URL"
+            placeholder="Target Url"
             :disabled="formData.menuType !== 1"
           />
         </el-form-item>
@@ -105,13 +105,13 @@
           formData.bindType === SysMenuBindType.ONLINE_FORM
         "
       >
-        <el-form-item label="在线表单" prop="onlineFormId">
+        <el-form-item label="Online Form" prop="onlineFormId">
           <el-cascader
             v-model="onlineFormPath"
             :options="formTreeData"
             filterable
             :clearable="true"
-            placeholder="选择菜单绑定的在线表单"
+            placeholder="Select the online form bound to the menu"
             :props="{ value: 'id', label: 'name' }"
             @change="onOnlineFormChange"
           />
@@ -123,20 +123,20 @@
           formData.menuType === SysMenuType.MENU && formData.bindType === SysMenuBindType.WORK_ORDER
         "
       >
-        <el-form-item label="工作流" prop="onlineFlowEntryId">
+        <el-form-item label="Online Flow" prop="onlineFlowEntryId">
           <el-cascader
             v-model="onlineFlowPath"
             :options="entryTreeData"
             filterable
             :clearable="true"
-            placeholder="选择菜单绑定的工单"
+            placeholder="Select the work order bound to the menu"
             :props="{ value: 'id', label: 'name' }"
             @change="onOnlineEntryChange"
           />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="菜单图标" prop="icon">
+        <el-form-item label="Menu Icon" prop="icon">
           <icon-select v-model:value="formData.icon" :height="28" />
         </el-form-item>
       </el-col>
@@ -144,14 +144,14 @@
     <!-- 权限字设置 -->
     <el-row class="perm-code-box full-width-input">
       <el-col :span="24">
-        <el-form-item label="权限字列表">
+        <el-form-item label="Access word list">
           <el-select
             v-model="formData.permCodeList"
             multiple
             filterable
             allow-create
             default-first-option
-            placeholder="请从列表中选择权限字或输入后按回车添加新的权限字"
+            placeholder="Please select a permission word from the list"
           >
             <el-option v-for="item in permCodeList" :key="item" :label="item" :value="item" />
           </el-select>
@@ -160,7 +160,7 @@
     </el-row>
     <!-- 弹窗按钮 -->
     <el-row type="flex" justify="end" class="dialog-btn-layer mt20">
-      <el-button :plain="true" @click="onCancel">取消</el-button>
+      <el-button :plain="true" @click="onCancel">cancel</el-button>
       <el-button
         type="primary"
         @click="onSubmit"
@@ -171,7 +171,7 @@
           )
         "
       >
-        确定
+        Confirm
       </el-button>
     </el-row>
   </el-form>
@@ -240,18 +240,18 @@ const formData = ref<MenuItem & ANY_OBJECT>({
   permCodeList: [],
 } as MenuItem);
 const rules = {
-  menuName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
-  showOrder: [{ required: true, message: '请输入菜单显示顺序', trigger: 'blur' }],
+  menuName: [{ required: true, message: 'Please enter the menu name', trigger: 'blur' }],
+  showOrder: [{ required: true, message: 'Please enter the menu display order', trigger: 'blur' }],
   onlineFormId: [
     {
       required: true,
-      message: '请选择菜单绑定的在线表单',
+      message: 'Please select the online form bound to the menu',
       trigger: 'blur',
     },
   ],
-  onlineFlowEntryId: [{ required: true, message: '请选择菜单绑定的工单', trigger: 'blur' }],
-  formRouterName: [{ required: true, message: '请输入菜单路由名称', trigger: 'blur' }],
-  targetUrl: [{ required: true, message: '请输入跳转链接地址', trigger: 'blur' }],
+  onlineFlowEntryId: [{ required: true, message: 'Please select the work order bound to the menu', trigger: 'blur' }],
+  formRouterName: [{ required: true, message: 'Please enter a menu route name', trigger: 'blur' }],
+  targetUrl: [{ required: true, message: 'Please enter the jump link address', trigger: 'blur' }],
 };
 
 const isEdit = computed(() => {
@@ -448,27 +448,27 @@ const onSubmit = () => {
         if (isEdit.value) {
           SystemMenuController.updateMenu(params)
             .then(res => {
-              ElMessage.success('编辑成功');
+              ElMessage.success('Edit Success');
               props.dialog.submit(res);
             })
             .catch(e => {
               console.error(e);
-              ElMessage.error('编辑异常');
+              ElMessage.error('Edit error');
             });
         } else {
           SystemMenuController.addMenu(params)
             .then(res => {
-              ElMessage.success('添加成功');
+              ElMessage.success('Add success');
               props.dialog.submit(res);
             })
             .catch(e => {
               console.error(e);
-              ElMessage.error('添加异常');
+              ElMessage.error('Add error');
             });
         }
       }
     } else {
-      console.log('表单验证失败');
+      console.log('Form validation failed');
     }
   });
 };

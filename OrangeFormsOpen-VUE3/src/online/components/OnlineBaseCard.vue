@@ -142,7 +142,7 @@
               <div style="width: 100px; height: 100px">
                 <el-icon><UploadFilled /></el-icon>
               </div>
-              <span>请拖入组件进行编辑</span>
+              <span>Please drag and drop components to edit</span>
             </div>
           </VueDraggable>
         </el-row>

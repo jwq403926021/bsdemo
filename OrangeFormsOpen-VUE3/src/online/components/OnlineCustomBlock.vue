@@ -213,7 +213,7 @@
           <div style="width: 100px; height: 100px">
             <el-icon><UploadFilled /></el-icon>
           </div>
-          <span>请拖入组件进行编辑</span>
+          <span>Please drag and drop components to edit</span>
         </div>
       </el-row>
     </el-col>
@@ -320,7 +320,7 @@ const onDragAdd = (e: DragEvent) => {
       'update:value',
       props.value.filter((item, index) => index !== e.newIndex),
     );
-    ElMessageBox('你不能添加已经存在的组件');
+    ElMessageBox('You cannot add an existing component');
     return;
   }
   addItem.props.activeStep = active.value;
@@ -342,9 +342,9 @@ const onCopyWidget = (widget: ANY_OBJECT) => {
   emit('update:value', [...props.value, widget]);
 };
 const onDeleteWidget = (widget: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否删除此组件？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this component?', '', {
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No',
     type: 'warning',
   })
     .then(() => {

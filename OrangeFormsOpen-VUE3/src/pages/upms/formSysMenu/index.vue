@@ -14,25 +14,25 @@
           :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
           @click="onCreateSysMenuClick()"
         >
-          新建
+          New
         </el-button>
       </template>
-      <vxe-column title="菜单名称" field="menuName" width="300px" tree-node> </vxe-column>
-      <vxe-column title="菜单图标" field="icon" width="100px">
+      <vxe-column title="Menu Name" field="menuName" width="300px" tree-node> </vxe-column>
+      <vxe-column title="Menu Icon" field="icon" width="100px">
         <template v-slot="scope">
           <orange-icon v-if="scope.row.icon" :icon="scope.row.icon" />
         </template>
       </vxe-column>
-      <vxe-column title="菜单顺序" field="showOrder" width="100px"> </vxe-column>
-      <vxe-column title="菜单类型" field="menuType" width="100px">
+      <vxe-column title="Menu Order" field="showOrder" width="110px"> </vxe-column>
+      <vxe-column title="Menu Type" field="menuType" width="100px">
         <template v-slot="scope">
           <el-tag :type="getMenuType(scope.row)" effect="light">{{
             SysMenuType.getValue(scope.row.menuType)
           }}</el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="菜单路由" field="formRouterName" min-width="250px"> </vxe-column>
-      <vxe-column title="操作" fixed="right" width="220px">
+      <vxe-column title="Menu Route" field="formRouterName" min-width="250px"> </vxe-column>
+      <vxe-column title="Actions" fixed="right" width="220px">
         <template v-slot="scope">
           <el-button
             @click="onEditSysMenuClick(scope.row)"
@@ -44,7 +44,7 @@
               (scope.row.onlineFormId != null && scope.row.menuType === SysMenuType.BUTTON)
             "
           >
-            编辑
+            Edit
           </el-button>
           <el-button
             @click="onAddChildSysMenuClick(scope.row)"
@@ -56,7 +56,7 @@
               scope.row.menuType === SysMenuType.BUTTON
             "
           >
-            添加
+            Add
           </el-button>
           <el-button
             @click="onDeleteClick(scope.row)"
@@ -68,7 +68,7 @@
               (scope.row.onlineFormId != null && scope.row.menuType === SysMenuType.BUTTON)
             "
           >
-            删除
+            Delete
           </el-button>
         </template>
       </vxe-column>
@@ -124,7 +124,7 @@ const loadSysMenuData = (params: T): Promise<TableData<MenuItem>> => {
 };
 
 /**
- * 菜单数据数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * Menu Data Load Verification Function, returns true to continue loading data, false to stop loading data
  */
 const loadSysMenuVerify = () => {
   return true;
@@ -136,7 +136,7 @@ const tableOptions: TableOptions<MenuItem> = {
   paged: false,
 };
 
-// 加载菜单数据
+// Load Menu Data
 const formSysMenu = reactive({
   formFilter: {},
   formFilterCopy: {},
@@ -147,7 +147,7 @@ const formSysMenu = reactive({
 });
 
 const refreshFormSysMenu = (reloadData = false) => {
-  // 重新获取数据组件的数据
+  // Reload the data of the component
   if (reloadData) {
     formSysMenu.SysMenu.impl.refreshTable(true, 1);
   } else {
@@ -156,16 +156,15 @@ const refreshFormSysMenu = (reloadData = false) => {
   formSysMenu.isInit = true;
 };
 
-// 菜单的增删改
+// Menu CRUD Operations
 const onCreateSysMenuClick = () => {
   let params = {
     menuList: allMenuList,
   };
   Dialog.show<MenuItem>(
-    '新建',
+    'Create',
     SysMenuEditForm,
     {
-      // 如果内容高度会发生变化，一定要设为最高高度，否则高度撑开之后会引发dialog刷新z-index，从而遮挡element弹出组件
       area: ['800px', '650px'],
     },
     params,
@@ -179,7 +178,6 @@ const onCreateSysMenuClick = () => {
 };
 
 const onEditSysMenuClick = (row: MenuItem) => {
-  //console.log('onEditSysMenuClick', row);
   SystemMenuController.viewMenu({ menuId: row.menuId })
     .then(res => {
       let params = {
@@ -189,7 +187,7 @@ const onEditSysMenuClick = (row: MenuItem) => {
       };
 
       Dialog.show(
-        '编辑',
+        'Edit',
         SysMenuEditForm,
         {
           area: ['800px', '650px'],
@@ -209,14 +207,13 @@ const onEditSysMenuClick = (row: MenuItem) => {
 };
 
 const onAddChildSysMenuClick = (row: MenuItem) => {
-  console.log('onAddChildSysMenuClick', row);
   let params = {
     parentId: row.menuId,
     menuList: allMenuList,
   };
 
   Dialog.show(
-    '添加子菜单',
+    'Add Child Menu',
     SysMenuEditForm,
     {
       area: ['800px', '650px'],
@@ -232,14 +229,13 @@ const onAddChildSysMenuClick = (row: MenuItem) => {
 };
 
 const onDeleteClick = (row: MenuItem) => {
-  console.log('onDeleteClick', row);
   let params = {
     menuId: row.menuId,
   };
 
-  ElMessageBox.confirm(`是否删除菜单项【${row.menuName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Are you sure you want to delete the menu item【${row.menuName}】?`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(res => {
@@ -262,4 +258,3 @@ onMounted(() => {
   refreshFormSysMenu();
 });
 </script>
-@/types/upms/menu

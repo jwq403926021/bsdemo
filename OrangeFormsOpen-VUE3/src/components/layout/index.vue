@@ -81,7 +81,7 @@
                 : '64px'
               : layoutStore.supportColumn
               ? '280px'
-              : '204px'
+              : '260px'
           "
           class="sidebar"
         >

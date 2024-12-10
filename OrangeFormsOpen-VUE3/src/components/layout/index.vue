@@ -309,9 +309,9 @@ const handleMessage = (command: string) => {
 const handleCommand = (command: string) => {
   switch (command) {
     case 'logout':
-      ElMessageBox.confirm('是否退出登录？', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      ElMessageBox.confirm('Confirm to logout?', '', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
         type: 'warning',
       })
         .then(() => {
@@ -319,7 +319,7 @@ const handleCommand = (command: string) => {
             .then(() => {
               ElMessage({
                 type: 'success',
-                message: '退出成功',
+                message: 'Logout successful',
               });
               setToken(null);
               router.replace('/login');

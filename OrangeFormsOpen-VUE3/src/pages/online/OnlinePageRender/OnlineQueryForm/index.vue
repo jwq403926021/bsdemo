@@ -95,22 +95,22 @@
       </el-container>
     </template>
     <template v-else>
-      <OnlineFilterBox
-        class="query-filter-box"
-        :isEdit="dialogParams.isEdit"
-        ref="filterBox"
-        :itemWidth="form.filterItemWidth || 350"
-        style="margin-bottom: 16px"
-        :widgetList="activeWidgetList"
-        :formData="formData"
-        :operationList="activeOperationList"
-        @widgetClick="onWidgetClick"
-        @search="refreshTable(true)"
-        @reset="onReset"
-        @copy="onCopyWidget"
-        @delete="onDeleteWidget"
-        @operationClick="onOperationClick"
-      />
+<!--      <OnlineFilterBox-->
+<!--        class="query-filter-box"-->
+<!--        :isEdit="dialogParams.isEdit"-->
+<!--        ref="filterBox"-->
+<!--        :itemWidth="form.filterItemWidth || 350"-->
+<!--        style="margin-bottom: 16px"-->
+<!--        :widgetList="activeWidgetList"-->
+<!--        :formData="formData"-->
+<!--        :operationList="activeOperationList"-->
+<!--        @widgetClick="onWidgetClick"-->
+<!--        @search="refreshTable(true)"-->
+<!--        @reset="onReset"-->
+<!--        @copy="onCopyWidget"-->
+<!--        @delete="onDeleteWidget"-->
+<!--        @operationClick="onOperationClick"-->
+<!--      />-->
       <div
         class="query-table-box custom-widget-item widget-item"
         :class="{ active: dialogParams.isEdit && currentWidget === queryTable }"

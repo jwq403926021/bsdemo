@@ -711,6 +711,9 @@ onMounted(async () => {
   }
   isReady.value = true;
 });
+onUnmounted(() => {
+  eventbus.off('refreshTable')
+})
 </script>
 
 <style scoped>

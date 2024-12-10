@@ -683,9 +683,20 @@ const onReset = () => {
 const initFormData = () => {
   refreshTable(true);
 };
+const getQueryParam = (paramName) => {
+  const str = window.location.hash.substring(13) + ''
+  const query = str // 去掉开头的 ?
+  const params = query.split('&');
+  for (const param of params) {
+    const [key, value] = param.split('=');
+    if (key === paramName) {
+      return decodeURIComponent(value || ''); // 解码参数值
+    }
+  }
+  return null; // 参数不存在时返回 null
+}
 const refresh = async () => {
-  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`);
-  console.log(res?.data, '?!@#?!@#?');
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`);
   tableData.value = res?.data || [];
 };
 onMounted(async () => {

@@ -297,6 +297,18 @@ const onCancel = () => {
     onCloseThirdDialog(false);
   }
 };
+const getQueryParam = (paramName) => {
+  const str = window.location.hash.substring(13) + ''
+  const query = str // 去掉开头的 ?
+  const params = query.split('&');
+  for (const param of params) {
+    const [key, value] = param.split('=');
+    if (key === paramName) {
+      return decodeURIComponent(value || ''); // 解码参数值
+    }
+  }
+  return null; // 参数不存在时返回 null
+}
 // 提交表单数据
 const onSaveFormData = async () => {
   let params = {}
@@ -327,6 +339,7 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
+    orderDataType: getQueryParam('formId')
   }
   console.log('real params::::', params)
   const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)

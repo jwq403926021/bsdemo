@@ -25,7 +25,7 @@
         <!--          </el-select>-->
         <!--        </el-form-item>-->
         <el-form-item
-          label="绑定表"
+          label="Bind Table"
           v-if="data.bindData?.dataType === SysCustomWidgetBindDataType.Column && supportBindTable"
         >
           <el-select
@@ -44,7 +44,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="绑定字段"
+          label="Bind Field"
           v-if="data.bindData?.dataType === SysCustomWidgetBindDataType.Column && supportBindColumn"
         >
           <el-select
@@ -76,7 +76,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="系统变量"
+          label="System Variable"
           v-if="data.bindData?.dataType === SysCustomWidgetBindDataType.SYSTEM_VARIABLE"
         >
           <el-select
@@ -94,7 +94,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="自定义字段"
+          label="Custom Field"
           v-if="data.bindData?.dataType === SysCustomWidgetBindDataType.Custom"
         >
           <el-select
@@ -111,10 +111,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="组件名称">
+        <el-form-item label="Show Name">
           <el-input v-model="data.showName" placeholder="" clearable filterable />
         </el-form-item>
-        <el-form-item label="组件标识">
+        <el-form-item label="Variable Name">
           <el-input v-model="data.variableName" placeholder="" clearable filterable />
         </el-form-item>
       </el-col>

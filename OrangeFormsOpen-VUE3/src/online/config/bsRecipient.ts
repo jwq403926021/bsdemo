@@ -7,7 +7,7 @@ import { ANY_OBJECT } from '@/types/generic';
 
 const bsRecipient = {
   span: {
-    name: '组件宽度',
+    name: 'Span',
     widgetType: SysCustomWidgetType.Slider,
     value: 13,
     visible: false,
@@ -15,23 +15,23 @@ const bsRecipient = {
     max: 24,
   },
   depend: {
-    name: '依赖于',
+    name: 'Depend',
     widgetType: SysCustomWidgetType.Input,
     value: '',
   },
   activeStep: {
-    name: '归属',
+    name: 'Active Step',
     widgetType: SysCustomWidgetType.NumberInput,
     visible: false,
     value: '',
   },
   tableName: {
-    name: '默认表',
+    name: 'Table Name',
     visible: false,
     value: 'zz_test_order_first',
   },
   columnName: {
-    name: '默认列',
+    name: 'Column Name',
     visible: false,
     value: 'recipient',
   },

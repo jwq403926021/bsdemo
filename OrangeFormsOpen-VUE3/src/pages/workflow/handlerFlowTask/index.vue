@@ -444,7 +444,7 @@ const handlerDraft = () => {
           processDefinitionKey: dialogParams.value.processDefinitionKey,
         })
           .then(res => {
-            ElMessage.success('草稿保存成功！');
+            ElMessage.success('Draft save success');
             draftProcessInstanceId.value = res.data.processInstanceId;
             draftTaskId.value = res.data.taskId;
           })

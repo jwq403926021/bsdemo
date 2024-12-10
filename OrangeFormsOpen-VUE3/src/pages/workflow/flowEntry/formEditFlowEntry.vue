@@ -882,7 +882,7 @@ const onNextClick = () => {
         onSaveFlowEntryBasicInfo()
           .then(res => {
             if (!isEdit.value) formFlowEntryData.value.entryId = res.data;
-            ElMessage.success('保存成功');
+            ElMessage.success('Save success');
             // 自动化任务直接跳转到流程设计页面
             if (formFlowEntryData.value.flowType === FlowEntryType.AUTO_TASK) {
               activeStep.value = SysFlowEntryStep.PROCESS_DESIGN;
@@ -913,7 +913,7 @@ const onNextClick = () => {
       // 保存状态信息
       onSaveFlowEntryBasicInfo()
         .then(() => {
-          ElMessage.success('保存成功');
+          ElMessage.success('Save success');
           activeStep.value = SysFlowEntryStep.PROCESS_DESIGN;
         })
         .catch(e => {
@@ -1118,7 +1118,7 @@ const onSaveFlowEntry = (xml: string) => {
   formFlowEntryData.value.bpmnXml = xml;
   onSaveFlowEntryBasicInfo()
     .then(() => {
-      ElMessage.success('保存成功');
+      ElMessage.success('Save success');
     })
     .catch(e => {
       console.warn(e);

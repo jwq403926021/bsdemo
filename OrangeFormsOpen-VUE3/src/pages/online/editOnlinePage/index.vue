@@ -656,7 +656,7 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
   let httpCall = OnlineFormController.update(params);
   httpCall
     .then(() => {
-      ElMessage.success('保存成功');
+      ElMessage.success('Save success');
       initPageFormList(formPageData.value.pageId).catch(e => {
         console.warn(e);
       });

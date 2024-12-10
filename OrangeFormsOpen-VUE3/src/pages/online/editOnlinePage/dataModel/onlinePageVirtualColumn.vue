@@ -653,7 +653,7 @@ const saveColumn = () => {
         .then(res => {
           if (currentColumn.value && !currentColumn.value.virtualColumnId)
             currentColumn.value.virtualColumnId = res.data;
-          ElMessage.success('保存成功！');
+          ElMessage.success('Save success');
           loadOnlineVirtualColumnList();
         })
         .catch(e => {

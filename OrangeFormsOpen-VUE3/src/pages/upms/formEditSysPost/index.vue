@@ -135,7 +135,7 @@ const onSaveClick = () => {
     let httpCall = isEdit.value ? SysPostController.update(params) : SysPostController.add(params);
     httpCall
       .then(res => {
-        ElMessage.success('保存成功');
+        ElMessage.success('Save success');
         if (props.dialog) {
           props.dialog.submit(res);
         }

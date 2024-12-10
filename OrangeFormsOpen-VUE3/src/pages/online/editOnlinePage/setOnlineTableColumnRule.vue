@@ -339,7 +339,7 @@ const onUpdateColumnRule = () => {
   };
   OnlineColumnController.updateOnlineColumnRule(params)
     .then(() => {
-      ElMessage.success('保存成功！');
+      ElMessage.success('Save success');
       onCancel(true);
     })
     .catch(e => {

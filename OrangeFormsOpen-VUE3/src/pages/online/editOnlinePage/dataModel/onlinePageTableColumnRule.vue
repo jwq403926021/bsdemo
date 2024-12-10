@@ -478,7 +478,7 @@ const saveColumn = () => {
     OnlineColumnController.update(params)
       .then(res => {
         dirty.value = false;
-        ElMessage.success('保存成功！');
+        ElMessage.success('Save success');
         loadOnlineTableColumns();
         resolve(res);
       })

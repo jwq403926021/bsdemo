@@ -10,44 +10,44 @@
           <img src="@/assets/img/logo_white.png" alt="" />
         </div>
         <div class="header-main">
-          <div
+          <!-- <div
             class="logo"
             v-if="!layoutStore.supportColumn"
             style="padding-left: 8px; margin-right: 8px"
-          ></div>
+          ></div> -->
           <div class="title">{{ projectName }}</div>
           <bread-crumb class="breadcrumb-container" />
           <div class="header-menu" style="flex-grow: 1">
-<!--            <el-dropdown trigger="click" style="margin-right: 14px" @command="handleMessage">-->
-<!--              <el-badge-->
-<!--                is-dot-->
-<!--                :hidden="!messageCount.totalCount || messageCount.totalCount <= 0"-->
-<!--                style="height: 20px; line-height: 20px; cursor: pointer"-->
-<!--              >-->
-<!--                <i class="online-icon icon-message" style="font-size: 16px; color: #333" />-->
-<!--              </el-badge>-->
-<!--              <template #dropdown>-->
-<!--                <el-dropdown-menu style="min-width: 130px">-->
-<!--                  <el-dropdown-item class="user-dropdown-item" command="remindingMessage">-->
-<!--                    催办消息-->
-<!--                    <el-badge-->
-<!--                      :value="messageCount.remindingMessageCount"-->
-<!--                      :hidden="-->
-<!--                        !messageCount.remindingMessageCount ||-->
-<!--                        messageCount.remindingMessageCount <= 0-->
-<!--                      "-->
-<!--                    />-->
-<!--                  </el-dropdown-item>-->
-<!--                  <el-dropdown-item class="user-dropdown-item" command="copyMessage">-->
-<!--                    抄送消息-->
-<!--                    <el-badge-->
-<!--                      :value="messageCount.copyMessageCount"-->
-<!--                      :hidden="!messageCount.copyMessageCount || messageCount.copyMessageCount <= 0"-->
-<!--                    />-->
-<!--                  </el-dropdown-item>-->
-<!--                </el-dropdown-menu>-->
-<!--              </template>-->
-<!--            </el-dropdown>-->
+            <!--            <el-dropdown trigger="click" style="margin-right: 14px" @command="handleMessage">-->
+            <!--              <el-badge-->
+            <!--                is-dot-->
+            <!--                :hidden="!messageCount.totalCount || messageCount.totalCount <= 0"-->
+            <!--                style="height: 20px; line-height: 20px; cursor: pointer"-->
+            <!--              >-->
+            <!--                <i class="online-icon icon-message" style="font-size: 16px; color: #333" />-->
+            <!--              </el-badge>-->
+            <!--              <template #dropdown>-->
+            <!--                <el-dropdown-menu style="min-width: 130px">-->
+            <!--                  <el-dropdown-item class="user-dropdown-item" command="remindingMessage">-->
+            <!--                    催办消息-->
+            <!--                    <el-badge-->
+            <!--                      :value="messageCount.remindingMessageCount"-->
+            <!--                      :hidden="-->
+            <!--                        !messageCount.remindingMessageCount ||-->
+            <!--                        messageCount.remindingMessageCount <= 0-->
+            <!--                      "-->
+            <!--                    />-->
+            <!--                  </el-dropdown-item>-->
+            <!--                  <el-dropdown-item class="user-dropdown-item" command="copyMessage">-->
+            <!--                    抄送消息-->
+            <!--                    <el-badge-->
+            <!--                      :value="messageCount.copyMessageCount"-->
+            <!--                      :hidden="!messageCount.copyMessageCount || messageCount.copyMessageCount <= 0"-->
+            <!--                    />-->
+            <!--                  </el-dropdown-item>-->
+            <!--                </el-dropdown-menu>-->
+            <!--              </template>-->
+            <!--            </el-dropdown>-->
             <span class="line"></span>
             <img :src="headerImg ? headerImg : defaultHeaderImg" class="header-img" />
             <el-dropdown class="user-dropdown" trigger="click" @command="handleCommand">
@@ -57,12 +57,12 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-<!--                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword"-->
-<!--                    >修改密码</el-dropdown-item-->
-<!--                  >-->
-<!--                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage"-->
-<!--                    >修改头像</el-dropdown-item-->
-<!--                  >-->
+                  <!--                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword"-->
+                  <!--                    >修改密码</el-dropdown-item-->
+                  <!--                  >-->
+                  <!--                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage"-->
+                  <!--                    >修改头像</el-dropdown-item-->
+                  <!--                  >-->
                   <el-dropdown-item class="user-dropdown-item" command="logout"
                     >Logout</el-dropdown-item
                   >
@@ -365,14 +365,19 @@ onBeforeUnmount(() => {
   .header-main {
     display: flex;
     align-items: center;
-    padding-left: 4px;
     box-shadow: 0 2px 10px 1px rgb(65 64 133 / 10%);
     flex: 1;
     .title {
       overflow: hidden;
-      width: 144px;
+      width: 260px;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-size: 30px;
+      text-align: center;
+      height: 60px;
+      line-height: 60px;
+      background-color: #1A457A;
+      color: white;
     }
   }
   .logo {

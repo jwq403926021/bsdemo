@@ -394,7 +394,7 @@ const onSubmit = () => {
       : OnlineDatasourceRelationController.add(params);
     httpCall
       .then(() => {
-        ElMessage.success('保存成功');
+        ElMessage.success('Save success');
         if (props.dialog) {
           props.dialog.submit(true);
         } else {

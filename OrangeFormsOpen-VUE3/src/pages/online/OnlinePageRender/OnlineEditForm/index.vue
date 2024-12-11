@@ -68,7 +68,7 @@
               style="margin-right: 16px"
               @click="onSubmit"
             >
-              Save
+              Submit
             </el-button>
             <el-button size="default" :plain="true" @click="onCancel"> Back </el-button>
           </el-row>

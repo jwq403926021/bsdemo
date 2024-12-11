@@ -131,12 +131,12 @@
         </el-row>
         <vxe-table border="inner" height="100%" :data="tableData">
           <vxe-column type="seq" title="No." width="150px" />
-          <vxe-column title="divisionsName" field="divisionsName" width="150px" />
-          <vxe-column title="srName" field="srName" width="150px" />
-          <vxe-column title="contactInfo" field="contactInfo" width="150px" />
-          <vxe-column title="createdAt" field="createdAt" width="150px" />
-          <vxe-column title="deliveryDate" field="deliveryDate" width="150px" />
-          <vxe-column title="phone" field="phone" width="150px" />
+          <vxe-column title="Division Name" field="divisionsName" width="150px" />
+          <vxe-column title="SR" field="srName" width="150px" />
+          <vxe-column title="Contact Info" field="contactInfo" width="150px" />
+          <vxe-column title="Created At" field="createdAt" width="150px" />
+          <vxe-column title="Delivery Date" field="deliveryDate" width="150px" />
+          <vxe-column title="Phone" field="phone" width="150px" />
           <!--          <vxe-column-->
           <!--            title="productName"-->
           <!--            field="productName"-->
@@ -152,15 +152,15 @@
           <!--            field="qty"-->
           <!--            width="150px"-->
           <!--          />-->
-          <vxe-column title="recipient" field="recipient" width="150px" />
-          <vxe-column title="shipTo" field="shipTo" width="150px" />
-          <vxe-column title="shipment" field="shipment" width="150px" />
+          <vxe-column title="Recipient" field="recipient" width="150px" />
+          <vxe-column title="Ship To" field="shipTo" width="150px" />
+          <vxe-column title="Shipment" field="shipment" width="150px" />
           <!--          <vxe-column-->
           <!--            title="soldTo"-->
           <!--            field="soldTo"-->
           <!--            width="150px"-->
           <!--          />-->
-          <vxe-column title="stockLocName" field="stockLocName" width="150px" />
+          <vxe-column title="Stock Loc" field="stockLocName" width="150px" />
         </vxe-table>
         <!--        <OnlineCustomTable-->
         <!--          :dataList="queryTableWidget.dataList"-->

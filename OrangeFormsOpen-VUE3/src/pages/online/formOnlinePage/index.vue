@@ -1,39 +1,39 @@
 <template>
   <div style="position: relative">
-<!--    <el-form-->
-<!--      ref="form"-->
-<!--      :model="formOnlinePage"-->
-<!--      label-width="75px"-->
-<!--      :size="layoutStore.defaultFormItemSize"-->
-<!--      label-position="right"-->
-<!--      @submit.prevent-->
-<!--    >-->
-<!--      <filter-box :item-width="350" @search="refreshOnlinePage(true)" @reset="onReset">-->
-<!--        <el-form-item label="表单类型" prop="formFilter.pageType">-->
-<!--          <el-select-->
-<!--            class="filter-item"-->
-<!--            v-model="formOnlinePage.formFilter.pageType"-->
-<!--            placeholder="表单类型"-->
-<!--            :clearable="true"-->
-<!--          >-->
-<!--            <el-option-->
-<!--              v-for="item in SysOnlinePageType.getList()"-->
-<!--              :key="item.id"-->
-<!--              :value="item.id"-->
-<!--              :label="item.name"-->
-<!--            />-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="表单名称" prop="formFilter.pageName">-->
-<!--          <el-input-->
-<!--            class="filter-item"-->
-<!--            v-model="formOnlinePage.formFilter.pageName"-->
-<!--            :clearable="true"-->
-<!--            placeholder="表单名称"-->
-<!--          />-->
-<!--        </el-form-item>-->
-<!--      </filter-box>-->
-<!--    </el-form>-->
+    <!--    <el-form-->
+    <!--      ref="form"-->
+    <!--      :model="formOnlinePage"-->
+    <!--      label-width="75px"-->
+    <!--      :size="layoutStore.defaultFormItemSize"-->
+    <!--      label-position="right"-->
+    <!--      @submit.prevent-->
+    <!--    >-->
+    <!--      <filter-box :item-width="350" @search="refreshOnlinePage(true)" @reset="onReset">-->
+    <!--        <el-form-item label="表单类型" prop="formFilter.pageType">-->
+    <!--          <el-select-->
+    <!--            class="filter-item"-->
+    <!--            v-model="formOnlinePage.formFilter.pageType"-->
+    <!--            placeholder="表单类型"-->
+    <!--            :clearable="true"-->
+    <!--          >-->
+    <!--            <el-option-->
+    <!--              v-for="item in SysOnlinePageType.getList()"-->
+    <!--              :key="item.id"-->
+    <!--              :value="item.id"-->
+    <!--              :label="item.name"-->
+    <!--            />-->
+    <!--          </el-select>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label="表单名称" prop="formFilter.pageName">-->
+    <!--          <el-input-->
+    <!--            class="filter-item"-->
+    <!--            v-model="formOnlinePage.formFilter.pageName"-->
+    <!--            :clearable="true"-->
+    <!--            placeholder="表单名称"-->
+    <!--          />-->
+    <!--        </el-form-item>-->
+    <!--      </filter-box>-->
+    <!--    </el-form>-->
     <table-box
       class="page-table"
       ref="class"
@@ -58,33 +58,33 @@
       <vxe-column title="No." type="seq" width="55px" :index="pageListWidget.getTableIndex" />
       <vxe-column title="Page Name" field="pageName" />
       <vxe-column title="Page Code" field="pageCode" />
-<!--      <vxe-column title="Page Type">-->
-<!--        <template v-slot="scope">-->
-<!--          <el-tag-->
-<!--            :size="layoutStore.defaultFormItemSize"-->
-<!--            :type="scope.row.pageType === SysOnlinePageType.BIZ ? 'success' : 'primary'"-->
-<!--          >-->
-<!--            {{ SysOnlinePageType.getValue(scope.row.pageType) }}-->
-<!--          </el-tag>-->
-<!--        </template>-->
-<!--      </vxe-column>-->
-<!--      <vxe-column title="Page Status" field="statusDictMap.name">-->
-<!--        <template v-slot="scope">-->
-<!--          <el-tag-->
-<!--            :size="layoutStore.defaultFormItemSize"-->
-<!--            :type="getPageStatusTagType(scope.row.status)"-->
-<!--          >-->
-<!--            {{ SysOnlinePageStatus.getValue(scope.row.status) }}-->
-<!--          </el-tag>-->
-<!--        </template>-->
-<!--      </vxe-column>-->
+      <!--      <vxe-column title="Page Type">-->
+      <!--        <template v-slot="scope">-->
+      <!--          <el-tag-->
+      <!--            :size="layoutStore.defaultFormItemSize"-->
+      <!--            :type="scope.row.pageType === SysOnlinePageType.BIZ ? 'success' : 'primary'"-->
+      <!--          >-->
+      <!--            {{ SysOnlinePageType.getValue(scope.row.pageType) }}-->
+      <!--          </el-tag>-->
+      <!--        </template>-->
+      <!--      </vxe-column>-->
+      <!--      <vxe-column title="Page Status" field="statusDictMap.name">-->
+      <!--        <template v-slot="scope">-->
+      <!--          <el-tag-->
+      <!--            :size="layoutStore.defaultFormItemSize"-->
+      <!--            :type="getPageStatusTagType(scope.row.status)"-->
+      <!--          >-->
+      <!--            {{ SysOnlinePageStatus.getValue(scope.row.status) }}-->
+      <!--          </el-tag>-->
+      <!--        </template>-->
+      <!--      </vxe-column>-->
       <vxe-column title="Release Status">
         <template v-slot="scope">
           <el-switch v-model="scope.row.published" @change="onUpdatePagePublished(scope.row)" />
         </template>
       </vxe-column>
       <vxe-column title="Create Time" field="createTime" />
-      <vxe-column title="Operate" width="120px" fixed="right">
+      <vxe-column title="Operate" width="180px" fixed="right">
         <template v-slot="scope">
           <el-button
             link
@@ -92,6 +92,13 @@
             :size="layoutStore.defaultFormItemSize"
             @click="onEditOnlinePage(scope.row)"
             >Edit</el-button
+          >
+          <el-button
+            link
+            type="primary"
+            :size="layoutStore.defaultFormItemSize"
+            @click="onCopyOnlinePage(scope.row)"
+            >Copy</el-button
           >
           <el-button
             type="danger"
@@ -134,11 +141,21 @@ import { SysOnlinePageStatus, SysOnlinePageType } from '@/common/staticDict/onli
 import { TableOptions } from '@/common/types/pagination';
 import { TableData } from '@/common/types/table';
 import { ANY_OBJECT } from '@/types/generic';
-import { OnlinePageController } from '@/api/online';
+import {
+  OnlinePageController,
+  OnlineDblinkController,
+  OnlineDatasourceController,
+  OnlineFormController,
+} from '@/api/online';
 import { FormPage } from '@/types/online/page';
 import { useThirdPartyAlive } from '@/components/thirdParty/hooks';
 import { useLayoutStore } from '@/store';
 import EditOnlinePage from '../editOnlinePage/index.vue';
+import { uuid } from '@/pages/workflow/package/utils';
+import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
+import axios from 'axios';
+import { serverDefaultCfg } from '@/common/http/config';
+const { getFormConfig } = useFormConfig();
 
 const layoutStore = useLayoutStore();
 useThirdPartyAlive();
@@ -257,6 +274,61 @@ const onCreateOnlinePage = () => {
       console.log(e);
       pageListWidget.refreshTable();
     });
+};
+const onCopyOnlinePage = (row: ANY_OBJECT) => {
+  let params = {
+    onlinePageDto: {
+      extraJson: {},
+      pageCode: `${row.pageCode}copy`,
+      pageName: `${row.pageName}copy`,
+      pageType: row.pageType,
+      published: false,
+      status: SysOnlinePageStatus.DESIGNING,
+    },
+  };
+  const oldPageId = row.pageId;
+  OnlinePageController.add(params).then(res => {
+    let pageId = res.data;
+    let dblink: any = '';
+    OnlineDblinkController.list({}).then(res => {
+      dblink = res.data.dataList.map(item => {
+        return {
+          dblinkId: item.dblinkId,
+          label: item.dblinkName,
+          leaf: false,
+        };
+      });
+      const randomName = uuid();
+      let params = {
+        pageId: pageId,
+        onlineDatasourceDto: {
+          datasourceId: '',
+          datasourceName: randomName,
+          variableName: randomName,
+          dblinkId: dblink[0].dblinkId,
+          masterTableName: 'zz_test_order_first',
+        },
+      };
+
+      OnlineDatasourceController.add(params).then(res => {
+        OnlinePageController.listOnlinePageDatasource({
+          pageId: pageId,
+        }).then(res => {
+          const resData = res.data.dataList[0];
+          const datasourceId = resData.datasourceId;
+          axios
+            .post(`${serverDefaultCfg.baseURL}order/orderFormCopy`, {
+              datasourceId: datasourceId,
+              newPageId: pageId,
+              oldPageId: oldPageId,
+            })
+            .then(res => {
+              refreshOnlinePage(true);
+            });
+        });
+      });
+    });
+  });
 };
 const onEditOnlinePage = (row: ANY_OBJECT) => {
   Dialog.show(

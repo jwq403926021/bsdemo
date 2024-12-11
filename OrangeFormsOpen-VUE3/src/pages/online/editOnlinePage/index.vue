@@ -44,9 +44,8 @@
           <el-button v-if="showSaveButton" :size="formItemSize" type="primary" @click="onSaveClick">
             Save
           </el-button>
-          <el-button @click="onClose" :size="formItemSize">{{
-            showSaveButton ? 'Return' : 'Quit'
-          }}</el-button>
+          <el-button v-if="showSaveButton" @click="onReturn" :size="formItemSize">Return</el-button>
+          <el-button @click="onClose" :size="formItemSize">Quit</el-button>
         </el-row>
       </el-row>
     </el-header>
@@ -334,16 +333,17 @@ const onSaveClick = () => {
     modelForm.value.save();
   }
 };
-const onClose = () => {
+const onReturn = () => {
   if (showSaveButton.value) {
     activeStep.value = SysOnlinePageSettingStep.BASIC;
+  }
+};
+const onClose = () => {
+  if (props.dialog) {
+    props.dialog.cancel();
   } else {
-    if (props.dialog) {
-      props.dialog.cancel();
-    } else {
-      // 关闭第三方弹窗
-      onCloseThirdDialog(true);
-    }
+    // 关闭第三方弹窗
+    onCloseThirdDialog(true);
   }
 };
 

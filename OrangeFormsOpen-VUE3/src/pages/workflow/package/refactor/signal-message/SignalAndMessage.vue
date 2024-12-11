@@ -19,7 +19,7 @@
       <template v-slot:empty>
         <div class="table-empty unified-font">
           <img src="@/assets/img/empty.png" />
-          <span>暂无数据</span>
+          <span>No Data</span>
         </div>
       </template>
     </vxe-table>
@@ -40,7 +40,7 @@
       <template v-slot:empty>
         <div class="table-empty unified-font">
           <img src="@/assets/img/empty.png" />
-          <span>暂无数据</span>
+          <span>No Data</span>
         </div>
       </template>
     </vxe-table>

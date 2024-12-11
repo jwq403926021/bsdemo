@@ -62,7 +62,7 @@
                       style="margin-top: 35px"
                     >
                       <img src="@/assets/img/empty.png" />
-                      <span>暂无数据</span>
+                      <span>No Data</span>
                     </div>
                     <el-tree
                       v-show="deptTree.length > 0"
@@ -96,7 +96,7 @@
                   style="margin-top: 50px"
                 >
                   <img src="@/assets/img/empty.png" />
-                  <span>暂无数据</span>
+                  <span>No Data</span>
                 </div>
                 <el-tree
                   v-show="menuTree.length > 0"

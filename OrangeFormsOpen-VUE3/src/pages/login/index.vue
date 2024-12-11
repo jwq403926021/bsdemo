@@ -4,10 +4,9 @@
       <div class="el-space" style="align-items: center; gap: 8px"></div>
     </div>
     <div class="login-box">
-      <div class="img-box">
-      </div>
+      <div class="img-box"></div>
       <div class="login-input">
-        <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />
+        <!-- <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" /> -->
         <span class="title">Welcome to Log in</span>
         <span class="desc">Configurable Order Workflow Demo</span>
         <el-form
@@ -199,12 +198,14 @@ const login = function (verifyParams: { captchaVerification: string } | null = n
       flex-direction: column;
       .title {
         padding-bottom: 12px;
-        font-size: 32px;
+        font-size: 40px;
+        text-align: center;
         color: #333 !important;
         font-weight: bold;
       }
       .desc {
         font-size: 18px;
+        text-align: center;
         color: #666 !important;
       }
     }

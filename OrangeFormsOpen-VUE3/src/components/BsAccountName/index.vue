@@ -17,6 +17,7 @@ import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
 import { eventbus } from '@/common/utils/mitt';
 import { serverDefaultCfg } from '@/common/http/config';
+import { removeDuplicates } from "@/common/utils";
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -57,10 +58,11 @@ const getSelectList = async (isClear = false, data) => {
   console.log('bsaccountname receive', data);
   if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
   const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy${data?.value ? `?salesRepNum=${data.value}` : ''}`)
-  selectedItems.value = res?.data?.map(i => ({
+  const result = removeDuplicates(res?.data || [], ['soldToNum', 'soldToName'])
+  selectedItems.value = result.map(i => ({
     ...i,
-    label: i.soldToNum + ' | ' + i.soldToName,
-    value: i.stockLocId,
+    label: i.soldToNum + ' - ' + i.soldToName,
+    value: i.salesRepNum,
   }));
 };
 

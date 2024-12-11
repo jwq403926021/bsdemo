@@ -659,3 +659,14 @@ export function deepMerge(obj1: ANY_OBJECT, obj2: ANY_OBJECT) {
   }
   return tempObj;
 }
+export function removeDuplicates(array, key) {
+  const unique = {};
+  return array.filter(item => {
+    const keystr = key.map(i => item[i]).join('-');
+    if (!unique[keystr]) {
+      unique[keystr] = true;
+      return true;
+    }
+    return false;
+  });
+}

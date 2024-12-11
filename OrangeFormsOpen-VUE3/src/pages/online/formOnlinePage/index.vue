@@ -358,7 +358,7 @@ const onEditOnlinePage = (row: ANY_OBJECT) => {
     });
 };
 const onDeleteOnlinePage = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm(`Delete the page${row.pageName}】？`, '', {
+  ElMessageBox.confirm(`Delete the page${row.pageName}?`, '', {
     confirmButtonText: 'Yes',
     cancelButtonText: 'No',
     type: 'warning',

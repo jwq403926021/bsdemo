@@ -4,6 +4,7 @@
     <el-row>
       <el-col :span="24" v-if="entryXml == null">
         <vxe-table
+          empty-text="No data"
           ref="flowEntry"
           :data="publishedFlowEntryWidget.dataList"
           :size="formItemSize"

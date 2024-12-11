@@ -74,6 +74,7 @@
         <el-row v-show="currentPage === 'approveInfo'" :gutter="20">
           <el-col :span="24">
             <vxe-table
+              empty-text="No data"
               :data="flowTaskCommentList"
               :size="layoutStore.defaultFormItemSize"
               header-cell-class-name="table-header-gray"
@@ -135,6 +136,7 @@
         <el-row v-show="currentPage === 'assigneeList'" :gutter="20">
           <el-col :span="24">
             <vxe-table
+              empty-text="No data"
               :data="assigneeList"
               :size="layoutStore.defaultFormItemSize"
               header-cell-class-name="table-header-gray"

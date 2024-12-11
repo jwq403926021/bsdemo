@@ -1,5 +1,6 @@
 <template>
   <vxe-table
+    empty-text="No data"
     ref="table"
     :key="tableKey"
     :data="dataList"

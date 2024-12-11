@@ -72,6 +72,7 @@
       </el-col> -->
       <el-col :span="24">
         <vxe-table
+          empty-text="No data"
           :data="formOperationList"
           :row-config="{ isHover: true }"
           header-cell-class-name="table-header-gray"

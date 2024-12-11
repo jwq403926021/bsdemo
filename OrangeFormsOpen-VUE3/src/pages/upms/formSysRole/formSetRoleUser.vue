@@ -52,6 +52,7 @@
     <el-row>
       <el-col :span="24">
         <vxe-table
+          empty-text="No data"
           :data="formSysUser.SysUser.impl.dataList"
           header-cell-class-name="table-header-gray"
           height="400px"

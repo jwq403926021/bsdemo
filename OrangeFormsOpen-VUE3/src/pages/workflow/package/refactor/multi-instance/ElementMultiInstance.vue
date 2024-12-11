@@ -113,6 +113,7 @@
     >
       <div style="padding: 16px 20px">
         <vxe-table
+          empty-text="No data"
           :data="variableList"
           :size="layoutStore.defaultFormItemSize"
           :row-config="{ isHover: true }"

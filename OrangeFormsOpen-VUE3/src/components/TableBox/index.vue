@@ -25,6 +25,7 @@
     </el-row>
     <div class="vxe-table-box">
       <vxe-table
+        empty-text="No data"
         ref="table"
         border="inner"
         height="100%"

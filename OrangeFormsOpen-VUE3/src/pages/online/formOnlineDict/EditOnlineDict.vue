@@ -299,6 +299,7 @@
           "
         >
           <vxe-table
+            empty-text="No data"
             :data="dictData"
             :size="formItemSize"
             :row-config="{ isHover: true }"
@@ -370,6 +371,7 @@
         >
           <el-radio-group class="radio-table" v-model="formOnlineDict.dictCode" style="width: 100%">
             <vxe-table
+              empty-text="No data"
               ref="table"
               :data="globalDictTableWidget.dataList"
               :row-config="{ isHover: true }"

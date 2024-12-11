@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" v-if="!currentRow" class="main-box" style="min-width: 1100px">
     <vxe-table
+      empty-text="No data"
       :data="data"
       :row-config="{ isHover: true }"
       :size="formItemSize as SizeType"

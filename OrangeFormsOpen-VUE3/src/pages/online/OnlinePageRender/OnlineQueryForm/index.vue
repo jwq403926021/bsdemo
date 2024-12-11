@@ -33,22 +33,6 @@
             class="online-query-form"
             style="height: calc(100vh - 122px); padding: 25px; background: white"
           >
-<!--            <OnlineFilterBox-->
-<!--              class="query-filter-box"-->
-<!--              :isEdit="dialogParams.isEdit"-->
-<!--              ref="filterBox"-->
-<!--              :itemWidth="form.filterItemWidth || 350"-->
-<!--              :style="{ 'margin-bottom': dialogParams.isEdit ? '10px' : '0px' }"-->
-<!--              :widgetList="activeWidgetList"-->
-<!--              :formData="formData"-->
-<!--              :operationList="activeOperationList"-->
-<!--              @widgetClick="onWidgetClick"-->
-<!--              @search="refreshTable(true)"-->
-<!--              @reset="onReset"-->
-<!--              @copy="onCopyWidget"-->
-<!--              @delete="onDeleteWidget"-->
-<!--              @operationClick="onOperationClick"-->
-<!--            />-->
             <div
               class="query-table-box custom-widget-item widget-item"
               :class="{
@@ -95,22 +79,6 @@
       </el-container>
     </template>
     <template v-else>
-<!--      <OnlineFilterBox-->
-<!--        class="query-filter-box"-->
-<!--        :isEdit="dialogParams.isEdit"-->
-<!--        ref="filterBox"-->
-<!--        :itemWidth="form.filterItemWidth || 350"-->
-<!--        style="margin-bottom: 16px"-->
-<!--        :widgetList="activeWidgetList"-->
-<!--        :formData="formData"-->
-<!--        :operationList="activeOperationList"-->
-<!--        @widgetClick="onWidgetClick"-->
-<!--        @search="refreshTable(true)"-->
-<!--        @reset="onReset"-->
-<!--        @copy="onCopyWidget"-->
-<!--        @delete="onDeleteWidget"-->
-<!--        @operationClick="onOperationClick"-->
-<!--      />-->
       <div
         class="query-table-box custom-widget-item widget-item"
         :class="{ active: dialogParams.isEdit && currentWidget === queryTable }"
@@ -129,7 +97,12 @@
             </el-button>
           </div>
         </el-row>
-        <vxe-table border="inner" height="100%" :data="tableData">
+        <vxe-table
+          empty-text="No data"
+          border="inner"
+          height="100%"
+          :data="tableData"
+        >
           <vxe-column type="seq" title="No." width="150px" />
           <vxe-column title="Division Name" field="divisionsName" width="150px" />
           <vxe-column title="SR" field="srName" width="150px" />
@@ -137,64 +110,11 @@
           <vxe-column title="Created At" field="createdAt" width="150px" />
           <vxe-column title="Delivery Date" field="deliveryDate" width="150px" />
           <vxe-column title="Phone" field="phone" width="150px" />
-          <!--          <vxe-column-->
-          <!--            title="productName"-->
-          <!--            field="productName"-->
-          <!--            width="150px"-->
-          <!--          />-->
-          <!--          <vxe-column-->
-          <!--            title="productUpn"-->
-          <!--            field="productUpn"-->
-          <!--            width="150px"-->
-          <!--          />-->
-          <!--          <vxe-column-->
-          <!--            title="qty"-->
-          <!--            field="qty"-->
-          <!--            width="150px"-->
-          <!--          />-->
           <vxe-column title="Recipient" field="recipient" width="150px" />
           <vxe-column title="Ship To" field="shipTo" width="150px" />
           <vxe-column title="Shipment" field="shipment" width="150px" />
-          <!--          <vxe-column-->
-          <!--            title="soldTo"-->
-          <!--            field="soldTo"-->
-          <!--            width="150px"-->
-          <!--          />-->
           <vxe-column title="Stock Loc" field="stockLocName" width="150px" />
         </vxe-table>
-        <!--        <OnlineCustomTable-->
-        <!--          :dataList="queryTableWidget.dataList"-->
-        <!--          style="height: 100%"-->
-        <!--          :isEdit="dialogParams.isEdit"-->
-        <!--          :widget="queryTable"-->
-        <!--          :multiSelect="batchDelete"-->
-        <!--          :operationList="activeOperationList"-->
-        <!--          :getTableIndex="queryTableWidget.getTableIndex"-->
-        <!--          :sortChange="queryTableWidget.onSortChange"-->
-        <!--          :onSelectChange="onSelectRowChange"-->
-        <!--          :treeConfig="getTableTreeConfig"-->
-        <!--          @operationClick="onOperationClick"-->
-        <!--          @refresh="refreshTable(false)"-->
-        <!--        >-->
-        <!--          <template v-slot:pagination>-->
-        <!--            <el-row-->
-        <!--              type="flex"-->
-        <!--              justify="end"-->
-        <!--              style="margin-top: 16px"-->
-        <!--              v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"-->
-        <!--            >-->
-        <!--              <el-pagination-->
-        <!--                :total="queryTableWidget.totalCount"-->
-        <!--                :current-page="queryTableWidget.currentPage"-->
-        <!--                :page-size="queryTableWidget.pageSize"-->
-        <!--                :page-sizes="[10, 20, 50, 100]"-->
-        <!--                layout="total, prev, pager, next, sizes"-->
-        <!--                @current-change="queryTableWidget.onCurrentPageChange"-->
-        <!--                @size-change="queryTableWidget.onPageSizeChange"-->
-        <!--              />-->
-        <!--            </el-row>-->
-        <!--          </template>-->
-        <!--        </OnlineCustomTable>-->
       </div>
     </template>
   </div>
@@ -683,9 +603,9 @@ const onReset = () => {
 const initFormData = () => {
   refreshTable(true);
 };
-const getQueryParam = (paramName) => {
-  const str = window.location.hash.substring(13) + ''
-  const query = str // 去掉开头的 ?
+const getQueryParam = paramName => {
+  const str = window.location.hash.substring(13) + '';
+  const query = str; // 去掉开头的 ?
   const params = query.split('&');
   for (const param of params) {
     const [key, value] = param.split('=');
@@ -694,9 +614,11 @@ const getQueryParam = (paramName) => {
     }
   }
   return null; // 参数不存在时返回 null
-}
+};
 const refresh = async () => {
-  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`);
+  const res = await axios.get(
+    `${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`,
+  );
   tableData.value = res?.data || [];
 };
 onMounted(async () => {
@@ -712,8 +634,8 @@ onMounted(async () => {
   isReady.value = true;
 });
 onUnmounted(() => {
-  eventbus.off('refreshTable')
-})
+  eventbus.off('refreshTable');
+});
 </script>
 
 <style scoped>

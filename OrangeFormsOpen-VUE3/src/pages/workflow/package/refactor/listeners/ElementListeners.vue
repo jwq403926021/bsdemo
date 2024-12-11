@@ -1,6 +1,7 @@
 <template>
   <div class="panel-tab__content" style="padding-top: 3px">
     <vxe-table
+      empty-text="No data"
       :data="elementListenersList"
       :size="(layoutStore.defaultFormItemSize as SizeType)"
       :row-config="{ isHover: true }"
@@ -158,6 +159,7 @@
         >
       </p>
       <vxe-table
+        empty-text="No data"
         :data="fieldsListOfListener"
         :size="(layoutStore.defaultFormItemSize as SizeType)"
         :row-config="{ isHover: true }"

@@ -126,6 +126,7 @@
         style="margin-bottom: 20px"
       >
         <vxe-table
+          empty-text="No data"
           :data="tableColumnTree"
           ref="exportColumnTable"
           border

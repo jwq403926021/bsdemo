@@ -323,6 +323,7 @@
               :span="16"
             >
               <vxe-table
+                empty-text="No data"
                 :data="processVariableList"
                 header-cell-class-name="table-header-gray"
                 key="processVariableList"
@@ -396,6 +397,7 @@
               :span="16"
             >
               <vxe-table
+                empty-text="No data"
                 :data="formFlowEntryData.extensionData.approvalStatusDict"
                 :row-config="{ isHover: true }"
                 header-cell-class-name="table-header-gray"

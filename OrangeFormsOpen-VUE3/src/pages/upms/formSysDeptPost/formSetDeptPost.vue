@@ -41,6 +41,7 @@
     <el-row style="height: 350px">
       <el-col :span="24">
         <vxe-table
+          empty-text="No data"
           :data="formSetDeptPost.SysPost.impl.dataList"
           :size="tableSize"
           header-cell-class-name="table-header-gray"

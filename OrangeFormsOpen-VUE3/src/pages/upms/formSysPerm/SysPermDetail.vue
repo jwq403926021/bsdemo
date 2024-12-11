@@ -27,6 +27,7 @@
         <el-row>
           <el-col :span="24">
             <vxe-table
+              empty-text="No data"
               :data="fragmentSysPermUser.SysUser.impl.dataList"
               :size="formItemSize"
               :height="getTableHeight + 'px'"
@@ -80,6 +81,7 @@
         <el-row>
           <el-col :span="24">
             <vxe-table
+              empty-text="No data"
               :data="fragmentSysPermRole.SysRole.impl.dataList"
               :size="formItemSize"
               :height="getTableHeight + 'px'"
@@ -145,6 +147,7 @@
         <el-row>
           <el-col :span="24">
             <vxe-table
+              empty-text="No data"
               :data="fragmentSysPermMenu.SysMenu.impl.dataList"
               :size="formItemSize"
               :height="getTableHeight + 'px'"

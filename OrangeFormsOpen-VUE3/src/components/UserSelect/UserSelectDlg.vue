@@ -26,6 +26,7 @@
     <el-row>
       <el-col :span="24">
         <vxe-table
+          empty-text="No data"
           ref="table"
           :row-id="dialogParams.props.value"
           :data="formSysUserWidget.dataList"

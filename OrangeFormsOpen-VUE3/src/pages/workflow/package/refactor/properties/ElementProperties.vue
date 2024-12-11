@@ -1,6 +1,7 @@
 <template>
   <div class="panel-tab__content" style="padding-top: 3px">
     <vxe-table
+      empty-text="No data"
       :data="elementPropertyList"
       :size="(layoutStore.defaultFormItemSize as SizeType)"
       :row-config="{ isHover: true }"

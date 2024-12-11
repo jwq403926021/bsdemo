@@ -8,6 +8,7 @@
       <right-add-btn @click.prevent.stop="openModel('message')">添加</right-add-btn>
     </div>
     <vxe-table
+      empty-text="No data"
       :data="messageList"
       :size="layoutStore.defaultFormItemSize"
       :row-config="{ isHover: true }"
@@ -28,6 +29,7 @@
       <right-add-btn @click.prevent.stop="openModel('signal')">添加</right-add-btn>
     </div>
     <vxe-table
+      empty-text="No data"
       :data="signalList"
       :size="layoutStore.defaultFormItemSize"
       :row-config="{ isHover: true }"

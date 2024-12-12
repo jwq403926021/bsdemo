@@ -10,20 +10,20 @@
       label-width="150px"
       @submit.prevent
     >
-<!--      <el-col :span="24">-->
-<!--        <el-form-item label="Page Type">-->
-<!--          <el-select v-model="formPageData.pageType" :disabled="isEdit">-->
-<!--            <el-option-->
-<!--              :value="SysOnlinePageType.BIZ"-->
-<!--              :label="SysOnlinePageType.getValue(SysOnlinePageType.BIZ)"-->
-<!--            />-->
-<!--            <el-option-->
-<!--              :value="SysOnlinePageType.FLOW"-->
-<!--              :label="SysOnlinePageType.getValue(SysOnlinePageType.FLOW)"-->
-<!--            />-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
-<!--      </el-col>-->
+      <!--      <el-col :span="24">-->
+      <!--        <el-form-item label="Page Type">-->
+      <!--          <el-select v-model="formPageData.pageType" :disabled="isEdit">-->
+      <!--            <el-option-->
+      <!--              :value="SysOnlinePageType.BIZ"-->
+      <!--              :label="SysOnlinePageType.getValue(SysOnlinePageType.BIZ)"-->
+      <!--            />-->
+      <!--            <el-option-->
+      <!--              :value="SysOnlinePageType.FLOW"-->
+      <!--              :label="SysOnlinePageType.getValue(SysOnlinePageType.FLOW)"-->
+      <!--            />-->
+      <!--          </el-select>-->
+      <!--        </el-form-item>-->
+      <!--      </el-col>-->
       <el-col :span="24">
         <el-form-item label="Page Code" prop="pageCode">
           <el-input v-model="formPageData.pageCode" :disabled="isEdit" @change="dirty = true" />
@@ -34,15 +34,15 @@
           <el-input v-model="formPageData.pageName" @change="dirty = true" />
         </el-form-item>
       </el-col>
-<!--      <el-col :span="24">-->
-<!--        <el-form-item label="Background Extend">-->
-<!--          <el-input-->
-<!--            v-model="formPageData.extraJson.extendClass"-->
-<!--            placeholder="Please enter the full class name"-->
-<!--            @change="dirty = true"-->
-<!--          />-->
-<!--        </el-form-item>-->
-<!--      </el-col>-->
+      <!--      <el-col :span="24">-->
+      <!--        <el-form-item label="Background Extend">-->
+      <!--          <el-input-->
+      <!--            v-model="formPageData.extraJson.extendClass"-->
+      <!--            placeholder="Please enter the full class name"-->
+      <!--            @change="dirty = true"-->
+      <!--          />-->
+      <!--        </el-form-item>-->
+      <!--      </el-col>-->
     </el-form>
   </div>
 </template>
@@ -60,6 +60,7 @@ import { OnlineDatasourceController, OnlineDblinkController } from '@/api/online
 
 const props = defineProps<{
   modelValue: FormPage;
+  status?: number;
   dblinkInfo: ANY_OBJECT;
   datasourceId: string;
   dataSource?: ANY_OBJECT;
@@ -139,7 +140,7 @@ const save = (): Promise<FormPage | undefined> => {
         valid ? resolve(formPageData.value) : reject();
         return;
       }
-      savePageInfo(SysOnlinePageStatus.DATASOURCE)
+      savePageInfo(props.status ? props.status : SysOnlinePageStatus.DATASOURCE)
         .then(res => {
           ElMessage.success('The basic information saved successfully!');
           if (!isEdit.value) {

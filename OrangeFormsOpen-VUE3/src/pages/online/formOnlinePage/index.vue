@@ -136,6 +136,7 @@ export default {
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
+import axios from 'axios';
 import { useCommon } from '@/common/hooks/useCommon';
 import { SysOnlinePageStatus, SysOnlinePageType } from '@/common/staticDict/online';
 import { TableOptions } from '@/common/types/pagination';
@@ -150,11 +151,10 @@ import {
 import { FormPage } from '@/types/online/page';
 import { useThirdPartyAlive } from '@/components/thirdParty/hooks';
 import { useLayoutStore } from '@/store';
-import EditOnlinePage from '../editOnlinePage/index.vue';
 import { uuid } from '@/pages/workflow/package/utils';
 import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
-import axios from 'axios';
 import { serverDefaultCfg } from '@/common/http/config';
+import EditOnlinePage from '../editOnlinePage/index.vue';
 const { getFormConfig } = useFormConfig();
 
 const layoutStore = useLayoutStore();
@@ -275,12 +275,21 @@ const onCreateOnlinePage = () => {
       pageListWidget.refreshTable();
     });
 };
+function generateRandomDigits() {
+  let result = '';
+  for (let i = 0; i < 4; i++) {
+    result += Math.floor(Math.random() * 10); // 生成0-9之间的随机数
+  }
+  return result;
+}
+
 const onCopyOnlinePage = (row: ANY_OBJECT) => {
+  const randomDigits = generateRandomDigits();
   let params = {
     onlinePageDto: {
       extraJson: {},
-      pageCode: `${row.pageCode}copy`,
-      pageName: `${row.pageName}copy`,
+      pageCode: `${row.pageCode}${randomDigits}`,
+      pageName: `${row.pageName}${randomDigits}`,
       pageType: row.pageType,
       published: false,
       status: SysOnlinePageStatus.DESIGNING,
@@ -340,7 +349,7 @@ const onEditOnlinePage = (row: ANY_OBJECT) => {
     },
     {
       pageId: row.pageId,
-
+      status: row.status,
       clientHeight,
       //path: 'thirdEditOnlinePage',
     },

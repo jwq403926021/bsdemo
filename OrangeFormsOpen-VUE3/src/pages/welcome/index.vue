@@ -1,7 +1,5 @@
 <template>
-  <div style="padding: 16px; font-size: 14px !important; background-color: white">
-    Welcome
-  </div>
+  <div style="padding: 16px; font-size: 14px !important; background-color: white">Welcome</div>
 </template>
 
 <script setup lang="ts">

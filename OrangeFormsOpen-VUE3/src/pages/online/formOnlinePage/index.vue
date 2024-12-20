@@ -298,7 +298,7 @@ const onCopyOnlinePage = (row: ANY_OBJECT) => {
   const oldPageId = row.pageId;
   OnlinePageController.add(params).then(res => {
     let pageId = res.data;
-    let dblink: any = '';
+    let dblink: ANY_OBJECT = [];
     OnlineDblinkController.list({}).then(res => {
       dblink = res.data.dataList.map(item => {
         return {

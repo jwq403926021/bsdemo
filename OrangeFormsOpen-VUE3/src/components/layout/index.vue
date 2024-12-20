@@ -376,7 +376,7 @@ onBeforeUnmount(() => {
       text-align: center;
       height: 60px;
       line-height: 60px;
-      background-color: #1A457A;
+      background-color: #1a457a;
       color: white;
     }
   }

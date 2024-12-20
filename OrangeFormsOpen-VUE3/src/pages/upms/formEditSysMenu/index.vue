@@ -249,7 +249,9 @@ const rules = {
       trigger: 'blur',
     },
   ],
-  onlineFlowEntryId: [{ required: true, message: 'Please select the work order bound to the menu', trigger: 'blur' }],
+  onlineFlowEntryId: [
+    { required: true, message: 'Please select the work order bound to the menu', trigger: 'blur' },
+  ],
   formRouterName: [{ required: true, message: 'Please enter a menu route name', trigger: 'blur' }],
   targetUrl: [{ required: true, message: 'Please enter the jump link address', trigger: 'blur' }],
 };

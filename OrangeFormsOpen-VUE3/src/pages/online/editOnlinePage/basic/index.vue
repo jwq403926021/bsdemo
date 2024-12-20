@@ -54,9 +54,12 @@ import { ElMessage } from 'element-plus';
 import { FormPage } from '@/types/online/page';
 import { SysOnlinePageStatus, SysOnlinePageType } from '@/common/staticDict/online';
 import { uuid } from '@/pages/workflow/package/utils';
-import { OnlinePageController } from '@/api/online';
+import {
+  OnlinePageController,
+  OnlineDatasourceController,
+  OnlineDblinkController,
+} from '@/api/online';
 import { ANY_OBJECT } from '@/types/generic';
-import { OnlineDatasourceController, OnlineDblinkController } from '@/api/online';
 
 const props = defineProps<{
   modelValue: FormPage;
@@ -147,7 +150,7 @@ const save = (): Promise<FormPage | undefined> => {
             formPageData.value.pageId = res.data;
           }
           dirty.value = false;
-          let dblink: any = '';
+          let dblink: ANY_OBJECT = [];
           OnlineDblinkController.list({}).then(res => {
             dblink = res.data.dataList.map(item => {
               return {

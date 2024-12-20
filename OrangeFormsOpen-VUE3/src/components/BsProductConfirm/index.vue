@@ -37,6 +37,8 @@ import { Search } from '@element-plus/icons-vue';
 import axios from 'axios';
 import { ref, onMounted, inject } from 'vue';
 import { serverDefaultCfg } from '@/common/http/config';
+import { ANY_OBJECT } from '@/types/generic';
+import { WidgetProps } from '@/online/components/types/widget';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];

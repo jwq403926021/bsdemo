@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2 style="margin-bottom: 10px;">Contact Info for Packing List</h2>
+    <h2 style="margin-bottom: 10px">Contact Info for Packing List</h2>
     <ul>
-      <li v-if="has412" style="line-height: 24px;">Shipment: {{ Shipment }}</li>
+      <li v-if="has412" style="line-height: 24px">Shipment: {{ Shipment }}</li>
     </ul>
   </div>
 </template>
@@ -29,13 +29,13 @@ const formInject = inject('form');
 const widgetList = inject('widgetList');
 const Shipment = ref('');
 
-const has412 = ref(false)
+const has412 = ref(false);
 watch(
   () => step.value,
   () => {
     const form = formInject();
     const shipToWidget = form.widgetList.find(i => i.widgetType === 412);
-    has412.value = !!shipToWidget
+    has412.value = !!shipToWidget;
     if (shipToWidget && widgetList[shipToWidget.variableName].getValue) {
       const shipToInfo = widgetList[shipToWidget.variableName].getValue();
       Shipment.value = shipToInfo.valueHuman;

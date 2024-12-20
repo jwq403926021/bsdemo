@@ -63,7 +63,7 @@ onMounted(() => {
 // 获取当前值和对应的标签
 const getValue = () => {
   return {
-    requestDeliveryDate: requestDeliveryDate.value
+    requestDeliveryDate: requestDeliveryDate.value,
   };
 };
 defineExpose({ getValue });

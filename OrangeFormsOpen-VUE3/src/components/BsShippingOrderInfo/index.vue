@@ -2,7 +2,7 @@
   <div>
     <h2 style="margin-bottom: 10px">Shipping Order Info</h2>
     <ul>
-      <li style="line-height: 24px" v-for="item in data">
+      <li style="line-height: 24px" :key="item.valueHuman" v-for="item in data">
         {{ item.label }}: {{ item.valueHuman }}
       </li>
     </ul>

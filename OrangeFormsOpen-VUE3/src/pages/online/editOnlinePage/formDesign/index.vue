@@ -216,7 +216,9 @@
                         size="default"
                         style="margin-top: 5px"
                       >
-                        {{ SysOnlineRelationType.getValue(table.relationType) || 'Main data table' }}
+                        {{
+                          SysOnlineRelationType.getValue(table.relationType) || 'Main data table'
+                        }}
                       </el-tag>
                     </el-row>
                   </template>

@@ -611,9 +611,7 @@ const getQueryParam = paramName => {
   return null; // 参数不存在时返回 null
 };
 const refresh = async () => {
-  const res = await axios.get(
-    `${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`,
-  );
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`);
   tableData.value = res?.data || [];
 };
 onMounted(async () => {

@@ -1,184 +1,127 @@
 <template>
-  <div class="online-query-form" :style="{ height: height ? height : '100%' }" v-show="isReady">
-    <template v-if="dialogParams.fullscreen && !dialogParams.isEdit">
-      <el-container>
-        <el-header style="height: 72px; background: white">
+  <div
+    class="online-query-form"
+    :style="{ height: height ? height : '100%', width: '100%' }"
+    v-show="isReady"
+  >
+    <OnlineFilterBox
+      class="query-filter-box"
+      :isEdit="dialogParams.isEdit"
+      ref="filterBox"
+      :itemWidth="form.filterItemWidth || 350"
+      style="margin-bottom: 16px"
+      v-model:widgetList="activeWidgetList"
+      :formData="formData"
+      :operationList="activeOperationList"
+      @widgetClick="onWidgetClick"
+      @search="refreshTable(true)"
+      @reset="onReset"
+      @copy="onCopyWidget"
+      @delete="onDeleteWidget"
+      @operationClick="onOperationClick"
+    >
+      <template v-slot:operator>
+        <el-button type="primary" :size="layoutStore.defaultFormItemSize" @click="onSubmit()">
+          确定
+        </el-button>
+      </template>
+    </OnlineFilterBox>
+    <div
+      class="query-table-box custom-widget-item widget-item"
+      :class="{ active: dialogParams.isEdit && currentWidget === queryTable }"
+      @click.stop="onTableClick"
+    >
+      <OnlineCustomTable
+        ref="dataTable"
+        style="padding: 0 !important"
+        :dataList="queryTableWidget.dataList"
+        :isEdit="dialogParams.isEdit"
+        :widget="queryTable"
+        :singleSelect="true"
+        :operationList="activeOperationList"
+        :getTableIndex="queryTableWidget.getTableIndex"
+        :sortChange="queryTableWidget.onSortChange"
+        :onRadioChange="onRadioChange"
+        @operationClick="onOperationClick"
+        @refresh="refreshTable(false)"
+      >
+        <template v-slot:pagination>
           <el-row
             type="flex"
-            align="middle"
-            style="justify-content: space-between; width: 100%; height: 100%"
+            justify="end"
+            style="margin-top: 16px"
+            v-if="queryTable && queryTable.props.paged"
           >
-            <div style="display: flex; height: 40px; line-height: 40px">
-              <i
-                class="header-logo online-icon icon-orange-icon"
-                style="font-size: 40px; color: #1a457b; background: rgb(26 69 123 / 10%)"
-              />
-              <span style="font-size: 22px; color: #333; font-weight: bold"></span>
-              <el-divider direction="vertical" style="height: 26px; margin: 7px 8px" />
-              <span style="font-size: 18px; color: #333; font-weight: bold">{{
-                form.formName
-              }}</span>
-            </div>
-            <el-button
-              link
-              size="default"
-              :icon="Close"
-              style="font-size: 24px; color: #909399"
-              @click="onCancel"
+            <el-pagination
+              :total="queryTableWidget.totalCount"
+              :current-page="queryTableWidget.currentPage"
+              :page-size="queryTableWidget.pageSize"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, prev, pager, next, sizes"
+              @current-change="queryTableWidget.onCurrentPageChange"
+              @size-change="queryTableWidget.onPageSizeChange"
             />
           </el-row>
-        </el-header>
-        <el-main style="width: 100%; padding: 25px; background: #f9f9f9">
-          <div
-            class="online-query-form"
-            style="height: calc(100vh - 122px); padding: 25px; background: white"
-          >
-            <div
-              class="query-table-box custom-widget-item widget-item"
-              :class="{
-                active: dialogParams.isEdit && currentWidget === queryTable,
-              }"
-              style="margin-top: 8px"
-              :style="{
-                padding: dialogParams.isEdit && currentWidget === queryTable ? '2px' : '0px',
-              }"
-              @click.stop="onTableClick"
-            >
-              <OnlineCustomTable
-                :dataList="queryTableWidget.dataList"
-                :isEdit="dialogParams.isEdit"
-                :widget="queryTable"
-                :multiSelect="batchDelete"
-                :operationList="activeOperationList"
-                :getTableIndex="queryTableWidget.getTableIndex"
-                :sortChange="queryTableWidget.onSortChange"
-                :onSelectChange="onSelectRowChange"
-                :treeConfig="getTableTreeConfig"
-                @refresh="refreshTable(false)"
-                @operationClick="onOperationClick"
-              />
-            </div>
-            <el-row
-              type="flex"
-              justify="end"
-              style="margin-top: 16px"
-              v-if="queryTable && queryTable.props.paged && getTableTreeConfig == null"
-            >
-              <el-pagination
-                :total="queryTableWidget.totalCount"
-                :current-page="queryTableWidget.currentPage"
-                :page-size="queryTableWidget.pageSize"
-                :page-sizes="[10, 20, 50, 100]"
-                layout="total, prev, pager, next, sizes"
-                @current-change="queryTableWidget.onCurrentPageChange"
-                @size-change="queryTableWidget.onPageSizeChange"
-              />
-            </el-row>
-          </div>
-        </el-main>
-      </el-container>
-    </template>
-    <template v-else>
-      <div
-        class="query-table-box custom-widget-item widget-item"
-        :class="{ active: dialogParams.isEdit && currentWidget === queryTable }"
-        :style="{ padding: dialogParams.isEdit ? '0' : '' }"
-        @click.stop="onTableClick"
-      >
-        <el-row type="flex" justify="space-between" align="middle" class="operator-box">
-          <div>
-            <el-button
-              class="table-operation"
-              type="primary"
-              @click="onOperationClick(getOperation(SysCustomWidgetOperationType.ADD))"
-              :icon="Plus"
-            >
-              {{ 'New' }}
-            </el-button>
-          </div>
-        </el-row>
-        <vxe-table empty-text="No data" border="inner" height="100%" :data="tableData">
-          <vxe-column type="seq" title="No." width="150px" />
-          <vxe-column title="Division Name" field="divisionsName" width="150px" />
-          <vxe-column title="SR" field="srName" width="150px" />
-          <vxe-column title="Contact Info" field="contactInfo" width="150px" />
-          <vxe-column title="Created At" field="createdAt" width="150px" />
-          <vxe-column title="Delivery Date" field="deliveryDate" width="150px" />
-          <vxe-column title="Phone" field="phone" width="150px" />
-          <vxe-column title="Recipient" field="recipient" width="150px" />
-          <vxe-column title="Ship To" field="shipTo" width="150px" />
-          <vxe-column title="Shipment" field="shipment" width="150px" />
-          <vxe-column title="Stock Loc" field="stockLocName" width="150px" />
-        </vxe-table>
-      </div>
-    </template>
+        </template>
+      </OnlineCustomTable>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { Close, Plus } from '@element-plus/icons-vue';
-import { VxeColumn, VxeTable } from 'vxe-table';
-import axios from 'axios';
-import { findItemFromList, treeDataTranslate } from '@/common/utils';
+import { ElMessageBox, ElMessage } from 'element-plus';
 import { ANY_OBJECT } from '@/types/generic';
-import OnlineCustomTable from '@/online/components/OnlineCustomTable.vue';
-import { TableOptions } from '@/common/types/pagination';
-import { useTable } from '@/common/hooks/useTable';
 import {
   OnlineFormEventType,
   SysCustomWidgetBindDataType,
   SysCustomWidgetOperationType,
 } from '@/common/staticDict';
 import { SysOnlineColumnFilterType } from '@/common/staticDict/online';
-import { download, post, get } from '@/common/http/request';
+import { post, download, get } from '@/common/http/request';
+import OnlineCustomTable from '@/online/components/OnlineCustomTable.vue';
+import { useTable } from '@/common/hooks/useTable';
+import { TableOptions } from '@/common/types/pagination';
 import { API_CONTEXT } from '@/api/config';
-import { useUpload } from '@/common/hooks/useUpload';
-import { DialogProp } from '@/components/Dialog/types';
-import { ThirdProps } from '@/components/thirdParty/types';
-import { useThirdParty } from '@/components/thirdParty/hooks';
 import widgetData from '@/online/config/index';
-import { useLoginStore } from '@/store';
-import { serverDefaultCfg } from '@/common/http/config';
-import { eventbus } from '@/common/utils/mitt';
+import { useLayoutStore, useLoginStore } from '@/store';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
 import OnlineFilterBox from './OnlineFilterBox.vue';
 
-interface IProps extends ThirdProps {
-  formConfig: ANY_OBJECT;
-  height?: string;
-  masterTableData?: ANY_OBJECT;
-  // 是否表单编辑模式
-  isEdit?: boolean;
-  readOnly?: boolean;
-  // 当前选中组件
-  currentWidget?: ANY_OBJECT | null;
-  // 是否全屏弹窗
-  fullscreen?: boolean;
-  mode: string;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
-  dialog?: DialogProp<ANY_OBJECT | ANY_OBJECT[] | undefined>;
-}
-
 const emit = defineEmits<{
   widgetClick: [ANY_OBJECT | null];
-  tableClick: [ANY_OBJECT | null];
+  tableClick: [ANY_OBJECT];
+  radioSelectChanged: [ANY_OBJECT];
+  submit: [];
 }>();
 
-const props = withDefaults(defineProps<IProps>(), {
-  isEdit: false,
-  readOnly: false,
-  fullscreen: false,
-  mode: 'pc',
-});
-
-const { onCloseThirdDialog } = useThirdParty(props);
-const { fetchUpload } = useUpload();
-const tableData = ref([]);
-const batchDelete = ref(false);
-const selectRows = ref<ANY_OBJECT[]>([]);
+const props = withDefaults(
+  defineProps<{
+    formConfig: ANY_OBJECT;
+    height?: string;
+    // 主表数据
+    masterTableData?: ANY_OBJECT;
+    // 是否表单编辑模式
+    isEdit?: boolean;
+    readOnly?: boolean;
+    // 当前选中组件
+    currentWidget?: ANY_OBJECT | null;
+    // 需要编辑数据，如果是null则是新增
+    rowData?: ANY_OBJECT;
+    // 是否全屏弹窗
+    fullscreen?: boolean;
+    selectedColumn?: string;
+    selectedValue?: string;
+    mode?: string;
+  }>(),
+  {
+    isEdit: false,
+    readOnly: false,
+    fullscreen: false,
+  },
+);
+const layoutStore = useLayoutStore();
 
 const { getDictDataList } = useDict();
 const {
@@ -187,7 +130,6 @@ const {
   form,
   formData,
   getWidgetValue,
-  getWidgetProp,
   getWidgetVisible,
   onValueChange,
   onWidgetValueChange,
@@ -198,22 +140,20 @@ const {
   cloneWidget,
   handlerOperation,
   loadOnlineFormConfig,
-  onPrint,
   initPage,
   initFormWidgetList,
-  initWidgetLinkage,
-  onStartFlow,
+  onPrint,
 } = useForm(props);
 
 provide('form', () => {
+  console.log('provide form4', props, form);
   return {
     ...form.value,
     mode: props.mode || 'pc',
-    isEdit: props.isEdit,
-    readOnly: props.readOnly,
+    isEdit: dialogParams.value.isEdit,
+    readOnly: dialogParams.value.readOnly,
     formData: formData,
     getWidgetValue: getWidgetValue,
-    getWidgetProp: getWidgetProp,
     getWidgetVisible: getWidgetVisible,
     onValueChange: onValueChange,
     onWidgetValueChange: onWidgetValueChange,
@@ -233,15 +173,12 @@ provide('form', () => {
   };
 });
 
-const queryTable = computed(() => {
-  return form.value.tableWidget;
-});
+const dataTable = ref();
+const selectRows = ref<ANY_OBJECT[] | ANY_OBJECT>([]);
+
 const activeWidgetList = computed(() => {
   return form.value.widgetList;
 });
-const getOperation = (type: string) => {
-  return findItemFromList(activeOperationList.value, type, 'type') || {};
-};
 const getQueryParams = () => {
   if (Array.isArray(activeWidgetList.value)) {
     return activeWidgetList.value
@@ -283,24 +220,12 @@ const getQueryParams = () => {
 const loadTableData = (params: ANY_OBJECT) => {
   return new Promise((resolve, reject) => {
     let table = form.value.tableMap.get(queryTable.value.bindData.tableId);
-    if (!table) {
-      console.warn('table is undefined tableId=', queryTable.value.bindData.tableId);
-      return;
-    }
     let httpCall = null;
     params.datasourceId = table.datasource.datasourceId;
     params.filterDtoList = getQueryParams();
 
     if (queryTable.value.relation != null) {
       params.relationId = table.relation.relationId;
-      params.filterDtoList.push({
-        tableName: queryTable.value.table.tableName,
-        columnName: queryTable.value.relation.slaveColumn.columnName,
-        filterType: SysOnlineColumnFilterType.EQUAL_FILTER,
-        columnValue: (dialogParams.value.masterTableData || {})[
-          queryTable.value.relation.masterColumn.columnName
-        ],
-      });
     }
     if (params == null) {
       reject();
@@ -308,36 +233,38 @@ const loadTableData = (params: ANY_OBJECT) => {
     }
 
     if (table.relation != null) {
-      httpCall = post(
+      httpCall = post<ANY_OBJECT>(
         API_CONTEXT +
           '/online/onlineOperation/listByOneToManyRelationId/' +
           table.datasource.variableName,
         params,
       );
     } else {
-      httpCall = post(
+      httpCall = post<ANY_OBJECT>(
         API_CONTEXT + '/online/onlineOperation/listByDatasourceId/' + table.datasource.variableName,
         params,
       );
     }
 
     httpCall
-      .then((res: ANY_OBJECT) => {
-        if (
-          queryTable.value &&
-          queryTable.value.props.treeFlag &&
-          queryTable.value.props.parentIdColumn
-        ) {
-          res.data.dataList = treeDataTranslate(
-            res.data.dataList,
-            primaryColumnName.value,
-            queryTable.value.props.parentIdColumn,
-          );
-        }
+      .then(res => {
         resolve({
           dataList: res.data.dataList,
           totalCount: res.data.totalCount,
         });
+        let selectedRowNum = res.data.dataList.findIndex((x: ANY_OBJECT) => {
+          if (props.selectedColumn) {
+            return x[props.selectedColumn] === props.selectedValue;
+          } else {
+            return false;
+          }
+        });
+        if (selectedRowNum >= 0) {
+          //this.$forceUpdate();
+          nextTick(() => {
+            dataTable.value.setSelectedRow(selectedRowNum);
+          });
+        }
       })
       .catch(e => {
         reject(e);
@@ -347,33 +274,30 @@ const loadTableData = (params: ANY_OBJECT) => {
 const loadTableDataVerify = () => {
   return true;
 };
-
 const tableOptions: TableOptions<ANY_OBJECT> = {
   loadTableData: loadTableData,
   verifyTableParameter: loadTableDataVerify,
-  paged: dialogParams.value.formConfig?.tableWidget?.props?.paged,
+  paged: dialogParams.value.formConfig?.tableWidget?.props.paged,
 };
 const queryTableWidget = reactive(useTable(tableOptions));
 
-const onTableClick = () => {
-  emit('tableClick', queryTable.value);
-};
-const onWidgetClick = (widget: ANY_OBJECT | null) => {
-  console.log('OnlineQueryForm onWidgetClick', widget);
-  emit('widgetClick', widget);
-};
-
-const onCancel = () => {
-  if (props.dialog) {
-    props.dialog.cancel();
-  } else {
-    onCloseThirdDialog(false);
-  }
-};
-
+const queryTable = computed<ANY_OBJECT>(() => {
+  return form.value.tableWidget;
+});
 const activeOperationList = computed(() => {
   return form.value.operationList;
 });
+
+// const getTableStyle = computed(() => {
+//   return {
+//     padding:
+//       dialogParams.value.isEdit && props.currentWidget === queryTable.value ? '5px' : undefined,
+//     background:
+//       dialogParams.value.isEdit && props.currentWidget === queryTable.value
+//         ? 'rgba(64, 158, 255, 0.2)'
+//         : undefined,
+//   };
+// });
 const primaryColumnName = computed(() => {
   if (dialogParams.value.isEdit) return;
   let table = form.value.tableMap.get(queryTable.value.bindData.tableId);
@@ -387,21 +311,19 @@ const primaryColumnName = computed(() => {
   }
   return null;
 });
-const getTableTreeConfig = computed(() => {
-  if (
-    queryTable.value &&
-    queryTable.value.props.treeFlag &&
-    queryTable.value.props.parentIdColumn
-  ) {
-    return {
-      rowField: primaryColumnName.value,
-      parentField: queryTable.value.props.parentIdColumn,
-    };
-  } else {
-    return null;
-  }
-});
 
+const refreshTable = (reloadData = false) => {
+  if (dialogParams.value.isEdit) return;
+  if (reloadData) {
+    queryTableWidget.refreshTable(true, 1);
+  } else {
+    queryTableWidget.refreshTable();
+  }
+};
+
+const onSubmit = () => {
+  emit('submit');
+};
 const onCopyWidget = (widget: ANY_OBJECT) => {
   activeWidgetList.value.push(widget);
 };
@@ -410,25 +332,23 @@ const onDeleteWidget = (widget: ANY_OBJECT) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
-  })
-    .then(() => {
-      form.value.widgetList = form.value.widgetList.filter((item: ANY_OBJECT) => item !== widget);
-      onWidgetClick(null);
-    })
-    .catch(e => {
-      console.warn(e);
-    });
+  }).then(() => {
+    form.value.widgetList = form.value.widgetList.filter((item: ANY_OBJECT) => item !== widget);
+    onWidgetClick(null);
+  });
 };
-const onSelectRowChange = (rows: ANY_OBJECT[]) => {
+const onTableClick = () => {
+  emit('tableClick', queryTable.value);
+};
+const onWidgetClick = (widget: ANY_OBJECT | null) => {
+  emit('widgetClick', widget);
+};
+const onRadioChange = (rows: ANY_OBJECT) => {
   selectRows.value = rows;
+  emit('radioSelectChanged', selectRows.value as ANY_OBJECT);
 };
-const refreshTable = (reloadData = false) => {
-  if (dialogParams.value.isEdit) return;
-  if (reloadData) {
-    queryTableWidget.refreshTable(true, 1);
-  } else {
-    queryTableWidget.refreshTable();
-  }
+const onReset = () => {
+  refreshTable(true);
 };
 const onBatchDelete = () => {
   if (selectRows.value.length <= 0) {
@@ -444,7 +364,7 @@ const onBatchDelete = () => {
     let params = {
       datasourceId: table.datasource.datasourceId,
       relationId: (table.relation || {}).relationId,
-      dataIdList: selectRows.value.map(item => {
+      dataIdList: selectRows.value.map((item: ANY_OBJECT) => {
         return item[primaryColumnName.value];
       }),
     };
@@ -563,7 +483,7 @@ const onExport = (operation: ANY_OBJECT) => {
       .then(() => {
         ElMessage.success('导出成功！');
       })
-      .catch(e => {
+      .catch((e: Error) => {
         ElMessage.error(e);
       });
   });
@@ -577,10 +497,7 @@ const onOperationClick = (operation: ANY_OBJECT, row: ANY_OBJECT | null) => {
   } else if (operation.type === SysCustomWidgetOperationType.EXPORT) {
     onExport(operation);
   } else if (operation.type === SysCustomWidgetOperationType.PRINT) {
-    onPrint(operation, row, selectRows.value, queryTable.value.showName);
-  } else if (operation.type === SysCustomWidgetOperationType.START_FLOW) {
-    console.log('启动流程');
-    onStartFlow(operation, row);
+    if (row) onPrint(operation, row, null, queryTable.value.showName);
   } else {
     handlerOperation(operation, {
       isEdit: dialogParams.value.isEdit,
@@ -592,44 +509,17 @@ const onOperationClick = (operation: ANY_OBJECT, row: ANY_OBJECT | null) => {
     });
   }
 };
-const onReset = () => {
-  refreshTable(true);
-};
+
 const initFormData = () => {
   refreshTable(true);
 };
-const getQueryParam = paramName => {
-  const str = window.location.hash.substring(13) + '';
-  const query = str; // 去掉开头的 ?
-  const params = query.split('&');
-  for (const param of params) {
-    const [key, value] = param.split('=');
-    if (key === paramName) {
-      return decodeURIComponent(value || ''); // 解码参数值
-    }
-  }
-  return null; // 参数不存在时返回 null
-};
-const refresh = async () => {
-  const res = await axios.get(
-    `${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`,
-  );
-  tableData.value = res?.data || [];
-};
-onMounted(async () => {
+
+onMounted(() => {
   isReady.value = false;
-  refresh();
-  eventbus.on('refreshTable', () => {
-    refresh();
-  });
   if (!dialogParams.value.isEdit) {
     initFormData();
-    initWidgetLinkage();
   }
   isReady.value = true;
-});
-onUnmounted(() => {
-  eventbus.off('refreshTable');
 });
 </script>
 
@@ -652,6 +542,13 @@ onUnmounted(() => {
 .online-query-form {
   display: flex;
   flex-direction: column;
+}
+.table-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px;
+  background-color: white;
+  flex: 1;
 }
 .online-query-form .query-filter-box {
   flex-grow: 0;

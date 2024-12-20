@@ -60,9 +60,9 @@ const getProductLevelName = async (isClear = false, data?) => {
   }
   // if (data) {
   //   debugger
-  let productLevel = ''
+  let productLevel = '';
   if (data) {
-    productLevel = data.value
+    productLevel = data.value;
   }
   const res = await axios.get(
     `${serverDefaultCfg.baseURL}order/product?productLevel=${productLevel}`,

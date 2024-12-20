@@ -44,9 +44,10 @@
         </el-main>
         <el-footer
           v-if="!dialogParams.readOnly || (form.operationList || []).length > 0"
-          style="background: white, height:60px;"
+          style="background: white"
+          height="70px;"
         >
-          <el-row type="flex" justify="center" align="middle" style="height: 60px">
+          <el-row type="flex" justify="center" align="middle" style="height: 70px">
             <el-button
               v-for="operation in form.operationList"
               :key="operation.id"
@@ -69,9 +70,7 @@
             >
               Submit
             </el-button>
-            <el-button v-if="props.dialog.index" size="default" :plain="true" @click="onCancel">
-              Back
-            </el-button>
+            <el-button size="default" :plain="true" @click="onCancel"> Back </el-button>
           </el-row>
         </el-footer>
       </el-container>

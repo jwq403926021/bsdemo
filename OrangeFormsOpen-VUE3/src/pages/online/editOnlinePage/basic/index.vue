@@ -145,7 +145,7 @@ const save = (): Promise<FormPage | undefined> => {
       }
       savePageInfo(props.status ? props.status : SysOnlinePageStatus.DATASOURCE)
         .then(res => {
-          ElMessage.success('The basic information saved successfully!');
+          // ElMessage.success('The basic information saved successfully!');
           if (!isEdit.value) {
             formPageData.value.pageId = res.data;
           }
@@ -173,7 +173,7 @@ const save = (): Promise<FormPage | undefined> => {
 
             OnlineDatasourceController.add(params)
               .then(res => {
-                ElMessage.success('The data model was saved successfully!');
+                // ElMessage.success('The data model was saved successfully!');
                 resolve(formPageData.value);
               })
               .catch(e => {

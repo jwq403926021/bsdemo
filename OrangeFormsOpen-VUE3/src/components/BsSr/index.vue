@@ -56,8 +56,10 @@ const getSelectList = async (isClear = false, data) => {
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
   console.log('bssr receive', data);
-  if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
-  const res = await axios.get(`${serverDefaultCfg.baseURL}order/saleRep${data?.value ? `?userDivision=${data.value}` : ''}`)
+  if (!data?.value && pps.depend) return; // has depend but don't have value, do not request options
+  const res = await axios.get(
+    `${serverDefaultCfg.baseURL}order/saleRep${data?.value ? `?userDivision=${data.value}` : ''}`,
+  );
   selectedItems.value = res?.data?.map(i => ({
     ...i,
     label: i.name,
@@ -80,7 +82,7 @@ onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
-  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
     ...selected,
     srName: selected?.label || '',

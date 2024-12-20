@@ -2,7 +2,7 @@
   <div class="online-edit-form" style="position: relative; height: 100%; min-height: 200px">
     <template v-if="dialogParams.fullscreen && !dialogParams.isEdit">
       <el-container>
-        <el-main style="width: 100%; padding: 25px; background: #f9f9f9">
+        <el-main style="width: 100%; background: #f9f9f9">
           <el-row
             type="flex"
             justify="center"
@@ -44,10 +44,9 @@
         </el-main>
         <el-footer
           v-if="!dialogParams.readOnly || (form.operationList || []).length > 0"
-          style="background: white"
-          height="70px;"
+          style="background: white;"
         >
-          <el-row type="flex" justify="center" align="middle" style="height: 70px">
+          <el-row type="flex" justify="center" align="middle" style="height: 60px">
             <el-button
               v-for="operation in form.operationList"
               :key="operation.id"
@@ -59,6 +58,7 @@
             >
               {{ operation.name || SysCustomWidgetOperationType.getValue(operation.type) }}
             </el-button>
+            <el-button :disabled="active === 1" @click="previous">Previous</el-button>
             <el-button :disabled="active === 3" @click="next">Next</el-button>
             <el-button
               v-if="!dialogParams.readOnly"
@@ -70,7 +70,9 @@
             >
               Submit
             </el-button>
-            <el-button size="default" :plain="true" @click="onCancel"> Back </el-button>
+            <el-button v-if="props.dialog.index" size="default" :plain="true" @click="onCancel">
+              Back
+            </el-button>
           </el-row>
         </el-footer>
       </el-container>
@@ -139,6 +141,7 @@
 import { Close } from '@element-plus/icons-vue';
 import { ElForm, ElMessage } from 'element-plus';
 import { Form as VanForm } from 'vant';
+import axios from 'axios';
 import { ANY_OBJECT } from '@/types/generic';
 import { OnlineFormEventType, SysCustomWidgetOperationType } from '@/common/staticDict';
 import {
@@ -155,12 +158,11 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import widgetData from '@/online/config/index';
 import { useLayoutStore, useLoginStore } from '@/store';
+import { serverDefaultCfg } from '@/common/http/config';
+import { eventbus } from '@/common/utils/mitt';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
-import axios from "axios";
-import { serverDefaultCfg } from "@/common/http/config";
-import { eventbus } from "@/common/utils/mitt";
 
 const loginStore = useLoginStore();
 
@@ -203,6 +205,11 @@ const layoutStore = useLayoutStore();
 const { onCloseThirdDialog } = useThirdParty(props);
 const active = ref(1);
 const formRef = ref();
+const previous = () => {
+  if (active.value > 0) {
+    active.value -= 1;
+  }
+};
 const next = () => {
   if (active.value < 3) {
     active.value += 1;
@@ -297,9 +304,9 @@ const onCancel = () => {
     onCloseThirdDialog(false);
   }
 };
-const getQueryParam = (paramName) => {
-  const str = window.location.hash.substring(13) + ''
-  const query = str // 去掉开头的 ?
+const getQueryParam = paramName => {
+  const str = window.location.hash.substring(13) + '';
+  const query = str; // 去掉开头的 ?
   const params = query.split('&');
   for (const param of params) {
     const [key, value] = param.split('=');
@@ -308,18 +315,18 @@ const getQueryParam = (paramName) => {
     }
   }
   return null; // 参数不存在时返回 null
-}
+};
 // 提交表单数据
 const onSaveFormData = async () => {
-  let params = {}
+  let params = {};
   for (const key in bsWidgetList) {
     if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
-      const value = bsWidgetList[key]?.getValue() || {}
+      const value = bsWidgetList[key]?.getValue() || {};
       console.log(`${key}::!@#!@#!@#!@#::`, value);
       params = {
         ...params,
-        ...value
-      }
+        ...value,
+      };
     }
   }
   console.log('all field::!@#!@#!@#!@#', params);
@@ -339,14 +346,14 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
-    orderDataType: getQueryParam('formId')
-  }
-  console.log('real params::::', params)
-  const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params)
+    orderDataType: getQueryParam('formId'),
+  };
+  console.log('real params::::', params);
+  const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params);
   console.log(res);
   if (res.status === 200) {
-    onCancel()
-    eventbus.emit('refreshTable')
+    onCancel();
+    eventbus.emit('refreshTable');
   }
 };
 // 提交
@@ -363,7 +370,9 @@ const onSubmit = () => {
     if (!valid) return;
     if (dialogParams.value.saveData) {
       // 非级联保存数据
-      onSaveFormData();
+      onSaveFormData().then(res => {
+        ElMessage.success('Save success');
+      });
     } else {
       if (props.dialog) {
         props.dialog.submit(formData);

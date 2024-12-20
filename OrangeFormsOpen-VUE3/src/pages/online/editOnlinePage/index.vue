@@ -58,6 +58,7 @@
         <!-- 基础信息 -->
         <BasicForm
           ref="basicForm"
+          :status="status"
           v-if="activeStep == SysOnlinePageSettingStep.BASIC"
           class="main-box"
           style="width: 600px"
@@ -139,6 +140,7 @@ const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {
   pageId?: string;
+  status?: number;
   clientHeight: ANY_OBJECT;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
   dialog?: DialogProp<ANY_OBJECT>;

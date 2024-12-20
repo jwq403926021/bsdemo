@@ -46,14 +46,14 @@ const getSelectUserList = async () => {
   selectedItems.value = res?.data?.map(i => ({
     ...i,
     label: i.name,
-    value: i.name
+    value: i.name,
   }));
 };
 onMounted(() => {
   getSelectUserList();
 });
 const getValue = () => {
-  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
     ...selected,
     divisionsName: selected?.name || '',

@@ -2,7 +2,7 @@
   <div>
     <h2 style="margin-bottom: 10px">Shipping Order Info</h2>
     <ul>
-      <li style="line-height: 24px" v-for="item in data">
+      <li style="line-height: 24px" :key="item.valueHuman" v-for="item in data">
         {{ item.label }}: {{ item.valueHuman }}
       </li>
     </ul>
@@ -27,7 +27,7 @@ const pps = withDefaults(
 );
 const formInject = inject('form');
 const widgetList = inject('widgetList');
-const data = ref([]);
+const data: ANY_OBJECT = ref([]);
 const step = inject('step');
 watch(
   () => step.value,

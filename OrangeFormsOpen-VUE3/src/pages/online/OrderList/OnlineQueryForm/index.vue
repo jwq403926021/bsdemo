@@ -85,9 +85,19 @@
         :style="{ padding: dialogParams.isEdit ? '0' : '' }"
         @click.stop="onTableClick"
       >
-        <el-row type="flex" justify="space-between" align="middle" class="operator-box">
-          <div id="query-form-content"></div>
-        </el-row>
+        <vxe-table empty-text="No data" border="inner" height="100%" :data="tableData">
+          <vxe-column type="seq" title="No." width="150px" />
+          <vxe-column title="Division Name" field="divisionsName" width="150px" />
+          <vxe-column title="SR" field="srName" width="150px" />
+          <vxe-column title="Contact Info" field="contactInfo" width="150px" />
+          <vxe-column title="Created At" field="createdAt" width="150px" />
+          <vxe-column title="Delivery Date" field="deliveryDate" width="150px" />
+          <vxe-column title="Phone" field="phone" width="150px" />
+          <vxe-column title="Recipient" field="recipient" width="150px" />
+          <vxe-column title="Ship To" field="shipTo" width="150px" />
+          <vxe-column title="Shipment" field="shipment" width="150px" />
+          <vxe-column title="Stock Loc" field="stockLocName" width="150px" />
+        </vxe-table>
       </div>
     </template>
   </div>
@@ -212,7 +222,7 @@ provide('form', () => {
 });
 
 const queryTable = computed(() => {
-  return form.value.tableWidget;
+  return form.value?.tableWidget || {};
 });
 const activeWidgetList = computed(() => {
   return form.value.widgetList;
@@ -588,18 +598,16 @@ const getQueryParam = paramName => {
   }
   return null; // 参数不存在时返回 null
 };
-// const refresh = async () => {
-//   const res = await axios.get(
-//     `${serverDefaultCfg.baseURL}order/orderPlacementInfo?orderDataType=${getQueryParam('formId')}`,
-//   );
-//   tableData.value = res?.data || [];
-// };
+const refresh = async () => {
+  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`);
+  tableData.value = res?.data || [];
+};
 onMounted(async () => {
   isReady.value = false;
-  onOperationClick(getOperation(SysCustomWidgetOperationType.ADD));
-  // eventbus.on('refreshTable', () => {
-  //   refresh();
-  // });
+  refresh();
+  eventbus.on('refreshTable', () => {
+    refresh();
+  });
   if (!dialogParams.value.isEdit) {
     initFormData();
     initWidgetLinkage();

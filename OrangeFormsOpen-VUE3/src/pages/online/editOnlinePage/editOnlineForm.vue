@@ -276,6 +276,6 @@ onMounted(() => {
         ? SysOnlineFormType.FLOW
         : SysOnlineFormType.QUERY;
   }
-  formData.value.masterTableId = getValidTableList.value[0].tableId
+  formData.value.masterTableId = getValidTableList.value[0].tableId;
 });
 </script>

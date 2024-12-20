@@ -17,7 +17,7 @@ import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
 import { eventbus } from '@/common/utils/mitt';
 import { serverDefaultCfg } from '@/common/http/config';
-import { removeDuplicates } from "@/common/utils";
+import { removeDuplicates } from '@/common/utils';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -56,9 +56,13 @@ const getSelectList = async (isClear = false, data) => {
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
   console.log('bsaccountname receive', data);
-  if (!data?.value && pps.depend) return // has depend but don't have value, do not request options
-  const res = await axios.get(`${serverDefaultCfg.baseURL}order/orderSalesHierarchy${data?.value ? `?salesRepNum=${data.value}` : ''}`)
-  const result = removeDuplicates(res?.data || [], ['soldToNum', 'soldToName'])
+  if (!data?.value && pps.depend) return; // has depend but don't have value, do not request options
+  const res = await axios.get(
+    `${serverDefaultCfg.baseURL}order/orderSalesHierarchy${
+      data?.value ? `?salesRepNum=${data.value}` : ''
+    }`,
+  );
+  const result = removeDuplicates(res?.data || [], ['soldToNum', 'soldToName']);
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.soldToNum + ' - ' + i.soldToName,
@@ -80,13 +84,13 @@ onUnmounted(() => {
   eventbus.off(`bs:${pps.depend}`);
 });
 const getValue = () => {
-  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {}
+  const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
     ...selected,
     soldToName: selected?.soldToName || '',
     shipTo: selected?.soldToName || '',
     value: pps.modelValue,
-    valueHuman: selected?.label || ''
+    valueHuman: selected?.label || '',
   };
 };
 defineExpose({ getValue });

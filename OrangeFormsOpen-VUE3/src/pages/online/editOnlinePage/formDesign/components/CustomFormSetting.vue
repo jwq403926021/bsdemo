@@ -256,7 +256,10 @@ const onShareForm = () => {
     clipboard.destroy();
   });
   clipboard.on('error', () => {
-    ElMessage.error('Browser Does Not Support Copying, Please Manually Copy Access Information: ' + shareInfo.value);
+    ElMessage.error(
+      'Browser Does Not Support Copying, Please Manually Copy Access Information: ' +
+        shareInfo.value,
+    );
     clipboard.destroy();
   });
 };

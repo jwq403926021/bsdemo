@@ -1,10 +1,6 @@
 <template>
   <div>
-    <el-input
-      v-model="inputValue"
-      @input="emitInput"
-      @change="emitChange"
-    />
+    <el-input v-model="inputValue" @input="emitInput" @change="emitChange" />
   </div>
 </template>
 
@@ -27,11 +23,11 @@ const pps = withDefaults(
   }>(),
   {},
 );
-const inputValue = ref('')
+const inputValue = ref('');
 const form = inject('form');
 const step = inject('step');
 const emitInput = value => {
-  inputValue.value = value
+  inputValue.value = value;
 };
 const emitChange = value => {
   emit('update:modelValue', inputValue.value);
@@ -41,7 +37,7 @@ onMounted(() => {
   if (pps.depend) {
     eventbus.on(`bs:${pps.depend}`, d => {
       console.log('bs recipient receive data', d);
-      inputValue.value = d?.recipient || ''
+      inputValue.value = d?.recipient || '';
     });
   }
 });
@@ -52,7 +48,7 @@ onUnmounted(() => {
 const getValue = () => {
   return {
     recipientModify: inputValue.value,
-    valueHuman: inputValue.value
+    valueHuman: inputValue.value,
   };
 };
 defineExpose({ getValue });

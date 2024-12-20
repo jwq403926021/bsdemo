@@ -34,7 +34,7 @@ export const routers: Array<RouteRecordRaw> = [
       {
         path: 'welcome',
         component: Welcome,
-        name: 'welcome'
+        name: 'welcome',
       },
       {
         path: 'formSysMenu',
@@ -42,48 +42,48 @@ export const routers: Array<RouteRecordRaw> = [
           useLayoutStore().supportColumn
             ? import('@/pages/upms/formSysMenu/formSysColumnMenu.vue')
             : import('@/pages/upms/formSysMenu/index.vue'),
-        name: 'formSysMenu'
+        name: 'formSysMenu',
       },
       {
         path: 'formSysUser',
         component: () => import('@/pages/upms/formSysUser/index.vue'),
-        name: 'formSysUser'
+        name: 'formSysUser',
       },
       {
         path: 'formSysDept',
         component: () => import('@/pages/upms/formSysDept/index.vue'),
-        name: 'formSysDept'
+        name: 'formSysDept',
       },
       {
         path: 'formSysRole',
         component: () => import('@/pages/upms/formSysRole/index.vue'),
-        name: 'formSysRole'
+        name: 'formSysRole',
       },
       {
         path: 'formSysDataPerm',
         component: () => import('@/pages/upms/formSysDataPerm/index.vue'),
-        name: 'formSysDataPerm'
+        name: 'formSysDataPerm',
       },
       {
         path: 'formSysPermCode',
         component: () => import('@/pages/upms/formSysPermCode/index.vue'),
-        name: 'formSysPermCode'
+        name: 'formSysPermCode',
       },
       {
         path: 'formSysPerm',
         component: () => import('@/pages/upms/formSysPerm/index.vue'),
-        name: 'formSysPerm'
+        name: 'formSysPerm',
       },
       {
         path: 'formSysLoginUser',
         component: () => import('@/pages/upms/formSysLoginUser/index.vue'),
-        name: 'formSysLoginUser'
+        name: 'formSysLoginUser',
       },
       // 岗位模块路由配置
       {
         path: 'formSysPost',
         component: () => import('@/pages/upms/formSysPost/index.vue'),
-        name: 'formSysPost'
+        name: 'formSysPost',
       },
       {
         path: 'formSysDeptPost',
@@ -133,6 +133,12 @@ export const routers: Array<RouteRecordRaw> = [
         path: 'onlineForm',
         component: () => import('@/pages/online/OnlinePageRender/index.vue'),
         name: 'onlineForm',
+        props: getProps,
+      },
+      {
+        path: 'orderList',
+        component: () => import('@/pages/online/OrderList/index.vue'),
+        name: 'orderList',
         props: getProps,
       },
       // 工作流模块

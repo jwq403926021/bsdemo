@@ -113,7 +113,7 @@ const formWidgetGroupList: ANY_OBJECT = {
         bsProductLevelNameConfig,
         bsUpnProductNameConfig,
         bsProductConfig,
-      ]
+      ],
     },
     {
       id: 'advance',
@@ -125,8 +125,8 @@ const formWidgetGroupList: ANY_OBJECT = {
         bsRecipientConfig,
         bsPhoneConfig,
         bsRequestDeliveryDateConfig,
-      ]
-    }
+      ],
+    },
   ],
 };
 

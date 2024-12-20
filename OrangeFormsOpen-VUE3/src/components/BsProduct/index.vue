@@ -45,9 +45,11 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import { eventbus } from '@/common/utils/mitt';
 import { ref, onMounted } from 'vue';
+import { eventbus } from '@/common/utils/mitt';
 import { serverDefaultCfg } from '@/common/http/config';
+import { ANY_OBJECT } from '@/types/generic';
+import { WidgetProps } from '@/online/components/types/widget';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -102,7 +104,7 @@ const updateSelectedQuantity = row => {
 
 const getValue = () => {
   return {
-    products: multipleSelection.value
+    products: multipleSelection.value,
   };
 };
 const setValue = () => {

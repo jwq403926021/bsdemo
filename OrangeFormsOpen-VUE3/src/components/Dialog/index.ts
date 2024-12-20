@@ -2,6 +2,7 @@ import { layer } from '@layui/layui-vue';
 import { Component } from 'vue';
 import { ANY_OBJECT } from '@/types/generic';
 import { getAppId, getToken, getUUID } from '@/common/utils';
+import { SysOnlineFormType } from '@/common/staticDict';
 import { DialogProp } from './types';
 import Layout from './layout.vue';
 
@@ -104,12 +105,24 @@ export class Dialog {
 
       console.log('dialog params', params);
       //layerOptions.content = h(component, params);
-      const vueComponent = h(Layout, () => h(component, params));
-      layerOptions.content = vueComponent;
+      const hash = window.location.hash;
+      const urlParams = new URLSearchParams(hash.split('?')[1]);
+      const formType = urlParams.get('formType');
+      if (formType && Number(formType) === SysOnlineFormType.QUERY) {
+        const app = createApp({
+          render() {
+            return h(Layout, () => h(component, params));
+          },
+        });
+        app.mount('#query-form-content');
+      } else {
+        const vueComponent = h(Layout, () => h(component, params));
+        layerOptions.content = vueComponent;
 
-      const id = layer.open(layerOptions);
-      observer.index = id;
-      Dialog.index++;
+        const id = layer.open(layerOptions);
+        observer.index = id;
+        Dialog.index++;
+      }
     });
   };
 }

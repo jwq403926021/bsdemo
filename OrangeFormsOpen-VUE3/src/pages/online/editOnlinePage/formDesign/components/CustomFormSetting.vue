@@ -94,7 +94,7 @@
       <el-row type="flex" align="middle" style="width: 100%; height: 40px">
         <el-radio-group v-model="formConfig().form.fullscreen" size="default">
           <el-radio :value="true">Full Screen</el-radio>
-          <el-radio :value="false">Pop Up</el-radio>
+          <!-- <el-radio :value="false">Pop Up</el-radio> -->
         </el-radio-group>
       </el-row>
     </el-form-item>
@@ -313,5 +313,10 @@ const getAllTableMaskColumnTree = computed(() => {
       return null;
     })
     .filter((item: ANY_OBJECT) => item != null);
+});
+onMounted(() => {
+  if (!formConfig().form.fullscreen) {
+    formConfig().form.fullscreen = true;
+  }
 });
 </script>

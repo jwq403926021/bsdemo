@@ -469,7 +469,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
 
   const initPage = () => {
-    dialogParams.value.formConfig.tableMap.forEach((table: ANY_OBJECT) => {
+    dialogParams.value.formConfig.tableMap?.forEach((table: ANY_OBJECT) => {
       if (table.relation == null) {
         // 主表
         const tempObj = Array.isArray(table.columnList)

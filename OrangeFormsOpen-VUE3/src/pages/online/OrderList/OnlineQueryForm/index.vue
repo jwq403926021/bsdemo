@@ -268,11 +268,11 @@ const getQueryParams = () => {
   }
   return [];
 };
-const loadTableData = (params: ANY_OBJECT) => {
+const loadTableData = (params: ANY_OBJECT) => { 
   return new Promise((resolve, reject) => {
-    let table = form.value.tableMap.get(queryTable.value.bindData.tableId);
+    let table = form.value.tableMap?.get(queryTable.value.bindData?.tableId);
     if (!table) {
-      console.warn('table is undefined tableId=', queryTable.value.bindData.tableId);
+      console.warn('table is undefined tableId=', queryTable.value.bindData?.tableId);
       return;
     }
     let httpCall = null;

@@ -1,5 +1,5 @@
 <template>
-  <!-- 流程版本管理 -->
+  <!-- Workflow Version Management -->
   <div class="form-single-fragment" style="position: relative">
     <el-row>
       <el-col :span="24" v-if="entryXml == null">
@@ -14,52 +14,52 @@
           header-cell-class-name="table-header-gray"
         >
           <vxe-column
-            title="序号"
+            title="No."
             type="seq"
             width="70px"
             :index="publishedFlowEntryWidget.getTableIndex"
           />
-          <vxe-column title="流程名称">
+          <vxe-column title="Process Name">
             <template v-slot>
               <span>{{ dialogParams.flowEntry.processDefinitionName }}</span>
             </template>
           </vxe-column>
-          <vxe-column title="流程分类">
+          <vxe-column title="Process Category">
             <template v-slot>
               <span>{{ dialogParams.flowEntry.flowCategory.name }}</span>
             </template>
           </vxe-column>
-          <vxe-column title="流程版本" field="publishVersion">
+          <vxe-column title="Publish Version" field="publishVersion">
             <template v-slot="scope">
               <el-tag :size="formItemSize" type="primary" effect="dark">{{
                 'V:' + scope.row.publishVersion
               }}</el-tag>
             </template>
           </vxe-column>
-          <vxe-column title="激活状态" field="activeStatus">
+          <vxe-column title="Active Status" field="activeStatus">
             <template v-slot="scope">
               <el-tag
                 :size="formItemSize"
                 effect="dark"
                 :type="scope.row.activeStatus ? 'success' : 'danger'"
               >
-                {{ scope.row.activeStatus ? '激活' : '挂起' }}
+                {{ scope.row.activeStatus ? 'Activated' : 'DeActivated' }}
               </el-tag>
             </template>
           </vxe-column>
-          <vxe-column title="主版本" field="mainVersion">
+          <vxe-column title="Main Version" field="mainVersion">
             <template v-slot="scope">
               <el-tag
                 :size="formItemSize"
                 effect="dark"
                 :type="scope.row.mainVersion ? 'success' : 'danger'"
               >
-                {{ scope.row.mainVersion ? '是' : '否' }}
+                {{ scope.row.mainVersion ? 'Yes' : 'No' }}
               </el-tag>
             </template>
           </vxe-column>
-          <vxe-column title="发布时间" field="publishTime" min-width="150px" />
-          <vxe-column title="操作" fixed="right" width="220px">
+          <vxe-column title="Publish Time" field="publishTime" />
+          <vxe-column title="Actions" fixed="right" min-width="110px">
             <template v-slot="scope">
               <el-button
                 @click.stop="onSetActiveStatus(scope.row)"
@@ -67,7 +67,7 @@
                 type="danger"
                 :size="formItemSize"
               >
-                {{ scope.row.activeStatus ? '挂起' : '激活' }}
+                {{ scope.row.activeStatus ? 'Suspend' : 'Activate' }}
               </el-button>
               <el-button
                 type="primary"
@@ -75,7 +75,7 @@
                 :size="formItemSize"
                 @click="getTaskProcessXml(scope.row)"
               >
-                流程图
+                Diagram
               </el-button>
               <el-button
                 type="primary"
@@ -84,7 +84,7 @@
                 link
                 :size="formItemSize"
               >
-                设置主版本
+                Set As Main
               </el-button>
             </template>
           </vxe-column>
@@ -127,7 +127,7 @@ const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {
   flowEntry: ANY_OBJECT;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up components, this prop must be defined for dialog callback
   dialog?: DialogProp<ANY_OBJECT>;
 }
 const props = withDefaults(defineProps<IProps>(), {
@@ -144,7 +144,7 @@ const dialogParams = computed(() => {
   };
 });
 /**
- * 工作流发布版本数据获取函数，返回Promise
+ * Workflow published version data retrieval function, returns Promise
  */
 const loadFlowEntryWidgetData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -166,7 +166,7 @@ const loadFlowEntryWidgetData = (params: ANY_OBJECT) => {
   });
 };
 /**
- * 工作流发布版本数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * Workflow published version data retrieval verification function, returns true to continue data retrieval, returns false to stop
  */
 const loadFlowEntryVerify = () => {
   return true;
@@ -185,7 +185,7 @@ const refreshFormFlowEntry = (reloadData = false) => {
   }
 };
 /**
- * 激活 / 挂起
+ * Activate / Suspend
  */
 const onSetActiveStatus = (row: ANY_OBJECT) => {
   let params = {
@@ -197,7 +197,7 @@ const onSetActiveStatus = (row: ANY_OBJECT) => {
     : FlowEntryController.activateFlowEntryPublish(params);
   httpCall
     .then(() => {
-      ElMessage.success(`${row.activeStatus ? '挂起成功！' : '激活成功！'}`);
+      ElMessage.success(`${row.activeStatus ? 'Suspension Successful!' : 'Activation Successful!'}`);
       refreshFormFlowEntry();
     })
     .catch(e => {
@@ -205,7 +205,7 @@ const onSetActiveStatus = (row: ANY_OBJECT) => {
     });
 };
 /**
- * 获取流程图xml
+ * Get process diagram XML
  */
 const getTaskProcessXml = (row: ANY_OBJECT) => {
   if (row.processDefinitionId == null || row.processDefinitionId === '') {
@@ -217,7 +217,7 @@ const getTaskProcessXml = (row: ANY_OBJECT) => {
   };
   FlowOperationController.viewProcessBpmn(params)
     .then(res => {
-      // 当前流程实例xml
+      // Current process instance XML
       entryXml.value = res.data;
     })
     .catch(e => {
@@ -225,12 +225,12 @@ const getTaskProcessXml = (row: ANY_OBJECT) => {
     });
 };
 /**
- * 设置主版本
+ * Set main version
  */
 const onSetMainVersion = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否将当前版本设置为主版本？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to set the current version as the main version?', '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -241,7 +241,7 @@ const onSetMainVersion = (row: ANY_OBJECT) => {
       return FlowEntryController.updateMainVersion(params);
     })
     .then(() => {
-      ElMessage.success('设置成功！');
+      ElMessage.success('Setting Successful!');
       refreshFormFlowEntry();
     })
     .catch(e => {
@@ -250,7 +250,7 @@ const onSetMainVersion = (row: ANY_OBJECT) => {
 };
 
 onMounted(() => {
-  // 初始化页面数据
+  // Initialize page data
   refreshFormFlowEntry();
 });
 </script>

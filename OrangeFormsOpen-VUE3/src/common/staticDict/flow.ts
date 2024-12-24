@@ -19,12 +19,12 @@ const SysFlowEntryBindFormType = new DictionaryBase('流程绑定表单类型', 
 const SysFlowEntryPublishedStatus = new DictionaryBase('流程设计发布状态', [
   {
     id: 0,
-    name: '未发布',
+    name: 'Unpublished',
     symbol: 'UNPUBLISHED',
   },
   {
     id: 1,
-    name: '已发布',
+    name: 'Published',
     symbol: 'PUBLISHED',
   },
 ]);
@@ -318,12 +318,12 @@ const FlowNodeType = new DictionaryBase('钉钉节点类型', [
 const DiagramType = new DictionaryBase('', [
   {
     id: 0,
-    name: '普通流程图',
+    name: 'Ordinary',
     symbol: 'ORDINARY',
   },
   {
     id: 1,
-    name: '钉钉风格流程图',
+    name: 'DingDing',
     symbol: 'DINGDING',
   },
 ]);
@@ -350,15 +350,15 @@ const SysAutoCodeType = new DictionaryBase('自动编码类型', [
     symbol: 'SECONDS',
   },
 ]);
-const FlowEntryType = new DictionaryBase('流程类型', [
+const FlowEntryType = new DictionaryBase('Process Type', [
   {
     id: 0,
-    name: '审批流程',
+    name: 'Normal',
     symbol: 'NORMAL',
   },
   {
     id: 1,
-    name: '自动化任务',
+    name: 'Auto Task',
     symbol: 'AUTO_TASK',
   },
 ]);

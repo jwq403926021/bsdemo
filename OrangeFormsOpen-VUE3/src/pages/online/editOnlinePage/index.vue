@@ -136,6 +136,7 @@ import BasicForm from './basic/index.vue';
 import DataModel from './dataModel/index.vue';
 import FormDesign from './formDesign/index.vue';
 import EditOnlineForm from './editOnlineForm.vue';
+import { SysOnlineFormType } from '@/common/staticDict';
 const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {
@@ -315,6 +316,8 @@ const initPageFormList = (pageId: string | undefined) => {
             ...item,
             ...config,
             paramList,
+            processId:
+              item.formType === SysOnlineFormType.FORM && item.processId ? item.processId : '',
             step1Name: config?.pc?.step1Name || '',
             step2Name: config?.pc?.step2Name || '',
             step3Name: config?.pc?.step3Name || '',
@@ -631,6 +634,7 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       width: tempFormConfig.width,
       height: tempFormConfig.height,
       fullscreen: tempFormConfig.fullscreen,
+      processId: tempFormConfig.processId,
       step1Name: tempFormConfig.step1Name,
       step2Name: tempFormConfig.step2Name,
       step3Name: tempFormConfig.step3Name,
@@ -648,6 +652,7 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       step1Name: currentForm.pc.step1Name,
       step2Name: currentForm.pc.step2Name,
       step3Name: currentForm.pc.step3Name,
+      processId: currentForm.pc.processId,
       formKind: SysOnlineFormKind.PAGE,
       formType: currentForm.formType,
       masterTableId: currentForm.masterTableId,

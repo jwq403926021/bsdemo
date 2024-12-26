@@ -160,7 +160,7 @@
                     </el-tag>
                   </template>
                 </vxe-column>
-                <vxe-column title="Operation" width="100px">
+                <vxe-column title="Operation" width="120px">
                   <template v-slot="scope">
                     <el-button
                       :size="formItemSize"
@@ -210,7 +210,7 @@
                 <vxe-column title="Index" type="seq" width="70px" />
                 <vxe-column title="Status Name" field="name" />
                 <vxe-column title="Status Id" field="id" />
-                <vxe-column title="Operation" width="100px">
+                <vxe-column title="Operation" width="120px">
                   <template v-slot="scope">
                     <el-button
                       :size="formItemSize"

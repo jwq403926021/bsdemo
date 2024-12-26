@@ -44,7 +44,7 @@
         </el-main>
         <el-footer
           v-if="!dialogParams.readOnly || (form.operationList || []).length > 0"
-          style="background: white;"
+          style="background: white"
         >
           <el-row type="flex" justify="center" align="middle" style="height: 60px">
             <el-button
@@ -70,7 +70,7 @@
             >
               Submit
             </el-button>
-            <el-button v-if="props.dialog.index" size="default" :plain="true" @click="onCancel">
+            <el-button v-if="props?.dialog?.index" size="default" :plain="true" @click="onCancel">
               Back
             </el-button>
           </el-row>
@@ -163,6 +163,7 @@ import { eventbus } from '@/common/utils/mitt';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
+import { FlowEntryController } from '@/api/flow';
 
 const loginStore = useLoginStore();
 
@@ -318,7 +319,7 @@ const getQueryParam = paramName => {
 };
 // 提交表单数据
 const onSaveFormData = async () => {
-  let params = {};
+  let params: ANY_OBJECT = {};
   for (const key in bsWidgetList) {
     if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
       const value = bsWidgetList[key]?.getValue() || {};
@@ -346,10 +347,11 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
+    processDefinitionKey: dialogParams.value.formConfig.processId || '',
     orderDataType: getQueryParam('formId'),
   };
   console.log('real params::::', params);
-  const res = await axios.post(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, params);
+  const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);
   console.log(res);
   if (res.status === 200) {
     onCancel();

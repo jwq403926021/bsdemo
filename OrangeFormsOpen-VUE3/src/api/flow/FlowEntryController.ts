@@ -13,6 +13,22 @@ export default class FlowEntryController extends BaseController {
     );
   }
 
+  static listNoPage(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.post<TableData<ANY_OBJECT>>(
+      API_CONTEXT + '/flow/flowEntry/listNoPage',
+      params,
+      httpOptions,
+    );
+  }
+
+  static orderPlacement(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.post<TableData<ANY_OBJECT>>(
+      API_CONTEXT + '/flow/flowEntry/orderPlacementInfo',
+      params,
+      httpOptions,
+    );
+  }
+
   static view(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/view', params, httpOptions);
   }

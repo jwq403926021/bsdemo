@@ -3,26 +3,26 @@
     <el-form
       ref="form"
       :model="formFlowCategory"
-      label-width="80px"
+      label-width="120px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormFlowCategory(true)" @reset="onReset">
-        <el-form-item label="分类名称" prop="formFilter.name">
+        <el-form-item label="Category Name" prop="formFilter.name">
           <el-input
             class="filter-item"
             v-model="formFlowCategory.formFilter.name"
             :clearable="true"
-            placeholder="流程分类名称"
+            placeholder="Process Category Name"
           />
         </el-form-item>
-        <el-form-item label="分类编码" prop="formFilter.code">
+        <el-form-item label="Category Code" prop="formFilter.code">
           <el-input
             class="filter-item"
             v-model="formFlowCategory.formFilter.code"
             :clearable="true"
-            placeholder="分类编码"
+            placeholder="Category Code"
           />
         </el-form-item>
       </filter-box>
@@ -44,19 +44,19 @@
           :icon="ElIconPlus"
           :size="layoutStore.defaultFormItemSize"
           @click="onAddFlowCategoryClick()"
-          >新建</el-button
+          >New</el-button
         >
       </template>
-      <vxe-column title="序号" type="seq" width="70px" :index="flowCategoryWidget.getTableIndex" />
-      <vxe-column title="流程分类名称" field="name"> </vxe-column>
-      <vxe-column title="分类编码" field="code"> </vxe-column>
-      <vxe-column title="显示顺序" field="showOrder" sortable> </vxe-column>
-      <vxe-column title="创建时间" field="createTime" sortable>
+      <vxe-column title="No." type="seq" width="70px" :index="flowCategoryWidget.getTableIndex" />
+      <vxe-column title="Process Category Name" field="name"> </vxe-column>
+      <vxe-column title="Category Code" field="code"> </vxe-column>
+      <vxe-column title="Display Order" field="showOrder" sortable> </vxe-column>
+      <vxe-column title="Creation Time" field="createTime" sortable>
         <template v-slot="scope">
           <span>{{ formatDateByStatsType(scope.row.createTime, 'day') }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="100px">
+      <vxe-column title="Operation" fixed="right" width="120px">
         <template v-slot="scope">
           <el-button
             link
@@ -64,7 +64,7 @@
             :size="layoutStore.defaultFormItemSize"
             @click.stop="onEditFlowCategoryClick(scope.row)"
           >
-            编辑
+            Edit
           </el-button>
           <el-button
             link
@@ -72,7 +72,7 @@
             :size="layoutStore.defaultFormItemSize"
             @click.stop="onDeleteFlowCategoryClick(scope.row)"
           >
-            删除
+            Delete
           </el-button>
         </template>
       </vxe-column>
@@ -123,7 +123,7 @@ const formFlowCategory = reactive<ANY_OBJECT>({
 });
 
 /**
- * FlowCategory数据获取函数，返回Promise
+ * FlowCategory Data Fetching Function, Returns Promise
  */
 const loadFlowCategoryWidgetData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -148,7 +148,7 @@ const loadFlowCategoryWidgetData = (params: ANY_OBJECT) => {
   });
 };
 /**
- * FlowCategory数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * FlowCategory Data Fetching Verification Function, Returns true to Continue Fetching, Returns false to Stop Fetching
  */
 const loadFlowCategoryVerify = () => {
   formFlowCategory.formFilterCopy.name = formFlowCategory.formFilter.name;
@@ -166,7 +166,7 @@ const tableOptions: TableOptions<ANY_OBJECT> = {
 const flowCategoryWidget = reactive(useTable(tableOptions));
 
 /**
- * 更新流程分类管理
+ * Update Flow Category Management
  */
 const refreshFormFlowCategory = (reloadData = false) => {
   if (reloadData) {
@@ -175,7 +175,7 @@ const refreshFormFlowCategory = (reloadData = false) => {
     flowCategoryWidget.refreshTable();
   }
   if (!formFlowCategory.isInit) {
-    // 初始化下拉数据
+    // Initialize Dropdown Data
   }
   formFlowCategory.isInit = true;
 };
@@ -185,11 +185,11 @@ const onReset = () => {
 };
 
 /**
- * 新建
+ * New
  */
 const onAddFlowCategoryClick = () => {
   Dialog.show(
-    '新建',
+    'New',
     formEditFlowCategory,
     {
       area: '500px',
@@ -211,11 +211,11 @@ const onAddFlowCategoryClick = () => {
     });
 };
 /**
- * 编辑
+ * Edit
  */
 const onEditFlowCategoryClick = (row: ANY_OBJECT) => {
   Dialog.show(
-    '编辑',
+    'Edit',
     formEditFlowCategory,
     {
       area: '500px',
@@ -238,26 +238,26 @@ const onEditFlowCategoryClick = (row: ANY_OBJECT) => {
     });
 };
 /**
- * 删除
+ * Delete
  */
 const onDeleteFlowCategoryClick = (row: ANY_OBJECT) => {
   if (row.categoryId == null) {
-    ElMessage.error('请求失败，发现必填参数为空！');
+    ElMessage.error('Request Failed, Required Parameter Found Empty!');
     return;
   }
   let params = {
     categoryId: row.categoryId,
   };
 
-  ElMessageBox.confirm('是否删除此流程分类？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this process category?', '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
       FlowCategoryController.delete(params)
         .then(() => {
-          ElMessage.success('删除成功');
+          ElMessage.success('Deleted Successful');
           flowCategoryWidget.refreshTable();
         })
         .catch(e => {
@@ -276,7 +276,7 @@ const formInit = () => {
 };
 
 onMounted(() => {
-  // 初始化页面数据
+  // Initialize Page Data
   formInit();
 });
 

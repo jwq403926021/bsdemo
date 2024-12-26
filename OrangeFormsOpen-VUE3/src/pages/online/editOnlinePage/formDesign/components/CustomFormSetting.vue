@@ -16,6 +16,16 @@
         <el-input v-model="formConfig().form.step3Name" placeholder="" clearable filterable />
       </el-form-item>
     </template>
+    <el-form-item label="Choose Process">
+      <el-select v-model="formConfig().form.processId" placeholder="Select Process" clearable>
+        <el-option
+          v-for="item in processList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+    </el-form-item>
     <el-form-item label="Form ID">
       <el-row justify="space-between" align="middle" style="flex-wrap: nowrap; width: 100%">
         <el-input readonly :model-value="formConfig().form.formId" />
@@ -145,11 +155,13 @@ import { Dialog } from '@/components/Dialog';
 import { findItemFromList } from '@/common/utils';
 import { useLayoutStore } from '@/store';
 import EditFormField from './EditFormField.vue';
+import { FlowEntryController } from '@/api/flow';
 
 const formConfig = inject('formConfig', () => {
   console.error('CustomFormSetting: formConfig not injected');
   return {} as ANY_OBJECT;
 });
+const processList = ref<ANY_OBJECT[]>([]);
 
 const layoutStore = useLayoutStore();
 
@@ -318,5 +330,26 @@ onMounted(() => {
   if (!formConfig().form.fullscreen) {
     formConfig().form.fullscreen = true;
   }
+  const params = {
+    orderParam: [
+      {
+        fieldName: 'entryId',
+        asc: true,
+      },
+    ],
+    flowEntryDtoFilter: {
+      flowType: 1,
+      status: 1,
+    },
+  };
+  FlowEntryController.listNoPage(params).then((res: ANY_OBJECT) => {
+    processList.value = res.data.map(item => {
+      return { label: item.processDefinitionName, value: item.processDefinitionKey };
+    });
+    const validOptions = processList.value.map(item => item.value);
+    if (!validOptions.includes(formConfig().form.processId)) {
+      formConfig().form.processId = '';
+    }
+  });
 });
 </script>

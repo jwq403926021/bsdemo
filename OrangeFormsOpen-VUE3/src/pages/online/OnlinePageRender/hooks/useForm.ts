@@ -374,6 +374,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
             formEventList: formConfigData.formEventList,
             maskFieldList: formConfigData.maskFieldList,
             mode: 'pc',
+            processId: onlineForm.processId,
           };
           resolve(formConfig);
         })

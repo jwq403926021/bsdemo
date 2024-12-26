@@ -6,49 +6,49 @@
       class="full-width-input form-box"
       :rules="rules"
       style="width: 100%"
-      label-width="80px"
+      label-width="120px"
       :size="formItemSize"
       label-position="right"
       @submit.prevent
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="分类名称" prop="FlowCategory.name">
+          <el-form-item label="Category Name" prop="FlowCategory.name">
             <el-input
               class="input-item"
               v-model="formData.FlowCategory.name"
               :clearable="true"
-              placeholder="流程分类名称"
+              placeholder="Process Category Name"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="分类编码" prop="FlowCategory.code">
+          <el-form-item label="Category Code" prop="FlowCategory.code">
             <el-input
               class="input-item"
               v-model="formData.FlowCategory.code"
               :disabled="isEdit"
               :clearable="true"
-              placeholder="分类编码"
+              placeholder="Category Code"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="显示顺序" prop="FlowCategory.showOrder">
+          <el-form-item label="Display Order" prop="FlowCategory.showOrder">
             <el-input-number
               class="input-item"
               v-model="formData.FlowCategory.showOrder"
               :clearable="true"
               controls-position="right"
-              placeholder="显示顺序"
+              placeholder="Display Order"
             />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <el-row class="no-scroll flex-box menu-box" type="flex" justify="end">
-      <el-button :size="formItemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-      <el-button type="primary" :size="formItemSize" @click="onSubmit()"> 保存 </el-button>
+      <el-button :size="formItemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+      <el-button type="primary" :size="formItemSize" @click="onSubmit()"> Save </el-button>
     </el-row>
   </div>
 </template>
@@ -66,7 +66,7 @@ const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {
   categoryId?: string;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop is required for callback on dialog
   dialog?: DialogProp<ANY_OBJECT>;
 }
 const props = defineProps<IProps>();
@@ -100,32 +100,32 @@ const rules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   'FlowCategory.code': [
     {
       required: true,
-      message: '请输入分类编码',
+      message: 'Please enter the category code',
       trigger: 'blur',
     },
     {
       type: 'string',
       pattern: /^[A-Za-z0-9]+$/,
-      message: '分类编码只能输入英文字母和数字',
+      message: 'Category code can only contain letters and numbers',
       trigger: 'blur',
     },
   ],
   'FlowCategory.showOrder': [
     {
       required: true,
-      message: '请输入显示顺序',
+      message: 'Please enter the display order',
       trigger: 'blur',
     },
     {
       type: 'integer',
-      message: '显示顺序只允许输入整数',
+      message: 'Display order only allows integers',
       trigger: 'blur',
       transform: (value: string) => Number(value),
     },
     {
       type: 'number',
       min: 0,
-      message: '显示顺序必须大于0',
+      message: 'Display order must be greater than 0',
       trigger: 'blur',
       transform: (value: string) => Number(value),
     },
@@ -133,7 +133,7 @@ const rules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   'FlowCategory.name': [
     {
       required: true,
-      message: '请输入流程分类名称',
+      message: 'Please enter the process category name',
       trigger: 'blur',
     },
   ],
@@ -157,7 +157,7 @@ const onCancel = () => {
 };
 
 /**
- * 保存
+ * Save
  */
 const onSubmit = () => {
   form.value.validate((valid: boolean) => {
@@ -167,7 +167,7 @@ const onSubmit = () => {
       formData.FlowCategory.code == null ||
       formData.FlowCategory.showOrder == null
     ) {
-      ElMessage.error('请求失败，发现必填参数为空！');
+      ElMessage.error('Request failed, found required parameters empty!');
       return;
     }
     let params = {
@@ -198,14 +198,14 @@ const onSubmit = () => {
 };
 
 /**
- * 重置表单数据
+ * Reset form data
  */
 const resetFormData = () => {
   form.value.resetFields();
 };
 
 /**
- * 获取FlowCategory详细信息
+ * Get FlowCategory detailed information
  */
 const loadFlowCategoryData = () => {
   return new Promise((resolve, reject) => {
@@ -234,13 +234,13 @@ const loadFlowCategoryData = () => {
 };
 
 /**
- * 更新编辑流程分类
+ * Update edit flow category
  */
 const refreshFormEditFlowCategory = () => {
   loadFlowCategoryData()
     .then(() => {
       if (!formEditFlowCategory.isInit) {
-        // 初始化下拉数据
+        // Initialize dropdown data
         console.log('');
       }
       formEditFlowCategory.isInit = true;
@@ -255,7 +255,7 @@ const formInit = () => {
 };
 
 onMounted(() => {
-  // 初始化页面数据
+  // Initialize page data
   formInit();
 });
 </script>

@@ -132,11 +132,11 @@ import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
 import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import { useLayoutStore } from '@/store';
+import { SysOnlineFormType } from '@/common/staticDict';
 import BasicForm from './basic/index.vue';
 import DataModel from './dataModel/index.vue';
 import FormDesign from './formDesign/index.vue';
 import EditOnlineForm from './editOnlineForm.vue';
-import { SysOnlineFormType } from '@/common/staticDict';
 const layoutStore = useLayoutStore();
 
 interface IProps extends ThirdProps {

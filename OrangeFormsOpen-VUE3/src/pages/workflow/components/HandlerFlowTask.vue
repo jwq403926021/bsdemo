@@ -4,17 +4,17 @@
       <div>
         <span class="text">{{ flowInfo.flowEntryName }}</span>
         <el-tag v-if="flowInfo.taskName" effect="dark" :size="size" type="success">{{
-          '当前节点：' + flowInfo.taskName
+          'Current Node: ' + flowInfo.taskName
         }}</el-tag>
         <el-tag v-if="flowInfo.processInstanceInitiator" effect="dark" :size="size" type="info">{{
-          '发起人：' + flowInfo.processInstanceInitiator
+          'Initiator: ' + flowInfo.processInstanceInitiator
         }}</el-tag>
       </div>
     </div>
     <el-row justify="space-between" style="margin-bottom: 24px; flex-wrap: nowrap">
       <el-radio-group size="default" v-model="currentPage" style="min-width: 400px">
-        <el-radio-button value="formInfo">表单信息</el-radio-button>
-        <el-radio-button
+        <el-radio-button value="formInfo">Form Information</el-radio-button>
+        <!-- <el-radio-button
           v-if="
             processInstanceId == null ||
             isRuntime ||
@@ -23,21 +23,21 @@
             isDraft === 'true'
           "
           label="copyInfo"
-          >抄送设置</el-radio-button
-        >
+          >Cc Settings</el-radio-button
+        > -->
         <el-radio-button v-if="processInstanceId != null && !isDraft" value="flowProcess"
-          >流程图</el-radio-button
+          >Flow Chart</el-radio-button
         >
         <el-radio-button v-if="processInstanceId != null && !isDraft" value="approveInfo"
-          >审批记录</el-radio-button
+          >Approval Record</el-radio-button
         >
         <el-radio-button v-if="taskId != null && !isDraft" value="assigneeList"
-          >审批人</el-radio-button
+          >Approver</el-radio-button
         >
       </el-radio-group>
       <el-row class="task-operation" justify="end" style="flex-wrap: nowrap">
         <el-button v-if="canDraft" size="default" type="success" :plain="true" @click="handlerDraft"
-          >保存草稿</el-button
+          >Save Draft</el-button
         >
         <template v-if="$slots.operations">
           <slot name="operations" />
@@ -51,7 +51,7 @@
             :plain="operation.plain || false"
             @click="handlerOperation(operation)"
           >
-            {{ operation.label }}
+            {{ capitalizeWords(operation.type) }}
           </el-button>
         </template>
       </el-row>
@@ -66,25 +66,25 @@
         label-position="right"
         @submit.prevent
       >
-        <!-- 表单信息 -->
-        <el-row v-show="currentPage === 'formInfo'" type="flex" :key="formKey">
-          <slot />
-        </el-row>
-        <!-- 审批记录 -->
+        <!-- Form Information -->
+        <div v-show="currentPage === 'formInfo'" :key="formKey">
+          <slot name="formInfo" />
+        </div>
+        <!-- Approval Record -->
         <el-row v-show="currentPage === 'approveInfo'" :gutter="20">
           <el-col :span="24">
             <vxe-table
-              empty-text="No data"
+              empty-text="No Data"
               :data="flowTaskCommentList"
               :size="layoutStore.defaultFormItemSize"
               header-cell-class-name="table-header-gray"
               :height="mainContextHeight - 150 + 'px'"
               :row-config="{ isHover: true }"
             >
-              <vxe-column title="序号" type="seq" width="100" />
-              <vxe-column title="流程环节" field="taskName" />
-              <vxe-column title="执行人" field="createUsername" />
-              <vxe-column title="操作" width="150px">
+              <vxe-column title="No." type="seq" width="100" />
+              <vxe-column title="Process Name" field="taskName" />
+              <vxe-column title="Executor" field="createUsername" />
+              <vxe-column title="Operation" width="150px">
                 <template v-slot="scope">
                   <el-tag
                     :size="layoutStore.defaultFormItemSize"
@@ -102,12 +102,12 @@
                   >
                 </template>
               </vxe-column>
-              <vxe-column title="审批意见">
+              <vxe-column title="Approval Comment">
                 <template v-slot="scope">
                   <span>{{ scope.row.taskComment ? scope.row.taskComment : '' }}</span>
                 </template>
               </vxe-column>
-              <vxe-column title="处理时间" field="createTime" />
+              <vxe-column title="Create Time" field="createTime" />
               <template v-slot:empty>
                 <div class="table-empty unified-font">
                   <img src="@/assets/img/empty.png" />
@@ -117,7 +117,7 @@
             </vxe-table>
           </el-col>
         </el-row>
-        <!-- 流程图 -->
+        <!-- Flow Chart -->
         <el-row v-if="currentPage === 'flowProcess'">
           <ProcessViewer
             :style="{ height: mainContextHeight - 148 + 'px' }"
@@ -126,27 +126,27 @@
             :allCommentList="flowTaskCommentList"
           />
         </el-row>
-        <!-- 抄送设置 -->
+        <!-- Cc Settings -->
         <el-row v-show="currentPage === 'copyInfo'">
           <el-col :span="24" style="border-top: 1px solid #ebeef5">
             <CopyForSelect v-model:value="copyItemList" />
           </el-col>
         </el-row>
-        <!-- 审批人列表 -->
+        <!-- Approver List -->
         <el-row v-show="currentPage === 'assigneeList'" :gutter="20">
           <el-col :span="24">
             <vxe-table
-              empty-text="No data"
+              empty-text="No Data"
               :data="assigneeList"
               :size="layoutStore.defaultFormItemSize"
               header-cell-class-name="table-header-gray"
               :height="mainContextHeight - 150 + 'px'"
               :row-config="{ isHover: true }"
             >
-              <vxe-column title="序号" type="seq" width="100" />
-              <vxe-column title="审批人" field="loginName" />
-              <vxe-column title="昵称" field="showName" />
-              <vxe-column title="处理时间" field="lastApprovalTime" />
+              <vxe-column title="No." type="seq" width="100" />
+              <vxe-column title="Approver" field="loginName" />
+              <vxe-column title="Nickname" field="showName" />
+              <vxe-column title="Approval Time" field="lastApprovalTime" />
               <template v-slot:empty>
                 <div class="table-empty unified-font">
                   <img src="@/assets/img/empty.png" />
@@ -172,6 +172,8 @@ import { FlowOperationController } from '@/api/flow';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
 import { useLayoutStore } from '@/store';
+import { capitalizeWords } from '@/pages/workflow/package/utils';
+
 const layoutStore = useLayoutStore();
 
 const emit = defineEmits<{

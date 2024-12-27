@@ -154,8 +154,8 @@ import { SysOnlineFieldKind } from '@/common/staticDict/online';
 import { Dialog } from '@/components/Dialog';
 import { findItemFromList } from '@/common/utils';
 import { useLayoutStore } from '@/store';
-import EditFormField from './EditFormField.vue';
 import { FlowEntryController } from '@/api/flow';
+import EditFormField from './EditFormField.vue';
 
 const formConfig = inject('formConfig', () => {
   console.error('CustomFormSetting: formConfig not injected');

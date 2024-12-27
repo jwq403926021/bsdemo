@@ -96,3 +96,10 @@ export function uuid(length = 8, chars: string | null = null) {
   }
   return result;
 }
+
+export function capitalizeWords(str: string) {
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}

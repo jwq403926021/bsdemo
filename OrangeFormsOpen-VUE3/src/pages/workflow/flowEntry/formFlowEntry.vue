@@ -81,7 +81,7 @@
         :index="formFlowEntry.flowEntryWidget.getTableIndex"
       />
       <vxe-column title="Process Name" field="processDefinitionName"> </vxe-column>
-      <vxe-column title="Process Identifier" field="processDefinitionKey"> </vxe-column>
+      <vxe-column title="Process Key" field="processDefinitionKey"> </vxe-column>
       <vxe-column title="Process Category" field="flowCategory.name"> </vxe-column>
       <vxe-column title="Process Type">
         <template v-slot="scope">

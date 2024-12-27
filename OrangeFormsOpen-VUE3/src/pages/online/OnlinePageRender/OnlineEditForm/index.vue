@@ -160,10 +160,10 @@ import widgetData from '@/online/config/index';
 import { useLayoutStore, useLoginStore } from '@/store';
 import { serverDefaultCfg } from '@/common/http/config';
 import { eventbus } from '@/common/utils/mitt';
+import { FlowEntryController } from '@/api/flow';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
-import { FlowEntryController } from '@/api/flow';
 
 const loginStore = useLoginStore();
 

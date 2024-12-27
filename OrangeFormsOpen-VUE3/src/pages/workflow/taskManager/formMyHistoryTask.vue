@@ -1,24 +1,24 @@
 <template>
-  <!-- 历史任务 -->
+  <!-- Historical Tasks -->
   <div style="position: relative">
     <el-form
       ref="form"
       :model="formFilter"
-      label-width="80px"
+      label-width="120px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormMyHistoryTask(true)" @reset="onReset">
-        <el-form-item label="流程名称" prop="processDefinitionName">
+        <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
             v-model="formFilter.processDefinitionName"
             :clearable="true"
-            placeholder="流程名称"
+            placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="发起时间" prop="createDate">
+        <el-form-item label="Create Date" prop="createDate">
           <date-range
             class="filter-item"
             v-model:value="formFilter.createDate"
@@ -26,8 +26,8 @@
             :allowTypes="['day']"
             align="left"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-placeholder="Start Date"
+            end-placeholder="End Date"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -46,25 +46,25 @@
       :hasExtend="false"
     >
       <vxe-column
-        title="序号"
+        title="No."
         type="seq"
         width="70px"
         :index="formMyHistoryTaskWidget.getTableIndex"
       />
-      <vxe-column title="流程名称" field="processDefinitionName" />
-      <vxe-column title="流程标识" field="processDefinitionKey" />
-      <vxe-column title="发起人登录名" field="startUserId" />
-      <vxe-column title="发起人昵称" field="showName" />
-      <vxe-column title="任务发起时间" field="startTime" />
-      <vxe-column title="任务结束时间" field="endTime" />
-      <vxe-column title="操作" width="80px">
+      <vxe-column title="Process Name" field="processDefinitionName" />
+      <vxe-column title="Process Identifier" field="processDefinitionKey" />
+      <vxe-column title="Initiator Login Name" field="startUserId" />
+      <vxe-column title="Initiator Nickname" field="showName" />
+      <vxe-column title="Task Initiation Time" field="startTime" />
+      <vxe-column title="Task End Time" field="endTime" />
+      <vxe-column title="Operation" width="90px">
         <template v-slot="scope">
           <el-button
             :size="layoutStore.defaultFormItemSize"
             link
             type="primary"
             @click="onFlowDetail(scope.row)"
-            >详情</el-button
+            >Details</el-button
           >
         </template>
       </vxe-column>
@@ -92,6 +92,8 @@ import { FlowOperationController } from '@/api/flow';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const form = ref();
 const router = useRouter();
@@ -99,7 +101,7 @@ import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 
 /**
- * 获取所有流程实例
+ * Get all process instances
  */
 const loadMyHistoryTaskData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -155,7 +157,7 @@ const refreshFormMyHistoryTask = (reloadData = false) => {
   }
   // eslint-disable-next-line no-empty
   if (!isInit) {
-    // 初始化下拉数据
+    // Initialize dropdown data
     // do nothing
   }
   isInit = true;
@@ -174,7 +176,7 @@ const onFlowDetail = (row: ANY_OBJECT) => {
     .then(res => {
       if (res.data) {
         router.push({
-          name: res.data.routerName || 'handlerFlowTask',
+          name: 'handlerFlowTask',
           query: {
             processDefinitionKey: row.processDefinitionKey,
             taskId: null,
@@ -200,9 +202,15 @@ const formInit = () => {
   refreshFormMyHistoryTask();
 };
 
-onMounted(() => {
-  formInit();
-});
+watch(
+  () => route.name,
+  () => {
+    if (route.name === 'formMyHistoryTask') {
+      formInit();
+    }
+  },
+  {immediate: true}
+);
 
 defineExpose({ onResume });
 </script>

@@ -15,8 +15,14 @@
     @submit="handlerOperation"
     @draft="handlerDraft"
   >
-    <!-- 在线表单页面 -->
-    <WorkflowForm
+    <!-- Online Form Page -->
+    <template v-slot:formInfo>
+      <div v-for="(value, key) in formInfo" :key="key" class="form-item">
+        <div class="label">{{ FormInfo[key] }}:</div>
+        <div class="value">{{ value }}</div>
+      </div>
+    </template>
+    <!-- <WorkflowForm
       v-if="dialogParams.routerName == null && dialogParams.formId != null"
       ref="workflowFormRef"
       style="width: 100%"
@@ -24,8 +30,8 @@
       :formId="dialogParams.formId"
       :readOnly="readOnly"
       :flowInfo="getFlowInfo"
-    />
-    <!-- 路由页面 -->
+    /> -->
+    <!-- Route Page -->
     <router-view v-slot:="{ Component, route }">
       <component
         :is="Component"
@@ -45,11 +51,15 @@
 
 <script setup lang="ts">
 import { ElMessageBox, ElMessage } from 'element-plus';
+import axios from 'axios';
+import _ from 'lodash';
 import WorkflowForm from '@/pages/online/OnlinePageRender/index.vue';
+import { serverDefaultCfg } from '@/common/http/config';
 import { FlowOperationController } from '@/api/flow';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
 import { useMessage } from '@/store';
+import { FormInfo } from '@/common/enum/useForm';
 import HandlerFlowTask from '../components/HandlerFlowTask.vue';
 import { useFlowAction } from './hook';
 import { IProp } from './types';
@@ -60,15 +70,15 @@ const mainContextHeight = inject('mainContextHeight', 200);
 
 const workflowFormRef = ref();
 const routerFlowForm = ref();
-
+const formInfo = ref({});
 const isStart = ref(false);
-// 保存草稿后流程taskId
+// Save taskId after drafting process
 const draftTaskId = ref<string>();
-// 保存草稿后流程实例ID
+// Save process instance ID after drafting
 const draftProcessInstanceId = ref<string>();
-// 在线表单页面数据
+// Online form page data
 const formData = ref<ANY_OBJECT>();
-// 在线表单页面一对多数据
+// Online form page one-to-many data
 const oneToManyRelationData = ref<ANY_OBJECT>();
 
 const { handlerFlowTaskRef, preHandlerOperation, submitConsign, handlerClose, dialogParams } =
@@ -119,8 +129,8 @@ const variableList = computed(() => {
 const messageStore = useMessage();
 
 /**
- * 获得路由组件下的函数
- * @param {string} functionName 函数名称
+ * Get function from routed component
+ * @param {string} functionName Function name
  * @returns {function}
  */
 const getRouterCompomentFunction = (functionName: string) => {
@@ -129,19 +139,19 @@ const getRouterCompomentFunction = (functionName: string) => {
     : undefined;
 };
 /**
- * 获取表单数据
+ * Get form data
  */
 const getMasterData = (
   operationType: string,
   assignee: string | Array<string> | undefined,
 ): Promise<ANY_OBJECT> => {
   return new Promise((resolve, reject) => {
-    // TODO workflowFormRef.value.getFormData无须判断
+    // TODO workflowFormRef.value.getFormData does not need to be checked
     if (isOnlineForm.value && workflowFormRef.value.getFormData) {
       workflowFormRef.value
         .getFormData(false, variableList)
         .then((formData: ANY_OBJECT | null) => {
-          console.log('handleerFlowTask.getMasterData 表单数据', formData);
+          console.log('handleerFlowTask.getMasterData Form Data', formData);
           if (formData == null) {
             reject();
             return;
@@ -149,11 +159,11 @@ const getMasterData = (
           const assigneeArr =
             assignee && assignee !== '' ? (assignee as string).split(',') : undefined;
           if (operationType === SysFlowTaskOperationType.MULTI_SIGN) {
-            // 会签操作设置多实例处理人集合
+            // Co-sign operation sets multi-instance assignee collection
             if (formData.taskVariableData == null) formData.taskVariableData = {};
             formData.taskVariableData.assigneeList = assigneeArr;
           } else if (operationType === SysFlowTaskOperationType.SET_ASSIGNEE) {
-            // 设置下一个任务节点处理人
+            // Set next task node assignee
             if (formData.taskVariableData == null) formData.taskVariableData = {};
             formData.taskVariableData.appointedAssignee = assigneeArr
               ? assigneeArr.join(',')
@@ -165,7 +175,7 @@ const getMasterData = (
           reject(e);
         });
     } else {
-      // 获得静态表单页面的getMasterData函数
+      // Get static form page's getMasterData function
       let funGetMasterData = getRouterCompomentFunction('getMasterData');
       return funGetMasterData ? funGetMasterData(variableList) : reject();
     }
@@ -176,174 +186,145 @@ const preHandlerOperationThen = (
   copyItemList: Array<ANY_OBJECT>,
   res: ANY_OBJECT | null,
 ) => {
-  // 加签、减签操作
-  if (
-    [
-      SysFlowTaskOperationType.CO_SIGN,
-      SysFlowTaskOperationType.SIGN_REDUCTION,
-      SysFlowTaskOperationType.BFORE_CONSIGN,
-      SysFlowTaskOperationType.AFTER_CONSIGN,
-    ].includes(operation.type)
-  ) {
-    // 串行会签前后加签参数
-    let before;
-    if (
-      operation.type === SysFlowTaskOperationType.BFORE_CONSIGN ||
-      operation.type === SysFlowTaskOperationType.AFTER_CONSIGN
-    ) {
-      before = operation.type === SysFlowTaskOperationType.BFORE_CONSIGN;
-    }
-    submitConsign((res || {}).assignee, operation.type === SysFlowTaskOperationType.CO_SIGN, before)
-      .then(() => {
-        handlerClose();
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-    return;
-  }
-  // 驳回操作
-  if (
-    operation.type === SysFlowTaskOperationType.REJECT ||
-    operation.type === SysFlowTaskOperationType.REJECT_TO_TASK
-  ) {
-    FlowOperationController.rejectRuntimeTask({
-      processInstanceId: dialogParams.value.processInstanceId,
-      taskId: dialogParams.value.taskId,
-      targetTaskKey: (res || {}).targetTaskKey,
+  // Add or reduce operations
+  // if (
+  //   [
+  //     SysFlowTaskOperationType.CO_SIGN,
+  //     SysFlowTaskOperationType.SIGN_REDUCTION,
+  //     SysFlowTaskOperationType.BFORE_CONSIGN,
+  //     SysFlowTaskOperationType.AFTER_CONSIGN,
+  //   ].includes(operation.type)
+  // ) {
+  //   // Serial co-sign before and after add parameters
+  //   let before;
+  //   if (
+  //     operation.type === SysFlowTaskOperationType.BFORE_CONSIGN ||
+  //     operation.type === SysFlowTaskOperationType.AFTER_CONSIGN
+  //   ) {
+  //     before = operation.type === SysFlowTaskOperationType.BFORE_CONSIGN;
+  //   }
+  //   submitConsign((res || {}).assignee, operation.type === SysFlowTaskOperationType.CO_SIGN, before)
+  //     .then(() => {
+  //       handlerClose();
+  //     })
+  //     .catch(e => {
+  //       console.warn(e);
+  //     });
+  //   return;
+  // }
+  // // Reject operation
+  // if (
+  //   operation.type === SysFlowTaskOperationType.REJECT ||
+  //   operation.type === SysFlowTaskOperationType.REJECT_TO_TASK
+  // ) {
+  //   FlowOperationController.rejectRuntimeTask({
+  //     processInstanceId: dialogParams.value.processInstanceId,
+  //     taskId: dialogParams.value.taskId,
+  //     targetTaskKey: (res || {}).targetTaskKey,
+  //     taskComment: (res || {}).message,
+  //     taskVariableData: {
+  //       latestApprovalStatus: operation.latestApprovalStatus,
+  //     },
+  //   })
+  //     .then(() => {
+  //       handlerClose();
+  //     })
+  //     .catch(e => {
+  //       console.warn(e);
+  //     });
+  //   return;
+  // }
+  // // Reject to start
+  // if (operation.type === SysFlowTaskOperationType.REJECT_TO_START) {
+  //   FlowOperationController.rejectToStartUserTask({
+  //     processInstanceId: dialogParams.value.processInstanceId,
+  //     taskId: dialogParams.value.taskId,
+  //     taskComment: (res || {}).message,
+  //     taskVariableData: {
+  //       latestApprovalStatus: operation.latestApprovalStatus,
+  //     },
+  //   })
+  //     .then(() => {
+  //       handlerClose();
+  //     })
+  //     .catch(e => {
+  //       console.warn(e);
+  //     });
+  //   return;
+  // }
+  // // Revoke operation
+  // if (operation.type === SysFlowTaskOperationType.REVOKE) {
+  //   ElMessageBox.confirm('Are you sure you want to revoke this task?', '', {
+  //     confirmButtonText: 'Confirm',
+  //     cancelButtonText: 'Cancel',
+  //     type: 'warning',
+  //   })
+  //     .then(() => {
+  //       FlowOperationController.revokeHistoricTask({
+  //         processInstanceId: dialogParams.value.processInstanceId,
+  //         taskId: dialogParams.value.taskId,
+  //         taskComment: 'Task assignee revoked the task',
+  //         taskVariableData: {
+  //           latestApprovalStatus: operation.latestApprovalStatus,
+  //         },
+  //       })
+  //         .then(() => {
+  //           handlerClose();
+  //         })
+  //         .catch(e => {
+  //           console.warn(e);
+  //         });
+  //     })
+  //     .catch(e => {
+  //       console.warn(e);
+  //     });
+  //   return;
+  // }
+  let params = {
+    taskId: dialogParams.value.taskId || draftTaskId.value,
+    processInstanceId: dialogParams.value.processInstanceId || draftProcessInstanceId.value,
+    flowTaskCommentDto: {
       taskComment: (res || {}).message,
-      taskVariableData: {
-        latestApprovalStatus: operation.latestApprovalStatus,
-      },
-    })
-      .then(() => {
-        handlerClose();
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-    return;
-  }
-  // 驳回到起点
-  if (operation.type === SysFlowTaskOperationType.REJECT_TO_START) {
-    FlowOperationController.rejectToStartUserTask({
-      processInstanceId: dialogParams.value.processInstanceId,
-      taskId: dialogParams.value.taskId,
-      taskComment: (res || {}).message,
-      taskVariableData: {
-        latestApprovalStatus: operation.latestApprovalStatus,
-      },
-    })
-      .then(() => {
-        handlerClose();
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-    return;
-  }
-  // 撤销操作
-  if (operation.type === SysFlowTaskOperationType.REVOKE) {
-    ElMessageBox.confirm('是否撤销此任务？', '', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    })
-      .then(() => {
-        FlowOperationController.revokeHistoricTask({
-          processInstanceId: dialogParams.value.processInstanceId,
-          taskId: dialogParams.value.taskId,
-          taskComment: '任务处理人撤销任务',
-          taskVariableData: {
-            latestApprovalStatus: operation.latestApprovalStatus,
-          },
-        })
-          .then(() => {
-            handlerClose();
-          })
-          .catch(e => {
-            console.warn(e);
-          });
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-    return;
-  }
-  getMasterData(operation.type, (res || {}).assignee).then(formData => {
-    let params = {
-      taskId: dialogParams.value.taskId || draftTaskId.value,
-      processInstanceId: dialogParams.value.processInstanceId || draftProcessInstanceId.value,
-      masterData: formData.masterData,
-      slaveData: formData.slaveData,
-      flowTaskCommentDto: {
-        taskComment: (res || {}).message,
-        approvalType: operation.type,
-        delegateAssignee:
-          operation.type === SysFlowTaskOperationType.TRANSFER ? (res || {}).assignee : undefined,
-      },
-      taskVariableData: {
-        ...formData.taskVariableData,
-        latestApprovalStatus: operation.latestApprovalStatus,
-      },
-      copyData: (copyItemList || []).reduce((retObj, item) => {
-        retObj[item.type] = item.id;
-        return retObj;
-      }, {}),
-    };
+      approvalType: operation.type,
+    },
+  };
 
-    FlowOperationController.submitUserTask(params)
-      .then(() => {
-        handlerClose();
-        messageStore.reloadMessage();
-        ElMessage.success('提交成功！');
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-  });
+  FlowOperationController.submitUserTask(params)
+    .then(() => {
+      handlerClose();
+      messageStore.reloadMessage();
+      ElMessage.success('Submit successful!');
+    })
+    .catch(e => {
+      console.warn(e);
+    });
 };
 /**
- * 流程操作
- * @param {Object} operation 流程操作
+ * Process operation
+ * @param {Object} operation Process operation
  */
 const handlerOperation = (
   operation: ANY_OBJECT,
   copyItemList: ANY_OBJECT[],
   xml?: string | undefined,
 ) => {
-  if (isOnlineForm.value) {
-    preHandlerOperation(operation, isStart.value || isDraft.value, xml, copyItemList)
-      .then(res => {
-        preHandlerOperationThen(operation, copyItemList, res);
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-  } else {
-    let funHandlerOperation = getRouterCompomentFunction('handlerOperation');
-    if (funHandlerOperation) {
-      funHandlerOperation(operation, copyItemList, xml)
-        .then(() => {
-          handlerClose();
-        })
-        .catch((e: Error) => {
-          console.warn(e);
-        });
-    } else {
-      ElMessage.error('当前流程并未实现处理功能，请联系管理员！');
-    }
-  }
+  preHandlerOperation(operation, isStart.value || isDraft.value, xml, copyItemList)
+    .then(res => {
+      preHandlerOperationThen(operation, copyItemList, res);
+    })
+    .catch(e => {
+      console.warn(e);
+    });
 };
 /**
- * 启动流程
+ * Start process
  */
 const handlerStart = (
   operation: ANY_OBJECT,
   copyItemList: ANY_OBJECT[],
   xml?: string | undefined,
 ) => {
-  // 启动并保存草稿后再次提交
+  // Start and save draft then submit again
   if (draftProcessInstanceId.value != null && draftTaskId.value != null) {
     handlerOperation(operation, copyItemList, xml);
     return;
@@ -359,7 +340,9 @@ const handlerStart = (
           console.warn(e);
         });
     } else {
-      ElMessage.error('当前流程并未实现启动功能，请联系管理员！');
+      ElMessage.error(
+        'The current process has not implemented the start function, please contact the administrator!',
+      );
     }
   } else {
     preHandlerOperation(operation, true, xml)
@@ -384,7 +367,7 @@ const handlerStart = (
                 }, {}),
               },
               {
-                // 判断是否是从流程设计里启动
+                // Check if it is started from process design
                 processDefinitionKey: isPreview.value
                   ? undefined
                   : dialogParams.value.processDefinitionKey,
@@ -392,7 +375,7 @@ const handlerStart = (
             )
               .then(() => {
                 handlerClose();
-                ElMessage.success('启动成功！');
+                ElMessage.success('Start successful!');
               })
               .catch(e => {
                 console.warn(e);
@@ -409,7 +392,7 @@ const handlerStart = (
 };
 
 /**
- * 获得草稿数据
+ * Get draft data
  */
 const getDraftData = () => {
   return new Promise<ANY_OBJECT>((resolve, reject) => {
@@ -425,7 +408,7 @@ const getDraftData = () => {
 };
 
 /**
- * 保存草稿
+ * Save draft
  */
 const handlerDraft = () => {
   if (isOnlineForm.value) {
@@ -462,82 +445,26 @@ const handlerDraft = () => {
         console.warn(e);
       });
     } else {
-      ElMessage.error('当前流程并未实现保存草稿，请联系管理员！');
+      ElMessage.error(
+        'The current process has not implemented saving drafts, please contact the administrator!',
+      );
     }
   }
 };
 
 /**
- * 初始化流程表单数据
+ * Initialize process form data
  */
-const initFormData = () => {
-  if (
-    dialogParams.value.processInstanceId == null ||
-    dialogParams.value.processInstanceId === '' ||
-    dialogParams.value.formId == null
-  ) {
-    return;
-  }
-  if (isOnlineForm.value) {
-    let params = {
-      processInstanceId: dialogParams.value.processInstanceId,
-      taskId: dialogParams.value.taskId,
-    };
-    // 判断是展示历史流程的数据还是待办流程的数据
-    let httpCall: ANY_OBJECT | null = null;
-    if (isDraft.value) {
-      // 草稿数据
-      httpCall = FlowOperationController.viewOnlineDraftData({
-        processDefinitionKey: dialogParams.value.processDefinitionKey,
+const initFormData = async () => {
+  try {
+    const response = await axios.get(`${serverDefaultCfg.baseURL}order/orderPlacementInfo`, {
+      params: {
         processInstanceId: dialogParams.value.processInstanceId,
-      });
-    } else if (dialogParams.value.messageId != null) {
-      // 抄送消息
-      httpCall = FlowOperationController.viewOnlineCopyBusinessData({
-        messageId: dialogParams.value.messageId,
-      });
-    } else {
-      httpCall =
-        dialogParams.value.taskId != null && isRuntime.value
-          ? FlowOperationController.viewUserTask(params)
-          : FlowOperationController.viewHistoricProcessInstance(params);
-    }
-    httpCall
-      .then(res => {
-        isStart.value = res.data == null;
-        // 一对多数据
-        oneToManyRelationData.value = (res.data || {}).oneToMany;
-        // 草稿一对多数据，添加唯一主键
-        if (isDraft.value) {
-          if (oneToManyRelationData.value != null) {
-            let tempTime = new Date().getTime();
-            Object.keys(oneToManyRelationData.value).forEach(key => {
-              const oneToManyRelationDataValue = oneToManyRelationData.value
-                ? oneToManyRelationData.value[key]
-                : null;
-              if (Array.isArray(oneToManyRelationDataValue)) {
-                oneToManyRelationDataValue.forEach(item => {
-                  item.__cascade_add_id__ = tempTime++;
-                });
-              }
-            });
-          }
-        }
-        // 主表数据以及一对一关联数据
-        if ((res.data || {}).masterAndOneToOne != null) {
-          formData.value = {
-            ...res.data.masterAndOneToOne,
-          };
-        }
-      })
-      .catch(e => {
-        console.warn(e);
-      });
-  } else {
-    let funInitFormData = getRouterCompomentFunction('initFormData');
-    funInitFormData
-      ? funInitFormData()
-      : ElMessage.error('当前流程并未实现页面初始化功能，请联系管理员！');
+      },
+    });
+    formInfo.value = _.omit(response.data[0], 'orderDataType', 'orderId', 'processInstanceId');
+  } catch (error) {
+    console.error('init form data:', error);
   }
 };
 
@@ -547,6 +474,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.form-item {
+  margin-left: 5%;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between; /* Separate label and value */
+  align-items: center; /* Vertically center align */
+  margin-bottom: 10px; /* Top and bottom spacing */
+  height: 30px;
+  line-height: 30px;
+}
+.label {
+  text-align: right; /* Align label to the right */
+  width: 150px; /* Set fixed width for consistency */
+}
+.value {
+  flex-grow: 1; /* Allow value to adapt to remaining space */
+  margin-left: 12px;
+}
 .task-title {
   display: flex;
   justify-content: space-between;

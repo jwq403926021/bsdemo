@@ -92,7 +92,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="Process Identifier" prop="processDefinitionKey">
+                    <el-form-item label="Process Key" prop="processDefinitionKey">
                       <el-input
                         v-model="formFlowEntryData.processDefinitionKey"
                         :disabled="isEdit"
@@ -363,21 +363,23 @@ const formFlowEntryData = ref<ANY_OBJECT>({
 });
 const formRules: Partial<Record<string, Arrayable<FormItemRule>>> = {
   processDefinitionKey: [
-    { required: true, message: 'Process Identifier Cannot Be Empty!', trigger: 'blur' },
+    { required: true, message: 'Process Key Cannot Be Empty!', trigger: 'blur' },
     {
       type: 'string',
       pattern: /^[A-Za-z0-9]+$/,
-      message: 'Process Identifier Only Allows Letters and Numbers',
+      message: 'Process Key Only Allows Letters and Numbers',
       trigger: 'blur',
     },
     {
       type: 'string',
       pattern: /^[A-Za-z][A-Za-z0-9]+$/,
-      message: 'Process Identifier Cannot Start With a Number',
+      message: 'Process Key Cannot Start With a Number',
       trigger: 'blur',
     },
   ],
-  processDefinitionName: [{ required: true, message: 'Process Name Cannot Be Empty!', trigger: 'blur' }],
+  processDefinitionName: [
+    { required: true, message: 'Process Name Cannot Be Empty!', trigger: 'blur' },
+  ],
   categoryId: [{ required: true, message: 'Process Category Cannot Be Empty!', trigger: 'blur' }],
   // flowType: [{ required: true, message: 'Process Type Cannot Be Empty!', trigger: 'blur' }],
   pageId: [{ required: true, message: 'Process Page Cannot Be Empty!', trigger: 'blur' }],

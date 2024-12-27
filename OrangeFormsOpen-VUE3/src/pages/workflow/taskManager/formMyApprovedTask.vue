@@ -1,24 +1,24 @@
 <template>
-  <!-- 已办任务 -->
+  <!-- Completed Tasks -->
   <div style="position: relative">
     <el-form
       ref="form"
       :model="formFilter"
-      label-width="80px"
+      label-width="120px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormMyApprovedTask(true)" @reset="onReset">
-        <el-form-item label="流程名称" prop="processDefinitionName">
+        <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
             v-model="formFilter.processDefinitionName"
             :clearable="true"
-            placeholder="流程名称"
+            placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="发起时间" prop="createDate">
+        <el-form-item label="Create Date" prop="createDate">
           <date-range
             class="filter-item"
             v-model:value="formFilter.createDate"
@@ -26,8 +26,8 @@
             :allowTypes="['day']"
             align="left"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-placeholder="Start Date"
+            end-placeholder="End Date"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -43,28 +43,28 @@
       :seq-config="{ startIndex: (handlerTaskWidget.currentPage - 1) * handlerTaskWidget.pageSize }"
       :hasExtend="false"
     >
-      <vxe-column title="序号" type="seq" width="70px" :index="handlerTaskWidget.getTableIndex" />
-      <vxe-column title="流程名称" field="processDefinitionName" />
-      <vxe-column title="流程标识" field="processDefinitionKey" />
-      <vxe-column title="任务名称" field="name" />
-      <vxe-column title="执行操作">
+      <vxe-column title="No." type="seq" width="70px" :index="handlerTaskWidget.getTableIndex" />
+      <vxe-column title="Process Name" field="processDefinitionName" />
+      <vxe-column title="Process Key" field="processDefinitionKey" />
+      <vxe-column title="Task Name" field="name" />
+      <vxe-column title="Execution Operation">
         <template v-slot="scope">
           <span class="vxe-cell--label">{{
             SysFlowTaskOperationType.getValue(scope.row.approvalType)
           }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="发起人登录名" field="startUser" />
-      <vxe-column title="发起人昵称" field="showName" />
-      <vxe-column title="任务发起时间" field="createTime" />
-      <vxe-column title="操作" width="80px">
+      <vxe-column title="Initiator Login Name" field="startUser" />
+      <vxe-column title="Initiator Nickname" field="showName" />
+      <vxe-column title="Task Initiation Time" field="createTime" />
+      <vxe-column title="Operation" width="90px">
         <template v-slot="scope">
           <el-button
             :size="layoutStore.defaultFormItemSize"
             link
             type="primary"
             @click="onTaskDetail(scope.row)"
-            >详情</el-button
+            >Details</el-button
           >
         </template>
       </vxe-column>
@@ -93,6 +93,8 @@ import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const form = ref();
 const router = useRouter();
@@ -100,7 +102,7 @@ import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 
 /**
- * 获取已办任务列表
+ * Get Completed Task List
  */
 const loadHandlerTaskData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -130,7 +132,7 @@ const loadHandlerTaskData = (params: ANY_OBJECT) => {
   });
 };
 /**
- * 校验已办任务过滤参数
+ * Validate Completed Task Filter Parameters
  */
 const loadHandlerTaskVerify = () => {
   formFilterCopy.processDefinitionName = formFilter.value.processDefinitionName;
@@ -155,7 +157,7 @@ const formFilterCopy: ANY_OBJECT = {
 const handlerTaskWidget = reactive(useTable(tableOptions));
 
 /**
- * 刷新已办任务列表
+ * Refresh Completed Task List
  */
 const refreshFormMyApprovedTask = (reloadData = false) => {
   if (reloadData) {
@@ -169,7 +171,7 @@ const onReset = () => {
   refreshFormMyApprovedTask(true);
 };
 /**
- * 详情
+ * Details
  */
 const onTaskDetail = (row: ANY_OBJECT) => {
   let params = {
@@ -180,7 +182,7 @@ const onTaskDetail = (row: ANY_OBJECT) => {
 
   FlowOperationController.viewHistoricTaskInfo(params).then(res => {
     router.push({
-      name: res.data.routerName || 'handlerFlowTask',
+      name: 'handlerFlowTask',
       query: {
         processDefinitionKey: row.processDefinitionKey,
         taskId: row.id,
@@ -191,7 +193,7 @@ const onTaskDetail = (row: ANY_OBJECT) => {
         readOnly: 'true',
         flowEntryName: row.processDefinitionName,
         processInstanceInitiator: row.showName,
-        // 在已办理任务中仅显示加签、减签和撤销操作
+        // Only show co-sign, revoke and sign-reduction operations in completed tasks
         operationList: JSON.stringify(
           (res.data.operationList || []).filter((item: ANY_OBJECT) => {
             return (
@@ -212,9 +214,15 @@ const formInit = () => {
   refreshFormMyApprovedTask();
 };
 
-onMounted(() => {
-  formInit();
-});
+watch(
+  () => route.name,
+  () => {
+    if (route.name === 'formMyApprovedTask') {
+      formInit();
+    }
+  },
+  { immediate: true },
+);
 
 defineExpose({ onResume });
 </script>

@@ -39,11 +39,7 @@ export default class FlowOperationController extends BaseController {
   }
   // 提交用户任务数据
   static submitUserTask(params: ANY_OBJECT, httpOptions?: RequestOption) {
-    return super.post(
-      API_CONTEXT + '/flow/flowOnlineOperation/submitUserTask',
-      params,
-      httpOptions,
-    );
+    return super.post(API_CONTEXT + '/flow/flowEntry/submitOrderTask', params, httpOptions);
   }
   // 获取历史流程数据
   static viewHistoricProcessInstance(params: ANY_OBJECT, httpOptions?: RequestOption) {

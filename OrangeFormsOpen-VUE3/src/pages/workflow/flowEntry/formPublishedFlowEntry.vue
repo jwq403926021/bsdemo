@@ -197,7 +197,9 @@ const onSetActiveStatus = (row: ANY_OBJECT) => {
     : FlowEntryController.activateFlowEntryPublish(params);
   httpCall
     .then(() => {
-      ElMessage.success(`${row.activeStatus ? 'Suspension Successful!' : 'Activation Successful!'}`);
+      ElMessage.success(
+        `${row.activeStatus ? 'Suspension Successful!' : 'Activation Successful!'}`,
+      );
       refreshFormFlowEntry();
     })
     .catch(e => {

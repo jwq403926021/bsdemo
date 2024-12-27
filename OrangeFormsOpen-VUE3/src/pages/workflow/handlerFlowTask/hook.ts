@@ -46,7 +46,7 @@ export const useFlowAction = (props: IProp) => {
           : props.variableList || thirdParams.value.variableList,
     };
   });
-  // 加签
+  // Add Sign
   const submitConsign = (
     assignee: Array<string> | string,
     isAdd = true,
@@ -63,16 +63,16 @@ export const useFlowAction = (props: IProp) => {
 
       FlowOperationController.submitConsign(params)
         .then(() => {
-          ElMessage.success(before != null || isAdd ? '加签成功！' : '减签成功！');
+          ElMessage.success(before != null || isAdd ? 'Add Sign Success!' : 'Reduce Sign Success!');
           resolve(true);
         })
         .catch(e => {
-          console.warn('加签异常', e);
+          console.warn('Add Sign Exception', e);
           reject();
         });
     });
   };
-  // 关闭流程处理
+  // Close Flow Handling
   const handlerClose = () => {
     if (props.dialog) {
       props.dialog.cancel();
@@ -81,7 +81,7 @@ export const useFlowAction = (props: IProp) => {
       router.go(-1);
     }
   };
-  // 预处理工作流操作
+  // Preprocess Workflow Operation
   const preHandlerOperation = (
     operation: ANY_OBJECT | null,
     isStart: boolean,
@@ -93,7 +93,7 @@ export const useFlowAction = (props: IProp) => {
         isStart ? resolve(null) : reject();
         return;
       }
-      // 撤销操作不弹出选择窗口
+      // Revoke operation does not pop up selection window
       let showCommitDig =
         (!isStart && operation.type !== SysFlowTaskOperationType.REVOKE) ||
         operation.type === SysFlowTaskOperationType.SET_ASSIGNEE;
@@ -104,7 +104,7 @@ export const useFlowAction = (props: IProp) => {
           operation.multiSignAssignee.assigneeList.length <= 0;
       }
       if (showCommitDig) {
-        let title = '提交';
+        let title = 'Submit';
         if (!isStart) {
           switch (operation.type) {
             case SysFlowTaskOperationType.CO_SIGN:
@@ -114,7 +114,7 @@ export const useFlowAction = (props: IProp) => {
               title = SysFlowTaskOperationType.getValue(operation.type);
               break;
             default:
-              title = '审批';
+              title = 'Approval';
               break;
           }
         }

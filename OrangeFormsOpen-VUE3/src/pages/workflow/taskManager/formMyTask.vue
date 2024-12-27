@@ -1,37 +1,37 @@
 <template>
-  <!-- 待办任务 -->
+  <!-- To-Do Tasks -->
   <div style="position: relative">
     <el-form
       ref="form"
       :model="formMyTask"
-      label-width="80px"
+      label-width="120px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshMyTask(true)" @reset="onReset">
-        <el-form-item label="流程名称" prop="formFilter.processDefinitionName">
+        <el-form-item label="Process Name" prop="formFilter.processDefinitionName">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionName"
             :clearable="true"
-            placeholder="流程名称"
+            placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="流程标识" prop="formFilter.processDefinitionKey">
+        <el-form-item label="Process Key" prop="formFilter.processDefinitionKey">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionKey"
             :clearable="true"
-            placeholder="流程标识"
+            placeholder="Process Key"
           />
         </el-form-item>
-        <el-form-item label="任务名称" prop="formFilter.taskName">
+        <el-form-item label="Task Name" prop="formFilter.taskName">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.taskName"
             :clearable="true"
-            placeholder="任务名称"
+            placeholder="Task Name"
           />
         </el-form-item>
       </filter-box>
@@ -48,24 +48,24 @@
       :hasExtend="false"
     >
       <vxe-column
-        title="序号"
+        title="No."
         type="seq"
         width="70px"
         :index="formMyTask.taskWidget.getTableIndex"
       />
-      <vxe-column title="流程名称" field="processDefinitionName" />
-      <vxe-column title="当前任务" field="taskName" />
-      <vxe-column title="发起人登录名" field="processInstanceInitiator" />
-      <vxe-column title="发起人昵称" field="showName" />
-      <vxe-column title="任务发起时间" field="processInstanceStartTime" />
-      <vxe-column title="操作" width="80px">
+      <vxe-column title="Process Name" field="processDefinitionName" />
+      <vxe-column title="Current Task" field="taskName" />
+      <vxe-column title="Initiator Login Name" field="processInstanceInitiator" />
+      <vxe-column title="Initiator Nickname" field="showName" />
+      <vxe-column title="Task Initiation Time" field="processInstanceStartTime" />
+      <vxe-column title="Operation" width="90px">
         <template v-slot="scope">
           <el-button
             :size="layoutStore.defaultFormItemSize"
             link
             type="primary"
             @click="onSubmit(scope.row)"
-            >办理</el-button
+            >Handle</el-button
           >
         </template>
       </vxe-column>
@@ -181,7 +181,7 @@ const onSubmit = (row: ANY_OBJECT) => {
       console.log('......', res);
       if (res.data) {
         router.push({
-          name: res.data.routerName || 'handlerFlowTask',
+          name: 'handlerFlowTask',
           query: {
             isRuntime: 'true',
             isDraft: row.isDraft,
@@ -195,7 +195,7 @@ const onSubmit = (row: ANY_OBJECT) => {
             taskName: row.taskName,
             flowEntryName: row.processDefinitionName,
             processInstanceInitiator: row.showName,
-            // 过滤掉加签、减签操作，加签、减签只有在已完成任务里可以操作
+            // Filter out co-signing and revoke operations, as these can only be performed in completed tasks
             operationList: JSON.stringify(
               (res.data.operationList || []).filter((item: ANY_OBJECT) => {
                 return (
@@ -216,7 +216,7 @@ const onSubmit = (row: ANY_OBJECT) => {
 };
 
 onMounted(() => {
-  // 初始化页面数据
+  // Initialize page data
   formInit();
 });
 

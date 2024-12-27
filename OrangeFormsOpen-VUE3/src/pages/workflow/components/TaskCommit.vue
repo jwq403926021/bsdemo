@@ -6,7 +6,7 @@
       class="full-width-input form-box"
       :rules="rules"
       style="width: 100%"
-      label-width="100px"
+      label-width="130px"
       :size="itemSize"
       label-position="right"
       @submit.prevent
@@ -16,12 +16,12 @@
           :span="24"
           v-if="dialogParams.operation.type === SysFlowTaskOperationType.FREE_JUMP"
         >
-          <el-form-item label="任务节点" prop="targetTaskKey">
+          <el-form-item label="Task Node" prop="targetTaskKey">
             <UserTaskSelect
               v-model:value="formData.targetTaskKey"
               :xml="dialogParams.xml"
               :finishedInfo="dialogParams.finishedInfo"
-              placeholder="请选择跳转任务节点"
+              placeholder="Please Select Jump Task Node"
             />
           </el-form-item>
         </el-col>
@@ -32,7 +32,7 @@
           "
         >
           <el-form-item
-            label="指派用户"
+            label="Assignee"
             :prop="
               dialogParams.operation.type === SysFlowTaskOperationType.FREE_JUMP
                 ? undefined
@@ -55,7 +55,7 @@
           :span="24"
           v-if="dialogParams.operation.type === SysFlowTaskOperationType.SIGN_REDUCTION"
         >
-          <el-form-item label="减签用户" prop="assignee">
+          <el-form-item label="Reduction Sign User" prop="assignee">
             <el-select
               v-model="formData.assignee"
               placeholder=""
@@ -75,7 +75,7 @@
                 <el-row type="flex" justify="space-between" align="middle">
                   <span>{{ item.showName }}</span>
                   <el-tag v-if="item.approved" size="default" type="info" style="margin-right: 10px"
-                    >已处理</el-tag
+                    >Processed</el-tag
                   >
                 </el-row>
               </el-option>
@@ -90,7 +90,7 @@
             dialogParams.operation.type === SysFlowTaskOperationType.REJECT_TO_TASK
           "
         >
-          <el-form-item label="驳回节点" prop="targetTaskKey">
+          <el-form-item label="Rejection Node" prop="targetTaskKey">
             <el-select
               v-model="formData.targetTaskKey"
               :loading="taskWidget.loading"
@@ -117,15 +117,19 @@
             ].indexOf(dialogParams.operation.type) === -1
           "
         >
-          <el-form-item label="审批意见" prop="message">
-            <el-input v-model="formData.message" clearable placeholder="请输入审批意见" />
+          <el-form-item label="Approval Opinion" prop="message">
+            <el-input
+              v-model="formData.message"
+              clearable
+              placeholder="Please Enter Approval Opinion"
+            />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <el-row class="no-scroll flex-box menu-box" type="flex" justify="end">
-      <el-button :size="itemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-      <el-button type="primary" :size="itemSize" @click="onSubmit"> 提交 </el-button>
+      <el-button :size="itemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+      <el-button type="primary" :size="itemSize" @click="onSubmit"> Submit </el-button>
     </el-row>
   </div>
 </template>
@@ -153,7 +157,7 @@ interface IProps extends ThirdProps {
   taskId?: string;
   xml?: string;
   finishedInfo?: ANY_OBJECT;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined for callback to the dialog
   dialog?: DialogProp<ANY_OBJECT>;
 }
 const props = defineProps<IProps>();
@@ -186,7 +190,7 @@ const listMultiSignAssigneesDropdownData = (): Promise<ListData<ANY_OBJECT>> => 
     })
       .then(res => {
         console.log('>>>listMultiSignAssigneesDropdownData<<<', res);
-        // 将已经处理过会签任务的处理人放到列表最后
+        // Move the already processed signers to the end of the list
         resolve({
           dataList: res.data.dataList.sort((val1, val2) => {
             return val1.approved === val2.approved ? 0 : val1.approved ? 1 : -1;
@@ -222,16 +226,16 @@ const taskWidgetOptions: DropdownOptions<ANY_OBJECT> = {
 };
 const taskWidget = reactive(useDropdown(taskWidgetOptions));
 const rules = {
-  message: [{ required: true, message: '审批意见不能为空', trigger: 'blur' }],
-  assignee: [{ required: true, message: '指派用户不能为空', trigger: 'blur' }],
-  targetTaskKey: [{ required: true, message: '任务节点不能为空', trigger: 'blur' }],
+  message: [{ required: true, message: 'Approval Opinion Cannot Be Empty', trigger: 'blur' }],
+  assignee: [{ required: true, message: 'Assignee Cannot Be Empty', trigger: 'blur' }],
+  targetTaskKey: [{ required: true, message: 'Task Node Cannot Be Empty', trigger: 'blur' }],
 };
 const userName = ref<ANY_OBJECT[]>([]);
 let otherFilterObject: ANY_OBJECT;
 
 const showAssignSelect = computed(() => {
   let showAssignSelect = false;
-  // 如果是会签操作，判断是否在流程内设置了会签人
+  // If it is a co-signing operation, check if co-signers are set in the process
   if (dialogParams.value.operation.type === SysFlowTaskOperationType.MULTI_SIGN) {
     showAssignSelect =
       !dialogParams.value.operation.multiSignAssignee ||
@@ -249,7 +253,7 @@ const showAssignSelect = computed(() => {
   );
 });
 const multiSelect = computed(() => {
-  // 转办、加签、会签允许多选
+  // Transfer, Add Sign, Co-sign allow multiple selection
   return (
     [
       SysFlowTaskOperationType.CO_SIGN,
@@ -286,7 +290,7 @@ const onSelectAssignee = () => {
       ? []
       : formData.value.assignee.split(',');
   Dialog.show<ANY_OBJECT[] | ANY_OBJECT>(
-    '选择用户',
+    'Select User',
     TaskUserSelect,
     {
       area: ['1000px', '650px'],
@@ -297,7 +301,7 @@ const onSelectAssignee = () => {
         dialogParams.value.operation.type !== SysFlowTaskOperationType.CO_SIGN &&
         dialogParams.value.operation.type !== SysFlowTaskOperationType.SIGN_REDUCTION &&
         dialogParams.value.operation.type !== SysFlowTaskOperationType.BFORE_CONSIGN &&
-        dialogParams.value.operation.type !== SysFlowTaskOperationType.BFORE_CONSIGN,
+        dialogParams.value.operation.type !== SysFlowTaskOperationType.AFTER_CONSIGN,
       multiple: multiSelect.value,
       usedUserIdList,
       filterObject: otherFilterObject,

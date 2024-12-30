@@ -59,8 +59,8 @@ let postMap: Map<string, ANY_OBJECT> | null = new Map();
 let deptPostList: ANY_OBJECT[] = [];
 let deptPostMap: Map<string, ANY_OBJECT> | null = new Map();
 const calcUserName: ANY_OBJECT = {
-  '${startUserName}': '流程发起人',
-  '${appointedAssignee}': '指定审批人',
+  '${startUserName}': 'Process Initiator',
+  '${appointedAssignee}': 'Appointed Approver',
 };
 
 const tableDataList = computed<ANY_OBJECT[]>(() => {

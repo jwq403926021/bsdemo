@@ -9,15 +9,15 @@
       @submit.prevent
       label-position="top"
     >
-      <el-form-item
-        label="表单路由"
+      <!-- <el-form-item
+        label="Form Route"
         prop="routerName"
         v-if="flowEntryComputed.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM"
       >
         <el-input v-model="formData.routerName" clearable @change="updateElementFormKey" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item
-        label="在线表单"
+        label="Online Form"
         prop="formId"
         v-if="flowEntryComputed.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
       >
@@ -37,9 +37,9 @@
       </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="允许编辑" style="margin-bottom: 4px">
+          <el-form-item label="Editable" style="margin-bottom: 4px">
             <template #label>
-              <span>允许编辑</span>
+              <span>Editable</span>
               <el-switch
                 v-model="formData.editable"
                 @change="updateElementFormKey"
@@ -53,13 +53,13 @@
             v-if="flowEntryComputed.bindFormType === SysFlowEntryBindFormType.ONLINE_FORM"
           >
             <template #label>
-              <span>表单权限设置</span>
+              <span>Form Permission Settings</span>
               <el-button
                 type="primary"
                 size="default"
                 style="margin-left: 18px"
                 @click="onSetOnlineFormAuth"
-                >设置</el-button
+                >Set</el-button
               >
             </template>
           </el-form-item>
@@ -68,7 +68,7 @@
     </el-form>
     <el-row v-else-if="tabType === 'button'" style="padding-top: 3px">
       <!-- <el-col :span="24">
-        <el-divider>按钮设置</el-divider>
+        <el-divider>Button Settings</el-divider>
       </el-col> -->
       <el-col :span="24">
         <vxe-table
@@ -77,21 +77,21 @@
           :row-config="{ isHover: true }"
           header-cell-class-name="table-header-gray"
         >
-          <vxe-column title="序号" width="70px" type="seq" />
-          <vxe-column title="按钮名称" min-width="100px">
+          <vxe-column title="No." width="50px" type="seq" />
+          <vxe-column title="Button Name" min-width="100px">
             <template v-slot="scope">
               <span>{{ scope.row.label }}</span>
             </template>
           </vxe-column>
-          <vxe-column title="按钮类型" min-width="100px">
+          <vxe-column title="Button Type" min-width="100px">
             <template v-slot="scope">
               <el-tag :size="layoutStore.defaultFormItemSize" effect="dark">{{
                 SysFlowTaskOperationType.getValue(scope.row.type)
               }}</el-tag>
             </template>
           </vxe-column>
-          <!-- <vxe-column title="显示顺序" min-width="100px" prop="showOrder"></vxe-column> -->
-          <vxe-column title="操作" width="95px">
+          <!-- <vxe-column title="Display Order" min-width="100px" prop="showOrder"></vxe-column> -->
+          <vxe-column title="Operation" width="110px">
             <template v-slot="scope">
               <el-button
                 :size="layoutStore.defaultFormItemSize"
@@ -99,7 +99,7 @@
                 type="primary"
                 @click="onEditOperation(scope.row)"
                 style="padding: 0"
-                >编辑</el-button
+                >Edit</el-button
               >
               <el-button
                 :size="layoutStore.defaultFormItemSize"
@@ -107,7 +107,7 @@
                 type="danger"
                 @click="onDeleteOperation(scope.row)"
                 style="padding: 0"
-                >删除</el-button
+                >Delete</el-button
               >
             </template>
           </vxe-column>
@@ -158,8 +158,8 @@ const formData = ref<ANY_OBJECT>({
 const operationList = ref<ANY_OBJECT>({});
 const formOperationList = ref<ANY_OBJECT[]>([]);
 const rules = {
-  formId: [{ required: true, message: '请选择在线表单！', trigger: 'blur' }],
-  routerName: [{ required: true, message: '表单路由不能为空！', trigger: 'blur' }],
+  formId: [{ required: true, message: 'Please select an online form!', trigger: 'blur' }],
+  // routerName: [{ required: true, message: 'Form route cannot be empty!', trigger: 'blur' }],
 };
 
 let bpmnElement: ANY_OBJECT = {};
@@ -200,7 +200,7 @@ const formatOnlineFormInfo = formInfo => {
 
 const onSetOnlineFormAuth = () => {
   if (currentForm.value == null) {
-    ElMessage.error('请先选择表单！');
+    ElMessage.error('Please select a form first!');
     return;
   }
   let formWidgetConfig = JSON.parse(currentForm.value.widgetJson);
@@ -238,7 +238,7 @@ const onSetOnlineFormAuth = () => {
   }
   console.log(tempConfig);
   Dialog.show<ANY_OBJECT>(
-    '设置表单权限',
+    'Set Form Permissions',
     FormSetOnlineFormAuth,
     {
       area: ['1000px', '700px'],
@@ -286,7 +286,7 @@ const resetFormList = () => {
   formOperationList.value.forEach(item => {
     item.showOrder = Number.parseInt(item.showOrder);
   });
-  // 更新元素扩展属性，避免后续报错
+  // Update element extension properties to avoid subsequent errors
   updateElementFormKey();
   updateElementExtensions();
 };
@@ -313,7 +313,7 @@ const updateElementFormKey = () => {
   });
 };
 const updateElementExtensions = () => {
-  // 更新回扩展元素
+  // Update additional extensions
   let elExtensionElements =
     bpmnElement.businessObject.get('extensionElements') ||
     win.bpmnInstances.moddle.create('bpmn:ExtensionElements', { values: [] });
@@ -334,14 +334,14 @@ const updateElementExtensions = () => {
     });
   });
 
-  // 更新到元素上
+  // Update to the element
   win.bpmnInstances.modeling.updateProperties(bpmnElement, {
     extensionElements: newElExtensionElements,
   });
 };
 const onEditOperation = (operation: ANY_OBJECT) => {
   Dialog.show<ANY_OBJECT>(
-    operation ? '编辑按钮' : '添加按钮',
+    operation ? 'Edit Button' : 'Add Button',
     EditOperation,
     {
       area: '500px',
@@ -386,9 +386,9 @@ const updateEditOperation = (res: ANY_OBJECT) => {
   updateElementExtensions();
 };
 const onDeleteOperation = (operation: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否删除此按钮？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure you want to delete this button?', 'Prompt', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {

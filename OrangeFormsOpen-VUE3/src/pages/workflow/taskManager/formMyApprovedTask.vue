@@ -43,7 +43,7 @@
       :seq-config="{ startIndex: (handlerTaskWidget.currentPage - 1) * handlerTaskWidget.pageSize }"
       :hasExtend="false"
     >
-      <vxe-column title="No." type="seq" width="70px" :index="handlerTaskWidget.getTableIndex" />
+      <vxe-column title="No." type="seq" width="50px" :index="handlerTaskWidget.getTableIndex" />
       <vxe-column title="Process Name" field="processDefinitionName" />
       <vxe-column title="Process Key" field="processDefinitionKey" />
       <vxe-column title="Task Name" field="name" />

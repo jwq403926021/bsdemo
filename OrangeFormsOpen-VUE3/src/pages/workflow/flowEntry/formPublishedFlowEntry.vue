@@ -16,7 +16,7 @@
           <vxe-column
             title="No."
             type="seq"
-            width="70px"
+            width="50px"
             :index="publishedFlowEntryWidget.getTableIndex"
           />
           <vxe-column title="Process Name">
@@ -59,7 +59,7 @@
             </template>
           </vxe-column>
           <vxe-column title="Publish Time" field="publishTime" />
-          <vxe-column title="Actions" fixed="right" min-width="110px">
+          <vxe-column title="Operation" fixed="right" min-width="90px">
             <template v-slot="scope">
               <el-button
                 @click.stop="onSetActiveStatus(scope.row)"
@@ -84,7 +84,7 @@
                 link
                 :size="formItemSize"
               >
-                Set As Main
+                Set Main
               </el-button>
             </template>
           </vxe-column>

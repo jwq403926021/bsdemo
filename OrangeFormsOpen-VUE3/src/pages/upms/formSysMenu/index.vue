@@ -32,7 +32,7 @@
         </template>
       </vxe-column>
       <vxe-column title="Menu Route" field="formRouterName" min-width="250px"> </vxe-column>
-      <vxe-column title="Actions" fixed="right" width="220px">
+      <vxe-column title="Operation" fixed="right" width="220px">
         <template v-slot="scope">
           <el-button
             @click="onEditSysMenuClick(scope.row)"

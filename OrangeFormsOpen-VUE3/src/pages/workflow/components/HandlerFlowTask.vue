@@ -51,7 +51,7 @@
             :plain="operation.plain || false"
             @click="handlerOperation(operation)"
           >
-            {{ capitalizeWords(operation.type) }}
+            {{ operation.label }}
           </el-button>
         </template>
       </el-row>
@@ -81,7 +81,7 @@
               :height="mainContextHeight - 150 + 'px'"
               :row-config="{ isHover: true }"
             >
-              <vxe-column title="No." type="seq" width="100" />
+              <vxe-column title="No." type="seq" width="50" />
               <vxe-column title="Process Name" field="taskName" />
               <vxe-column title="Executor" field="createUsername" />
               <vxe-column title="Operation" width="150px">
@@ -143,7 +143,7 @@
               :height="mainContextHeight - 150 + 'px'"
               :row-config="{ isHover: true }"
             >
-              <vxe-column title="No." type="seq" width="100" />
+              <vxe-column title="No." type="seq" width="50" />
               <vxe-column title="Approver" field="loginName" />
               <vxe-column title="Nickname" field="showName" />
               <vxe-column title="Approval Time" field="lastApprovalTime" />

@@ -31,8 +31,8 @@ const layoutStore = useLayoutStore();
 
 const selectValues = ref<ANY_OBJECT[]>([]);
 const calcUserName: ANY_OBJECT = {
-  '${startUserName}': '流程发起人',
-  '${appointedAssignee}': '指定审批人 ',
+  '${startUserName}': 'Process Initiator',
+  '${appointedAssignee}': 'Appointed Approver ',
 };
 
 const onDeleteTag = (tag: ANY_OBJECT) => {

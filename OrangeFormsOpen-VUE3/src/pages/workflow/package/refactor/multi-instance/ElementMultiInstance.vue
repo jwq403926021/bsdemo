@@ -1,97 +1,7 @@
 <template>
   <div class="panel-tab__content" style="padding-top: 0">
     <el-form :size="layoutStore.defaultFormItemSize" @submit.prevent label-position="top">
-      <el-form-item label="是否会签" style="margin-bottom: 4px">
-        <template #label>
-          <span>是否会签</span>
-          <el-switch
-            v-model="isCountersign"
-            style="margin-left: 18px"
-            @change="isCountersignChange"
-          />
-        </template>
-      </el-form-item>
-      <el-form-item v-if="isCountersign" label="会签类型" style="margin-bottom: 4px">
-        <el-radio-group v-model="loopCharacteristics" @change="changeLoopCharacteristicsType">
-          <el-radio label="ParallelMultiInstance">并行会签</el-radio>
-          <el-radio label="SequentialMultiInstance">串行会签</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <div v-if="isCountersign">
-        <el-form-item label="内置变量" style="margin-bottom: 5px">
-          <template #label>
-            <span>内置变量</span>
-            <el-button
-              class="variables-btn"
-              type="primary"
-              @click="showVariableDlg = true"
-              size="default"
-              plain
-            >
-              查看
-            </el-button>
-          </template>
-        </el-form-item>
-        <!-- <el-form-item label="回路特性">
-          <el-select v-model="loopCharacteristics" @change="changeLoopCharacteristicsType" disabled>
-            bpmn:MultiInstanceLoopCharacteristics
-            <el-option label="并行多重事件" value="ParallelMultiInstance" />
-            <el-option label="时序多重事件" value="SequentialMultiInstance" />
-            bpmn:StandardLoopCharacteristics
-            <el-option label="循环事件" value="StandardLoop" />
-            <el-option label="无" value="Null" />
-          </el-select>
-        </el-form-item> -->
-        <template
-          v-if="
-            loopCharacteristics === 'ParallelMultiInstance' ||
-            loopCharacteristics === 'SequentialMultiInstance'
-          "
-        >
-          <!--
-          <el-form-item label="循环基数" key="loopCardinality">
-            <el-input v-model="loopInstanceForm.loopCardinality" clearable @change="updateLoopCardinality" />
-          </el-form-item>
-          -->
-          <!-- <el-form-item label="集合" key="collection">
-            <el-input v-model="loopInstanceForm.collection" clearable @change="updateLoopBase" />
-          </el-form-item>
-          <el-form-item label="元素变量" key="elementVariable">
-            <el-input v-model="loopInstanceForm.elementVariable" clearable @change="updateLoopBase" />
-          </el-form-item> -->
-          <el-form-item label="完成条件" key="completionCondition">
-            <el-input
-              v-model="loopInstanceForm.completionCondition"
-              :disabled="loopCharacteristics === 'SequentialMultiInstance'"
-              clearable
-              @change="updateLoopCondition"
-            />
-          </el-form-item>
-          <!-- <el-form-item label="异步状态" key="async">
-            <el-checkbox v-model="loopInstanceForm.asyncBefore" label="异步前" @change="updateLoopAsync('asyncBefore')" />
-            <el-checkbox v-model="loopInstanceForm.asyncAfter" label="异步后" @change="updateLoopAsync('asyncAfter')" />
-            <el-checkbox
-              v-model="loopInstanceForm.exclusive"
-              v-if="loopInstanceForm.asyncAfter || loopInstanceForm.asyncBefore"
-              label="排除"
-              @change="updateLoopAsync('exclusive')"
-            />
-          </el-form-item> -->
-          <el-form-item
-            label="重试周期"
-            prop="timeCycle"
-            v-if="loopInstanceForm.asyncAfter || loopInstanceForm.asyncBefore"
-            key="timeCycle"
-          >
-            <el-input
-              v-model="loopInstanceForm.timeCycle"
-              clearable
-              @change="updateLoopTimeCycle"
-            />
-          </el-form-item>
-        </template>
-      </div>
-      <el-form-item label="任务通知">
+      <el-form-item label="Task Notification">
         <el-select
           v-model="sendMessageType"
           multiple
@@ -99,12 +9,12 @@
           @change="updateSendMessageType()"
           placeholder=""
         >
-          <el-option label="邮件" value="email" />
+          <el-option label="Email" value="email" />
         </el-select>
       </el-form-item>
     </el-form>
     <el-dialog
-      title="内置变量"
+      title="Built-in Variables"
       v-model="showVariableDlg"
       width="800px"
       append-to-body
@@ -118,8 +28,8 @@
           :size="layoutStore.defaultFormItemSize"
           :row-config="{ isHover: true }"
         >
-          <vxe-column title="变量名称" field="name" width="180px" />
-          <vxe-column title="描述" field="desc" />
+          <vxe-column title="Variable Name" field="name" width="180px" />
+          <vxe-column title="Description" field="desc" />
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />
@@ -159,7 +69,7 @@ const defaultAssigneeShowName = ref<string>();
 const emptyUserHandleWay = ref('autoComplete');
 const emptyUserToAssignee = ref<string>();
 const emptyUserToAssigneeShowName = ref<string>();
-//默认配置，用来覆盖原始不存在的选项，避免报错
+// Default configuration to override original non-existent options to avoid errors
 const defaultLoopInstanceForm = {
   completionCondition: '',
   loopCardinality: '',
@@ -176,35 +86,35 @@ const loopInstanceForm = ref<ANY_OBJECT>({
 const variableList = [
   {
     name: 'assigneeList',
-    desc: '多实例用户集合变量',
+    desc: 'Multi-instance user collection variable',
   },
   {
     name: 'nrOfInstances',
-    desc: '实例总数',
+    desc: 'Total number of instances',
   },
   {
     name: 'nrOfActiveInstances',
-    desc: '当前活动的（即未完成的），实例数量。对于顺序多实例，这个值总为1',
+    desc: 'Number of currently active (i.e., not completed) instances. This value is always 1 for sequential multi-instances',
   },
   {
     name: 'nrOfCompletedInstances',
-    desc: '已完成的实例数量',
+    desc: 'Number of completed instances',
   },
   {
     name: 'multiNumOfInstances',
-    desc: '实例总数（多实例节点后使用这个变量判断）',
+    desc: 'Total number of instances (used after multi-instance node for judgment)',
   },
   {
     name: 'multiAgreeCount',
-    desc: '同意实例数量',
+    desc: 'Number of agreed instances',
   },
   {
     name: 'multiRefuseCount',
-    desc: '拒绝实例数量',
+    desc: 'Number of refused instances',
   },
   {
     name: 'multiAbstainCount',
-    desc: '弃权实例数量',
+    desc: 'Number of abstained instances',
   },
 ];
 
@@ -232,7 +142,7 @@ const loadUserInfo = (val: string, callback: (res: string | undefined) => void |
 };
 const onSelectAssignee = (callback: (res: ANY_OBJECT) => void) => {
   Dialog.show<ANY_OBJECT>(
-    '选择用户',
+    'Select User',
     TaskUserSelect,
     {
       area: ['1000px', '650px'],
@@ -257,7 +167,6 @@ const onSelectAssignee = (callback: (res: ANY_OBJECT) => void) => {
     });
 };
 const getElementLoop = (businessObject: ANY_OBJECT) => {
-  //console.log('getElementLoop businessObject', businessObject, win.bpmnInstances.bpmnElement);
   let value = (win.bpmnInstances.bpmnElement || {}).businessObject?.sendMessageType;
   sendMessageType.value = value != null && value !== '' ? value.split(',') : [];
   timeoutHandleWay.value = (win.bpmnInstances.bpmnElement || {}).businessObject?.timeoutHandleWay;
@@ -287,7 +196,7 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
   } else {
     loopCharacteristics.value = 'ParallelMultiInstance';
   }
-  // 合并配置
+  // Merge configuration
   loopInstanceForm.value = {
     ...defaultLoopInstanceForm,
     ...businessObject.loopCharacteristics,
@@ -296,9 +205,9 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
       '${nrOfInstances == nrOfCompletedInstances}',
     loopCardinality: businessObject.loopCharacteristics?.loopCardinality?.body ?? '',
   };
-  // 保留当前元素 businessObject 上的 loopCharacteristics 实例
+  // Retain current element businessObject's loopCharacteristics instance
   multiLoopInstance = win.bpmnInstances.bpmnElement.businessObject.loopCharacteristics;
-  // 更新表单
+  // Update form
   if (
     businessObject.loopCharacteristics.extensionElements &&
     businessObject.loopCharacteristics.extensionElements.values &&
@@ -311,17 +220,16 @@ const getElementLoop = (businessObject: ANY_OBJECT) => {
 };
 const changeLoopCharacteristicsType = (type: string) => {
   if (type === 'SequentialMultiInstance' || loopInstanceForm.value.completionCondition === '') {
-    // eslint-disable-next-line no-template-curly-in-string
     loopInstanceForm.value.completionCondition = '${nrOfInstances == nrOfCompletedInstances}';
   }
-  // 取消多实例配置
+  // Cancel multi-instance configuration
   if (type === 'Null') {
     win.bpmnInstances.modeling.updateProperties(bpmnElement, {
       loopCharacteristics: null,
     });
     return;
   }
-  // 配置循环
+  // Configure loop
   if (type === 'StandardLoop') {
     const loopCharacteristicsObject = win.bpmnInstances.moddle.create(
       'bpmn:StandardLoopCharacteristics',
@@ -332,7 +240,7 @@ const changeLoopCharacteristicsType = (type: string) => {
     multiLoopInstance = null;
     return;
   }
-  // 时序
+  // Sequential
   if (type === 'SequentialMultiInstance') {
     multiLoopInstance = win.bpmnInstances.moddle.create('bpmn:MultiInstanceLoopCharacteristics', {
       isSequential: true,
@@ -348,9 +256,9 @@ const changeLoopCharacteristicsType = (type: string) => {
   updateLoopBase();
   updateLoopCondition(loopInstanceForm.value.completionCondition);
 };
-// 循环基数
+// Loop cardinality
 
-// 完成条件
+// Completion condition
 const updateLoopCondition = (condition: string) => {
   let completionCondition = null;
   if (condition && condition.length) {
@@ -362,7 +270,7 @@ const updateLoopCondition = (condition: string) => {
     completionCondition,
   });
 };
-// 重试周期
+// Retry cycle
 const updateLoopTimeCycle = (timeCycle: string) => {
   const extensionElements = win.bpmnInstances.moddle.create('bpmn:ExtensionElements', {
     values: [
@@ -375,14 +283,14 @@ const updateLoopTimeCycle = (timeCycle: string) => {
     extensionElements,
   });
 };
-// 直接更新的基础信息
+// Directly update base information
 const updateLoopBase = () => {
   win.bpmnInstances.modeling.updateModdleProperties(bpmnElement, multiLoopInstance, {
     collection: loopInstanceForm.value.collection || null,
     elementVariable: loopInstanceForm.value.elementVariable || null,
   });
 };
-// 各异步状态
+// Various asynchronous states
 
 const isCountersignChange = (bol: string | number | boolean) => {
   if (!bol) {
@@ -414,14 +322,14 @@ const onTimeoutChange = () => {
   } else {
     if (timeoutHours.value == null) timeoutHours.value = 24;
   }
-  // 只有自动审批才能设置默认处理人
+  // Only automatic approval can set the default assignee
   if (timeoutHandleWay.value !== 'autoComplete') {
     defaultAssignee.value = undefined;
   }
   taskAttr.timeoutHandleWay = timeoutHandleWay.value;
   taskAttr.timeoutHours = timeoutHours.value;
   taskAttr.defaultAssignee = defaultAssignee.value;
-  // TODO 调用该方法导致界面不更新，可能是值传过去的不正确
+  // TODO Call this method causes the interface not to update, possibly because values passed are incorrect
   win.bpmnInstances.modeling.updateProperties(win.bpmnInstances.bpmnElement, taskAttr);
   console.log('ElementMultiInstance onTimeoutChange', win.bpmnInstances.bpmnElement, taskAttr);
 };
@@ -488,9 +396,9 @@ watch(
     if (val == null || val === '') {
       emptyUserToAssigneeShowName.value = undefined;
     } else if (val === '${startUserName}') {
-      emptyUserToAssigneeShowName.value = '流程发起人';
+      emptyUserToAssigneeShowName.value = 'Process Initiator';
     } else if (val === '${appointedAssignee}') {
-      emptyUserToAssigneeShowName.value = '指定审批人';
+      emptyUserToAssigneeShowName.value = 'Designated Approver';
     } else {
       if (emptyUserToAssigneeShowName.value == null || emptyUserToAssigneeShowName.value === '') {
         loadUserInfo(val, showName => {
@@ -509,7 +417,7 @@ watch(
     if (val == null || val === '') {
       defaultAssigneeShowName.value = undefined;
     } else if (val === '${startUserName}') {
-      defaultAssigneeShowName.value = '流程发起人';
+      defaultAssigneeShowName.value = 'Process Initiator';
     } else {
       if (defaultAssigneeShowName.value == null || defaultAssigneeShowName.value === '') {
         loadUserInfo(val, showName => {

@@ -234,24 +234,21 @@ const preHandlerOperationThen = (
   //     });
   //   return;
   // }
-  // // Reject to start
-  // if (operation.type === SysFlowTaskOperationType.REJECT_TO_START) {
-  //   FlowOperationController.rejectToStartUserTask({
-  //     processInstanceId: dialogParams.value.processInstanceId,
-  //     taskId: dialogParams.value.taskId,
-  //     taskComment: (res || {}).message,
-  //     taskVariableData: {
-  //       latestApprovalStatus: operation.latestApprovalStatus,
-  //     },
-  //   })
-  //     .then(() => {
-  //       handlerClose();
-  //     })
-  //     .catch(e => {
-  //       console.warn(e);
-  //     });
-  //   return;
-  // }
+  // Reject to start
+  if (operation.type === SysFlowTaskOperationType.REJECT_TO_START) {
+    FlowOperationController.rejectToStartUserTask({
+      processInstanceId: dialogParams.value.processInstanceId,
+      taskId: dialogParams.value.taskId,
+      taskComment: (res || {}).message,
+    })
+      .then(() => {
+        handlerClose();
+      })
+      .catch(e => {
+        console.warn(e);
+      });
+    return;
+  }
   // // Revoke operation
   // if (operation.type === SysFlowTaskOperationType.REVOKE) {
   //   ElMessageBox.confirm('Are you sure you want to revoke this task?', '', {

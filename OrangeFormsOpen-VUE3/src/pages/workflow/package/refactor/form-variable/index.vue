@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-form :size="layoutStore.defaultFormItemSize" @submit.prevent label-position="top">
-      <el-form-item label="任务变量">
+      <el-form-item label="Task Variables">
         <el-select
           v-model="taskVariableList"
           clearable
           multiple
           collapse-tags
-          placeholder="选择任务节点使用的变量"
+          placeholder="Select variables used in task nodes"
           filterable
           default-first-option
           @change="onSelectVariableChange"
@@ -68,7 +68,7 @@ const resetFormVariable = () => {
   updateElementExtensions();
 };
 const updateElementExtensions = () => {
-  // 更新回扩展元素
+  // Update the extension elements
   let elExtensionElements =
     bpmnElement.businessObject.get('extensionElements') ||
     win.bpmnInstances.moddle.create('bpmn:ExtensionElements', { values: [] });
@@ -83,7 +83,7 @@ const updateElementExtensions = () => {
   const newElExtensionElements = win.bpmnInstances.moddle.create(`bpmn:ExtensionElements`, {
     values: otherExtensions.concat(variableList.value),
   });
-  // 更新到元素上
+  // Update to the element
   win.bpmnInstances.modeling.updateProperties(bpmnElement, {
     extensionElements: newElExtensionElements,
   });

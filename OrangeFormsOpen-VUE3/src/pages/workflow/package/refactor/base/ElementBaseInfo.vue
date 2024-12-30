@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-form :size="layoutStore.defaultFormItemSize" @submit.prevent label-position="top">
-      <el-form-item label="流程名称">
+      <el-form-item label="Process Name">
         <el-input :value="flowEntry().value.processDefinitionName" :disabled="true" />
       </el-form-item>
-      <el-form-item label="任务ID">
+      <el-form-item label="Task ID">
         <el-input
           v-model="elementBaseInfo.id"
           :disabled="idEditDisabled || elementBaseInfo.$type === 'bpmn:Process'"
@@ -12,7 +12,7 @@
           @input="updateBaseInfo('id')"
         />
       </el-form-item>
-      <el-form-item label="任务名称">
+      <el-form-item label="Task Name">
         <el-input
           v-model="elementBaseInfo.name"
           clearable
@@ -20,9 +20,9 @@
           @input="updateBaseInfo('name')"
         />
       </el-form-item>
-      <!--流程的基础属性-->
+      <!-- Basic properties of the process -->
       <template v-if="elementBaseInfo.$type === 'bpmn:Process'">
-        <el-form-item label="可执行">
+        <el-form-item label="Executable">
           <el-switch
             v-model="elementBaseInfo.isExecutable"
             @change="updateBaseInfo('isExecutable')"

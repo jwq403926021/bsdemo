@@ -60,8 +60,8 @@ const layoutStore = useLayoutStore();
 
 const isInit = ref(false);
 const calcUserName: ANY_OBJECT = {
-  '${startUserName}': '流程发起人',
-  '${appointedAssignee}': '指定审批人 ',
+  '${startUserName}': 'Process Initiator',
+  '${appointedAssignee}': 'Appointed Approver ',
 };
 const roleList = ref<ANY_OBJECT[]>([]);
 const roleMap = new Map();

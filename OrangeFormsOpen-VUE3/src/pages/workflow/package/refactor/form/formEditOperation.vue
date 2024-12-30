@@ -6,19 +6,19 @@
       class="full-width-input form-box"
       :rules="rules"
       style="overflow-x: hidden; overflow-y: auto; width: 100%"
-      label-width="100px"
+      label-width="120px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="按钮类型" prop="type">
+          <el-form-item label="Button Type" prop="type">
             <el-select
               class="input-item"
               v-model="formData.type"
               :clearable="true"
-              placeholder="按钮类型"
+              placeholder="Button Type"
               @change="onOperationTypeChange"
             >
               <el-option
@@ -31,33 +31,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="按钮名称" prop="label">
+          <el-form-item label="Button Name" prop="label">
             <el-input
               class="input-item"
               v-model="formData.label"
               :clearable="true"
-              placeholder="按钮名称"
+              placeholder="Button Name"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="24">
-          <el-form-item label="工单状态">
-            <el-select
-              class="input-item"
-              v-model="formData.latestApprovalStatus"
-              placeholder="不更新"
-              clearable
-            >
-              <el-option label="不更新" :value="undefined" />
-              <el-option
-                v-for="item in dialogParams.validStatusList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
         <el-col
           :span="24"
           v-if="
@@ -67,15 +49,15 @@
         >
           <el-form-item
             :label="
-              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? '会签' : '审批') + '用户类型'
+              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') + ' User Type'
             "
           >
             <el-select v-model="multiSignAssignee.assigneeType" placeholder="" @change="typeChange">
-              <el-option label="用户" value="USER_GROUP" />
-              <el-option label="角色" value="ROLE_GROUP" />
-              <el-option label="部门" value="DEPT_GROUP" />
-              <el-option label="岗位" value="POST_GROUP" />
-              <el-option label="部门岗位" value="DEPT_POST_GROUP" />
+              <el-option label="User" value="USER_GROUP" />
+              <el-option label="Role" value="ROLE_GROUP" />
+              <el-option label="Department" value="DEPT_GROUP" />
+              <el-option label="Post" value="POST_GROUP" />
+              <el-option label="Department Post" value="DEPT_POST_GROUP" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -88,7 +70,7 @@
         >
           <el-form-item
             :label="
-              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? '会签' : '审批') + '用户选择'
+              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') + ' User Selection'
             "
           >
             <TagSelect
@@ -138,12 +120,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="显示顺序">
+          <el-form-item label="Display Order">
             <el-input-number
               class="input-item"
               v-model="formData.showOrder"
               :clearable="true"
-              placeholder="显示顺序"
+              placeholder="Display Order"
             />
           </el-form-item>
         </el-col>
@@ -151,10 +133,10 @@
     </el-form>
     <el-row class="no-scroll flex-box menu-box" type="flex" justify="end" style="padding-top: 10px">
       <el-button :size="layoutStore.defaultFormItemSize" :plain="true" @click="onCancel">
-        取消
+        Cancel
       </el-button>
       <el-button type="primary" :size="layoutStore.defaultFormItemSize" @click="onSubmit">
-        保存
+        Save
       </el-button>
     </el-row>
   </div>
@@ -180,7 +162,7 @@ interface IProps extends ThirdProps {
   rowData?: ANY_OBJECT;
   validStatusList?: ANY_OBJECT[];
   flowType?: string | number;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined in order to callback the dialog
   dialog?: DialogProp<ANY_OBJECT | ANY_OBJECT[] | undefined>;
 }
 const props = withDefaults(defineProps<IProps>(), {
@@ -212,8 +194,8 @@ const multiSignAssignee = ref<ANY_OBJECT>({
   assigneeList: [],
 });
 const rules = {
-  type: [{ required: true, message: '请选择按钮类型', trigger: 'blur' }],
-  label: [{ required: true, message: '请输入按钮名称', trigger: 'blur' }],
+  type: [{ required: true, message: 'Please select button type', trigger: 'blur' }],
+  label: [{ required: true, message: 'Please enter button name', trigger: 'blur' }],
 };
 const userName = ref<ANY_OBJECT[]>([]);
 const dialogParams = computed(() => {
@@ -239,30 +221,23 @@ const multiSignGroupList = computed(() => {
       return [] as ANY_OBJECT[];
   }
 });
-const getValidOperationList = computed(() => {
-  let autoSupportOperationList = [
-    SysFlowTaskOperationType.REJECT,
-    SysFlowTaskOperationType.REJECT_TO_TASK,
-    SysFlowTaskOperationType.MULTI_SIGN,
-    SysFlowTaskOperationType.MULTI_AGREE,
-    SysFlowTaskOperationType.MULTI_REFUSE,
-    SysFlowTaskOperationType.MULTI_ABSTAIN,
-  ];
-  return SysFlowTaskOperationType.getList().filter(item => {
-    if (dialogParams.value.flowType === FlowEntryType.AUTO_TASK) {
-      return autoSupportOperationList.indexOf(item.id) !== -1;
-    }
-    return (
-      [
-        SysFlowTaskOperationType.INTERVENE,
-        SysFlowTaskOperationType.REVIVE,
-        SysFlowTaskOperationType.TIMEOUT_AUTO_COMPLETE,
-        SysFlowTaskOperationType.EMPTY_USER_AUTO_COMPLETE,
-        SysFlowTaskOperationType.EMPTY_USER_AUTO_REJECT,
-      ].indexOf(item.id) === -1
-    );
-  });
-});
+const getValidOperationList = computed(() => [
+  {
+    id: 'agree',
+    name: 'Agree',
+    symbol: 'AGREE',
+  },
+  {
+    id: 'refuse',
+    name: 'Refuse',
+    symbol: 'REFUSE',
+  },
+  {
+    id: 'rejectToStart',
+    name: 'Reject To Start',
+    symbol: 'REJECT_TO_START',
+  },
+]);
 
 const onCancel = () => {
   if (props.dialog) {
@@ -459,7 +434,7 @@ const updateSelectUser = (res: ANY_OBJECT[]) => {
 const onSelectUser = () => {
   let usedUserIdList = multiSignAssignee.value.assigneeList;
   Dialog.show<ANY_OBJECT[]>(
-    '添加抄送人',
+    'Add CC Person',
     TaskUserSelect,
     {
       area: ['1000px', '650px'],
@@ -511,7 +486,7 @@ const updateSelectDept = (res: ANY_OBJECT[] | ANY_OBJECT) => {
 const onSelectDept = () => {
   let usedIdList = deptItems.value.map(row => row.id);
   Dialog.show<ANY_OBJECT[] | ANY_OBJECT>(
-    '选择部门',
+    'Select Department',
     TaskGroupSelect,
     {
       area: ['600px', '600px'],

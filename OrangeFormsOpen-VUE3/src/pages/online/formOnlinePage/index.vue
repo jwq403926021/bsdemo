@@ -55,7 +55,7 @@
           >New</el-button
         >
       </template>
-      <vxe-column title="No." type="seq" width="55px" :index="pageListWidget.getTableIndex" />
+      <vxe-column title="No." type="seq" width="50px" :index="pageListWidget.getTableIndex" />
       <vxe-column title="Page Name" field="pageName" />
       <vxe-column title="Page Code" field="pageCode" />
       <!--      <vxe-column title="Page Type">-->

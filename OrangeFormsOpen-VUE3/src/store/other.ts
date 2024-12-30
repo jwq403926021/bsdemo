@@ -5,8 +5,8 @@ export default defineStore('other', {
   state: () => {
     return {
       userShowNameData: {
-        '${startUserName}': '流程发起人',
-        '${appointedAssignee}': '指定审批人',
+        '${startUserName}': 'Process Initiator',
+        '${appointedAssignee}': 'Appointed Approver',
       } as ANY_OBJECT,
     };
   },

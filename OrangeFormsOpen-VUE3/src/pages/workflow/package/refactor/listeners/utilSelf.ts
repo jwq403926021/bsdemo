@@ -48,22 +48,22 @@ export function initListenerType(listener) {
 }
 
 export const listenerType = {
-  classListener: 'Java 类',
-  expressionListener: '表达式',
-  delegateExpressionListener: '代理表达式',
-  scriptListener: '脚本',
+  classListener: 'Java Class',
+  expressionListener: 'Expression',
+  delegateExpressionListener: 'Delegate Expression',
+  scriptListener: 'Script',
 };
 
 export const eventType = {
-  create: '创建',
-  assignment: '指派',
-  complete: '完成',
-  delete: '删除',
+  create: 'Create',
+  assignment: 'Assignment',
+  complete: 'Complete',
+  delete: 'Delete',
   // update: "更新",
   // timeout: "超时"
 };
 
 export const fieldType = {
-  string: '字符串',
-  expression: '表达式',
+  string: 'String',
+  expression: 'Expression',
 };

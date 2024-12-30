@@ -86,7 +86,7 @@
         @click.stop="onTableClick"
       >
         <vxe-table empty-text="No data" border="inner" height="100%" :data="tableData">
-          <vxe-column type="seq" title="No." width="150px" />
+          <vxe-column type="seq" title="No." width="50px" />
           <vxe-column title="Division Name" field="divisionsName" width="150px" />
           <vxe-column title="SR" field="srName" width="150px" />
           <vxe-column title="Contact Info" field="contactInfo" width="150px" />

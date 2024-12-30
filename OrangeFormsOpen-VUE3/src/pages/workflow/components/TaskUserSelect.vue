@@ -7,29 +7,29 @@
       @submit.prevent
     >
       <el-row type="flex">
-        <el-form-item label="登录名称">
+        <el-form-item label="Login Name">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserLoginName"
             @change="refreshFormSysUser(true)"
             :clearable="true"
-            placeholder="登录名称"
+            placeholder="Login Name"
           />
         </el-form-item>
-        <el-form-item label="用户昵称">
+        <el-form-item label="Show Name">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.showName"
             @change="refreshFormSysUser(true)"
             :clearable="true"
-            placeholder="用户昵称"
+            placeholder="Show Name"
           />
         </el-form-item>
         <el-input
           :disabled="dialogParams.multiple"
           :size="layoutStore.defaultFormItemSize"
           v-model="assignee"
-          placeholder="自定义用户"
+          placeholder="Custom User"
           style="width: 200px; margin-bottom: 16px; margin-left: 20px; flex-grow: 1"
         />
       </el-row>
@@ -40,7 +40,7 @@
           :size="layoutStore.defaultFormItemSize"
           @click="setStartUser"
         >
-          流程发起人
+          Process Initiator
         </el-button>
         <el-button
           v-if="dialogParams.showAssignee"
@@ -48,7 +48,7 @@
           :size="layoutStore.defaultFormItemSize"
           @click="useAppointedAssignee"
         >
-          使用指定审批人
+          Use Appointed Approver
         </el-button>
         <el-button
           type="primary"
@@ -56,7 +56,7 @@
           @click="onSubmit"
           :disabled="!canCommit"
         >
-          添加用户
+          Add User
         </el-button>
       </el-row>
     </el-form>
@@ -81,16 +81,16 @@
               width="50px"
               :selectable="canSelect"
             />
-            <el-table-column v-else label="" header-align="center" align="center" width="50px">
+            <el-table-column v-else label="No." header-align="center" align="center" width="50px">
               <template v-slot="scope">
                 <el-radio :value="scope.row.userId"></el-radio>
               </template>
             </el-table-column>
-            <el-table-column label="用户名" prop="loginName" />
-            <el-table-column label="昵称" prop="showName" />
-            <el-table-column label="所属部门" prop="deptIdDictMap.name" />
-            <el-table-column label="账号类型" prop="userTypeDictMap.name" />
-            <el-table-column label="创建时间">
+            <el-table-column label="Login Name" prop="loginName" />
+            <el-table-column label="Show Name" prop="showName" />
+            <el-table-column label="Department" prop="deptIdDictMap.name" />
+            <el-table-column label="Account Type" prop="userTypeDictMap.name" />
+            <el-table-column label="Creation Time">
               <template v-slot="scope">
                 <span>{{ formatDateByStatsType(scope.row.createTime, 'day') }}</span>
               </template>
@@ -134,20 +134,20 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 
 interface IProps extends ThirdProps {
-  // 是否显示指定审批人
+  // Show appointed approver
   showAssignee?: boolean;
-  // 是否显示流程发起人
+  // Show process initiator
   showStartUser?: boolean;
-  // 是否多选
+  // Multi-select option
   multiple?: boolean;
-  // 已经被使用的用户列表
+  // List of already used users
   usedUserIdList?: Array<ANY_OBJECT>;
-  // 额外过滤条件
+  // Additional filter conditions
   filterObject?: ANY_OBJECT;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined for dialog callback
   dialog?: DialogProp<ANY_OBJECT | ANY_OBJECT[] | null | undefined>;
 }
-// TODO showAssignee,showStartUser默认值如果为true，会影响第三方按钮的显示正确性
+// TODO Default values of showAssignee and showStartUser as true may affect the correct display of third-party buttons
 const props = withDefaults(defineProps<IProps>(), {
   showAssignee: true,
   showStartUser: true,
@@ -161,9 +161,9 @@ const layoutStore = useLayoutStore();
 const { formatDateByStatsType } = useDate();
 
 const assignee = ref<string>();
-// 单选下选中的用户
+// Selected user in single selection
 const selectUserId = ref<string>();
-// 多选下选中的用户列表
+// Selected user list in multi-selection
 const multiSelectUser = ref<ANY_OBJECT[] | ANY_OBJECT>([]);
 
 const dialogParams = computed(() => {
@@ -183,13 +183,9 @@ const canCommit = computed(() => {
 });
 
 /**
- * 用户管理数据获取函数，返回Primise
+ * User management data retrieval function, returns Promise
  */
 const loadSysUserData = (params: ANY_OBJECT) => {
-  // params.sysUserDtoFilter = {
-  //   loginName: formSysUser.formFilterCopy.sysUserLoginName,
-  //   showName: formSysUser.formFilterCopy.showName
-  // }
   params.widgetType = 'upms_user';
   params.filter = {
     ...dialogParams.value.filterObject,
@@ -211,7 +207,7 @@ const loadSysUserData = (params: ANY_OBJECT) => {
   });
 };
 /**
- * 用户管理数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * User management data acquisition check function, returns true if data can be retrieved normally, returns false to stop data acquisition
  */
 const loadSysUserVerify = () => {
   formSysUser.formFilterCopy.sysUserLoginName = formSysUser.formFilter.sysUserLoginName;
@@ -297,10 +293,10 @@ const handleSelectionChange = (values: ANY_OBJECT[] | ANY_OBJECT) => {
   multiSelectUser.value = values;
 };
 /**
- * 更新用户管理
+ * Update user management
  */
 const refreshFormSysUser = (reloadData = false) => {
-  // 重新获取数据组件的数据
+  // Reload user management data
   if (reloadData) {
     formSysUser.sysUserWidget.refreshTable(true, 1);
   } else {

@@ -48,7 +48,7 @@
       <vxe-column
         title="No."
         type="seq"
-        width="70px"
+        width="50px"
         :index="formMyHistoryTaskWidget.getTableIndex"
       />
       <vxe-column title="Process Name" field="processDefinitionName" />

@@ -1,19 +1,21 @@
 <template>
   <div>
-    <el-form-item label="候选类型">
+    <el-form-item label="Candidate Type">
       <el-radio-group
         v-model="formData.groupType"
         @change="onGroupTypeChange"
         :disabled="isCountersign"
       >
-        <el-radio label="ASSIGNEE" value="ASSIGNEE">处理用户</el-radio>
-        <el-radio label="USERS" value="USERS">候选用户组</el-radio>
-        <el-radio label="ROLE" value="ROLE">角色</el-radio>
-        <el-radio label="DEPT" value="DEPT">部门</el-radio>
-        <el-radio label="POST" value="POST">岗位</el-radio>
-        <el-radio label="DEPT_POST_LEADER" value="DEPT_POST_LEADER">发起人部门领导</el-radio>
+        <el-radio label="ASSIGNEE" value="ASSIGNEE">Assignee</el-radio>
+        <el-radio label="USERS" value="USERS">Users</el-radio>
+        <el-radio label="ROLE" value="ROLE">Role</el-radio>
+        <el-radio label="DEPT" value="DEPT">Department</el-radio>
+        <el-radio label="POST" value="POST">Position</el-radio>
+        <el-radio label="DEPT_POST_LEADER" value="DEPT_POST_LEADER"
+          >Initiator Dept Leader</el-radio
+        >
         <el-radio label="UP_DEPT_POST_LEADER" value="UP_DEPT_POST_LEADER"
-          >发起人上级部门领导</el-radio
+          >Initiator Super Dept Leader</el-radio
         >
       </el-radio-group>
     </el-form-item>
@@ -28,7 +30,7 @@
           :size="layoutStore.defaultFormItemSize"
           @click="onSelectAssignee"
           :disabled="isCountersign"
-          >添加处理用户</el-button
+          >Add Processing User</el-button
         >
       </TaskMultipleSelect>
     </el-form-item>
@@ -38,11 +40,11 @@
           :icon="Plus"
           :size="layoutStore.defaultFormItemSize"
           @click="onSelectCandidateUsers"
-          >添加候选用户</el-button
+          >Add Candidate Users</el-button
         >
       </TaskMultipleSelect>
     </el-form-item>
-    <el-form-item v-if="formData.groupType === 'ROLE'" label="候选角色">
+    <el-form-item v-if="formData.groupType === 'ROLE'" label="Candidate Roles">
       <el-select
         v-model="candidateGroupIds"
         placeholder=""
@@ -58,31 +60,13 @@
           :icon="Plus"
           :size="layoutStore.defaultFormItemSize"
           @click="onSelectCandidatGroups"
-          >添加{{ formData.groupType === 'DEPT' ? '候选部门' : '候选岗位' }}</el-button
+          >Add
+          {{
+            formData.groupType === 'DEPT' ? 'Candidate Departments' : 'Candidate Positions'
+          }}</el-button
         >
       </TaskMultipleSelect>
     </el-form-item>
-    <!--
-    <el-form-item label="到期时间">
-      <el-input v-model="userTaskForm.dueDate" clearable @change="updateElementTask('dueDate')" />
-    </el-form-item>
-    <el-form-item label="跟踪时间">
-      <el-input v-model="userTaskForm.followUpDate" clearable @change="updateElementTask('followUpDate')" />
-    </el-form-item>
-    <el-form-item label="优先级">
-      <el-input v-model="userTaskForm.priority" clearable @change="updateElementTask('priority')" />
-      <div class="number-box">
-        <el-input-number v-model="userTaskForm.priority" :controls="false" @change="updateElementTask('priority')" :min="1" :max="999" style="width: 105px">
-        </el-input-number>
-        <div class="icon icon-plus-wrap" @click="userTaskForm.priority = userTaskForm.priority*1+1">
-          <i class="el-icon-plus"></i>
-        </div>
-        <div class="icon icon-minus-wrap" @click="userTaskForm.priority = userTaskForm.priority*1-1">
-          <i class="el-icon-minus"></i>
-        </div>
-      </div>
-    </el-form-item>
-    -->
   </div>
 </template>
 
@@ -101,7 +85,7 @@ import { SysFlowEntryBindFormType } from '@/common/staticDict/flow';
 
 const props = defineProps<{ id: string; type: string; isCountersign: boolean }>();
 const flowEntry = inject('flowEntry', () => {
-  console.warn('UserTask not inject flowEntry yet.');
+  console.warn('UserTask not injected flowEntry yet.');
   return {} as ANY_OBJECT;
 });
 const prefix = inject('prefix');
@@ -146,9 +130,9 @@ const win: ANY_OBJECT = window;
 
 const calcUserName = (userInfo: ANY_OBJECT) => {
   if (userInfo == null || userInfo.loginName == null) return;
-  if (userInfo.loginName === '${startUserName}') userInfo.showName = '流程发起人';
-  if (userInfo.loginName === '${appointedAssignee}') userInfo.showName = '指定审批人';
-  if (userInfo.loginName === '${assignee}') userInfo.showName = '会签人';
+  if (userInfo.loginName === '${startUserName}') userInfo.showName = 'Process Initiator';
+  if (userInfo.loginName === '${appointedAssignee}') userInfo.showName = 'Designated Approver';
+  if (userInfo.loginName === '${assignee}') userInfo.showName = 'Co-signer';
 };
 const updateAssignee = (res: ANY_OBJECT) => {
   calcUserName(res);
@@ -163,7 +147,7 @@ const updateAssignee = (res: ANY_OBJECT) => {
 };
 const onSelectAssignee = () => {
   Dialog.show<ANY_OBJECT>(
-    '选择用户',
+    'Select User',
     TaskUserSelect,
     {
       area: ['1000px', '650px'],
@@ -209,7 +193,7 @@ const onSelectCandidateUsers = () => {
       ? []
       : userTaskForm.value.candidateUsers.split(',');
   Dialog.show<ANY_OBJECT[]>(
-    '选择候选用户',
+    'Select Candidate Users',
     TaskUserSelect,
     {
       area: ['1000px', '650px'],
@@ -391,7 +375,7 @@ const loadSysPostList = () => {
 };
 const handlerDeptChange = (usedIdList: string[]) => {
   Dialog.show<ANY_OBJECT>(
-    '选择部门',
+    'Select Department',
     TaskGroupSelect,
     {
       area: ['600px', '600px'],
@@ -434,7 +418,7 @@ const updateDept = (res: ANY_OBJECT | ANY_OBJECT[]) => {
 };
 const handlerPostChange = (usedIdList: string[]) => {
   Dialog.show<ANY_OBJECT>(
-    '选择岗位',
+    'Select Position',
     TaskPostSelect,
     {
       area: ['1000px', '615px'],
@@ -461,7 +445,7 @@ const handlerPostChange = (usedIdList: string[]) => {
     });
 };
 const updateDeptPost = () => {
-  // 岗位
+  // Position
   let elExtensionElements =
     win.bpmnInstances.bpmnElement.businessObject.get('extensionElements') ||
     win.bpmnInstances.moddle.create('bpmn:ExtensionElements', { values: [] });
@@ -489,7 +473,7 @@ const updateDeptPost = () => {
   const newElExtensionElements = win.bpmnInstances.moddle.create(`bpmn:ExtensionElements`, {
     values: otherExtensions.concat(deptPostListElement),
   });
-  // 更新到元素上
+  // Update to element
   win.bpmnInstances.modeling.updateProperties(win.bpmnInstances.bpmnElement, {
     extensionElements: newElExtensionElements,
   });
@@ -517,25 +501,25 @@ const getDeptPostItem = (item: ANY_OBJECT) => {
   let deptName;
   switch (item.deptType) {
     case 'allDeptPost':
-      deptName = '全部';
+      deptName = 'All';
       break;
     case 'selfDeptPost':
-      deptName = '本部门';
+      deptName = 'Same Department';
       break;
     case 'siblingDeptPost':
-      deptName = '同级部门';
+      deptName = 'Sibling Department';
       break;
     case 'upDeptPost':
-      deptName = '上级部门';
+      deptName = 'Upper Department';
       break;
     case 'deptPost':
-      deptName = (deptPostMap?.get(item.deptPostId) || {}).deptName || '未知岗位';
+      deptName = (deptPostMap?.get(item.deptPostId) || {}).deptName || 'Unknown Position';
       break;
   }
   let postName =
     item.deptType === 'deptPost'
-      ? (deptPostMap?.get(item.deptPostId) || {}).postShowName || '未知岗位'
-      : (postMap?.get(String(item.postId)) || {}).postName || '未知岗位';
+      ? (deptPostMap?.get(item.deptPostId) || {}).postShowName || 'Unknown Position'
+      : (postMap?.get(String(item.postId)) || {}).postName || 'Unknown Position';
 
   return {
     deptName,
@@ -557,7 +541,7 @@ const onSelectRoleChange = (value: string[] | string) => {
     userTaskForm.value.candidateGroups = Array.isArray(value) ? value.join(',') : '';
   });
 };
-// 获取审批人信息
+// Get approver information
 const loadUserInfo = (params: ANY_OBJECT) => {
   return new Promise<ANY_OBJECT[]>((resolve, reject) => {
     if (params == null || params.fieldValues === '') {
@@ -638,14 +622,14 @@ const resetTaskForm = () => {
     params.fieldValues = userTaskForm.value.candidateUsers;
   }
   let oldUser: string[] = params.fieldValues.split(',');
-  // 去掉流程启动人和指定审批人
+  // Remove process initiator and designated approver
   params.fieldValues = params.fieldValues
     .split(',')
     .filter(row => {
       return ['${startUserName}', '${appointedAssignee}', '${assignee}'].indexOf(row) === -1;
     })
     .join(',');
-  // 获取处理人用户信息
+  // Get processing user information
   loadUserInfo(params)
     .then(dataList => {
       userName.value = oldUser
@@ -684,7 +668,7 @@ const resetTaskForm = () => {
     .catch(e => {
       console.log(e);
     });
-  // 岗位
+  // Position
   if (formData.value.groupType === 'POST') {
     let elExtensionElements =
       win.bpmnInstances.bpmnElement.businessObject.get('extensionElements') ||
@@ -755,7 +739,7 @@ const updateUserCandidateGroups = (type: string, value: string) => {
   const newElExtensionElements = win.bpmnInstances.moddle.create(`bpmn:ExtensionElements`, {
     values: otherExtensions,
   });
-  // 更新到元素上
+  // Update to element
   win.bpmnInstances.modeling.updateProperties(win.bpmnInstances.bpmnElement, {
     extensionElements: newElExtensionElements,
   });
@@ -811,7 +795,7 @@ watch(
       userName.value = [
         {
           id: '${assignee}',
-          name: '会签人',
+          name: 'Co-signer',
         },
       ];
     } else {

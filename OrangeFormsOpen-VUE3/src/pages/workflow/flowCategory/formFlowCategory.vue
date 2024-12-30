@@ -47,7 +47,7 @@
           >New</el-button
         >
       </template>
-      <vxe-column title="No." type="seq" width="70px" :index="flowCategoryWidget.getTableIndex" />
+      <vxe-column title="No." type="seq" width="50px" :index="flowCategoryWidget.getTableIndex" />
       <vxe-column title="Process Category Name" field="name"> </vxe-column>
       <vxe-column title="Category Code" field="code"> </vxe-column>
       <vxe-column title="Display Order" field="showOrder" sortable> </vxe-column>

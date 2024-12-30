@@ -9,17 +9,17 @@
       fit
       header-cell-class-name="table-header-gray"
     >
-      <vxe-column title="序号" width="70px" type="seq" />
-      <vxe-column title="属性名" field="name" min-width="100px" show-overflow-tooltip />
-      <vxe-column title="属性值" field="value" min-width="90px" show-overflow-tooltip />
-      <vxe-column title="操作" width="110px">
+      <vxe-column title="No." width="50px" type="seq" />
+      <vxe-column title="Property Name" field="name" min-width="100px" show-overflow-tooltip />
+      <vxe-column title="Property Value" field="value" min-width="90px" show-overflow-tooltip />
+      <vxe-column title="Operation" width="110px">
         <template v-slot="{ row, $rowIndex }">
           <el-button
             type="primary"
             :size="layoutStore.defaultFormItemSize"
             link
             @click="openAttributesForm(row, $rowIndex)"
-            >编辑</el-button
+            >Edit</el-button
           >
           <!-- <el-divider direction="vertical" /> -->
           <el-button
@@ -27,7 +27,7 @@
             link
             type="danger"
             @click="removeAttributes(row, $rowIndex)"
-            >删除</el-button
+            >Delete</el-button
           >
         </template>
       </vxe-column>
@@ -40,31 +40,31 @@
     </vxe-table>
     <el-dialog
       v-model="propertyFormModelVisible"
-      title="属性配置"
+      title="Attribute Configuration"
       width="600px"
       append-to-body
       destroy-on-close
     >
       <el-form
         :model="propertyForm"
-        label-width="80px"
+        label-width="120px"
         :size="layoutStore.defaultFormItemSize"
         ref="attributeFormRef"
         @submit.prevent
       >
-        <el-form-item label="属性名：" prop="name">
+        <el-form-item label="Property Name:" prop="name">
           <el-input v-model="propertyForm.name" clearable />
         </el-form-item>
-        <el-form-item label="属性值：" prop="value">
+        <el-form-item label="Property Value:" prop="value">
           <el-input v-model="propertyForm.value" clearable />
         </el-form-item>
       </el-form>
       <template v-slot:footer>
         <el-button :size="layoutStore.defaultFormItemSize" @click="propertyFormModelVisible = false"
-          >取 消</el-button
+          >Cancel</el-button
         >
         <el-button :size="layoutStore.defaultFormItemSize" type="primary" @click="saveAttribute"
-          >确 定</el-button
+          >OK</el-button
         >
       </template>
     </el-dialog>
@@ -99,7 +99,7 @@ const win: ANY_OBJECT = window;
 
 const resetAttributesList = () => {
   bpmnElement = win.bpmnInstances.bpmnElement;
-  otherExtensionList = []; // 其他扩展配置
+  otherExtensionList = []; // Other extension configurations
   const bpmnElementProperties =
     bpmnElement.businessObject?.extensionElements?.values?.filter(ex => {
       if (ex.$type !== `${prefix}:Properties`) {
@@ -108,7 +108,7 @@ const resetAttributesList = () => {
       return ex.$type === `${prefix}:Properties`;
     }) ?? [];
 
-  // 保存所有的 扩展属性字段
+  // Save all the extended attribute fields
   bpmnElementPropertyList = bpmnElementProperties.reduce(
     (pre: ANY_OBJECT[], current: ANY_OBJECT) => {
       if (current.values != null) pre = pre.concat(current.values);
@@ -116,7 +116,7 @@ const resetAttributesList = () => {
     },
     [],
   );
-  // 复制 显示
+  // Copy for display
   elementPropertyList.value = JSON.parse(JSON.stringify(bpmnElementPropertyList ?? []));
 };
 const openAttributesForm = (attr: ANY_OBJECT, index: number) => {
@@ -128,37 +128,37 @@ const openAttributesForm = (attr: ANY_OBJECT, index: number) => {
   });
 };
 const removeAttributes = (attr: ANY_OBJECT, index: number) => {
-  ElMessageBox.confirm('确认移除该属性吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure you want to remove this attribute?', 'Tip', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
       elementPropertyList.value.splice(index, 1);
       bpmnElementPropertyList.splice(index, 1);
-      // 新建一个属性字段的保存列表
+      // Create a new attributes field save list
       const propertiesObject = win.bpmnInstances.moddle.create(`${prefix}:Properties`, {
         values: bpmnElementPropertyList,
       });
       updateElementExtensions(propertiesObject);
       resetAttributesList();
     })
-    .catch(() => console.info('操作取消'));
+    .catch(() => console.info('Operation canceled'));
 };
 const saveAttribute = () => {
   let propertiesObject = [];
   if (editingPropertyIndex.value === -1) {
-    // 新建属性字段
+    // New attribute field
     const newPropertyObject = win.bpmnInstances.moddle.create(
       `${prefix}:Property`,
       propertyForm.value,
     );
-    // 新建一个属性字段的保存列表
+    // Create a new attributes field save list
     propertiesObject = win.bpmnInstances.moddle.create(`${prefix}:Properties`, {
       values: bpmnElementPropertyList.concat([newPropertyObject]),
     });
   } else {
-    // 修改属性字段
+    // Modify attribute field
     propertiesObject = win.bpmnInstances.moddle.create(`${prefix}:Properties`, {
       values: elementPropertyList.value.map((item, index) => {
         if (index !== editingPropertyIndex.value) {

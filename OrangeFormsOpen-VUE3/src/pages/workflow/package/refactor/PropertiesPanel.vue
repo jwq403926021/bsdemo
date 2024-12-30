@@ -1,8 +1,8 @@
 <template>
   <el-tabs class="properties-panel" v-model="activeName" :style="{ width: `430px` }">
-    <el-tab-pane label="基础设置" name="baseInfo">
+    <el-tab-pane label="Basic Settings" name="baseInfo">
       <template #label>
-        <div class="panel-label">基础设置</div>
+        <div class="panel-label">Basic Settings</div>
       </template>
       <div class="process-panel__container">
         <div>
@@ -49,20 +49,20 @@
         </div>
 
         <div v-if="conditionFormVisible" key="status">
-          <div class="panel-title">工单状态</div>
+          <div class="panel-title">Work Order Status</div>
           <SetApproveStatus :id="elementId" :type="elementType" />
         </div>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="按钮设置" name="button" v-if="formVisible">
+    <el-tab-pane label="Button Settings" name="button" v-if="formVisible">
       <template #label>
-        <div class="panel-label">按钮设置</div>
+        <div class="panel-label">Button Settings</div>
       </template>
       <div class="process-panel__container">
         <div v-if="formVisible" key="form">
           <div class="panel-title">
-            按钮
-            <right-add-btn @click.prevent.stop="elementForm.onEditOperation()">添加</right-add-btn>
+            Buttons
+            <right-add-btn @click.prevent.stop="elementForm.onEditOperation()">Add</right-add-btn>
           </div>
           <ElementForm
             v-if="activeName === 'button'"
@@ -73,14 +73,14 @@
           />
         </div>
 
-        <div v-if="formVisible">
+        <!-- <div v-if="formVisible">
           <AutoAgree :id="elementId" :isCountersign="isCountersign" />
-        </div>
+        </div> -->
       </div>
     </el-tab-pane>
-    <el-tab-pane label="任务处理人" name="taskHandler" v-if="formVisible">
+    <el-tab-pane label="Task Handlers" name="taskHandler" v-if="formVisible">
       <template #label>
-        <div class="panel-label">任务处理人</div>
+        <div class="panel-label">Task Handlers</div>
       </template>
       <div class="process-panel__container">
         <div
@@ -89,15 +89,11 @@
         >
           <element-task :id="elementId" :type="elementType" :isCountersign="isCountersign" />
         </div>
-        <div v-if="formVisible" key="copyFor">
-          <div class="panel-title">抄送设置</div>
-          <CopyForSelect :id="elementId" :type="elementType" ref="copyForSelect" />
-        </div>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="其他设置" name="other">
+    <el-tab-pane label="Other Settings" name="other">
       <template #label>
-        <div class="panel-label">其他设置</div>
+        <div class="panel-label">Other Settings</div>
       </template>
       <div class="process-panel__container">
         <div key="message" v-if="elementType === 'Process'">
@@ -106,17 +102,17 @@
 
         <div key="listeners" v-if="elementType" style="margin-bottom: 10px">
           <div class="panel-title">
-            执行监听器
-            <right-add-btn @click.prevent.stop="listeners.openListenerForm()">添加</right-add-btn>
+            Execution Listeners
+            <right-add-btn @click.prevent.stop="listeners.openListenerForm()">Add</right-add-btn>
           </div>
           <element-listeners ref="listeners" :id="elementId" :type="elementType" />
         </div>
 
         <div key="taskListeners" v-if="elementType === 'UserTask'" style="margin-bottom: 10px">
           <div class="panel-title">
-            任务监听器
+            Task Listeners
             <right-add-btn @click.prevent.stop="useTaskListeners.openListenerForm()"
-              >添加</right-add-btn
+              >Add</right-add-btn
             >
           </div>
           <user-task-listeners :id="elementId" :type="elementType" ref="useTaskListeners" />
@@ -124,9 +120,9 @@
 
         <div key="extensions" v-if="elementType && !conditionFormVisible">
           <div class="panel-title">
-            扩展属性
+            Extended Attributes
             <right-add-btn @click.prevent.stop="properties.openAttributesForm(null, -1)"
-              >添加</right-add-btn
+              >Add</right-add-btn
             >
           </div>
           <element-properties :id="elementId" :type="elementType" ref="properties" />
@@ -138,10 +134,10 @@
 
 <script setup lang="ts">
 /**
- * 侧边栏
+ * Sidebar
  * @Author MiyueFE
  * @Home https://github.com/miyuesc
- * @Date 2021年3月31日18:57:51
+ * @Date March 31, 2021
  */
 import { ANY_OBJECT } from '@/types/generic';
 import RightAddBtn from '@/components/Btns/RightAddBtn.vue';
@@ -191,11 +187,11 @@ const properties = ref();
 const activeName = ref('baseInfo');
 const elementId = ref('');
 const elementType = ref('');
-// 元素 businessObject 镜像，提供给需要做判断的组件使用
+// Element businessObject mirror, provided for components that need to make judgments
 const elementBusinessObject = ref<ANY_OBJECT>({});
-// 流转条件设置
+// Transition condition settings
 const conditionFormVisible = ref(false);
-// 表单配置
+// Form configuration
 const formVisible = ref(false);
 const isCountersign = ref(false);
 
@@ -214,9 +210,9 @@ watch(
 const win: ANY_OBJECT = window;
 let timer: number | null = null;
 const initModels = () => {
-  // 初始化 modeler 以及其他 moddle
+  // Initialize modeler and other moddle
   if (!props.bpmnModeler) {
-    // 避免加载时 流程图 并未加载完成
+    // Avoid loading when the process diagram has not been loaded completely
     timer = setTimeout(() => initModels(), 10);
     return;
   }
@@ -234,23 +230,24 @@ const initModels = () => {
   getActiveElement();
 };
 const getActiveElement = () => {
-  // 初始第一个选中元素 bpmn:Process
+  // Initial first selected element bpmn:Process
   initFormOnChanged(null);
   props.bpmnModeler.on('import.done', () => {
     initFormOnChanged(null);
   });
-  // 监听选择事件，修改当前激活的元素以及表单
+  // Listen for selection events to modify the currently activated element and form
   props.bpmnModeler.on('selection.changed', ({ newSelection }: { newSelection: ANY_OBJECT[] }) => {
     initFormOnChanged(newSelection[0] || null);
   });
   props.bpmnModeler.on('element.changed', ({ element }: { element: ANY_OBJECT }) => {
-    // 保证 修改 "默认流转路径" 类似需要修改多个元素的事件发生的时候，更新表单的元素与原选中元素不一致。
+    // Ensure that when modifying multiple elements like "default transition path",
+    // the updated element's form is consistent with the original selected element.
     if (element && element.id === elementId.value) {
       initFormOnChanged(element);
     }
   });
 };
-// 初始化数据
+// Initialize data
 const initFormOnChanged = (element: ANY_OBJECT | null) => {
   let activatedElement = element;
   if (!activatedElement) {

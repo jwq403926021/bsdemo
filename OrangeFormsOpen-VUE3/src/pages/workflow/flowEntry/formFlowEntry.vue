@@ -77,7 +77,7 @@
       <vxe-column
         title="No."
         type="seq"
-        width="70px"
+        width="50px"
         :index="formFlowEntry.flowEntryWidget.getTableIndex"
       />
       <vxe-column title="Process Name" field="processDefinitionName"> </vxe-column>

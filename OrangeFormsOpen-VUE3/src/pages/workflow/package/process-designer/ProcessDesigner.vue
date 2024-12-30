@@ -5,14 +5,14 @@
       <template v-if="!$slots['control-header']">
         <el-button-group key="file-control">
           <el-button :size="headerButtonSize" :type="headerButtonType" :icon="Edit" @click="onSave"
-            >保存流程</el-button
+            >Save Process</el-button
           >
           <el-button
             :size="headerButtonSize"
             :type="headerButtonType"
             :icon="FolderOpened"
             @click="openFile"
-            >打开文件</el-button
+            >Open File</el-button
           >
           <el-tooltip effect="light">
             <template v-slot:content>
@@ -22,59 +22,59 @@
                   link
                   type="primary"
                   @click="downloadProcessAsXml()"
-                  >下载为XML文件</el-button
+                  >Download as XML File</el-button
                 >
                 <el-button
                   :size="headerButtonSize"
                   link
                   type="primary"
                   @click="downloadProcessAsSvg()"
-                  >下载为SVG文件</el-button
+                  >Download as SVG File</el-button
                 >
                 <el-button
                   :size="headerButtonSize"
                   link
                   type="primary"
                   @click="downloadProcessAsBpmn()"
-                  >下载为BPMN文件</el-button
+                  >Download as BPMN File</el-button
                 >
               </div>
             </template>
             <el-button :size="headerButtonSize" :type="headerButtonType" :icon="Download"
-              >下载文件</el-button
+              >Download File</el-button
             >
           </el-tooltip>
           <el-tooltip effect="light">
             <template v-slot:content>
               <div class="popper-box">
                 <el-button :size="headerButtonSize" link type="primary" @click="previewProcessXML"
-                  >预览XML</el-button
+                  >Preview XML</el-button
                 >
                 <el-button :size="headerButtonSize" link type="primary" @click="previewProcessJson"
-                  >预览JSON</el-button
+                  >Preview JSON</el-button
                 >
               </div>
             </template>
             <el-button :size="headerButtonSize" :type="headerButtonType" :icon="View"
-              >预览</el-button
+              >Preview</el-button
             >
           </el-tooltip>
           <el-tooltip
             v-if="simulation"
             effect="light"
-            :content="simulationStatus ? '退出模拟' : '开启模拟'"
+            :content="simulationStatus ? 'Exit Simulation' : 'Start Simulation'"
           >
             <el-button
               :size="headerButtonSize"
               :type="headerButtonType"
               :icon="Cpu"
               @click="processSimulation"
-              >模拟</el-button
+              >Simulation</el-button
             >
           </el-tooltip>
         </el-button-group>
         <el-button-group key="align-control">
-          <el-tooltip effect="light" content="向左对齐">
+          <el-tooltip effect="light" content="Align Left">
             <el-button
               :size="headerButtonSize"
               class="align align-left"
@@ -82,7 +82,7 @@
               @click="elementsAlign('left')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向右对齐">
+          <el-tooltip effect="light" content="Align Right">
             <el-button
               :size="headerButtonSize"
               class="align align-right"
@@ -90,7 +90,7 @@
               @click="elementsAlign('right')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向上对齐">
+          <el-tooltip effect="light" content="Align Top">
             <el-button
               :size="headerButtonSize"
               class="align align-top"
@@ -98,7 +98,7 @@
               @click="elementsAlign('top')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向下对齐">
+          <el-tooltip effect="light" content="Align Bottom">
             <el-button
               :size="headerButtonSize"
               class="align align-bottom"
@@ -106,7 +106,7 @@
               @click="elementsAlign('bottom')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="水平居中">
+          <el-tooltip effect="light" content="Center Horizontally">
             <el-button
               :size="headerButtonSize"
               class="align align-center"
@@ -114,7 +114,7 @@
               @click="elementsAlign('center')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="垂直居中">
+          <el-tooltip effect="light" content="Center Vertically">
             <el-button
               :size="headerButtonSize"
               class="align align-middle"
@@ -124,7 +124,7 @@
           </el-tooltip>
         </el-button-group>
         <el-button-group key="scale-control">
-          <el-tooltip effect="light" content="缩小视图">
+          <el-tooltip effect="light" content="Zoom Out">
             <el-button
               :size="headerButtonSize"
               :disabled="defaultZoom <= 0.3"
@@ -135,7 +135,7 @@
           <el-button :size="headerButtonSize">{{
             Math.floor(defaultZoom * 10 * 10) + '%'
           }}</el-button>
-          <el-tooltip effect="light" content="放大视图">
+          <el-tooltip effect="light" content="Zoom In">
             <el-button
               :size="headerButtonSize"
               :disabled="defaultZoom >= 3.9"
@@ -143,12 +143,12 @@
               @click="processZoomIn()"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="重置视图并居中">
+          <el-tooltip effect="light" content="Reset View and Center">
             <el-button :size="headerButtonSize" :icon="ScaleToOriginal" @click="processReZoom()" />
           </el-tooltip>
         </el-button-group>
         <el-button-group key="stack-control">
-          <el-tooltip effect="light" content="撤销">
+          <el-tooltip effect="light" content="Undo">
             <el-button
               :size="headerButtonSize"
               :disabled="!revocable"
@@ -156,7 +156,7 @@
               @click="processUndo()"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="恢复">
+          <el-tooltip effect="light" content="Redo">
             <el-button
               :size="headerButtonSize"
               :disabled="!recoverable"
@@ -164,12 +164,12 @@
               @click="processRedo()"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="重新绘制">
+          <el-tooltip effect="light" content="Restart">
             <el-button :size="headerButtonSize" :icon="Refresh" @click="processRestart" />
           </el-tooltip>
         </el-button-group>
       </template>
-      <!-- 用于打开本地文件-->
+      <!-- Used to open local files -->
       <input
         type="file"
         id="files"
@@ -183,7 +183,7 @@
       <div class="my-process-designer__canvas" ref="bpmnCanvas"></div>
     </div>
     <el-dialog
-      title="预览"
+      title="Preview"
       width="60%"
       v-model="previewModelVisible"
       append-to-body
@@ -210,26 +210,26 @@ import {
   Refresh,
 } from '@element-plus/icons-vue';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-// 模拟流转流程
+// Simulate flow process
 import tokenSimulation from 'bpmn-js-token-simulation';
-// 引入json转换
+// Import json conversion
 import { xml2json } from 'xml-js';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { DiagramType } from '@/common/staticDict/flow';
 import { ANY_OBJECT } from '@/types/generic';
-// 代码高亮
+// Code highlight
 import highlightjs from './highlight';
-// 翻译方法
+// Translation method
 import customTranslate from './plugins/translate/customTranslate';
 import translationsCN from './plugins/translate/zh';
 import DefaultEmptyXML from './plugins/defaultEmpty';
-// 标签解析构建器
+// Tag parsing builder
 // import bpmnPropertiesProvider from "bpmn-js-properties-panel/lib/provider/bpmn";
-// 标签解析 Moddle
+// Tag parsing Moddle
 import camundaModdleDescriptor from './plugins/descriptor/camundaDescriptor.json';
 import activitiModdleDescriptor from './plugins/descriptor/activitiDescriptor.json';
 import flowableModdleDescriptor from './plugins/descriptor/flowableDescriptor.json';
-// 标签解析 Extension
+// Tag parsing Extension
 import flowableModdleExtension from './plugins/extension-moddle/flowable/index.js';
 
 const emit = defineEmits<{
@@ -239,15 +239,15 @@ const emit = defineEmits<{
 // props
 const props = withDefaults(
   defineProps<{
-    // xml 字符串
+    // xml string
     value: string;
     processId: string;
     processName: string;
-    // 自定义的翻译文件
+    // Custom translation file
     translations?: ANY_OBJECT;
-    // 自定义model
+    // Custom model
     additionalModel?: ANY_OBJECT | ANY_OBJECT[];
-    // 自定义moddle
+    // Custom moddle
     moddleExtension?: ANY_OBJECT;
     flowEntryInfo: ANY_OBJECT;
     onlyCustomizeAddi?: boolean;
@@ -289,7 +289,7 @@ const loaded = ref(false);
 // computed
 const additionalModules = computed(() => {
   const Modules: ANY_OBJECT[] = [];
-  // 仅保留用户自定义扩展模块
+  // Only keep user-defined extension modules
   if (props.onlyCustomizeAddi) {
     if (Array.isArray(props.additionalModel)) {
       return props.additionalModel || [];
@@ -297,25 +297,25 @@ const additionalModules = computed(() => {
     return [props.additionalModel];
   }
 
-  // 插入用户自定义扩展模块
+  // Insert user-defined extension modules
   if (Array.isArray(props.additionalModel)) {
     Modules.push(...props.additionalModel);
   } else {
     props.additionalModel && Modules.push(props.additionalModel);
   }
 
-  // 翻译模块
+  // Translation module
   const TranslateModule = {
     translate: ['value', customTranslate(props.translations || translationsCN)],
   };
   Modules.push(TranslateModule);
 
-  // 模拟流转模块
+  // Flow simulation module
   if (props.simulation) {
     Modules.push(tokenSimulation);
   }
 
-  // 根据需要的流程类型设置扩展元素构建模块
+  // Set extension element construction module based on required process type
   if (props.prefix === 'camunda') {
     // TODO camundaModdleExtension
     //Modules.push(camundaModdleExtension);
@@ -332,19 +332,19 @@ const additionalModules = computed(() => {
 });
 const moddleExtensions = computed(() => {
   const Extensions: ANY_OBJECT = {};
-  // 仅使用用户自定义模块
+  // Only use user-defined modules
   if (props.onlyCustomizeModdle) {
     return props.moddleExtension || null;
   }
 
-  // 插入用户自定义模块
+  // Insert user-defined modules
   if (props.moddleExtension) {
     for (let key in props.moddleExtension) {
       Extensions[key] = props.moddleExtension[key];
     }
   }
 
-  // 根据需要的 "流程类型" 设置 对应的解析文件
+  // Set the corresponding parsing file based on required "process type"
   if (props.prefix === 'activiti') {
     Extensions.activiti = activitiModdleDescriptor;
   }
@@ -358,9 +358,9 @@ const moddleExtensions = computed(() => {
   return Extensions;
 });
 
-// 设置BPMN的连接线
+// Set the connections of BPMN
 const setBpmnConnect = (nodeConfig: ANY_OBJECT) => {
-  console.log('>>>>>>>>>>>>> 设置BPMN的连接线 Begin');
+  console.log('>>>>>>>>>>>>> Setting BPMN Connections Begin');
   if (!nodeConfig || !bpmnModeler) return;
   const next = (nodeConfig: ANY_OBJECT, endElement?: ANY_OBJECT) => {
     const element = nodeConfig.endElement ? nodeConfig.endElement : nodeConfig.element;
@@ -458,7 +458,7 @@ const setBpmnConnect = (nodeConfig: ANY_OBJECT) => {
   bpmnModeler.get('modeling').connect(StartEvent, nodeConfig.element);
   next(nodeConfig);
 
-  console.log('>>>>>>>>>>>>> 设置BPMN的连接线 End');
+  console.log('>>>>>>>>>>>>> Setting BPMN Connections End');
 };
 const setDiagramType = () => {
   if (!bpmnModeler) return;
@@ -543,9 +543,9 @@ const onSave = () => {
   console.log('findErrorNode onSave2', dingflowDesigner.value?.getNodeConfig());
   const errorNode = findErrorNode(dingflowDesigner.value?.getNodeConfig());
   if (errorNode) {
-    ElMessageBox.confirm(errorNode.nodeName + '任务还未设置处理人，是否保存?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    ElMessageBox.confirm(errorNode.nodeName + ' task has not set a handler yet, do you want to save?', 'Prompt', {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
       type: 'warning',
     })
       .then(() => {
@@ -554,7 +554,7 @@ const onSave = () => {
         });
       })
       .catch(() => {
-        console.log('取消保存');
+        console.log('Cancelled saving');
       });
   } else {
     bpmnModeler.saveXML({ format: true }).then(({ xml }: { xml: string }) => {
@@ -578,18 +578,18 @@ const initBpmnModeler = () => {
 const initModelListeners = () => {
   if (!bpmnModeler) return;
   const EventBus = bpmnModeler.get('eventBus');
-  // 注册需要的监听事件, 将. 替换为 - , 避免解析异常
+  // Register necessary listener events, replace . with - to avoid parsing exceptions
   props.events.forEach(event => {
     EventBus.on(event, (eventObj: ANY_OBJECT) => {
       console.log('>>>>>>>>>>>>> bpmnModeler EventBus on', event);
       let eventName: string = event.replace(/\./g, '-');
       let element: ANY_OBJECT | null = eventObj ? eventObj.element : null;
-      // TODO 动态事件
+      // TODO dynamic events
       emit(eventName, element, eventObj);
       emit('event', eventName, element, eventObj);
     });
   });
-  // 监听图形改变返回xml
+  // Listen for changes in command stack to return xml
   EventBus.on('commandStack.changed', async (event: ANY_OBJECT) => {
     console.log('>>>>>>>>>>>>> bpmnModeler EventBus commandStack', event);
     if (!bpmnModeler) return;
@@ -604,7 +604,7 @@ const initModelListeners = () => {
       console.error(`[Process Designer Warn]: ${e.message || e}`);
     }
   });
-  // 监听视图缩放变化
+  // Listen for changes in view zoom
   bpmnModeler.on('canvas.viewbox.changed', ({ viewbox }: { viewbox: ANY_OBJECT }) => {
     console.log('>>>>>>>>>>>>> bpmnModeler EventBus canvas.viewbox.changed', viewbox);
     emit('canvas-viewbox-changed', { viewbox });
@@ -612,11 +612,11 @@ const initModelListeners = () => {
     defaultZoom.value = Math.floor(scale * 100) / 100;
   });
 };
-/* 创建新的流程图 */
+/* Create a new flowchart */
 const createNewDiagram = async (xml: string | ArrayBuffer | null) => {
-  // 将字符串转换成图显示出来
+  // Convert the string into a diagram for display
   let newId = props.processId || `Process_${new Date().getTime()}`;
-  let newName = props.processName || `业务流程_${new Date().getTime()}`;
+  let newName = props.processName || `Business Process_${new Date().getTime()}`;
   let flowType = props.flowEntryInfo?.flowType || 0;
   let xmlString = xml || DefaultEmptyXML(newId, newName, props.prefix, diagramType.value, flowType);
   try {
@@ -630,7 +630,7 @@ const createNewDiagram = async (xml: string | ArrayBuffer | null) => {
     console.error(`[Process Designer Warn]: ${e.message || e}`);
   }
 };
-// 根据所需类型进行转码并返回下载地址
+// Encode as needed and return download address
 const setEncoded = (type: string, filename = 'diagram', data: string | number | boolean = '') => {
   console.log('setEncoded', type, filename);
   const encodedData = encodeURIComponent(data);
@@ -642,15 +642,15 @@ const setEncoded = (type: string, filename = 'diagram', data: string | number | 
     data: data,
   };
 };
-// 下载流程图到本地
+// Download flowchart to local
 const downloadProcess = async (type: string, name: string | undefined = undefined) => {
   console.log('ProcessDesigner downloadProcess', type, name);
   try {
     if (bpmnModeler) {
-      // 按需要类型创建文件并下载;
+      // Create file and download as necessary type
       if (type === 'xml' || type === 'bpmn') {
         const { err, xml } = await bpmnModeler.saveXML();
-        // 读取异常时抛出异常
+        // Throw exception when reading error
         if (err) {
           console.error(`[Process Designer Warn ]: ${err.message || err}`);
         }
@@ -658,7 +658,7 @@ const downloadProcess = async (type: string, name: string | undefined = undefine
         downloadFunc(href, filename);
       } else {
         const { err, svg } = await bpmnModeler.saveSVG();
-        // 读取异常时抛出异常
+        // Throw exception when reading error
         if (err) {
           return console.error(err);
         }
@@ -667,21 +667,21 @@ const downloadProcess = async (type: string, name: string | undefined = undefine
       }
     }
   } catch (e: any) {
-    console.error(`[Process Designer Warn ]: ${e.message || e}`);
+    console.error(`[Process Designer Warn ]: ${e.message}`);
   }
-  // 文件下载方法
+  // File download method
   function downloadFunc(href: string, filename: string) {
     if (href && filename) {
       let a = document.createElement('a');
-      a.download = filename; //指定下载的文件名
-      a.href = href; //  URL对象
-      a.click(); // 模拟点击
-      URL.revokeObjectURL(a.href); // 释放URL 对象
+      a.download = filename; // Specify download file name
+      a.href = href; // URL object
+      a.click(); // Simulate click
+      URL.revokeObjectURL(a.href); // Release URL object
     }
   }
 };
 
-// 加载本地文件
+// Load local files
 const importLocalFile = () => {
   const file = refFile.value.files[0];
   const reader = new FileReader();
@@ -694,7 +694,7 @@ const importLocalFile = () => {
       diagramType.value === DiagramType.DINGDING &&
       xmlStr.indexOf('name="$OrangeDiagramType" value="1"') === -1
     ) {
-      ElMessage.error('格式错误');
+      ElMessage.error('Format Error');
       return;
     }
     createNewDiagram(xmlStr).then(() => {
@@ -786,12 +786,12 @@ const elementsAlign = (align: string) => {
   const Selection = bpmnModeler.get('selection');
   const SelectedElements = Selection.get();
   if (!SelectedElements || SelectedElements.length <= 1) {
-    ElMessage.warning('请按住 Ctrl 键选择多个元素对齐');
+    ElMessage.warning('Please hold down the Ctrl key to select multiple elements for alignment');
     return;
   }
-  ElMessageBox.confirm('自动对齐可能造成图形变形，是否继续？', '警告', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Automatic alignment may deform the graphics, would you like to continue?', 'Warning', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   }).then(() => Align.trigger(SelectedElements, align));
 };

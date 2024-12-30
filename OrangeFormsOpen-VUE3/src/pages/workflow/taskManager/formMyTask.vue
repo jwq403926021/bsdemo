@@ -50,7 +50,7 @@
       <vxe-column
         title="No."
         type="seq"
-        width="70px"
+        width="50px"
         :index="formMyTask.taskWidget.getTableIndex"
       />
       <vxe-column title="Process Name" field="processDefinitionName" />
@@ -94,6 +94,8 @@ import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const router = useRouter();
 import { useLayoutStore } from '@/store';
@@ -215,10 +217,15 @@ const onSubmit = (row: ANY_OBJECT) => {
     });
 };
 
-onMounted(() => {
-  // Initialize page data
-  formInit();
-});
+watch(
+  () => route.name,
+  () => {
+    if (route.name === 'formMyTask') {
+      formInit();
+    }
+  },
+  { immediate: true },
+);
 
 defineExpose({ onResume });
 </script>

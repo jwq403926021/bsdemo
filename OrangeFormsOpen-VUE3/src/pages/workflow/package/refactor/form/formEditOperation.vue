@@ -224,17 +224,17 @@ const multiSignGroupList = computed(() => {
 const getValidOperationList = computed(() => [
   {
     id: 'agree',
-    name: 'Agree',
+    name: 'Approve',
     symbol: 'AGREE',
   },
   {
     id: 'refuse',
-    name: 'Refuse',
+    name: 'Reject',
     symbol: 'REFUSE',
   },
   {
     id: 'rejectToStart',
-    name: 'Reject To Start',
+    name: 'Rework',
     symbol: 'REJECT_TO_START',
   },
 ]);

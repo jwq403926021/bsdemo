@@ -458,7 +458,7 @@ const updateDeptPost = () => {
       deptPostList: [],
     });
     if (deptPostListElement && !Array.isArray(deptPostListElement)) {
-      deptPostListElement.deptPostList = candidateGroupIds.value.map(item => {
+      deptPostListElement.deptPostList = candidateGroupIds.value?.map(item => {
         return win.bpmnInstances.moddle.create(`${prefix}:DeptPost`, {
           id: item.id,
           type: item.deptType,
@@ -677,7 +677,7 @@ const resetTaskForm = () => {
       elExtensionElements.values.filter(
         (ex: ANY_OBJECT) => ex.$type === `${prefix}:DeptPostList`,
       )?.[0] || win.bpmnInstances.moddle.create(`${prefix}:DeptPostList`, { deptPostList: [] });
-    candidateGroupIds.value = deptPostListElement.deptPostList.map((item: ANY_OBJECT) => {
+    candidateGroupIds.value = deptPostListElement.deptPostList?.map((item: ANY_OBJECT) => {
       item.deptType = item.type;
       item.type = undefined;
       let temp = getDeptPostItem({

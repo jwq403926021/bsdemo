@@ -55,12 +55,12 @@ const SysFlowEntryStep = new DictionaryBase('流程设计步骤', [
 const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   {
     id: 'agree',
-    name: 'Agree',
+    name: 'Approve',
     symbol: 'AGREE',
   },
   {
     id: 'refuse',
-    name: 'Refuse',
+    name: 'Reject',
     symbol: 'REFUSE',
   },
   {
@@ -70,7 +70,7 @@ const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   },
   {
     id: 'rejectToStart',
-    name: 'Reject To Start',
+    name: 'Rework',
     symbol: 'REJECT_TO_START',
   },
   {

@@ -1,8 +1,10 @@
+@import url('@fontsource/abeezee');
+
 html, body {
   padding: 0;
   margin: 0;
   font-size: 14px;
-  font-family: Arial,'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',sans-serif;
+  font-family: 'ABeeZee',Arial,'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',sans-serif;
   background-color: rgb(228 240 255);
 }
 
@@ -29,7 +31,7 @@ $border-color: rgb(216 220 229);
 $menuHover: rgb(255 255 255 / 30%);
 $menu-background-color: transparent;
 $tabs-header-margin-bottom: 25px;
-$tab-header-background-color: #F6F7F9;
+$tab-header-background-color: #FFFFFF;
 $image-item-width: 65px;
 $box-padding-size: 25px;
 $table-header-row-height: 44px;
@@ -39,6 +41,8 @@ $table-row-height: 50px;
 $--color-white: #FFF !default;
 $--border-color-base: #DCDFE6;
 $--color-primary: #1a457a !default;
+$--color-gray: #99B2C7;
+$--color-blue: #005FFF;
 
 $--color-sidebar-title-text: #FFF;
 $--color-menu-background: #2D3039;
@@ -954,8 +958,21 @@ body .fullscreen-dialog .layui-layer-content {
     height: 8px;
   }
 }
+.form-title{
+  font-size: 22px;
+  color: $--color-primary;
+  background-color: $--color-white;
+  padding: 24px 24px 10px;
+
+}
 .el-form-item{
   margin-bottom: 16px;
+  display: block;
+}
+
+.el-form-item__label {
+  display: block;
+  margin-left: 0px;
 }
 
 .base-card-operation{
@@ -1036,8 +1053,39 @@ body .fullscreen-dialog .layui-layer-content {
   .el-tree,.el-input input,.el-radio__label,.el-checkbox__label,.el-switch__label *,.el-upload-list__item,.el-upload__tip,.vxe-cell--label,.vxe-cell--title,.el-tabs__item,.el-breadcrumb,.el-pager li,.el-pagination__total,label,.el-form-item__label,.el-table .cell,.user-dropdown,.el-select-dropdown__item,.el-cascader-node__label,.vxe-table--render-default.size--small,.el-tree-node__label,.el-dropdown-menu__item,.table-btn,.unified-font,.custom-label,.el-link span,.group-title,.el-radio-button__inner,.el-collapse-item__header{
     font-weight: normal;
   }
+  // vxe-table
+  .vxe-header--gutter{
+    background-color: $--color-white;
+  }
   .vxe-cell--title{
-    font-weight: bold;
+    font-weight: 400;
+    color: $--color-primary;
+    font-size: 16px;
+  }
+  .vxe-cell{
+    color: $--color-blue;
+    font-size: 14px;
+  }
+  .vxe-cell--label{
+    color: $--color-gray;
+  }
+  // custom-pagination
+  .custom-pagination .el-pagination__total{
+    margin-right: 10px;
+  }
+  .custom-pagination .el-pager .number,
+  .custom-pagination .btn-prev,
+  .custom-pagination .btn-next {
+    color: $--color-gray;
+    border: 1px solid $--color-gray;
+    border-radius: 5px;
+    margin: 0 1px;
+  }
+  .custom-pagination .el-pager .is-active {
+    color: $--color-white;
+    background-color:  $--color-primary;
+    border: 1px solid $--color-primary;
+    border-radius: 5px;
   }
   .base-card-header .header-title,.base-card-header .el-dropdown span{
     font-size: 14px;

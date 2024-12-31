@@ -1,6 +1,6 @@
 <template>
   <!-- To-Do Tasks -->
-  <div style="position: relative">
+  <div style="position: relative" class="my-task">
     <el-form
       ref="form"
       :model="formMyTask"
@@ -9,7 +9,18 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshMyTask(true)" @reset="onReset">
+      <el-row class="form-title">
+        <el-col :span="24">
+          My Task
+        </el-col>
+      </el-row>
+      <filter-box
+        :item-width="320"
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        @search="refreshMyTask(true)"
+        @reset="onReset">
         <el-form-item label="Process Name" prop="formFilter.processDefinitionName">
           <el-input
             class="filter-item"
@@ -58,30 +69,25 @@
       <vxe-column title="Initiator Login Name" field="processInstanceInitiator" />
       <vxe-column title="Initiator Nickname" field="showName" />
       <vxe-column title="Task Initiation Time" field="processInstanceStartTime" />
-      <vxe-column title="Operation" width="90px">
+      <vxe-column title="Operation" width="100px">
         <template v-slot="scope">
-          <el-button
+          <general-button
+            class="custom-button"
+            text="Handle"
             :size="layoutStore.defaultFormItemSize"
-            link
-            type="primary"
-            @click="onSubmit(scope.row)"
-            >Handle</el-button
-          >
+            @btnClick="onSubmit(scope.row)"
+            />
         </template>
       </vxe-column>
       <template #pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="formMyTask.taskWidget.totalCount"
-            :current-page="formMyTask.taskWidget.currentPage"
-            :page-size="formMyTask.taskWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="formMyTask.taskWidget.onCurrentPageChange"
-            @size-change="formMyTask.taskWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="formMyTask.taskWidget.totalCount"
+          :currentPage="formMyTask.taskWidget.currentPage"
+          :pageSize="formMyTask.taskWidget.pageSize"
+          size="default"
+          @currentChange="formMyTask.taskWidget.onCurrentPageChange"
+          @sizeChange="formMyTask.taskWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>
@@ -229,3 +235,9 @@ watch(
 
 defineExpose({ onResume });
 </script>
+
+<style scope>
+.my-task{
+  border-radius: 20px;
+}
+</style>

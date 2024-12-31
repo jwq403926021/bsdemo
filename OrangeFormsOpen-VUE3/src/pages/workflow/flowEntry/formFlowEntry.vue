@@ -8,7 +8,13 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormFlowEntry(true)" @reset="onReset">
+      <filter-box
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        :item-width="350"
+        @search="refreshFormFlowEntry(true)"
+        @reset="onReset">
         <el-form-item label="Process Category" prop="formFilter.categoryId">
           <el-select
             class="filter-item"
@@ -115,7 +121,7 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="Main Version" field="mainFlowEntryPublish" width="200px">
+      <vxe-column title="Main Version" field="mainFlowEntryPublish" width="190px">
         <template v-slot="scope">
           <el-tag
             v-if="scope.row.mainFlowEntryPublish"
@@ -137,67 +143,54 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="Last Publish Time" field="latestPublishTime" sortable />
-      <vxe-column title="Operation" fixed="right" width="290px">
+      <vxe-column title="Last Publish Time"  field="latestPublishTime" sortable />
+      <vxe-column title="Operation" fixed="right" width="200px">
         <template v-slot="scope">
-          <el-button
-            @click.stop="onStartFlowEntryClick(scope.row)"
-            type="primary"
-            link
+          <general-button
+            text="Start"
+            :style="{padding: '4px 8px', margin: '3px 2px 3px 0px'}"
             :size="layoutStore.defaultFormItemSize"
             :disabled="
               !(scope.row.mainFlowEntryPublish && scope.row.mainFlowEntryPublish.activeStatus)
             "
-          >
-            Start
-          </el-button>
-          <el-button
-            @click.stop="onEditFlowEntryClick(scope.row)"
-            type="primary"
-            link
+            @btnClick="onStartFlowEntryClick(scope.row)"
+          />
+          <general-button
+            text="Edit"
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
-          >
-            Edit
-          </el-button>
-          <el-button
-            @click.stop="onPublishedClick(scope.row)"
-            type="primary"
-            link
+            @btnClick="onEditFlowEntryClick(scope.row)"
+          />
+          <general-button
+            text="Publish"
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
-          >
-            Publish
-          </el-button>
-          <el-button
-            @click.stop="onPublishedEntryListClick(scope.row)"
-            type="primary"
-            link
+            @btnClick="onPublishedClick(scope.row)"
+          />
+          <general-button
+            text="Version"
+            :style="{padding: '4px 8px', margin: '3px 2px 3px 0px'}"
             :size="layoutStore.defaultFormItemSize"
-          >
-            Version
-          </el-button>
-          <el-button
-            @click.stop="onDeleteFlowEntryClick(scope.row)"
+            @btnClick="onPublishedEntryListClick(scope.row)"
+          />
+          <general-button
+            text="Delete"
             type="danger"
-            link
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
-          >
-            Delete
-          </el-button>
+            @btnClick="onDeleteFlowEntryClick(scope.row)"
+          />
         </template>
       </vxe-column>
       <template v-slot:pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="formFlowEntry.flowEntryWidget.totalCount"
-            :current-page="formFlowEntry.flowEntryWidget.currentPage"
-            :page-size="formFlowEntry.flowEntryWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="formFlowEntry.flowEntryWidget.onCurrentPageChange"
-            @size-change="formFlowEntry.flowEntryWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="formFlowEntry.flowEntryWidget.totalCount"
+          :currentPage="formFlowEntry.flowEntryWidget.currentPage"
+          :pageSize="formFlowEntry.flowEntryWidget.pageSize"
+          size="default"
+          @currentChange="formFlowEntry.flowEntryWidget.onCurrentPageChange"
+          @sizeChange="formFlowEntry.flowEntryWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>

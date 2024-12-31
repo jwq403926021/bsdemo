@@ -4,12 +4,17 @@
     <el-form
       ref="form"
       :model="formFilter"
-      label-width="80px"
       :size="layoutStore.defaultFormItemSize"
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormAllInstance(true)" @reset="onReset">
+      <filter-box
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        :item-width="350"
+        @search="refreshFormAllInstance(true)"
+        @reset="onReset">
         <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
@@ -59,53 +64,46 @@
         width="50px"
         :index="formAllInstanceWidget.getTableIndex"
       />
-      <vxe-column title="Process Name" field="processDefinitionName" />
-      <vxe-column title="Process Id" field="processDefinitionKey" />
-      <vxe-column title="Task Initiator" field="startUserId" />
-      <vxe-column title="Task Start Time" field="startTime" />
-      <vxe-column title="Task End Time" field="endTime" />
-      <vxe-column title="Operation" width="220px">
+      <vxe-column title="Process Name" min-width="100px" field="processDefinitionName" />
+      <vxe-column title="Process Identifier" min-width="120px" field="processDefinitionKey" />
+      <vxe-column title="Initiator" width="90px" field="startUserId" />
+      <vxe-column title="Task Initiation Time" min-width="170px" field="startTime" />
+      <vxe-column title="Task End Time" min-width="170px" field="endTime" />
+      <vxe-column title="Operation" min-width="245px">
         <template v-slot="scope">
-          <el-button
+          <general-button
+            text="Diagram"
+            :style="{padding: '4px 10px'}"
             :size="layoutStore.defaultFormItemSize"
-            type="primary"
-            link
-            @click="onShowProcessViewer(scope.row)"
-            >Diagram</el-button
-          >
-          <el-button
-            :size="layoutStore.defaultFormItemSize"
+            @btnClick="onShowProcessViewer(scope.row)"
+          />
+          <general-button
+            text="Stop"
             type="danger"
-            link
+            :style="{padding: '4px 10px'}"
+            :size="layoutStore.defaultFormItemSize"
             :disabled="scope.row.endTime != null"
-            @click="onStopTask(scope.row)"
-          >
-            Terminate
-          </el-button>
-          <el-button
-            :size="layoutStore.defaultFormItemSize"
+            @btnClick="onStopTask(scope.row)"
+          />
+          <general-button
+            text="Delete"
             type="danger"
-            link
+            :style="{padding: '4px 10px'}"
+            :size="layoutStore.defaultFormItemSize"
             :disabled="scope.row.endTime == null"
             @click="onDeleteTask(scope.row)"
-          >
-            Delete
-          </el-button>
+          />
         </template>
       </vxe-column>
       <template v-slot:pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="formAllInstanceWidget.totalCount"
-            :current-page="formAllInstanceWidget.currentPage"
-            :page-size="formAllInstanceWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="formAllInstanceWidget.onCurrentPageChange"
-            @size-change="formAllInstanceWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="formAllInstanceWidget.totalCount"
+          :currentPage="formAllInstanceWidget.currentPage"
+          :pageSize="formAllInstanceWidget.pageSize"
+          size="default"
+          @currentChange="formAllInstanceWidget.onCurrentPageChange"
+          @sizeChange="formAllInstanceWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>

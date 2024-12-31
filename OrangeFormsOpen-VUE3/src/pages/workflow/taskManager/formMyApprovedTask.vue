@@ -9,7 +9,13 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormMyApprovedTask(true)" @reset="onReset">
+      <filter-box
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        :item-width="350"
+        @search="refreshFormMyApprovedTask(true)"
+        @reset="onReset">
         <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
@@ -56,31 +62,25 @@
       </vxe-column>
       <vxe-column title="Initiator Login Name" field="startUser" />
       <vxe-column title="Initiator Nickname" field="showName" />
-      <vxe-column title="Task Initiation Time" field="createTime" />
+      <vxe-column title="Task Initiation Time" width="170px" field="createTime" />
       <vxe-column title="Operation" width="100px">
         <template v-slot="scope">
-          <el-button
+          <general-button
+            text="Details"
             :size="layoutStore.defaultFormItemSize"
-            link
-            type="primary"
-            @click="onTaskDetail(scope.row)"
-            >Details</el-button
-          >
+            @btnClick="onTaskDetail(scope.row)"
+          />
         </template>
       </vxe-column>
       <template #pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="handlerTaskWidget.totalCount"
-            :current-page="handlerTaskWidget.currentPage"
-            :page-size="handlerTaskWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="handlerTaskWidget.onCurrentPageChange"
-            @size-change="handlerTaskWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="handlerTaskWidget.totalCount"
+          :currentPage="handlerTaskWidget.currentPage"
+          :pageSize="handlerTaskWidget.pageSize"
+          size="default"
+          @currentChange="handlerTaskWidget.onCurrentPageChange"
+          @sizeChange="handlerTaskWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>

@@ -18,7 +18,7 @@
     <!-- Online Form Page -->
     <template v-slot:formInfo>
       <div v-for="(value, key) in formInfo" :key="key" class="form-info">
-        <div class="label">{{ FormInfo[key] }}:</div>
+        <div class="label">{{ FormInfo[key] }}</div>
         <div class="value">{{ value }}</div>
       </div>
     </template>

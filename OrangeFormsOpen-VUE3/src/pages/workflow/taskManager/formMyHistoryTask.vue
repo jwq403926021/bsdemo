@@ -9,7 +9,13 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormMyHistoryTask(true)" @reset="onReset">
+      <filter-box
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        :item-width="350"
+        @search="refreshFormMyHistoryTask(true)"
+        @reset="onReset">
         <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
@@ -59,28 +65,22 @@
       <vxe-column title="Task End Time" field="endTime" />
       <vxe-column title="Operation" width="100px">
         <template v-slot="scope">
-          <el-button
+          <general-button
+            text="Details"
             :size="layoutStore.defaultFormItemSize"
-            link
-            type="primary"
-            @click="onFlowDetail(scope.row)"
-            >Details</el-button
-          >
+            @btnClick="onFlowDetail(scope.row)"
+          />
         </template>
       </vxe-column>
       <template #pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="formMyHistoryTaskWidget.totalCount"
-            :current-page="formMyHistoryTaskWidget.currentPage"
-            :page-size="formMyHistoryTaskWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="formMyHistoryTaskWidget.onCurrentPageChange"
-            @size-change="formMyHistoryTaskWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="formMyHistoryTaskWidget.totalCount"
+          :currentPage="formMyHistoryTaskWidget.currentPage"
+          :pageSize="formMyHistoryTaskWidget.pageSize"
+          size="default"
+          @currentChange="formMyHistoryTaskWidget.onCurrentPageChange"
+          @sizeChange="formMyHistoryTaskWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>

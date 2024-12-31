@@ -1,7 +1,8 @@
 <template>
   <el-button
     :size="size"
-    :style="buttonStyle"
+    :style="computedStyle"
+    :disabled="disabled"
     class="custom-button"
     @click="onClick">
     {{ text }}
@@ -14,19 +15,31 @@ const props = withDefaults(
     text: string;
     type?: string;
     size?: string;
+    disabled?: boolean;
+    style?: Record<string, string | number>;
   }>(),
   {
-    type: "primary",  // 'primary' | 'success' | 'warning'
+    type: "primary",  // 'primary' | 'success' | 'warning' | 'danger'
     size: "default",  // 'large' | 'default' | 'small'
+    disabled: false,
+    style: () => ({}),
   },
 );
 
-let btnColor = props.type === 'success' ? '#67C23A': props.type === 'warning'? '#FF9900' : '#1a457a'
+let btnColor = props.type === 'success'
+  ? '#67C23A': props.type === 'warning'
+  ? '#FF9900' : props.type === 'danger'
+  ? '#F56C6C' : '#1a457a'
 
 const buttonStyle = {
   borderColor: btnColor,
   color: btnColor,
 }
+
+const computedStyle = computed(() => ({
+  ...buttonStyle,
+  ...props.style, // Merge user-defined styles
+}));
 
 // Emits to propagate events to parent
 const emit = defineEmits(['btnClick']);

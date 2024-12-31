@@ -8,7 +8,13 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormFlowCategory(true)" @reset="onReset">
+      <filter-box
+        hasFold="true"
+        hasRefresh="true"
+        hasDownload="true"
+        :item-width="350"
+        @search="refreshFormFlowCategory(true)"
+        @reset="onReset">
         <el-form-item label="Category Name" prop="formFilter.name">
           <el-input
             class="filter-item"
@@ -56,39 +62,30 @@
           <span>{{ formatDateByStatsType(scope.row.createTime, 'day') }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="Operation" fixed="right" width="120px">
+      <vxe-column title="Operation" fixed="right" width="180px">
         <template v-slot="scope">
-          <el-button
-            link
-            type="primary"
+          <general-button
+            text="Edit"
             :size="layoutStore.defaultFormItemSize"
-            @click.stop="onEditFlowCategoryClick(scope.row)"
-          >
-            Edit
-          </el-button>
-          <el-button
-            link
+            @btnClick="onEditFlowCategoryClick(scope.row)"
+          />
+          <general-button
+            text="Delete"
             type="danger"
             :size="layoutStore.defaultFormItemSize"
-            @click.stop="onDeleteFlowCategoryClick(scope.row)"
-          >
-            Delete
-          </el-button>
+            @btnClick="onDeleteFlowCategoryClick(scope.row)"
+          />
         </template>
       </vxe-column>
       <template v-slot:pagination>
-        <el-row type="flex" justify="end" style="margin-top: 16px">
-          <el-pagination
-            :total="flowCategoryWidget.totalCount"
-            :current-page="flowCategoryWidget.currentPage"
-            :page-size="flowCategoryWidget.pageSize"
-            :page-sizes="[10, 20, 50, 100]"
-            layout="total, prev, pager, next, sizes"
-            @current-change="flowCategoryWidget.onCurrentPageChange"
-            @size-change="flowCategoryWidget.onPageSizeChange"
-          >
-          </el-pagination>
-        </el-row>
+        <pagination
+          :total="flowCategoryWidget.totalCount"
+          :currentPage="flowCategoryWidget.currentPage"
+          :pageSize="flowCategoryWidget.pageSize"
+          size="default"
+          @currentChange="flowCategoryWidget.onCurrentPageChange"
+          @sizeChange="flowCategoryWidget.onPageSizeChange"
+        />
       </template>
     </table-box>
   </div>

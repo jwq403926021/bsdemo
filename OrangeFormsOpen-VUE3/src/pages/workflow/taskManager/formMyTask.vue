@@ -72,11 +72,10 @@
       <vxe-column title="Operation" width="100px">
         <template v-slot="scope">
           <general-button
-            class="custom-button"
             text="Handle"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onSubmit(scope.row)"
-            />
+          />
         </template>
       </vxe-column>
       <template #pagination>

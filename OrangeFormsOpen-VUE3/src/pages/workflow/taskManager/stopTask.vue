@@ -1,5 +1,5 @@
 <template>
-  <!-- 终止流程 -->
+  <!-- Terminate Process -->
   <div class="form-single-fragment third-party-dlg" style="position: relative">
     <el-form
       ref="form"
@@ -14,21 +14,21 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="终止原因" prop="reason">
+          <el-form-item label="Terminate Reason" prop="reason">
             <el-input
               class="input-item"
               v-model="formData.reason"
               type="textarea"
               :clearable="true"
-              placeholder="终止原因"
+              placeholder="Terminate Reason"
             />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <el-row class="no-scroll flex-box menu-box" type="flex" justify="end">
-      <el-button :size="itemSize" :plain="true" @click="onCancel"> 取消 </el-button>
-      <el-button type="primary" :size="itemSize" @click="onSubmit"> 保存 </el-button>
+      <el-button :size="itemSize" :plain="true" @click="onCancel"> Cancel </el-button>
+      <el-button type="primary" :size="itemSize" @click="onSubmit"> Save </el-button>
     </el-row>
   </div>
 </template>
@@ -45,7 +45,7 @@ const layoutStore = useLayoutStore();
 interface IProps extends ThirdProps {
   processInstanceId?: string;
   taskId?: string;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined for callback of dialog
   dialog?: DialogProp<boolean>;
 }
 const props = defineProps<IProps>();
@@ -62,7 +62,7 @@ const rules = {
   reason: [
     {
       required: true,
-      message: '请输入终止原因',
+      message: 'Please enter the termination reason',
       trigger: 'blur',
     },
   ],

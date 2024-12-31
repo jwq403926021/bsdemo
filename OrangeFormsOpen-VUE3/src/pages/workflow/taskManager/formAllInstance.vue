@@ -1,5 +1,5 @@
 <template>
-  <!-- 流程实例 -->
+  <!-- Process Instance -->
   <div style="position: relative">
     <el-form
       ref="form"
@@ -10,23 +10,23 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormAllInstance(true)" @reset="onReset">
-        <el-form-item label="流程名称" prop="processDefinitionName">
+        <el-form-item label="Process Name" prop="processDefinitionName">
           <el-input
             class="filter-item"
             v-model="formFilter.processDefinitionName"
             :clearable="true"
-            placeholder="流程名称"
+            placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="发起人" prop="startUser">
+        <el-form-item label="Initiator" prop="startUser">
           <el-input
             class="filter-item"
             v-model="formFilter.startUser"
             :clearable="true"
-            placeholder="发起人"
+            placeholder="Initiator"
           />
         </el-form-item>
-        <el-form-item label="发起时间" prop="createDate">
+        <el-form-item label="Create Date" prop="createDate">
           <date-range
             class="filter-item"
             v-model:value="formFilter.createDate"
@@ -34,8 +34,8 @@
             :allowTypes="['day']"
             align="left"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-placeholder="Start Date"
+            end-placeholder="End Date"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -54,24 +54,24 @@
       :hasExtend="false"
     >
       <vxe-column
-        title="序号"
+        title="No."
         type="seq"
-        width="70px"
+        width="50px"
         :index="formAllInstanceWidget.getTableIndex"
       />
-      <vxe-column title="流程名称" field="processDefinitionName" />
-      <vxe-column title="流程标识" field="processDefinitionKey" />
-      <vxe-column title="任务发起人" field="startUserId" />
-      <vxe-column title="任务发起时间" field="startTime" />
-      <vxe-column title="任务结束时间" field="endTime" />
-      <vxe-column title="操作" width="190px">
+      <vxe-column title="Process Name" field="processDefinitionName" />
+      <vxe-column title="Process Id" field="processDefinitionKey" />
+      <vxe-column title="Task Initiator" field="startUserId" />
+      <vxe-column title="Task Start Time" field="startTime" />
+      <vxe-column title="Task End Time" field="endTime" />
+      <vxe-column title="Operation" width="220px">
         <template v-slot="scope">
           <el-button
             :size="layoutStore.defaultFormItemSize"
             type="primary"
             link
             @click="onShowProcessViewer(scope.row)"
-            >流程图</el-button
+            >Diagram</el-button
           >
           <el-button
             :size="layoutStore.defaultFormItemSize"
@@ -80,7 +80,7 @@
             :disabled="scope.row.endTime != null"
             @click="onStopTask(scope.row)"
           >
-            终止
+            Terminate
           </el-button>
           <el-button
             :size="layoutStore.defaultFormItemSize"
@@ -89,7 +89,7 @@
             :disabled="scope.row.endTime == null"
             @click="onDeleteTask(scope.row)"
           >
-            删除
+            Delete
           </el-button>
         </template>
       </vxe-column>
@@ -138,7 +138,7 @@ const formFilterCopy = reactive({
 });
 
 /**
- * 获取所有流程实例
+ * Get all process instances
  */
 const loadAllTaskData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -199,7 +199,7 @@ const onReset = () => {
 };
 const onShowProcessViewer = (row: ANY_OBJECT) => {
   Dialog.show(
-    '流程图',
+    'Diagram',
     FormTaskProcessViewer,
     {
       area: ['1200px', '750px'],
@@ -219,7 +219,7 @@ const onShowProcessViewer = (row: ANY_OBJECT) => {
 };
 const onStopTask = (row: ANY_OBJECT) => {
   Dialog.show(
-    '终止任务',
+    'Terminate Task',
     StopTask,
     {
       area: '500px',
@@ -242,9 +242,9 @@ const onStopTask = (row: ANY_OBJECT) => {
     });
 };
 const onDeleteTask = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否删除此流程实例？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this process instance?', '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -253,7 +253,7 @@ const onDeleteTask = (row: ANY_OBJECT) => {
       });
     })
     .then(() => {
-      ElMessage.success('删除成功');
+      ElMessage.success('Deleted successfully');
       formAllInstanceWidget.refreshTable();
     })
     .catch(e => {
@@ -264,7 +264,7 @@ const formInit = () => {
   refreshFormAllInstance();
 };
 onMounted(() => {
-  // 初始化页面数据
+  // Initialize page data
   formInit();
 });
 

@@ -24,14 +24,14 @@
             </div>
             <el-col :span="6">
               <el-row type="flex" justify="end" align="middle" style="height: 72px">
-                <el-button
+                <!-- <el-button
                   v-if="activeStep !== SysFlowEntryStep.PROCESS_DESIGN"
                   size="default"
                   @click="onPrevClick"
                   :disabled="activeStep === SysFlowEntryStep.BASIC"
                 >
                   Previous
-                </el-button>
+                </el-button> -->
                 <el-button
                   type="primary"
                   v-if="activeStep !== SysFlowEntryStep.PROCESS_DESIGN"
@@ -39,12 +39,6 @@
                   @click="onNextClick"
                   :disabled="activeStep === SysFlowEntryStep.PROCESS_DESIGN"
                   >Next</el-button
-                >
-                <el-button
-                  v-if="activeStep !== SysFlowEntryStep.PROCESS_DESIGN"
-                  size="default"
-                  @click="onClose"
-                  >Exit</el-button
                 >
                 <el-button
                   v-if="activeStep === SysFlowEntryStep.PROCESS_DESIGN"
@@ -58,6 +52,11 @@
                   size="default"
                   @click="onPrevClick"
                   >Return</el-button
+                >
+                <el-button
+                  size="default"
+                  @click="onClose"
+                  >Exit</el-button
                 >
               </el-row>
             </el-col>

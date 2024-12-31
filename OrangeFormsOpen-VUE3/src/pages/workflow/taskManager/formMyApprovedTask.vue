@@ -57,7 +57,7 @@
       <vxe-column title="Initiator Login Name" field="startUser" />
       <vxe-column title="Initiator Nickname" field="showName" />
       <vxe-column title="Task Initiation Time" field="createTime" />
-      <vxe-column title="Operation" width="90px">
+      <vxe-column title="Operation" width="100px">
         <template v-slot="scope">
           <el-button
             :size="layoutStore.defaultFormItemSize"

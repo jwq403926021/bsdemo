@@ -12,7 +12,7 @@
       </div>
     </div>
     <el-row justify="space-between" style="margin-bottom: 24px; flex-wrap: nowrap">
-      <el-radio-group size="default" v-model="currentPage" style="min-width: 400px">
+      <el-radio-group size="large" v-model="currentPage" style="min-width: 400px">
         <el-radio-button value="formInfo">Form Information</el-radio-button>
         <!-- <el-radio-button
           v-if="
@@ -28,33 +28,13 @@
         <el-radio-button v-if="processInstanceId != null && !isDraft" value="flowProcess"
           >Flow Chart</el-radio-button
         >
-        <el-radio-button v-if="processInstanceId != null && !isDraft" value="approveInfo"
+        <!-- <el-radio-button v-if="processInstanceId != null && !isDraft" value="approveInfo"
           >Approval Record</el-radio-button
         >
         <el-radio-button v-if="taskId != null && !isDraft" value="assigneeList"
           >Approver</el-radio-button
-        >
+        > -->
       </el-radio-group>
-      <el-row class="task-operation" justify="end" style="flex-wrap: nowrap">
-        <el-button v-if="canDraft" size="default" type="success" :plain="true" @click="handlerDraft"
-          >Save Draft</el-button
-        >
-        <template v-if="$slots.operations">
-          <slot name="operations" />
-        </template>
-        <template v-else>
-          <el-button
-            v-for="(operation, index) in flowOperationList"
-            :key="index"
-            size="default"
-            :type="getButtonType(operation.type) || 'primary'"
-            :plain="operation.plain || false"
-            @click="handlerOperation(operation)"
-          >
-            {{ operation.label }}
-          </el-button>
-        </template>
-      </el-row>
     </el-row>
     <el-scrollbar class="custom-scroll" :style="{ height: mainContextHeight - 180 + 'px' }">
       <el-form
@@ -68,10 +48,90 @@
       >
         <!-- Form Information -->
         <div v-show="currentPage === 'formInfo'" :key="formKey">
+          <el-row class="infomation-form-title">
+            <el-col>Basic Information</el-col>
+          </el-row>
           <slot name="formInfo" />
+          <el-row class="infomation-form-title">
+            <el-col>Approval Record</el-col>
+          </el-row>
+          <el-row  :gutter="20" class="infomation-form-table">
+            <el-col :span="24">
+              <vxe-table
+                empty-text="No Data"
+                :data="flowTaskCommentList"
+                :size="layoutStore.defaultFormItemSize"
+                header-cell-class-name="table-header-gray"
+                :max-height="mainContextHeight - 150 + 'px'"
+                min-height="92px"
+                :row-config="{ isHover: true }"
+              >
+                <vxe-column title="No." type="seq" width="50" />
+                <vxe-column title="Process Name" field="taskName" />
+                <vxe-column title="Executor" field="createUsername" />
+                <vxe-column title="Operation" width="150px">
+                  <template v-slot="scope">
+                    <el-tag
+                      :size="layoutStore.defaultFormItemSize"
+                      :type="getOperationTagType(scope.row.approvalType)"
+                      effect="dark"
+                      >{{ SysFlowTaskOperationType.getValue(scope.row.approvalType) }}</el-tag
+                    >
+                    <el-tag
+                      v-if="scope.row.delegateAssignee != null"
+                      :size="layoutStore.defaultFormItemSize"
+                      type="success"
+                      effect="plain"
+                      style="margin-left: 10px"
+                      >{{ scope.row.delegateAssignee }}</el-tag
+                    >
+                  </template>
+                </vxe-column>
+                <vxe-column title="Approval Comment">
+                  <template v-slot="scope">
+                    <span>{{ scope.row.taskComment ? scope.row.taskComment : '' }}</span>
+                  </template>
+                </vxe-column>
+                <vxe-column title="Create Time" field="createTime" />
+                <template v-slot:empty>
+                  <div class="table-empty unified-font">
+                    <img src="@/assets/img/empty.png" />
+                    <span>No Data</span>
+                  </div>
+                </template>
+              </vxe-table>
+            </el-col>
+          </el-row>
+          <el-row class="infomation-form-title">
+            <el-col>Approval List</el-col>
+          </el-row>
+          <el-row :gutter="20" class="infomation-form-table">
+            <el-col :span="24">
+              <vxe-table
+                empty-text="No Data"
+                :data="assigneeList"
+                :size="layoutStore.defaultFormItemSize"
+                header-cell-class-name="table-header-gray"
+                :max-height="mainContextHeight - 150 + 'px'"
+                min-height="92px"
+                :row-config="{ isHover: true }"
+              >
+                <vxe-column title="No." type="seq" width="50" />
+                <vxe-column title="Approver" field="loginName" />
+                <vxe-column title="Nickname" field="showName" />
+                <vxe-column title="Approval Time" field="lastApprovalTime" />
+                <template v-slot:empty>
+                  <div class="table-empty unified-font">
+                    <img src="@/assets/img/empty.png" />
+                    <span>No Data</span>
+                  </div>
+                </template>
+              </vxe-table>
+            </el-col>
+          </el-row>
         </div>
         <!-- Approval Record -->
-        <el-row v-show="currentPage === 'approveInfo'" :gutter="20">
+        <!-- <el-row v-show="currentPage === 'approveInfo'" :gutter="20">
           <el-col :span="24">
             <vxe-table
               empty-text="No Data"
@@ -116,7 +176,7 @@
               </template>
             </vxe-table>
           </el-col>
-        </el-row>
+        </el-row> -->
         <!-- Flow Chart -->
         <el-row v-if="currentPage === 'flowProcess'">
           <ProcessViewer
@@ -133,7 +193,7 @@
           </el-col>
         </el-row>
         <!-- Approver List -->
-        <el-row v-show="currentPage === 'assigneeList'" :gutter="20">
+        <!-- <el-row v-show="currentPage === 'assigneeList'" :gutter="20">
           <el-col :span="24">
             <vxe-table
               empty-text="No Data"
@@ -155,9 +215,37 @@
               </template>
             </vxe-table>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
     </el-scrollbar>
+    <el-row class="task-operation" justify="end" style="flex-wrap: nowrap">
+        <el-button
+          v-if="canDraft"
+          size="default"
+          class="broder-radius-16"
+          type="success"
+          :plain="true"
+          @click="handlerDraft"
+        >
+          Save Draft
+        </el-button>
+        <template v-if="$slots.operations">
+          <slot name="operations" />
+        </template>
+        <template v-else>
+          <el-button
+            v-for="(operation, index) in flowOperationList"
+            :key="index"
+            size="default"
+            class="broder-radius-16"
+            :type="getButtonType(operation.type) || 'primary'"
+            :plain="operation.plain || false"
+            @click="handlerOperation(operation)"
+          >
+            {{ operation.label }}
+          </el-button>
+        </template>
+      </el-row>
     <page-close-button @close="onClose" />
   </div>
 </template>
@@ -632,5 +720,17 @@ pre {
   [id^='conditional-flow-marker-white-black'] path {
     stroke: #333333 !important;
   }
+}
+.infomation-form-title {
+  font-size: 20px;
+  color: $color-primary;
+  padding: 18px 0px 12px 10px;
+}
+.infomation-form-table {
+  padding: 0px 50px 10px 20px;
+}
+.task-operation{
+  // border: 1px solid red;
+  padding: 20px 50px 0px 0px;
 }
 </style>

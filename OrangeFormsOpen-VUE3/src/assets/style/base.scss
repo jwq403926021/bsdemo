@@ -209,7 +209,10 @@ body .fullscreen-dialog .layui-layer-content {
   .el-button + .btn-import, .btn-import + .el-button {
     margin-left: 10px!important;
   }
-
+  // Commonly used in oval buttons
+  .broder-radius-16 {
+    border-radius: 16px;
+  }
    /**
    * 过滤组件样式
    **/

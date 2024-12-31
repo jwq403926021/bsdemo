@@ -103,9 +103,6 @@ const onFold = () => {
   height: 64px;
   margin-bottom: 0px;
 }
-.broder-radius-16 {
-  border-radius: 16px;
-}
 .fold-down-icon{
   width: 20px;
   height: 20px;

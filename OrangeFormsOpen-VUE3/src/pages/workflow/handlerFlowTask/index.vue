@@ -17,7 +17,7 @@
   >
     <!-- Online Form Page -->
     <template v-slot:formInfo>
-      <div v-for="(value, key) in formInfo" :key="key" class="form-item">
+      <div v-for="(value, key) in formInfo" :key="key" class="form-info">
         <div class="label">{{ FormInfo[key] }}:</div>
         <div class="value">{{ value }}</div>
       </div>
@@ -470,24 +470,17 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.form-item {
-  margin-left: 5%;
-  font-size: 18px;
+<style lang="scss" scoped>
+.form-info {
   display: flex;
-  justify-content: space-between; /* Separate label and value */
-  align-items: center; /* Vertically center align */
-  margin-bottom: 10px; /* Top and bottom spacing */
-  height: 30px;
-  line-height: 30px;
-}
-.label {
-  text-align: right; /* Align label to the right */
-  width: 150px; /* Set fixed width for consistency */
-}
-.value {
-  flex-grow: 1; /* Allow value to adapt to remaining space */
-  margin-left: 12px;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  line-height: 36px;
+  color: $color-text-secondary;
+  font-weight: 400;
+  margin: 0px 50px 10px 20px;
+  border-bottom: 1px solid #e8eaec;
 }
 .task-title {
   display: flex;

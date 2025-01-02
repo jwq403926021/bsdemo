@@ -773,7 +773,11 @@ body .fullscreen-dialog .layui-layer-content {
 .relation-select-popper {
   display: none;
 }
-
+.vxe-header--row .vxe-header--column .vxe-cell .vxe-cell--title{
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .vxe-table--render-default.border--full .vxe-body--column {
   background-size: 1px 100%,100% 0!important;
   border-bottom: 1px solid #e8eaec;

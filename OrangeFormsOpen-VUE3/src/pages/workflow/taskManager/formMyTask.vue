@@ -21,7 +21,7 @@
         hasDownload="true"
         @search="refreshMyTask(true)"
         @reset="onReset">
-        <el-form-item label="Process Name" prop="formFilter.processDefinitionName">
+        <el-form-item label="Process Name" prop="formFilter.processDefinitionName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionName"
@@ -29,7 +29,7 @@
             placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="Process Key" prop="formFilter.processDefinitionKey">
+        <el-form-item label="Process Key" prop="formFilter.processDefinitionKey" label-position="top">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionKey"
@@ -37,7 +37,7 @@
             placeholder="Process Key"
           />
         </el-form-item>
-        <el-form-item label="Task Name" prop="formFilter.taskName">
+        <el-form-item label="Task Name" prop="formFilter.taskName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.taskName"

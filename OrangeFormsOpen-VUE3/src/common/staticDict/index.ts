@@ -292,36 +292,36 @@ const SysDataPermType = new DictionaryBase('Data Permission Type', [
     name: 'Only Self',
     symbol: 'ONLY_USER',
   },
-  {
-    id: 2,
-    name: 'Only Department',
-    symbol: 'ONLY_DEPT',
-  },
-  {
-    id: 3,
-    name: 'Only Department And Child',
-    symbol: 'ONLY_DEPT_AND_CHILD',
-  },
-  {
-    id: 4,
-    name: 'Custom Department And Child',
-    symbol: 'CUSTOM_DEPT_AND_CHILD',
-  },
+  // {
+  //   id: 2,
+  //   name: 'Only Department',
+  //   symbol: 'ONLY_DEPT',
+  // },
+  // {
+  //   id: 3,
+  //   name: 'Only Department And Child',
+  //   symbol: 'ONLY_DEPT_AND_CHILD',
+  // },
+  // {
+  //   id: 4,
+  //   name: 'Custom Department And Child',
+  //   symbol: 'CUSTOM_DEPT_AND_CHILD',
+  // },
   {
     id: 5,
     name: 'Only Custom Department',
     symbol: 'CUSTOM_DEPT',
   },
-  {
-    id: 6,
-    name: 'Department User',
-    symbol: 'DEPT_USER',
-  },
-  {
-    id: 7,
-    name: 'Department And Child User',
-    symbol: 'DEPT_AND_CHILD_USER',
-  },
+  // {
+  //   id: 6,
+  //   name: 'Department User',
+  //   symbol: 'DEPT_USER',
+  // },
+  // {
+  //   id: 7,
+  //   name: 'Department And Child User',
+  //   symbol: 'DEPT_AND_CHILD_USER',
+  // },
 ]);
 
 const ScatterSymbolType = new DictionaryBase('Vertical Axis Position', [

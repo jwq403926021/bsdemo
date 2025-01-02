@@ -15,7 +15,7 @@
         :item-width="350"
         @search="refreshFormFlowEntry(true)"
         @reset="onReset">
-        <el-form-item label="Process Category" prop="formFilter.categoryId">
+        <el-form-item label="Process Category" prop="formFilter.categoryId" label-position="top">
           <el-select
             class="filter-item"
             v-model="formFlowEntry.formFilter.categoryId"
@@ -33,7 +33,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Process Name" prop="formFilter.processDefinitionName">
+        <el-form-item label="Process Name" prop="formFilter.processDefinitionName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formFlowEntry.formFilter.processDefinitionName"
@@ -41,7 +41,7 @@
             placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="Publish Status" prop="formFilter.status">
+        <el-form-item label="Publish Status" prop="formFilter.status" label-position="top">
           <el-select
             class="filter-item"
             v-model="formFlowEntry.formFilter.status"

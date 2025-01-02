@@ -22,9 +22,9 @@
         <el-button v-if="hasDownload" type="text" plain @click="">
           <img :src="DownLoad" alt="icon" class="icon-button" />
         </el-button>
-        <div style="float: right">
+        <!-- <div style="float: right">
           <slot name="operation" />
-        </div>
+        </div> -->
     </el-col>
   </el-row>
 </template>
@@ -80,7 +80,7 @@ const onFold = () => {
   background-color: white;
 }
 .flex-box-flod {
-  height: 112px;
+  height: 106px;
   overflow: hidden;
   padding: 16px 24px 16px;
   background-color: white;

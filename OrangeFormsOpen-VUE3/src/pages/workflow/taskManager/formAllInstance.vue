@@ -15,7 +15,7 @@
         :item-width="350"
         @search="refreshFormAllInstance(true)"
         @reset="onReset">
-        <el-form-item label="Process Name" prop="processDefinitionName">
+        <el-form-item label="Process Name" prop="processDefinitionName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formFilter.processDefinitionName"
@@ -23,7 +23,7 @@
             placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="Initiator" prop="startUser">
+        <el-form-item label="Initiator" prop="startUser" label-position="top">
           <el-input
             class="filter-item"
             v-model="formFilter.startUser"
@@ -31,7 +31,7 @@
             placeholder="Initiator"
           />
         </el-form-item>
-        <el-form-item label="Create Date" prop="createDate">
+        <el-form-item label="Create Date" prop="createDate" label-position="top">
           <date-range
             class="filter-item"
             v-model:value="formFilter.createDate"

@@ -24,7 +24,7 @@
         </template>
       </vxe-column>
       <vxe-column title="Menu Order" field="showOrder" width="110px"> </vxe-column>
-      <vxe-column title="Menu Type" field="menuType" width="100px">
+      <vxe-column title="Menu Type" field="menuType" width="110px">
         <template v-slot="scope">
           <el-tag :type="getMenuType(scope.row)" effect="light">{{
             SysMenuType.getValue(scope.row.menuType)

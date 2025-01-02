@@ -80,7 +80,7 @@
     </template>
     <template v-else>
       <div
-        class="query-table-box custom-widget-item widget-item"
+        class="query-table-box custom-widget-item widget-item page-table"
         :class="{ active: dialogParams.isEdit && currentWidget === queryTable }"
         :style="{ padding: dialogParams.isEdit ? '0' : '' }"
         @click.stop="onTableClick"
@@ -647,5 +647,11 @@ onUnmounted(() => {
   flex-shrink: 1;
   height: 200px;
   flex-grow: 1;
+}
+:deep(.vxe-table--header) {
+  width: 100% !important;
+}
+:deep(.vxe-table--body) {
+  width: 100% !important;
 }
 </style>

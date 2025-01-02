@@ -3,7 +3,7 @@
     :class="{
       advance: formConfig && formConfig.formType === SysOnlineFormType.ADVANCE_QUERY,
     }"
-    style="position: relative; width: 100; padding: 0 !important"
+    style="position: relative; overflow-x: hidden; padding: 0 !important; background-color: white"
   >
     <OnlineQueryForm
       v-if="formConfig && formConfig.formType === SysOnlineFormType.QUERY"

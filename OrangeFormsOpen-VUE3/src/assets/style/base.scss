@@ -176,7 +176,7 @@ body .fullscreen-dialog .layui-layer-content {
   }
 
   .page-table {
-    padding: 16px 24px;
+    padding: 16px;
   }
 
   .page-close-box {
@@ -991,6 +991,7 @@ body .fullscreen-dialog .layui-layer-content {
 .vxe-table:not(.online-table) .vxe-header--row, .vxe-table:not(.online-table) th, .el-table th{
   height:  $table-header-row-height;
   padding: 0 !important;
+  background-color: $--color-white;
   color: #333 !important;
   .cell{
     color: #333 !important;

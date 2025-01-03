@@ -23,7 +23,7 @@
                   class="full-width-input"
                   :rules="rules"
                   style="width: 100%"
-                  :label-width="(form.labelWidth || 100) + 'px'"
+                  :label-width="(form.labelWidth || 200) + 'px'"
                   :label-position="form.labelPosition || 'right'"
                   :size="layoutStore.defaultFormItemSize"
                   @submit.prevent
@@ -87,7 +87,7 @@
             class="full-width-input"
             :rules="rules"
             style="width: 100%"
-            :label-width="(form.labelWidth || 100) + 'px'"
+            :label-width="(form.labelWidth || 200) + 'px'"
             :label-position="form.labelPosition || 'right'"
             :size="layoutStore.defaultFormItemSize"
             @submit.prevent
@@ -164,6 +164,8 @@ import { FlowEntryController } from '@/api/flow';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const loginStore = useLoginStore();
 
@@ -319,6 +321,7 @@ const getQueryParam = paramName => {
 };
 // 提交表单数据
 const onSaveFormData = async () => {
+  console.log("route==================", route)
   let params: ANY_OBJECT = {};
   for (const key in bsWidgetList) {
     if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
@@ -332,20 +335,17 @@ const onSaveFormData = async () => {
   }
   console.log('all field::!@#!@#!@#!@#', params);
   params = {
-    orderType: params.a, // todo
+    orderType: props.formConfig.formName,
     divisionsName: params.divisionsName,
     srName: params.srName,
-    soldToName: params.soldToName,
     shipTo: params.shipTo,
     stockLocName: params.stockLocName,
     contactInfo: params.contactInfo,
-    products: params.products,
-    productUpn: params.a, // todo
-    productName: params.a, // todo
-    qty: params.a, // todo
+    productUpn: params.products[0]?.productUpn,
+    productName: params.products[0]?.productName,
+    qty: params.products[0]?.selectedQty,
     recipient: params?.recipientModify ?? params.recipient,
     phone: params?.phoneModify ?? params.phone,
-    shipment: params.soldToName,
     deliveryDate: params.requestDeliveryDate,
     processDefinitionKey: dialogParams.value.formConfig.processId || '',
     orderDataType: getQueryParam('formId'),

@@ -66,7 +66,7 @@ const getSelectList = async (isClear = false, data) => {
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.stockLocId + ' - ' + i.stockLocName,
-    value: i.stockLocId,
+    value: i.stockLocId + ' - ' + i.stockLocName,
   }));
 };
 
@@ -86,7 +86,7 @@ onUnmounted(() => {
 const getValue = () => {
   const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
-    stockLocName: selected.stockLocName,
+    stockLocName: pps?.modelValue || '',
     stockLocId: selected.stockLocId,
     value: pps.modelValue,
     valueHuman: selected.label,

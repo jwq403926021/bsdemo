@@ -15,7 +15,7 @@ export const useFormConfig = () => {
   const baseQueryForm = {
     filterItemWidth: 350,
     gutter: 20,
-    labelWidth: 100,
+    labelWidth: 200,
     labelPosition: 'right',
     tableWidget: {
       ...widgetData.getWidgetObject(tableConfig),
@@ -107,7 +107,7 @@ export const useFormConfig = () => {
 
   const baseEditForm = {
     gutter: 20,
-    labelWidth: 100,
+    labelWidth: 200,
     labelPosition: 'right',
     operationList: [],
     customFieldList: [],
@@ -126,7 +126,7 @@ export const useFormConfig = () => {
 
   const baseFlowForm = {
     gutter: 20,
-    labelWidth: 100,
+    labelWidth: 200,
     labelPosition: 'right',
     customFieldList: [],
     widgetList: [],
@@ -144,7 +144,7 @@ export const useFormConfig = () => {
 
   const baseWorkflowForm = {
     gutter: 20,
-    labelWidth: 100,
+    labelWidth: 200,
     labelPosition: 'right',
     tableWidget: {
       ...widgetData.getWidgetObject(tableConfig),

@@ -66,7 +66,7 @@ const getSelectList = async (isClear = false, data) => {
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.soldToNum + ' - ' + i.soldToName,
-    value: i.salesRepNum,
+    value: i.soldToNum + ' - ' + i.soldToName,
   }));
 };
 
@@ -87,8 +87,8 @@ const getValue = () => {
   const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
     ...selected,
-    soldToName: selected?.soldToName || '',
-    shipTo: selected?.soldToName || '',
+    soldToName: pps?.modelValue || '',
+    shipTo: pps?.modelValue || '',
     value: pps.modelValue,
     valueHuman: selected?.label || '',
   };

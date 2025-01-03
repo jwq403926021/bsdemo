@@ -15,6 +15,7 @@ import { ref, onMounted, inject } from 'vue';
 import { ANY_OBJECT } from '@/types/generic';
 import { eventbus } from '@/common/utils/mitt';
 import { WidgetProps } from '@/online/components/types/widget';
+import moment from 'moment';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -36,13 +37,13 @@ const requestDeliveryDate = ref('');
 
 // 在日期变化时触发的方法
 const emitChange = value => {
-  emit('update:modelValue', value);
-  emit('change', value);
+  const formatDate = moment(value).format('YYYY-MM-DD');
+  emit('update:modelValue', formatDate);
+  emit('change', formatDate);
 
   // 使用选中的日期值来做其他事情
   console.log(selectedDate.value, '?');
-  const formattedDate = value ? new Date(value).toLocaleDateString() : '';
-  eventbus.emit(`bs:${pps.widget.variableName}`, formattedDate);
+  eventbus.emit(`bs:${pps.widget.variableName}`, formatDate);
 };
 
 // 模拟获取数据的函数（可以根据需要移除或修改）
@@ -63,7 +64,7 @@ onMounted(() => {
 // 获取当前值和对应的标签
 const getValue = () => {
   return {
-    requestDeliveryDate: requestDeliveryDate.value,
+    requestDeliveryDate: moment(requestDeliveryDate.value).format('YYYY-MM-DD'),
   };
 };
 defineExpose({ getValue });

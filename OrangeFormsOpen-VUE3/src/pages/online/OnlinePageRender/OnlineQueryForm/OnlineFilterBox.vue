@@ -3,7 +3,7 @@
     ref="filterBox"
     :size="layoutStore.defaultFormItemSize"
     :model="formData"
-    :label-width="(form().labelWidth || 100) + 'px'"
+    :label-width="(form().labelWidth || 200) + 'px'"
     :label-position="form().labelPosition"
     @submit.prevent
   >

@@ -9,18 +9,18 @@
           class="title"
           style="display: flex; width: 200px; height: 40px; line-height: 40px"
         ></div>
-        <!-- v-model:value 可以双向绑定，不需要双向绑定时使用:value即可 -->
+        <!-- v-model:value can be used for two-way binding, use :value when two-way binding is not needed -->
         <StepBar class="step" :value="activeStep">
           <StepBarItem icon="online-icon icon-basic-info" :name="SysOnlinePageSettingStep.BASIC"
             >Basic Info</StepBarItem
           >
           <!-- <StepBarItem icon="online-icon icon-data" :name="SysOnlinePageSettingStep.DATASOURCE"
-            >数据模型</StepBarItem
+            >Data Model</StepBarItem
           > -->
           <StepBarItem
             icon="online-icon icon-form-design"
             :name="SysOnlinePageSettingStep.FORM_DESIGN"
-            >Form Desigh</StepBarItem
+            >Form Design</StepBarItem
           >
         </StepBar>
         <el-row class="operation" type="flex" justify="end" style="width: 200px">
@@ -55,7 +55,7 @@
       }"
     >
       <el-row type="flex" justify="center" style="height: 100%">
-        <!-- 基础信息 -->
+        <!-- Basic Information -->
         <BasicForm
           ref="basicForm"
           :status="status"
@@ -66,7 +66,7 @@
           :dblinkInfo="dblinkInfo"
           v-model="formPageData"
         />
-        <!-- 在线表单数据模型配置 -->
+        <!-- Online Form Data Model Configuration -->
         <!-- <DataModel
           ref="modelForm"
           :data="getPageDatasourceTableList"
@@ -80,7 +80,7 @@
           @un-saved="onUnSaved"
           v-if="activeStep == SysOnlinePageSettingStep.DATASOURCE && formPageData.pageId"
         /> -->
-        <!-- 表单设计 -->
+        <!-- Form Design -->
         <FormDesign
           v-if="activeStep == SysOnlinePageSettingStep.FORM_DESIGN"
           ref="designForm"
@@ -143,7 +143,7 @@ interface IProps extends ThirdProps {
   pageId?: string;
   status?: number;
   clientHeight: ANY_OBJECT;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined for callback
   dialog?: DialogProp<ANY_OBJECT>;
 }
 
@@ -163,7 +163,7 @@ const formPageData = ref({ published: false } as FormPage);
 const dictList = ref<Dict[]>([]);
 const formList = ref<ANY_OBJECT[]>([]);
 const dblinkInfo = ref();
-// TODO 判断条件
+// TODO: Add condition checks
 const hasUnSaved = ref(false);
 const showSaveButton = computed(() => {
   return activeStep.value == SysOnlinePageSettingStep.FORM_DESIGN || hasUnSaved.value;
@@ -188,7 +188,7 @@ const onPrevClick = () => {
 const onNextClick = () => {
   switch (activeStep.value) {
     case SysOnlinePageSettingStep.BASIC:
-      // Step 2 进入数据模型页面
+      // Step 2 Enter Data Model Page
       basicForm.value
         .save()
         .then((res: FormPage) => {
@@ -199,10 +199,10 @@ const onNextClick = () => {
             initPageDatasourceInfo(formPageData.value.pageId).then(res => {
               onSavePageDatasourceInfo(false)
                 .then(() => {
-                  // Step 1 获取数据源所有用到的数据表的字段列表
+                  // Step 1 Get the field list of all tables used in the data source
                   let httpCalls: ANY_OBJECT[] = [];
                   console.log(
-                    '获取数据源所有用到的数据表的字段列表',
+                    'Get the field list of all tables used in the data source',
                     getPageDatasourceTableList.value.length,
                   );
                   getPageDatasourceTableList.value.forEach(item => {
@@ -215,11 +215,11 @@ const onNextClick = () => {
                     getPageDatasourceTableList.value[index].columnList = item;
                     return getPageDatasourceTableList.value[index];
                   });
-                  // Step 2 获取表单列表
+                  // Step 2 Get the form list
                   return initPageFormList(formPageData.value.pageId);
                 })
                 .then(() => {
-                  // Step 3 进入表单设计页面
+                  // Step 3 Enter Form Design Page
                   activeStep.value = SysOnlinePageSettingStep.FORM_DESIGN;
                 })
                 .catch(e => {
@@ -259,7 +259,7 @@ const loadOnlineTableColumns = (tableId: string) => {
 const { getFormConfig, mergeWidget, mergeArray } = useFormConfig();
 
 /**
- * 获取页面子表单列表
+ * Get the list of sub-forms on the page
  */
 const initPageFormList = (pageId: string | undefined) => {
   if (!pageId) {
@@ -297,13 +297,13 @@ const initPageFormList = (pageId: string | undefined) => {
             config[mode].formType = item.formType;
             config[mode].formTypeDictMap = item.formTypeDictMap;
             config[mode].masterTableId = item.masterTableId;
-            // 合并表单操作
+            // Merge form operations
             config[mode].operationList = mergeArray(
               config[mode].operationList,
               formConfig[mode].operationList,
               'id',
             );
-            // 合并组件操作
+            // Merge component operations
             if (Array.isArray(config[mode].widgetList)) {
               config[mode].widgetList.forEach((widget: ANY_OBJECT) => {
                 mergeWidget(widget);
@@ -347,15 +347,15 @@ const onClose = () => {
   if (props.dialog) {
     props.dialog.cancel();
   } else {
-    // 关闭第三方弹窗
+    // Close third-party popup
     onCloseThirdDialog(true);
   }
 };
 
 /**
- * 变更表单状态
+ * Change form status
  *
- * @param status 状态
+ * @param status Status
  */
 const savePageInfo = (status: number) => {
   let params = {
@@ -369,14 +369,14 @@ const savePageInfo = (status: number) => {
 };
 
 /**
- * 保存页面数据模型信息
+ * Save page data model information
  */
 const onSavePageDatasourceInfo = (isPrev = false) => {
-  // 如果是上一步，直接返回上一步
+  // If it is the previous step, return directly
   if (isPrev) return Promise.resolve();
-  // 下一步需判断是否添加了数据源
+  // Next step needs to check if a data source has been added
   if (getPageDatasource.value == null) {
-    ElMessage.error('请设置页面数据模型！');
+    ElMessage.error('Please set the page data model!');
     if (formPageData.value.status !== SysOnlinePageStatus.DATASOURCE) {
       savePageInfo(SysOnlinePageStatus.DATASOURCE).catch(e => {
         console.warn(e);
@@ -393,7 +393,7 @@ const onSavePageDatasourceInfo = (isPrev = false) => {
 };
 
 /**
- * 获取所有在线表单字典信息
+ * Get all online form dictionary information
  */
 const loadOnlineDictList = () => {
   OnlineDictController.list({})
@@ -410,7 +410,7 @@ const loadOnlineDictList = () => {
     });
 };
 /**
- * 获取数据库信息
+ * Get database information
  */
 const loadDblinkList = () => {
   return new Promise<ANY_OBJECT>((resolve, reject) => {
@@ -464,7 +464,7 @@ const getPageDatasourceTableList = computed<ANY_OBJECT[]>(() => {
   if (getPageDatasource.value == null) return [];
 
   let tableList = [];
-  // 添加主表信息
+  // Add main table information
   tableList.push({
     id: getPageDatasource.value.datasourceId,
     tableName: getPageDatasource.value.masterTableIdDictMap.name,
@@ -477,7 +477,7 @@ const getPageDatasourceTableList = computed<ANY_OBJECT[]>(() => {
     showName: getPageDatasource.value.datasourceName,
     tag: getPageDatasource.value,
   });
-  // 添加关联从表信息
+  // Add associated slave table information
   if (Array.isArray(getPageDatasource.value.relationList)) {
     getPageDatasource.value.relationList.forEach(relation => {
       tableList.push({
@@ -485,8 +485,8 @@ const getPageDatasourceTableList = computed<ANY_OBJECT[]>(() => {
         tableName: relation.slaveTable.tableName,
         tableId: relation.slaveTableId,
         relationType: relation.relationType,
-        masterColumnName: (relation.masterColumn || {}).columnName || '未知字段',
-        slaveColumnName: (relation.slaveColumn || {}).columnName || '未知字段',
+        masterColumnName: (relation.masterColumn || {}).columnName || 'Unknown Field',
+        slaveColumnName: (relation.slaveColumn || {}).columnName || 'Unknown Field',
         cascadeDelete: relation.cascadeDelete,
         leftJoin: relation.leftJoin,
         showName: relation.relationName,
@@ -497,7 +497,7 @@ const getPageDatasourceTableList = computed<ANY_OBJECT[]>(() => {
   return tableList;
 });
 /**
- * 初始化页面数据模型信息
+ * Initialize page data model information
  */
 const initPageDatasourceInfo = (pageId: string) => {
   return new Promise((resolve, reject) => {
@@ -524,7 +524,7 @@ const initPageDatasourceInfo = (pageId: string) => {
 };
 
 /**
- * 获取数据模型关联信息
+ * Get data model association information
  */
 const loadDatasourceRelation = () => {
   if (getPageDatasource.value == null)
@@ -543,7 +543,7 @@ const loadDatasourceRelation = () => {
 };
 
 /**
- * 新建表单
+ * Create new form
  */
 const onCreateNewForm = () => {
   Dialog.show(
@@ -673,12 +673,12 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
     });
 };
 /**
- * 复制表单
+ * Copy form
  */
 const onCloneForm = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否复制此表单？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to copy this form?', '', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -689,7 +689,7 @@ const onCloneForm = (row: ANY_OBJECT) => {
       return OnlineFormController.clone(params);
     })
     .then(() => {
-      ElMessage.success('复制成功！');
+      ElMessage.success('Copy successful!');
       initPageFormList(formPageData.value.pageId).catch(e => {
         console.warn(e);
       });
@@ -699,9 +699,9 @@ const onCloneForm = (row: ANY_OBJECT) => {
     });
 };
 const onDeleteForm = (row: ANY_OBJECT) => {
-  ElMessageBox.confirm('是否删除此表单？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this form?', '', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -712,7 +712,7 @@ const onDeleteForm = (row: ANY_OBJECT) => {
       return OnlineFormController.delete(params);
     })
     .then(() => {
-      ElMessage.success('删除成功！');
+      ElMessage.success('Deletion successful!');
       initPageFormList(formPageData.value.pageId).catch(e => {
         console.warn(e);
       });

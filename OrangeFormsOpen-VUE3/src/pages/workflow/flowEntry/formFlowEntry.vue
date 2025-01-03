@@ -63,6 +63,7 @@
       class="page-table"
       ref="flowEntry"
       :data="formFlowEntry.flowEntryWidget.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="formFlowEntry.flowEntryWidget.onSortChange"
       @refresh="refreshFormFlowEntry(true)"

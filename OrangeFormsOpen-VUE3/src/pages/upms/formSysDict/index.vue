@@ -186,9 +186,7 @@
           <filter-box
             :minMenuWidth=30
             :hasSearch="false"
-            :hasReset="false"
-            :hasRefresh="true"
-            @search="loadGlobalDictList"
+            @reset="loadGlobalDictList"
           />
         </template>
         <vxe-column title="ID">

@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-form
-      :inline="true"
       :model="formSysUser"
       ref="form"
       label-width="75px"
@@ -9,8 +8,12 @@
       :size="layoutStore.defaultFormItemSize"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormSysUser(true)" @reset="onReset">
-        <el-form-item label="所属部门" prop="formFilter.deptId">
+      <filter-box
+        :item-width="350"
+        hasFold="true"
+        @search="refreshFormSysUser(true)"
+        @reset="onReset">
+        <el-form-item label="所属部门" prop="formFilter.deptId" label-position="top">
           <el-cascader
             class="filter-item"
             v-model="deptIdPath"
@@ -24,7 +27,7 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="登录名称" prop="formFilter.sysUserLoginName">
+        <el-form-item label="登录名称" prop="formFilter.sysUserLoginName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserLoginName"
@@ -32,7 +35,7 @@
             placeholder="登录名称"
           />
         </el-form-item>
-        <el-form-item label="用户昵称" prop="formFilter.showName">
+        <el-form-item label="用户昵称" prop="formFilter.showName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.showName"

@@ -7,7 +7,7 @@
       class="operator-box"
       v-if="hasExtend || $slots.operator"
     >
-      <div>
+      <div class="operator-slot">
         <slot name="operator" />
       </div>
       <div class="extend-box" v-if="hasExtend">
@@ -265,6 +265,9 @@ defineExpose({
   .operator-box {
     margin-bottom: 16px;
     flex-grow: 0;
+  }
+  .operator-slot{
+    flex-grow: 1;
   }
   .extend-box {
     display: flex;

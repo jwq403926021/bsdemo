@@ -37,6 +37,7 @@
       class="page-table"
       ref="flowCategory"
       :data="flowCategoryWidget.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="flowCategoryWidget.onSortChange"
       @refresh="refreshFormFlowCategory(true)"

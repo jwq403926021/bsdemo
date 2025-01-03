@@ -24,9 +24,7 @@
               <filter-box
                 :minMenuWidth=30
                 :hasSearch="false"
-                :hasReset="false"
-                :hasRefresh="true"
-                @search="refreshFormSysMenu"
+                @reset="refreshFormSysMenu"
               />
             </el-col>
           </el-row>

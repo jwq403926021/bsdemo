@@ -59,15 +59,16 @@ const getSelectList = async (isClear = false, data) => {
   if (!data?.value && pps.depend) return; // has depend but don't have value, do not request options
   const res = await axios.get(
     `${serverDefaultCfg.baseURL}order/orderSalesHierarchy${
-      data?.value ? `?salesRepNum=${data.value}` : ''
+      data?.salesRepNum ? `?salesRepNum=${data.salesRepNum}` : ''
     }`,
   );
-  const result = removeDuplicates(res?.data || [], ['stockLocId', 'stockLocName']);
-  selectedItems.value = result.map(i => ({
-    ...i,
-    label: i.stockLocId + ' - ' + i.stockLocName,
-    value: i.stockLocId,
-  }));
+  selectedItems.value = res?.data
+    ?.filter(item => item.soldToNum === data.soldToNum)
+    .map(i => ({
+      ...i,
+      label: i.stockLocId + ' - ' + i.stockLocName,
+      value: i.stockLocId,
+    }));
 };
 
 onMounted(() => {

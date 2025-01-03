@@ -66,7 +66,7 @@ const getSelectList = async (isClear = false, data) => {
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.soldToNum + ' - ' + i.soldToName,
-    value: i.salesRepNum,
+    value: i.soldToNum,
   }));
 };
 

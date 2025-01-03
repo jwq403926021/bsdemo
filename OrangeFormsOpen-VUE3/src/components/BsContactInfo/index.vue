@@ -67,7 +67,7 @@ const getSelectList = async (isClear = false, data) => {
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.recipient + ' | ' + i.telNo,
-    value: i.recipient + ' | ' + i.telNo,
+    value: i.code,
   }));
 };
 
@@ -86,7 +86,7 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
-    contactInfo: pps?.modelValue || '',
+    contactInfo: selectedContactInfo.value?.recipient + ' | ' + selectedContactInfo.value?.telNo,
     recipient: selectedContactInfo.value?.recipient,
     phone: selectedContactInfo.value?.telNo,
     ...selectedContactInfo.value,

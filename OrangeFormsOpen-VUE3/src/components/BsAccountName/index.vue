@@ -62,11 +62,11 @@ const getSelectList = async (isClear = false, data) => {
       data?.value ? `?salesRepNum=${data.value}` : ''
     }`,
   );
-  const result = removeDuplicates(res?.data || [], ['soldToNum', 'soldToName']);
+  const result = removeDuplicates(res?.data || [], ['salesRepNum']);
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.soldToNum + ' - ' + i.soldToName,
-    value: i.soldToNum + ' - ' + i.soldToName,
+    value: i.salesRepNum,
   }));
 };
 
@@ -87,8 +87,8 @@ const getValue = () => {
   const selected = selectedItems.value.find(i => i.value === pps.modelValue) || {};
   return {
     ...selected,
-    soldToName: pps?.modelValue || '',
-    shipTo: pps?.modelValue || '',
+    soldToName: selected?.label,
+    shipTo: selected?.label,
     value: pps.modelValue,
     valueHuman: selected?.label || '',
   };

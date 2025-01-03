@@ -52,7 +52,6 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
-    ...selected.value,
     value: pps.modelValue,
     valueHuman: soldToName.value,
   };

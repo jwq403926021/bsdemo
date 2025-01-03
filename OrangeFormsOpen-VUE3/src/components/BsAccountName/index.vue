@@ -62,7 +62,7 @@ const getSelectList = async (isClear = false, data) => {
       data?.value ? `?salesRepNum=${data.value}` : ''
     }`,
   );
-  const result = removeDuplicates(res?.data || [], ['salesRepNum']);
+  const result = removeDuplicates(res?.data || [], ['soldToNum', 'soldToName']);
   selectedItems.value = result.map(i => ({
     ...i,
     label: i.soldToNum + ' - ' + i.soldToName,

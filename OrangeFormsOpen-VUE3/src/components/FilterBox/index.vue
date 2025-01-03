@@ -3,14 +3,14 @@
     <el-col :span="17" class="filter-cond">
       <slot />
     </el-col>
-    <el-col :span="7" :class="isFold ? 'handling-box-flod' : 'handling-box'" v-if="hasSearch" :style="{ 'min-width': minMenuWidth + 'px' }">
-        <el-button class="broder-radius-16" type="primary" @click="search" >
+    <el-col :span="7" :class="isFold ? 'handling-box-flod' : 'handling-box'" :style="{ 'min-width': minMenuWidth + 'px' }">
+        <el-button v-if="hasSearch" class="broder-radius-16" type="primary" @click="search" >
           Search
         </el-button>
         <el-button v-if="hasFold" class="broder-radius-16" type="primary" @click="onFold">
             <img :src="FoldDown" alt="icon" :class="isFold ? 'fold-up-icon' : 'fold-down-icon'" />
         </el-button>
-        <el-button type="text" plain>
+        <el-button  v-if="hasSearch || hasFold" type="text" plain>
           <img :src="Separator" alt="icon" class="separator-icon" />
         </el-button>
         <el-button v-if="hasReset" type="text" plain @click="reset">
@@ -97,7 +97,7 @@ const onFold = () => {
   flex-shrink: 0;
   margin-bottom: 16px;
   gap: 5px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .handling-box-flod{
   height: 64px;
@@ -119,7 +119,7 @@ const onFold = () => {
   height: 29px;
 }
 .icon-button {
-  width: 29px;
+  width: 28px;
   height: 29px;
 }
 :deep(.el-form-item) {

@@ -45,6 +45,7 @@
     <table-box
       class="page-table"
       :data="formSysUser.SysUser.impl.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="formSysUser.SysUser.impl.onSortChange"
       @refresh="refreshFormSysUser(true)"

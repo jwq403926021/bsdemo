@@ -8,7 +8,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysRole(true)" @reset="onResetRole">
-        <el-form-item label="Role Name" prop="formFilter.sysRoleName">
+        <el-form-item label="Role Name" prop="formFilter.sysRoleName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysRoleName"
@@ -21,6 +21,7 @@
     <table-box
       class="page-table"
       :data="fragmentSysRole.SysRole.impl.dataList"
+      :hasExtend="false"
       @sort-change="fragmentSysRole.SysRole.impl.onSortChange"
       @refresh="refreshFragmentSysRole(true)"
       :seq-config="{

@@ -13,7 +13,7 @@
         @search="refreshFragmentSysRoleUser(true)"
         @reset="onResetRoleUser"
       >
-        <el-form-item label="用户角色">
+        <el-form-item label="用户角色" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysRoleUser.formFilter.sysRoleId"
@@ -35,7 +35,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" prop="formFilter.sysUserLoginName">
+        <el-form-item label="用户名" prop="formFilter.sysUserLoginName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysRoleUser.formFilter.sysUserLoginName"
@@ -50,6 +50,7 @@
       class="page-table"
       :data="fragmentSysRoleUser.SysUser.impl.dataList"
       :size="layoutStore.defaultFormItemSize"
+      :hasExtend="false"
       @sort-change="fragmentSysRoleUser.SysUser.impl.onSortChange"
       @refresh="refreshFragmentSysRoleUser(true)"
       :seq-config="{

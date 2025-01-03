@@ -3,19 +3,33 @@
     <table-box
       class="border-bottom-0 page-table"
       :data="formSysMenu.SysMenu.impl.dataList"
+      :hasExtend="false"
       :tree-config="{ rowField: 'menuId', parentField: 'parentId' }"
       @refresh="refreshFormSysMenu"
     >
       <template v-slot:operator>
-        <el-button
-          type="primary"
-          :icon="Plus"
-          :size="layoutStore.defaultFormItemSize"
-          :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
-          @click="onCreateSysMenuClick()"
-        >
-          New
-        </el-button>
+          <el-row type="flex" align="middle">
+            <el-col :span="12" style="margin-bottom: 16px">
+              <el-button
+                type="primary"
+                :icon="Plus"
+                :size="layoutStore.defaultFormItemSize"
+                :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
+                @click="onCreateSysMenuClick()"
+              >
+                New
+              </el-button>
+            </el-col>
+            <el-col :span="12">
+              <filter-box
+                :minMenuWidth=30
+                :hasSearch="false"
+                :hasReset="false"
+                :hasRefresh="true"
+                @search="refreshFormSysMenu"
+              />
+            </el-col>
+          </el-row>
       </template>
       <vxe-column title="Menu Name" field="menuName" width="300px" tree-node> </vxe-column>
       <vxe-column title="Menu Icon" field="icon" width="100px">

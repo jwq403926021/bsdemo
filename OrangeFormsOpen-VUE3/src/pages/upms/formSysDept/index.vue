@@ -9,7 +9,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormSysDept(true)" @reset="onReset">
-        <el-form-item label="部门名称" prop="formFilter.deptName">
+        <el-form-item label="部门名称" prop="formFilter.deptName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysDept.formFilter.deptName"
@@ -23,6 +23,7 @@
     <table-box
       class="border-bottom-0 page-table"
       :data="formSysDept.SysDeptList.impl.dataList"
+      :hasExtend="false"
       :tree-config="{ rowField: 'deptId', parentField: 'parentId' }"
       @refresh="refreshFormSysDept(true)"
     >

@@ -9,7 +9,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysDataPerm(true)" @reset="onReset">
-        <el-form-item label="过滤规则" prop="formFilter.sysDatapermType" label-width="75px">
+        <el-form-item label="过滤规则" prop="formFilter.sysDatapermType" label-width="75px" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDatapermType"
@@ -24,7 +24,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="数据权限名称" prop="formFilter.sysDataPermName">
+        <el-form-item label="数据权限名称" prop="formFilter.sysDataPermName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDataPermName"
@@ -37,6 +37,7 @@
     <table-box
       class="page-table"
       :data="fragmentSysDataPerm.SysDataPerm.impl.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="fragmentSysDataPerm.SysDataPerm.impl.onSortChange"
       :seq-config="{

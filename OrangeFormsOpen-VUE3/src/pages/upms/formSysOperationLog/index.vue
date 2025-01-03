@@ -8,15 +8,20 @@
       label-position="right"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormOperationType(true)" @reset="onReset">
-        <el-form-item label="操作人员" prop="formFilter.operatorName">
+      <filter-box
+        :item-width="320"
+        hasFold="true"
+        hasRefresh="true"
+        @search="refreshFormOperationType(true)"
+        @reset="onReset">
+        <el-form-item label="操作人员" prop="formFilter.operatorName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysOperationLog.formFilter.operatorName"
             :clearable="true"
           />
         </el-form-item>
-        <el-form-item label="操作类型" prop="formFilter.operationType">
+        <el-form-item label="操作类型" prop="formFilter.operationType" label-position="top">
           <el-select
             class="filter-item"
             v-model="formSysOperationLog.formFilter.operationType"
@@ -34,7 +39,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="操作状态" prop="formFilter.success">
+        <el-form-item label="操作状态" prop="formFilter.success" label-position="top">
           <el-select
             class="filter-item"
             v-model="formSysOperationLog.formFilter.success"
@@ -46,14 +51,14 @@
             <el-option :value="0" label="失败" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Trace Id" prop="formFilter.traceId">
+        <el-form-item label="Trace Id" prop="formFilter.traceId" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysOperationLog.formFilter.traceId"
             :clearable="true"
           />
         </el-form-item>
-        <el-form-item label="调用时长" prop="formFilter.elapse">
+        <el-form-item label="调用时长" prop="formFilter.elapse" label-position="top">
           <input-number-range
             class="filter-item"
             :size="layoutStore.defaultFormItemSize"
@@ -61,7 +66,7 @@
             :clearable="true"
           />
         </el-form-item>
-        <el-form-item label="操作日期" prop="formFilter.operationTime">
+        <el-form-item label="操作日期" prop="formFilter.operationTime" label-position="top">
           <date-range
             class="filter-item"
             :size="layoutStore.defaultFormItemSize"

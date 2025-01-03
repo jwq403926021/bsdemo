@@ -13,7 +13,7 @@
         @search="refreshFragmentSysDataPermUser(true)"
         @reset="onResetDataPermUser"
       >
-        <el-form-item label="数据权限" prop="formFilter.dataPermId">
+        <el-form-item label="数据权限" prop="formFilter.dataPermId" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysDataPermUser.formFilter.dataPermId"
@@ -31,7 +31,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" prop="formFilter.searchString">
+        <el-form-item label="用户名" prop="formFilter.searchString" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysDataPermUser.formFilter.searchString"
@@ -45,6 +45,7 @@
     <table-box
       class="page-table"
       :data="fragmentSysDataPermUser.SysDataPermUserList.impl.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="fragmentSysDataPermUser.SysDataPermUserList.impl.onSortChange"
       :seq-config="{

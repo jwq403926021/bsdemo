@@ -156,7 +156,7 @@
         :size="layoutStore.defaultFormItemSize"
         @refresh="loadGlobalDictList"
         :row-style="tableRowStyle"
-        :hasExtend="currentDict && !currentDict.tenantCommon"
+        :hasExtend="false"
         :tree-config="{}"
       >
         <template v-slot:operator>
@@ -183,6 +183,13 @@
           >
             添加数据
           </el-button>
+          <filter-box
+            :minMenuWidth=30
+            :hasSearch="false"
+            :hasReset="false"
+            :hasRefresh="true"
+            @search="loadGlobalDictList"
+          />
         </template>
         <vxe-column title="ID">
           <template v-slot="scope">

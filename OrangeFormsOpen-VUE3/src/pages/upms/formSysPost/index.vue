@@ -9,7 +9,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormSysPost(true)" @reset="onReset">
-        <el-form-item label="岗位名称" prop="formFilter.postName">
+        <el-form-item label="岗位名称" prop="formFilter.postName"  label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysPost.formFilter.postName"
@@ -23,6 +23,7 @@
       class="page-table"
       ref="sysPost"
       :data="formSysPost.sysPost.impl.dataList"
+      :hasExtend="false"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="formSysPost.sysPost.impl.onSortChange"
       @refresh="refreshFormSysPost(true)"

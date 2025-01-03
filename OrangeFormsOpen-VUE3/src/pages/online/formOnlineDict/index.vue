@@ -9,7 +9,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshOnlineDict(true)" @reset="onReset">
-        <el-form-item label="字典类型" prop="formFilter.dictType">
+        <el-form-item label="字典类型" prop="formFilter.dictType" label-position="top">
           <el-select
             class="filter-item"
             v-model="formOnlineDict.formFilter.dictType"
@@ -24,7 +24,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="字典名称" prop="formFilter.dictName">
+        <el-form-item label="字典名称" prop="formFilter.dictName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formOnlineDict.formFilter.dictName"
@@ -37,6 +37,7 @@
     <table-box
       class="page-table"
       :data="formOnlineDict.dict.impl.dataList"
+      :hasExtend="false"
       @sort-change="formOnlineDict.dict.impl.onSortChange"
       @refresh="refreshOnlineDict(true)"
       :seq-config="{

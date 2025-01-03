@@ -37,7 +37,7 @@
     <table-box
       class="page-table"
       ref="class"
-      :hasExtend="true"
+      :hasExtend="false"
       :data="pageListWidget.dataList"
       :size="layoutStore.defaultFormItemSize"
       @sort-change="pageListWidget.onSortChange"
@@ -46,14 +46,27 @@
         startIndex: (pageListWidget.currentPage - 1) * pageListWidget.pageSize,
       }"
     >
-      <template v-slot:operator>
-        <el-button
-          type="primary"
-          :icon="Plus"
-          :size="layoutStore.defaultFormItemSize"
-          @click="onCreateOnlinePage()"
-          >New</el-button
-        >
+    <template v-slot:operator>
+          <el-row type="flex" align="middle">
+            <el-col :span="12" style="margin-bottom: 16px">
+              <el-button
+              type="primary"
+              :icon="Plus"
+              :size="layoutStore.defaultFormItemSize"
+              @click="onCreateOnlinePage()"
+              >New</el-button
+            >
+            </el-col>
+            <el-col :span="12">
+              <filter-box
+                :minMenuWidth=30
+                :hasSearch="false"
+                :hasReset="false"
+                :hasRefresh="true"
+                @search="refreshOnlinePage(true)"
+              />
+            </el-col>
+          </el-row>
       </template>
       <vxe-column title="No." type="seq" width="50px" :index="pageListWidget.getTableIndex" />
       <vxe-column title="Page Name" field="pageName" />

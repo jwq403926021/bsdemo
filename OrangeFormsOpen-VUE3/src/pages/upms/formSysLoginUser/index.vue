@@ -9,7 +9,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormOperationType(true)" @reset="onReset">
-        <el-form-item label="登录名称" prop="formFilter.loginName">
+        <el-form-item label="登录名称" prop="formFilter.loginName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysLoginUser.formFilter.loginName"

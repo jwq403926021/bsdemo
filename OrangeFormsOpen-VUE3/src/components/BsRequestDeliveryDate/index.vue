@@ -64,7 +64,9 @@ onMounted(() => {
 // 获取当前值和对应的标签
 const getValue = () => {
   return {
-    requestDeliveryDate: moment(requestDeliveryDate.value).format('YYYY-MM-DD'),
+    requestDeliveryDate: requestDeliveryDate.value
+      ? moment(requestDeliveryDate.value).format('YYYY-MM-DD')
+      : '',
   };
 };
 defineExpose({ getValue });

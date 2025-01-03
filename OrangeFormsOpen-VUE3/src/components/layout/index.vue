@@ -213,6 +213,7 @@ function jumpTo(menuItem: MenuItem) {
         query: {
           formId: menuItem.onlineFormId,
           formType: SysOnlineFormType.QUERY,
+          orderType: menuItem.menuName,
         },
       });
       return;

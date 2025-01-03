@@ -321,7 +321,7 @@ const getQueryParam = paramName => {
 };
 // 提交表单数据
 const onSaveFormData = async () => {
-  console.log("route==================", route)
+  console.log('route==================', route);
   let params: ANY_OBJECT = {};
   for (const key in bsWidgetList) {
     if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
@@ -349,7 +349,7 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     deliveryDate: params.requestDeliveryDate,
     processDefinitionKey: dialogParams.value.formConfig.processId || '',
-    orderDataType: getQueryParam('formId'),
+    orderType: encodeURIComponent(getQueryParam('orderType')),
   };
   console.log('real params::::', params);
   const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);

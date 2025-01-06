@@ -82,6 +82,10 @@ const handleSelectionChange = val => {
 // 从API获取数据
 const fetchData = async () => {
   try {
+    const formInstance = formInject();
+    if (formInstance.isEdit) {
+      return;
+    }
     const response = await axios.get(`${serverDefaultCfg.baseURL}order/product`, {
       params: {
         productName: productName.value,

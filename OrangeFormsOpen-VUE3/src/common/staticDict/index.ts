@@ -635,7 +635,7 @@ const SysCustomWidgetType = new DictionaryBase('Component Type', [
   },
   {
     id: 415,
-    name: 'UPN · Product Name',
+    name: 'UPN • Product Name',
     symbol: 'BsUpnProductName',
   },
   {

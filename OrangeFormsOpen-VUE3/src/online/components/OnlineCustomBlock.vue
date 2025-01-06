@@ -103,6 +103,7 @@
                     @widgetClick="onWidgetClick"
                   />
                 </div>
+                <!-- 使用OnlineCustomWidget将不会展示默认label名称 -->
                 <OnlineCustomWidget
                   v-else-if="subWidget.widgetType === SysCustomWidgetType.Text"
                   :ref="subWidget.variableName"

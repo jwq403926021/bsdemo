@@ -289,7 +289,7 @@ const onBindColumnChange = (val: string | null = null) => {
   data.value.bindData.column = findItemFromList(getValidColumnList.value, val, 'columnId');
   data.value.column = data.value.bindData.column;
   if (data.value.column) {
-    data.value.showName = data.value.column.columnComment;
+    data.value.showName = data.value.showName;
     data.value.variableName = data.value.column.objectFieldName || data.value.column.columnName;
     if (data.value.props.required != null) {
       if (data.value.column.required == null) {

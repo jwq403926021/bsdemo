@@ -335,7 +335,6 @@ const onSaveFormData = async () => {
   }
   console.log('all field::!@#!@#!@#!@#', params);
   params = {
-    orderType: props.formConfig.formName,
     divisionsName: params.divisionsName,
     srName: params.srName,
     soldTo: params.shipTo,
@@ -349,7 +348,7 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     deliveryDate: params.requestDeliveryDate,
     processDefinitionKey: dialogParams.value.formConfig.processId || '',
-    orderType: encodeURIComponent(getQueryParam('orderType')),
+    orderType: getQueryParam('orderType')?.replace(/\+/g, ' '),
   };
   console.log('real params::::', params);
   const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);

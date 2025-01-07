@@ -10,6 +10,9 @@
   >
     <el-row :gutter="20">
       <el-col :span="24">
+        <el-form-item label="Role Name" prop="roleName">
+          <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
+        </el-form-item>
         <el-form-item label="User Type" prop="userType">
           <el-select v-model="formData.userType" placeholder="Country Code">
             <el-option
@@ -19,9 +22,6 @@
               :value="item.attr1"
             />
           </el-select>
-        </el-form-item>
-        <el-form-item label="Role Name" prop="roleName">
-          <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
         </el-form-item>
         <el-form-item v-if="false" label="Role Type" :required="true">
           <el-radio-group v-model="formData.adminRole">

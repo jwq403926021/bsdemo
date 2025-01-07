@@ -8,20 +8,20 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysRole(true)" @reset="onResetRole">
-        <el-form-item label="User Type" prop="formFilter.sysUserType" label-position="top">
-          <el-input
-            class="filter-item"
-            v-model="fragmentSysRole.formFilter.sysUserType"
-            :clearable="true"
-            placeholder="User Type"
-          />
-        </el-form-item>
         <el-form-item label="Role Name" prop="formFilter.sysRoleName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysRoleName"
             :clearable="true"
             placeholder="Role Name"
+          />
+        </el-form-item>
+        <el-form-item label="User Type" prop="formFilter.sysUserType" label-position="top">
+          <el-input
+            class="filter-item"
+            v-model="fragmentSysRole.formFilter.sysUserType"
+            :clearable="true"
+            placeholder="User Type"
           />
         </el-form-item>
       </filter-box>
@@ -54,8 +54,8 @@
         width="50px"
         :index="fragmentSysRole.SysRole.impl.getTableIndex"
       />
-      <vxe-column title="User Type" field="userType"> </vxe-column>
       <vxe-column title="Role Name" field="roleName"> </vxe-column>
+      <vxe-column title="User Type" field="userType"> </vxe-column>
       <vxe-column title="Operation" fixed="right" width="180px">
         <template v-slot="scope">
           <el-button

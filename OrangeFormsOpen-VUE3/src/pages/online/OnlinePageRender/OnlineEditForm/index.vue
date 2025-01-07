@@ -348,6 +348,8 @@ const onSaveFormData = async () => {
     phone: params?.phoneModify ?? params.phone,
     deliveryDate: params.requestDeliveryDate,
     processDefinitionKey: dialogParams.value.formConfig.processId || '',
+    formId: getQueryParam('formId'),
+    formType: getQueryParam('formType'),
     orderType: getQueryParam('orderType')?.replace(/\+/g, ' '),
   };
   console.log('real params::::', params);

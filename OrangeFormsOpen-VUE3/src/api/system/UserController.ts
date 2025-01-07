@@ -20,6 +20,10 @@ export default class SystemUserController extends BaseController {
     return super.post(API_CONTEXT + '/upms/sysUser/update', params, httpOptions);
   }
 
+  static addCode(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.post('/sys/code/insert', params, httpOptions);
+  }
+
   static deleteUser(params: User, httpOptions?: RequestOption) {
     return super.post(API_CONTEXT + '/upms/sysUser/delete', params, httpOptions);
   }

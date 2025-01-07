@@ -67,7 +67,7 @@
       <vxe-column title="Process Name" field="processDefinitionName" />
       <vxe-column title="Current Task" field="taskName" />
       <vxe-column title="Initiator Login Name" field="processInstanceInitiator" />
-      <vxe-column title="Initiator Nickname" field="showName" />
+      <vxe-column title="Initiator Show Name" field="showName" />
       <vxe-column title="Task Initiation Time" field="processInstanceStartTime" />
       <vxe-column title="Operation" width="100px">
         <template v-slot="scope">

@@ -118,7 +118,7 @@
               >
                 <vxe-column title="No." type="seq" width="50" />
                 <vxe-column title="Approver" field="loginName" />
-                <vxe-column title="Nickname" field="showName" />
+                <vxe-column title="Show Name" field="showName" />
                 <vxe-column title="Approval Time" field="lastApprovalTime" />
                 <template v-slot:empty>
                   <div class="table-empty unified-font">
@@ -205,7 +205,7 @@
             >
               <vxe-column title="No." type="seq" width="50" />
               <vxe-column title="Approver" field="loginName" />
-              <vxe-column title="Nickname" field="showName" />
+              <vxe-column title="Show Name" field="showName" />
               <vxe-column title="Approval Time" field="lastApprovalTime" />
               <template v-slot:empty>
                 <div class="table-empty unified-font">

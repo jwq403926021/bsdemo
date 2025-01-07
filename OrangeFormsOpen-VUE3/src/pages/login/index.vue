@@ -127,6 +127,23 @@ const dataFormSubmit = () => {
   });
 };
 
+const modifyMenuList = menuList => {
+  const rootMenuIndex = menuList.findIndex(item => item.menuName === 'Root Menu');
+  if (rootMenuIndex === -1) {
+    console.log("Don't have Root Menu");
+    return menuList;
+  }
+  const rootMenuId = menuList[rootMenuIndex].menuId;
+  menuList.splice(rootMenuIndex, 1);
+  menuList.forEach(item => {
+    if (item.parentId === rootMenuId) {
+      delete item.parentId;
+    }
+  });
+
+  return menuList;
+};
+
 const login = function (verifyParams: { captchaVerification: string } | null = null) {
   let params: loginParam = {
     loginName: dataForm.mobilePhone,
@@ -138,7 +155,8 @@ const login = function (verifyParams: { captchaVerification: string } | null = n
     .then(data => {
       //console.log('login >>>', data);
       if (data.data.menuList) {
-        layoutStore.setMenuList(treeDataTranslate(data.data.menuList, 'menuId', 'parentId'));
+        const newMenuList = modifyMenuList(data.data.menuList);
+        layoutStore.setMenuList(treeDataTranslate(newMenuList, 'menuId', 'parentId'));
         delete data.data.menuList;
       }
       setToken(data.data.tokenData);

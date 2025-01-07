@@ -3,44 +3,44 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="80px"
+    label-width="140px"
     :size="formItemSize"
     label-position="right"
     @submit.prevent
   >
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24">
-        <el-form-item label="登录名称" prop="loginName">
+        <el-form-item label="Login Name" prop="loginName">
           <el-input
             v-model="formData.loginName"
-            placeholder="用户登录名称"
+            placeholder="User Login Name"
             clearable
             :disabled="isEdit"
             maxlength="30"
           />
         </el-form-item>
-        <el-form-item label="登录密码" v-if="!isEdit" prop="password">
+        <el-form-item label="Login Password" v-if="!isEdit" prop="password">
           <el-input
             v-model="formData.password"
             type="password"
-            placeholder="用户登录密码"
+            placeholder="User Login Password"
             clearable
             maxlength="64"
           />
         </el-form-item>
-        <el-form-item label="确认密码" v-if="!isEdit" prop="passwordRepeat">
+        <el-form-item label="Confirm Password" v-if="!isEdit" prop="passwordRepeat">
           <el-input
             v-model="formData.passwordRepeat"
             type="password"
-            placeholder="再次输入用户密码"
+            placeholder="Re-enter User Password"
             clearable
             maxlength="64"
           />
         </el-form-item>
-        <el-form-item label="用户昵称" prop="showName">
-          <el-input v-model="formData.showName" placeholder="用户昵称" clearable maxlength="30" />
+        <el-form-item label="Show Name" prop="showName">
+          <el-input v-model="formData.showName" placeholder="User Show Name" clearable maxlength="30" />
         </el-form-item>
-        <el-form-item label="账号类型" prop="userType">
+        <el-form-item label="Account Type" prop="userType">
           <el-select v-model="formData.userType">
             <el-option
               v-for="item in SysUserType.getList()"
@@ -50,19 +50,19 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户状态" prop="userStatus" v-if="isEdit">
+        <el-form-item label="User Status" prop="userStatus" v-if="isEdit">
           <el-radio-group v-model="formData.userStatus">
             <el-radio v-for="item in SysUserStatus.getList()" :key="item.id" :value="item.id">{{
               item.name
             }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="所属部门" prop="deptId">
+        <el-form-item label="Department" prop="deptId">
           <el-cascader
             class="input-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="所属部门"
+            placeholder="Belong Department"
             :loading="deptId.impl.loading"
             :props="{ value: 'deptId', label: 'deptName', checkStrictly: true }"
             @visible-change="onDeptIdVisibleChange"
@@ -71,8 +71,8 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="用户岗位" prop="deptPostIdList">
-          <el-select v-model="formData.deptPostIdList" multiple placeholder="用户岗位">
+        <el-form-item label="User Position" prop="deptPostIdList">
+          <el-select v-model="formData.deptPostIdList" multiple placeholder="User Position">
             <el-option
               v-for="deptPost in deptPostList"
               :key="deptPost.deptPostId"
@@ -81,8 +81,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户角色" prop="roleIdList">
-          <el-select v-model="formData.roleIdList" multiple placeholder="用户角色">
+        <el-form-item label="User Role" prop="roleIdList">
+          <el-select v-model="formData.roleIdList" multiple placeholder="User Role">
             <el-option
               v-for="role in roleList"
               :key="role.roleId"
@@ -91,8 +91,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="数据权限" prop="dataPermIdList">
-          <el-select v-model="formData.dataPermIdList" multiple placeholder="数据权限">
+        <el-form-item label="Data Permission" prop="dataPermIdList">
+          <el-select v-model="formData.dataPermIdList" multiple placeholder="Data Permission">
             <el-option
               v-for="dataPerm in dataPermList"
               :key="dataPerm.dataPermId"
@@ -103,9 +103,9 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
+    <!-- Popup Button Bar, must set class dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer">
-      <el-button :plain="true" @click="onCancel">取消</el-button>
+      <el-button :plain="true" @click="onCancel">Cancel</el-button>
       <el-button
         type="primary"
         @click="onSubmit"
@@ -116,7 +116,7 @@
           )
         "
       >
-        确定
+        Confirm
       </el-button>
     </el-row>
   </el-form>
@@ -145,7 +145,7 @@ const layoutStore = useLayoutStore();
 
 const props = defineProps<{
   rowData?: User;
-  // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
+  // When using Dialog.show to pop up the component, this prop must be defined for callback.
   dialog?: DialogProp<ANY_OBJECT>;
 }>();
 const formItemSize = computed(() => {
@@ -168,26 +168,26 @@ const validatePasswordRepeat = (
 ) => {
   //console.log(rule, value, callback);
   if (!value) {
-    callback(new Error('重输密码不能为空'));
+    callback(new Error('Re-enter Password Cannot Be Empty'));
   } else if (value != formData.value.password) {
-    callback(new Error('两次密码输入不一致，请重新输入'));
+    callback(new Error('The Two Password Inputs Are Inconsistent, Please Re-enter'));
   } else {
     callback();
   }
 };
 const rules = ref({
-  loginName: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '用户密码不能为空', trigger: 'blur' }],
+  loginName: [{ required: true, message: 'User Name Cannot Be Empty', trigger: 'blur' }],
+  password: [{ required: true, message: 'User Password Cannot Be Empty', trigger: 'blur' }],
   passwordRepeat: [
     {
       validator: validatePasswordRepeat,
       trigger: 'blur',
     },
   ],
-  showName: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
-  dataPermIdList: [{ required: true, message: '数据权限不能为空', trigger: 'change' }],
-  deptPostIdList: [{ required: true, message: '用户岗位不能为空', trigger: 'change' }],
-  roleIdList: [{ required: true, message: '用户角色不能为空', trigger: 'change' }],
+  showName: [{ required: true, message: 'User Show Name Cannot Be Empty', trigger: 'blur' }],
+  dataPermIdList: [{ required: true, message: 'Data Permission Cannot Be Empty', trigger: 'change' }],
+  deptPostIdList: [{ required: true, message: 'User Position Cannot Be Empty', trigger: 'change' }],
+  roleIdList: [{ required: true, message: 'User Role Cannot Be Empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);
@@ -198,7 +198,7 @@ const isEdit = computed(() => {
   return formData.value.userId != null;
 });
 /**
- * 所属部门下拉数据获取函数
+ * Belonging Department Dropdown Data Fetch Function
  */
 const loadDeptmentDropdownList = (): Promise<ListData<ANY_OBJECT>> => {
   return new Promise((resolve, reject) => {
@@ -226,7 +226,7 @@ const deptId = reactive({
   value: [],
 });
 /**
- * 所属部门下拉框显隐
+ * Belonging Department Dropdown Visibility
  */
 const onDeptIdVisibleChange = (show: boolean) => {
   deptId.impl.onVisibleChange(show).catch(e => {
@@ -234,7 +234,7 @@ const onDeptIdVisibleChange = (show: boolean) => {
   });
 };
 /**
- * 所属部门选中值改变
+ * Belonging Department Selected Value Changed
  */
 const onDeptIdValueChange = (value: CascaderValue) => {
   formData.value.deptId = Array.isArray(value) ? value[value.length - 1].toString() : undefined;
@@ -242,7 +242,7 @@ const onDeptIdValueChange = (value: CascaderValue) => {
   loadDeptPost();
 };
 /**
- * 获取部门岗位列表
+ * Get Department Position List
  */
 const loadDeptPost = () => {
   if (formData.value.deptId == null || formData.value.deptId === '') {
@@ -298,8 +298,8 @@ const onSubmit = () => {
 
       operation
         .then(res => {
-          ElMessage.success(formData.value.userId != null ? '编辑成功' : '添加成功');
-          props.dialog.submit(res);
+          ElMessage.success(formData.value.userId != null ? 'Edit Successful' : 'Add Successful');
+          props.dialog?.submit(res);
         })
         .catch(e => {
           console.warn(e);

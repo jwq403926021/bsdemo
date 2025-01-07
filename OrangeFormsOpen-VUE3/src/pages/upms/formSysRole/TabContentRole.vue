@@ -8,6 +8,14 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysRole(true)" @reset="onResetRole">
+        <el-form-item label="User Type" prop="formFilter.sysUserType" label-position="top">
+          <el-input
+            class="filter-item"
+            v-model="fragmentSysRole.formFilter.sysUserType"
+            :clearable="true"
+            placeholder="User Type"
+          />
+        </el-form-item>
         <el-form-item label="Role Name" prop="formFilter.sysRoleName" label-position="top">
           <el-input
             class="filter-item"
@@ -46,6 +54,7 @@
         width="50px"
         :index="fragmentSysRole.SysRole.impl.getTableIndex"
       />
+      <vxe-column title="User Type" field="userType"> </vxe-column>
       <vxe-column title="Role Name" field="roleName"> </vxe-column>
       <vxe-column title="Operation" fixed="right" width="180px">
         <template v-slot="scope">
@@ -113,6 +122,7 @@ const form = ref();
  */
 const loadSysRoleData = (params: ANY_OBJECT): Promise<TableData<Role>> => {
   params.sysRoleDtoFilter = {
+    userType: fragmentSysRole.formFilterCopy.sysUserType,
     roleName: fragmentSysRole.formFilterCopy.sysRoleName,
   };
   return new Promise((resolve, reject) => {
@@ -134,6 +144,7 @@ const loadSysRoleData = (params: ANY_OBJECT): Promise<TableData<Role>> => {
  * 用户角色数据获取检测函数，返回true正常获取数据，返回false停止获取数据
  */
 const loadSysRoleVerify = () => {
+  fragmentSysRole.formFilterCopy.sysUserType = fragmentSysRole.formFilter.sysUserType;
   fragmentSysRole.formFilterCopy.sysRoleName = fragmentSysRole.formFilter.sysRoleName;
   return true;
 };
@@ -148,9 +159,11 @@ const tableOptions: TableOptions<Role> = {
 
 const fragmentSysRole = reactive({
   formFilter: {
+    sysUserType: undefined,
     sysRoleName: undefined,
   },
   formFilterCopy: {
+    sysUserType: undefined,
     sysRoleName: undefined,
   },
   SysRole: {
@@ -247,15 +260,15 @@ const onDeleteClick = (row: Role) => {
     roleId: row.roleId,
   };
 
-  ElMessageBox.confirm(`是否删除角色【${row.roleName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Delete the role【${row.roleName}】？`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
       SystemRoleController.deleteRole(params)
         .then(() => {
-          ElMessage.success('删除成功');
+          ElMessage.success('Delete Successful');
           fragmentSysRole.SysRole.impl.refreshTable();
         })
         .catch(e => {

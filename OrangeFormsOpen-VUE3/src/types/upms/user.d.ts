@@ -40,3 +40,19 @@ export interface User {
   sysUserPostList?: T[];
   sysUserRoleList?: T[];
 }
+
+export interface Code {
+  id: number;
+  countryCode: string;
+  groupCode: string;
+  groupName: string;
+  codeNumber: string;
+  english: string;
+  korean: string;
+  chinese: string;
+  japanese: string;
+  useStatus: number;
+  sort: number | null;
+  attr1: string;
+  attr1Name: string;
+}

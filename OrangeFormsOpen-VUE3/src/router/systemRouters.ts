@@ -50,6 +50,11 @@ export const routers: Array<RouteRecordRaw> = [
         name: 'formSysUser',
       },
       {
+        path: 'formSysCode',
+        component: () => import('@/pages/upms/formSysCode/index.vue'),
+        name: 'formSysCode',
+      },
+      {
         path: 'formSysDept',
         component: () => import('@/pages/upms/formSysDept/index.vue'),
         name: 'formSysDept',

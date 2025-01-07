@@ -13,12 +13,12 @@
         hasFold="true"
         @search="refreshFormSysUser(true)"
         @reset="onReset">
-        <el-form-item label="所属部门" prop="formFilter.deptId" label-position="top">
+        <el-form-item label="Department" prop="formFilter.deptId" label-position="top">
           <el-cascader
             class="filter-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="所属部门"
+            placeholder="Department"
             :loading="formSysUser.deptId.impl.loading"
             :props="deptOptions"
             @visible-change="onDeptIdVisibleChange"
@@ -27,20 +27,20 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="登录名称" prop="formFilter.sysUserLoginName" label-position="top">
+        <el-form-item label="Login Name" prop="formFilter.sysUserLoginName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true"
-            placeholder="登录名称"
+            placeholder="Login Name"
           />
         </el-form-item>
-        <el-form-item label="用户昵称" prop="formFilter.showName" label-position="top">
+        <el-form-item label="Show Name" prop="formFilter.showName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.showName"
             :clearable="true"
-            placeholder="用户昵称"
+            placeholder="Show Name"
           />
         </el-form-item>
       </filter-box>
@@ -63,15 +63,15 @@
           :icon="Plus"
           :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:add')"
           @click="onAddRow()"
-          >新建</el-button
+          >Create</el-button
         >
       </template>
-      <vxe-column title="序号" type="seq" width="50px" />
-      <vxe-column title="用户名" field="loginName" sortable> </vxe-column>
-      <vxe-column title="昵称" field="showName"> </vxe-column>
-      <vxe-column title="账号类型" field="userTypeDictMap.name" />
-      <vxe-column title="所属部门" field="deptIdDictMap.name" />
-      <vxe-column title="状态">
+      <vxe-column title="No." type="seq" width="50px" />
+      <vxe-column title="Login Name" field="loginName" sortable> </vxe-column>
+      <vxe-column title="Show Name" field="showName"> </vxe-column>
+      <vxe-column title="Account Type" field="userTypeDictMap.name" />
+      <vxe-column title="Department" field="deptIdDictMap.name" />
+      <vxe-column title="Status">
         <template v-slot="scope">
           <el-tag
             :type="getUserStatusType(scope.row.userStatus)"
@@ -80,14 +80,14 @@
           >
         </template>
       </vxe-column>
-      <vxe-column title="创建时间">
+      <vxe-column title="Create Time">
         <template v-slot="scope">
           <span class="vxe-cell--label">{{
             formatDateByStatsType(scope.row.createTime, 'day')
           }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="250px">
+      <vxe-column title="Operation" fixed="right" width="250px">
         <template v-slot="scope">
           <el-button
             type="primary"
@@ -98,7 +98,7 @@
               isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:update')
             "
           >
-            编辑
+            Edit
           </el-button>
           <el-button
             link
@@ -109,7 +109,7 @@
               isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:delete')
             "
           >
-            删除
+            Delete
           </el-button>
           <el-button
             link
@@ -118,7 +118,7 @@
             @click="onResetPassword(scope.row)"
             :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:resetPassword')"
           >
-            重置密码
+            Reset Password
           </el-button>
         </template>
       </vxe-column>
@@ -213,7 +213,7 @@ const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
 };
 
 /**
- * 用户数据数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * User data acquisition verification function, returns true to normally acquire data, returns false to stop acquiring data
  */
 const loadSysUserVerify = () => {
   formSysUser.formFilterCopy.deptId = formSysUser.formFilter.deptId;
@@ -250,7 +250,7 @@ const dropdownOptions: DropdownOptions<ANY_OBJECT> = {
   idKey: 'deptId',
 };
 
-// 加载用户数据
+// Load user data
 const formSysUser = reactive({
   formFilter: {
     deptId: undefined as CascaderNodeValue | CascaderNodePathValue | undefined,
@@ -277,7 +277,7 @@ const { checkPermCodeExist } = usePermissions();
 const { formatDateByStatsType } = useDate();
 
 const refreshFormSysUser = (reloadData = false) => {
-  // 重新获取数据组件的数据
+  // Retrieve data component data again
   if (reloadData) {
     formSysUser.SysUser.impl.refreshTable(true, 1);
   } else {
@@ -297,7 +297,7 @@ const getUserStatusType = (status: number) => {
 };
 
 const onAddRow = () => {
-  Dialog.show('新建用户', EditUserForm, {
+  Dialog.show('Create User', EditUserForm, {
     area: '600px',
   })
     .then(() => {
@@ -316,7 +316,7 @@ const onEditRow = (row: User) => {
   SystemUserController.getUser(params)
     .then(res => {
       Dialog.show(
-        '编辑用户',
+        'Edit User',
         EditUserForm,
         {
           area: '600px',
@@ -341,9 +341,9 @@ const onDeleteRow = (row: User) => {
   let params = {
     userId: row.userId,
   };
-  ElMessageBox.confirm(`是否删除用户【${row.showName || row.loginName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Are you sure to delete user 【${row.showName || row.loginName}】?`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -361,16 +361,16 @@ const onDeleteRow = (row: User) => {
 };
 
 const onResetPassword = (row: User) => {
-  ElMessageBox.confirm('是否重置用户密码？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure to reset user password?', '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
       return SystemUserController.resetUserPassword({ userId: row.userId });
     })
     .then(() => {
-      ElMessage.success('重置密码成功');
+      ElMessage.success('Password reset successful');
     })
     .catch(e => {
       console.warn(e);

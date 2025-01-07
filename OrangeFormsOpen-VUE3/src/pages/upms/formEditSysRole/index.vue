@@ -5,17 +5,28 @@
     :rules="rules"
     :size="formItemSize"
     label-position="right"
+    label-width="120px"
     @submit.prevent
   >
     <el-row :gutter="20">
       <el-col :span="24">
+        <el-form-item label="User Type" prop="userType">
+          <el-select v-model="formData.userType" placeholder="Country Code">
+            <el-option
+              v-for="item in userTypeList"
+              :key="item.attr1"
+              :label="item.attr1Name"
+              :value="item.attr1"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="Role Name" prop="roleName">
           <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
         </el-form-item>
-        <el-form-item v-if="false" label="角色类型" :required="true">
+        <el-form-item v-if="false" label="Role Type" :required="true">
           <el-radio-group v-model="formData.adminRole">
-            <el-radio :value="1">管理员</el-radio>
-            <el-radio :value="0">其他</el-radio>
+            <el-radio :value="1">Admin</el-radio>
+            <el-radio :value="0">Other</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-card shadow="never">
@@ -81,6 +92,8 @@ import { findTreeNode, treeDataTranslate } from '@/common/utils';
 import { MenuItem } from '@/types/upms/menu';
 import { Role } from '@/types/upms/role';
 import { useLayoutStore } from '@/store';
+import axios from 'axios';
+import { serverDefaultCfg } from '@/common/http/config';
 const layoutStore = useLayoutStore();
 
 const props = defineProps<{
@@ -100,15 +113,18 @@ const authTree = ref<InstanceType<typeof ElTree>>();
 const formData = ref({
   roleId: '',
   roleName: '',
+  userType: '',
   adminRole: false,
   menuIdListString: '',
   menuIdList: [] as string[],
   sysRoleMenuList: [] as MenuItem[],
 });
 const rules = {
-  roleName: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
+  userType: [{ required: true, message: 'User type cannot be empty', trigger: 'blur' }],
+  roleName: [{ required: true, message: 'Role name cannot be empty', trigger: 'blur' }],
 };
 const menuNameFilter = ref();
+const userTypeList = ref();
 const authData: Ref<MenuItem[]> = ref([]);
 let allowParentList: string[] = [];
 const isEdit = computed(() => {
@@ -139,7 +155,7 @@ const onSubmit = () => {
 
       if (selectMenu.length <= 0) {
         ElMessage.error({
-          message: '请选择角色的菜单权限',
+          message: 'Please select the menu permissions for the role',
           showClose: true,
         });
         return;
@@ -152,7 +168,7 @@ const onSubmit = () => {
       if (isEdit.value) {
         SystemRoleController.updateRole(params)
           .then(res => {
-            ElMessage.success('编辑成功');
+            ElMessage.success('Edit Successful');
             if (props.dialog) {
               props.dialog.submit(res);
             }
@@ -163,7 +179,7 @@ const onSubmit = () => {
       } else {
         SystemRoleController.addRole(params)
           .then(res => {
-            ElMessage.success('添加成功');
+            ElMessage.success('Add Successful');
             if (props.dialog) {
               props.dialog.submit(res);
             }
@@ -174,6 +190,20 @@ const onSubmit = () => {
       }
     }
   });
+};
+const getUserTypeList = () => {
+  axios
+    .get(`${serverDefaultCfg.baseURL}sys/code/list`, {
+      params: {
+        groupCode: 'UserType',
+      },
+    })
+    .then(res => {
+      userTypeList.value = res.data;
+    })
+    .catch(e => {
+      console.log(e);
+    });
 };
 const loadAuthData = () => {
   SystemMenuController.getMenuPermList({})
@@ -210,6 +240,7 @@ onMounted(() => {
       formData.value.menuIdList = formData.value.sysRoleMenuList.map(item => item.menuId);
     }
   }
+  getUserTypeList();
   loadAuthData();
 });
 </script>

@@ -13,6 +13,19 @@ const SysUserStatus = new DictionaryBase('User Status', [
   },
 ]);
 
+const SysCodeStatus = new DictionaryBase('Code Status', [
+  {
+    id: 1,
+    name: 'Activated',
+    symbol: 'ACTIVATED',
+  },
+  {
+    id: 0,
+    name: 'DeActivated',
+    symbol: 'DEACTIVATED',
+  },
+]);
+
 const SysUserType = new DictionaryBase('User Type', [
   {
     id: 0,
@@ -1068,6 +1081,7 @@ const CriteriaFilterType = new DictionaryBase('Criteria Filter Type', [
 ]);
 export {
   SysUserStatus,
+  SysCodeStatus,
   SysUserType,
   SysDataPermType,
   SysOperationType,

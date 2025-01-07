@@ -61,7 +61,7 @@
         </template>
       </vxe-column>
       <vxe-column title="Initiator Login Name" field="startUser" />
-      <vxe-column title="Initiator Nickname" field="showName" />
+      <vxe-column title="Initiator Show Name" field="showName" />
       <vxe-column title="Task Initiation Time" width="170px" field="createTime" />
       <vxe-column title="Operation" width="100px">
         <template v-slot="scope">

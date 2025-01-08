@@ -3,7 +3,7 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="140px"
+    label-width="150px"
     :size="formItemSize"
     label-position="right"
     @submit.prevent
@@ -17,6 +17,7 @@
             clearable
             :disabled="isEdit"
             maxlength="30"
+            autocomplete="new-loginName"
           />
         </el-form-item>
         <el-form-item label="Login Password" v-if="!isEdit" prop="password">
@@ -26,6 +27,7 @@
             placeholder="User Login Password"
             clearable
             maxlength="64"
+            autocomplete="new-password"
           />
         </el-form-item>
         <el-form-item label="Confirm Password" v-if="!isEdit" prop="passwordRepeat">
@@ -38,7 +40,12 @@
           />
         </el-form-item>
         <el-form-item label="Show Name" prop="showName">
-          <el-input v-model="formData.showName" placeholder="User Show Name" clearable maxlength="30" />
+          <el-input
+            v-model="formData.showName"
+            placeholder="User Show Name"
+            clearable
+            maxlength="30"
+          />
         </el-form-item>
         <el-form-item label="Account Type" prop="userType">
           <el-select v-model="formData.userType">
@@ -78,6 +85,16 @@
               :key="deptPost.deptPostId"
               :label="deptPost.postShowName"
               :value="deptPost.deptPostId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="User Type" prop="userRole">
+          <el-select v-model="formData.userRole" placeholder="Country Code">
+            <el-option
+              v-for="item in userTypeList"
+              :key="item.attr1"
+              :label="item.attr1Name"
+              :value="item.attr1"
             />
           </el-select>
         </el-form-item>
@@ -141,6 +158,8 @@ import { User } from '@/types/upms/user';
 import { useDropdown } from '@/common/hooks/useDropdown';
 import { DropdownOptions, ListData } from '@/common/types/list';
 import { useLayoutStore } from '@/store';
+import axios from 'axios';
+import { serverDefaultCfg } from '@/common/http/config';
 const layoutStore = useLayoutStore();
 
 const props = defineProps<{
@@ -155,6 +174,9 @@ const { checkPermCodeExist } = usePermissions();
 
 const form = ref();
 const formData: Ref<User> = ref({
+  loginName: '',
+  password: '',
+  userRole: '',
   userType: 2,
   userStatus: 0,
   dataPermIdList: [],
@@ -180,18 +202,23 @@ const rules = ref({
   password: [{ required: true, message: 'User Password Cannot Be Empty', trigger: 'blur' }],
   passwordRepeat: [
     {
+      required: true,
       validator: validatePasswordRepeat,
       trigger: 'blur',
     },
   ],
   showName: [{ required: true, message: 'User Show Name Cannot Be Empty', trigger: 'blur' }],
-  dataPermIdList: [{ required: true, message: 'Data Permission Cannot Be Empty', trigger: 'change' }],
+  dataPermIdList: [
+    { required: true, message: 'Data Permission Cannot Be Empty', trigger: 'change' },
+  ],
+  deptId: [{ required: true, message: 'Department Id Cannot Be Empty', trigger: 'change' }],
   deptPostIdList: [{ required: true, message: 'User Position Cannot Be Empty', trigger: 'change' }],
   roleIdList: [{ required: true, message: 'User Role Cannot Be Empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);
 const deptPostList = ref<ANY_OBJECT[]>();
+const userTypeList = ref();
 const roleList = ref<ANY_OBJECT>([]);
 
 const isEdit = computed(() => {
@@ -245,10 +272,10 @@ const onDeptIdValueChange = (value: CascaderValue) => {
  * Get Department Position List
  */
 const loadDeptPost = () => {
-  if (formData.value.deptId == null || formData.value.deptId === '') {
-    deptPostList.value = [];
-    return;
-  }
+  // if (formData.value.deptId == null || formData.value.deptId === '') {
+  //   deptPostList.value = [];
+  //   return;
+  // }
   DictionaryController.dictDeptPost({
     deptId: formData.value.deptId,
   })
@@ -265,6 +292,20 @@ const onCancel = () => {
     props.dialog.cancel();
   }
 };
+const getUserTypeList = () => {
+  axios
+    .get(`${serverDefaultCfg.baseURL}sys/code/list`, {
+      params: {
+        groupCode: 'UserType',
+      },
+    })
+    .then(res => {
+      userTypeList.value = res.data;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
 const onSubmit = () => {
   form.value.validate((valid: boolean) => {
     if (valid) {
@@ -274,6 +315,7 @@ const onSubmit = () => {
           loginName: formData.value.loginName,
           password: formData.value.password,
           showName: formData.value.showName,
+          userRole: formData.value.userRole,
           userType: formData.value.userType,
           deptId: formData.value.deptId,
           userStatus: formData.value.userStatus,
@@ -353,5 +395,6 @@ onMounted(() => {
   loadRole();
   loadDataPerm();
   loadDeptPost();
+  getUserTypeList();
 });
 </script>

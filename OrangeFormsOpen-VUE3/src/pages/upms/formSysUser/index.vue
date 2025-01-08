@@ -12,7 +12,8 @@
         :item-width="350"
         hasFold="true"
         @search="refreshFormSysUser(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="Department" prop="formFilter.deptId" label-position="top">
           <el-cascader
             class="filter-item"
@@ -33,6 +34,14 @@
             v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true"
             placeholder="Login Name"
+          />
+        </el-form-item>
+        <el-form-item label="User Type" prop="formFilter.userRole" label-position="top">
+          <el-input
+            class="filter-item"
+            v-model="formSysUser.formFilter.userRole"
+            :clearable="true"
+            placeholder="User Type"
           />
         </el-form-item>
         <el-form-item label="Show Name" prop="formFilter.showName" label-position="top">
@@ -70,6 +79,7 @@
       <vxe-column title="Login Name" field="loginName" sortable> </vxe-column>
       <vxe-column title="Show Name" field="showName"> </vxe-column>
       <vxe-column title="Account Type" field="userTypeDictMap.name" />
+      <vxe-column title="User Type" field="userRole" />
       <vxe-column title="Department" field="deptIdDictMap.name" />
       <vxe-column title="Status">
         <template v-slot="scope">
@@ -196,6 +206,7 @@ const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
     deptId: formSysUser.formFilterCopy.deptId,
     loginName: formSysUser.formFilterCopy.sysUserLoginName,
     showName: formSysUser.formFilterCopy.showName,
+    userRole: formSysUser.formFilterCopy.userRole,
     userStatus: formSysUser.formFilterCopy.sysUserStatus,
   };
   return new Promise((resolve, reject) => {
@@ -219,6 +230,7 @@ const loadSysUserVerify = () => {
   formSysUser.formFilterCopy.deptId = formSysUser.formFilter.deptId;
   formSysUser.formFilterCopy.sysUserLoginName = formSysUser.formFilter.sysUserLoginName;
   formSysUser.formFilterCopy.showName = formSysUser.formFilter.showName;
+  formSysUser.formFilterCopy.userRole = formSysUser.formFilter.userRole;
   formSysUser.formFilterCopy.sysUserStatus = formSysUser.formFilter.sysUserStatus;
   return true;
 };
@@ -253,12 +265,14 @@ const dropdownOptions: DropdownOptions<ANY_OBJECT> = {
 // Load user data
 const formSysUser = reactive({
   formFilter: {
+    userRole: undefined,
     deptId: undefined as CascaderNodeValue | CascaderNodePathValue | undefined,
     sysUserStatus: undefined,
     sysUserLoginName: undefined,
     showName: undefined,
   },
   formFilterCopy: {
+    userRole: undefined,
     deptId: undefined as CascaderNodeValue | CascaderNodePathValue | undefined,
     sysUserStatus: undefined,
     sysUserLoginName: undefined,

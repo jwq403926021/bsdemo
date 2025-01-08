@@ -6,7 +6,6 @@
     >
       <el-row type="flex" justify="space-between" align="middle" style="height: 100%">
         <div class="title" style="display: flex; width: 200px; height: 40px; line-height: 40px">
-          <i class="header-logo logo online-icon icon-orange-icon" style="font-size: 40px" />
           <span style="font-size: 22px; color: #333; font-weight: bold">数据库链接</span>
         </div>
         <el-row type="flex" justify="end">

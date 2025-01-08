@@ -30,6 +30,7 @@ export interface User {
   password?: string;
   passwordRepeat?: string;
   showName?: string;
+  userRole?: string;
   userType?: number;
   userStatus?: number;
   deptId?: string;

@@ -341,9 +341,13 @@ const onSaveFormData = async () => {
     shipTo: params.shipToName,
     stockLocName: params.stockLocName,
     contactInfo: params.contactInfo,
-    productUpn: params.products?.[0]?.productUpn,
-    productName: params.products?.[0]?.productName,
-    qty: params.products?.[0]?.selectedQty,
+    orderSelectedProductList: params.products?.map(item => {
+      return {
+        productUpn: item.productUpn,
+        productName: item.productName,
+        qty: item.selectedQty,
+      };
+    }),
     recipient: params?.recipientModify ?? params.recipient,
     phone: params?.phoneModify ?? params.phone,
     deliveryDate: params.requestDeliveryDate,

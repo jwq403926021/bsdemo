@@ -397,7 +397,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ghost {
   height: 30px;
   border-radius: 3px;
@@ -428,5 +428,10 @@ onMounted(() => {
 .info span {
   margin-top: 10px;
   font-size: 16px;
+}
+:deep(.is-process) {
+  border-color: #a8abb2;
+  color: #a8abb2;
+  font-weight: normal;
 }
 </style>

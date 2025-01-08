@@ -49,7 +49,8 @@
         >
           <el-form-item
             :label="
-              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') + ' User Type'
+              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') +
+              ' User Type'
             "
           >
             <el-select v-model="multiSignAssignee.assigneeType" placeholder="" @change="typeChange">
@@ -70,7 +71,8 @@
         >
           <el-form-item
             :label="
-              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') + ' User Selection'
+              (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') +
+              ' User Selection'
             "
           >
             <TagSelect
@@ -233,7 +235,7 @@ const getValidOperationList = computed(() => [
     symbol: 'REFUSE',
   },
   {
-    id: 'rejectToStart',
+    id: 'rework',
     name: 'Rework',
     symbol: 'REJECT_TO_START',
   },

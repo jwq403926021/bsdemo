@@ -7,7 +7,7 @@
         class="full-width-input"
         :rules="rules"
         style="width: 100%"
-        label-width="120px"
+        label-width="130px"
         :size="formItemSize"
         label-position="right"
         @submit.prevent
@@ -39,12 +39,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="Enable">
-              <el-switch class="input-item" v-model="formData.enabled" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="!formData.rowOperation">
+          <el-col :span="24" v-if="!formData.rowOperation">
             <el-form-item label="Button Type" prop="btnType">
               <el-select v-model="formData.btnType">
                 <el-option label="primary" value="primary" />
@@ -54,7 +49,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="!formData.rowOperation">
+          <el-col :span="24">
+            <el-form-item label="Enable">
+              <el-switch class="input-item" v-model="formData.enabled" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" v-if="!formData.rowOperation">
             <el-form-item label="Plain" prop="btnType">
               <el-switch v-model="formData.plain" />
             </el-form-item>

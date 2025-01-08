@@ -77,13 +77,13 @@ const buildFormConfig = computed(() => {
       customFieldList: formConfig().form.customFieldList,
     },
     getMasterTable: {
-      relationType: formConfig().getMasterTable.relationType,
+      relationType: formConfig().getMasterTable?.relationType,
       tag: {
-        datasourceName: formConfig().getMasterTable.tag.datasourceName,
-        relationName: formConfig().getMasterTable.tag.relationName,
-        variableName: formConfig().getMasterTable.tag.variableName,
+        datasourceName: formConfig().getMasterTable?.tag.datasourceName,
+        relationName: formConfig().getMasterTable?.tag.relationName,
+        variableName: formConfig().getMasterTable?.tag.variableName,
       },
-      columnList: formConfig().getMasterTable.columnList.map((column: ANY_OBJECT) => {
+      columnList: formConfig().getMasterTable?.columnList.map((column: ANY_OBJECT) => {
         return {
           filterType: column.filterType,
           columnComment: column.columnComment,

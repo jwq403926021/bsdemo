@@ -42,7 +42,7 @@
               @change="onFormTypeChange"
             >
               <el-option
-                v-for="item in getValidFormType"
+                v-for="item in getValidFormType.filter(item => [1, 5].includes(item.id))"
                 :key="item.id"
                 :value="item.id"
                 :label="item.name"

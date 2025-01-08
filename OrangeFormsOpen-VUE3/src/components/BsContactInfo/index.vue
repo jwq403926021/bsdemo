@@ -35,7 +35,7 @@ const pps = withDefaults(
   },
 );
 const selectedItems = ref<ANY_OBJECT[]>([]);
-const selectedContactInfo = ref(null);
+const selectedContactInfo = ref<ANY_OBJECT | undefined | null>({});
 const form = inject('form');
 const step = inject('step');
 const emitChange = value => {
@@ -86,7 +86,7 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
-    contactInfo: selectedContactInfo.value?.recipient + ' | ' + selectedContactInfo.value?.telNo,
+    contactInfo: selectedContactInfo.value?.recipient && selectedContactInfo.value?.telNo ? selectedContactInfo.value?.recipient + ' | ' + selectedContactInfo.value?.telNo : '',
     recipient: selectedContactInfo.value?.recipient,
     phone: selectedContactInfo.value?.telNo,
     ...selectedContactInfo.value,

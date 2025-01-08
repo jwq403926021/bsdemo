@@ -158,7 +158,7 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import widgetData from '@/online/config/index';
 import { useLayoutStore, useLoginStore } from '@/store';
-import { serverDefaultCfg } from '@/common/http/config';
+import _ from 'lodash';
 import { eventbus } from '@/common/utils/mitt';
 import { FlowEntryController } from '@/api/flow';
 import { useDict } from '../../hooks/useDict';
@@ -356,6 +356,7 @@ const onSaveFormData = async () => {
     formType: getQueryParam('formType'),
     orderType: getQueryParam('orderType')?.replace(/\+/g, ' '),
   };
+  params = _.omitBy(params, value => !value || value.length === 0);
   console.log('real params::::', params);
   const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);
   console.log(res);

@@ -809,6 +809,11 @@ const OnlineFormEventType = new DictionaryBase('Online Form Event Type', [
  */
 const SysOnlineFormType = new DictionaryBase('Form Type', [
   {
+    id: 5,
+    name: 'Edit Form',
+    symbol: 'FORM',
+  },
+  {
     id: 1,
     name: 'Query Form',
     symbol: 'QUERY',
@@ -822,11 +827,6 @@ const SysOnlineFormType = new DictionaryBase('Form Type', [
     id: 3,
     name: 'One-To-One Query',
     symbol: 'ONE_TO_ONE_QUERY',
-  },
-  {
-    id: 5,
-    name: 'Edit Form',
-    symbol: 'FORM',
   },
   {
     id: 10,

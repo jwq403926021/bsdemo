@@ -14,12 +14,35 @@
         @search="refreshFormSysUser(true)"
         @reset="onReset"
       >
-        <el-form-item label="Department" prop="formFilter.deptId" label-position="top">
+        <el-form-item label="User" prop="formFilter.sysUserLoginName" label-position="top">
+          <el-input
+            class="filter-item"
+            v-model="formSysUser.formFilter.sysUserLoginName"
+            :clearable="true"
+            placeholder="Enter Full Name/Username"
+          />
+        </el-form-item>
+        <el-form-item label="Role" prop="formFilter.roleId" label-position="top">
+          <el-select
+            class="filter-item"
+            v-model="formSysUser.formFilter.roleId"
+            :clearable="true"
+            placeholder="Role"
+          >
+            <el-option
+              v-for="role in roleList"
+              :key="role.roleId"
+              :label="role.roleName"
+              :value="role.roleId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Division" prop="formFilter.deptId" label-position="top">
           <el-cascader
             class="filter-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="Department"
+            placeholder="Select Division"
             :loading="formSysUser.deptId.impl.loading"
             :props="deptOptions"
             @visible-change="onDeptIdVisibleChange"
@@ -28,30 +51,22 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="Login Name" prop="formFilter.sysUserLoginName" label-position="top">
-          <el-input
-            class="filter-item"
-            v-model="formSysUser.formFilter.sysUserLoginName"
-            :clearable="true"
-            placeholder="Login Name"
-          />
-        </el-form-item>
-        <el-form-item label="User Type" prop="formFilter.userRole" label-position="top">
+        <!-- <el-form-item label="User Type" prop="formFilter.userRole" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.userRole"
             :clearable="true"
             placeholder="User Type"
           />
-        </el-form-item>
-        <el-form-item label="Show Name" prop="formFilter.showName" label-position="top">
+        </el-form-item> -->
+        <!-- <el-form-item label="Show Name" prop="formFilter.showName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.showName"
             :clearable="true"
             placeholder="Show Name"
           />
-        </el-form-item>
+        </el-form-item> -->
       </filter-box>
     </el-form>
     <table-box
@@ -76,11 +91,12 @@
         >
       </template>
       <vxe-column title="No." type="seq" width="50px" />
-      <vxe-column title="Login Name" field="loginName" sortable> </vxe-column>
-      <vxe-column title="Show Name" field="showName"> </vxe-column>
+      <vxe-column title="Username" field="loginName"> </vxe-column>
+      <vxe-column title="Full Name" field="showName"> </vxe-column>
+      <vxe-column title="Role" field="roleName"> </vxe-column>
       <vxe-column title="Account Type" field="userTypeDictMap.name" />
       <vxe-column title="User Type" field="userRole" />
-      <vxe-column title="Department" field="deptIdDictMap.name" />
+      <vxe-column title="Division" field="deptIdDictMap.name" />
       <vxe-column title="Status">
         <template v-slot="scope">
           <el-tag
@@ -172,7 +188,7 @@ import { SysUserStatus, SysUserType } from '@/common/staticDict/index';
 import { User, UserInfo } from '@/types/upms/user';
 import { usePermissions } from '@/common/hooks/usePermission';
 import { ANY_OBJECT } from '@/types/generic';
-import { DictionaryController } from '@/api/system';
+import { DictionaryController, SystemRoleController } from '@/api/system';
 import { useDialog } from '@/components/Dialog/useDialog';
 import { TableOptions } from '@/common/types/pagination';
 import { useTable } from '@/common/hooks/useTable';
@@ -183,6 +199,7 @@ import { useDate } from '@/common/hooks/useDate';
 import { useLayoutStore } from '@/store';
 import EditUserForm from '../formEditSysUser/index.vue';
 const layoutStore = useLayoutStore();
+const roleList = ref<ANY_OBJECT>([]);
 
 const Dialog = useDialog();
 const mainContextHeight = inject('mainContextHeight', 200);
@@ -204,6 +221,7 @@ const isAdmin = (row: UserInfo) => {
 const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
   params.sysUserDtoFilter = {
     deptId: formSysUser.formFilterCopy.deptId,
+    roleId: formSysUser.formFilterCopy.roleId,
     loginName: formSysUser.formFilterCopy.sysUserLoginName,
     showName: formSysUser.formFilterCopy.showName,
     userRole: formSysUser.formFilterCopy.userRole,
@@ -228,6 +246,7 @@ const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
  */
 const loadSysUserVerify = () => {
   formSysUser.formFilterCopy.deptId = formSysUser.formFilter.deptId;
+  formSysUser.formFilterCopy.roleId = formSysUser.formFilter.roleId;
   formSysUser.formFilterCopy.sysUserLoginName = formSysUser.formFilter.sysUserLoginName;
   formSysUser.formFilterCopy.showName = formSysUser.formFilter.showName;
   formSysUser.formFilterCopy.userRole = formSysUser.formFilter.userRole;
@@ -265,6 +284,7 @@ const dropdownOptions: DropdownOptions<ANY_OBJECT> = {
 // Load user data
 const formSysUser = reactive({
   formFilter: {
+    roleId: undefined,
     userRole: undefined,
     deptId: undefined as CascaderNodeValue | CascaderNodePathValue | undefined,
     sysUserStatus: undefined,
@@ -272,6 +292,7 @@ const formSysUser = reactive({
     showName: undefined,
   },
   formFilterCopy: {
+    roleId: undefined,
     userRole: undefined,
     deptId: undefined as CascaderNodeValue | CascaderNodePathValue | undefined,
     sysUserStatus: undefined,
@@ -309,7 +330,15 @@ const getUserStatusType = (status: number) => {
     return 'info';
   }
 };
-
+const loadRole = () => {
+  SystemRoleController.getRoleList({})
+    .then(res => {
+      roleList.value = res.data.dataList;
+    })
+    .catch(e => {
+      console.warn(e);
+    });
+};
 const onAddRow = () => {
   Dialog.show('Create User', EditUserForm, {
     area: '600px',
@@ -402,6 +431,7 @@ const onDeptIdValueChange = (value: CascaderValue) => {
 };
 
 onMounted(() => {
+  loadRole();
   refreshFormSysUser();
 });
 </script>

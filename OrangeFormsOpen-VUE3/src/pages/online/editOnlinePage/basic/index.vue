@@ -31,7 +31,7 @@
       </el-col>
       <el-col :span="24">
         <el-form-item label="Page Name" prop="pageName">
-          <el-input v-model="formPageData.pageName" @change="dirty = true" />
+          <el-input v-model="formPageData.pageName" :disabled="isEdit" @change="dirty = true" />
         </el-form-item>
       </el-col>
       <!--      <el-col :span="24">-->

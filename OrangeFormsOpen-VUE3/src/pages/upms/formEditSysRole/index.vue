@@ -14,7 +14,7 @@
           <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
         </el-form-item>
         <el-form-item label="User Type" prop="userType">
-          <el-select v-model="formData.userType" placeholder="Country Code">
+          <el-select v-model="formData.userType" placeholder="User Type">
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"

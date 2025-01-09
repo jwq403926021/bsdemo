@@ -47,7 +47,7 @@
             maxlength="30"
           />
         </el-form-item>
-        <el-form-item label="Account Type" prop="userType">
+        <!-- <el-form-item label="Account Type" prop="userType">
           <el-select v-model="formData.userType">
             <el-option
               v-for="item in SysUserType.getList()"
@@ -56,7 +56,7 @@
               :value="item.id"
             />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="User Status" prop="userStatus" v-if="isEdit">
           <el-radio-group v-model="formData.userStatus">
             <el-radio v-for="item in SysUserStatus.getList()" :key="item.id" :value="item.id">{{
@@ -89,7 +89,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="User Type" prop="userRole">
-          <el-select v-model="formData.userRole" placeholder="Country Code">
+          <el-select v-model="formData.userRole" placeholder="User Type">
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"
@@ -98,8 +98,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="User Role" prop="roleIdList">
-          <el-select v-model="formData.roleIdList" multiple placeholder="User Role">
+        <el-form-item label="Role" prop="roleIdList">
+          <el-select v-model="formData.roleIdList" placeholder="Role">
             <el-option
               v-for="role in roleList"
               :key="role.roleId"
@@ -181,7 +181,7 @@ const formData: Ref<User> = ref({
   userStatus: 0,
   dataPermIdList: [],
   deptPostIdList: [],
-  roleIdList: [],
+  roleIdList: '',
 });
 const validatePasswordRepeat = (
   rule: ANY_OBJECT,
@@ -213,7 +213,7 @@ const rules = ref({
   ],
   deptId: [{ required: true, message: 'Department Id Cannot Be Empty', trigger: 'change' }],
   deptPostIdList: [{ required: true, message: 'User Position Cannot Be Empty', trigger: 'change' }],
-  roleIdList: [{ required: true, message: 'User Role Cannot Be Empty', trigger: 'change' }],
+  roleIdList: [{ required: true, message: 'Role Cannot Be Empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);
@@ -328,7 +328,7 @@ const onSubmit = () => {
           : undefined,
         roleIdListString: Array.isArray(formData.value.roleIdList)
           ? formData.value.roleIdList.join(',')
-          : undefined,
+          : formData.value.roleIdList,
       };
 
       let operation: Promise<ANY_OBJECT>;
@@ -373,7 +373,7 @@ onMounted(() => {
       ...props.rowData,
       dataPermIdList: [],
       deptPostIdList: [],
-      roleIdList: [],
+      roleIdList: '',
     };
     if (Array.isArray(formData.value.sysDataPermUserList)) {
       formData.value.dataPermIdList = formData.value.sysDataPermUserList.map(
@@ -384,7 +384,7 @@ onMounted(() => {
       formData.value.deptPostIdList = formData.value.sysUserPostList.map(item => item.deptPostId);
     }
     if (Array.isArray(formData.value.sysUserRoleList)) {
-      formData.value.roleIdList = formData.value.sysUserRoleList.map(item => item.roleId);
+      formData.value.roleIdList = formData.value.sysUserRoleList.map(item => item.roleId)[0];
     }
   }
   deptId.impl.onVisibleChange(true).then(() => {

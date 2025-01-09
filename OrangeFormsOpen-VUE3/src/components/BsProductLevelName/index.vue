@@ -58,8 +58,6 @@ const getProductLevelName = async (isClear = false, data?) => {
     selectedItems.value = [];
     eventbus.emit(`bs:${pps.widget.variableName}`, null);
   }
-  // if (data) {
-  //   debugger
   let productLevel = '';
   if (data) {
     productLevel = data.value;

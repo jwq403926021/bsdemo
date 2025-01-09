@@ -274,7 +274,7 @@ onMounted(() => {
     formData.value.formType =
       dialogParams.value.pageType === SysOnlinePageType.FLOW
         ? SysOnlineFormType.FLOW
-        : SysOnlineFormType.QUERY;
+        : SysOnlineFormType.FORM;
   }
   formData.value.masterTableId = getValidTableList.value[0].tableId;
 });

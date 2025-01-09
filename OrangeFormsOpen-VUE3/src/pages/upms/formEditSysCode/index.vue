@@ -11,14 +11,7 @@
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24">
         <el-form-item label="Country Code" prop="countryCode">
-          <el-select v-model="formData.countryCode" placeholder="Country Code">
-            <el-option
-              v-for="item in countryCodeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+          <el-input v-model="formData.countryCode" placeholder="Country Code" />
         </el-form-item>
         <el-form-item label="Group Code" prop="groupCode">
           <el-select v-model="formData.groupCode" placeholder="Group Code">

@@ -595,7 +595,12 @@ const getRelationType = (relationType: number) => {
 };
 const getMasterTable = computed(() => {
   if (currentForm.value != null) {
-    return findItemFromList(getAllTableList.value, currentForm.value?.masterTableId, 'tableId');
+    const masterTable = findItemFromList(
+      getAllTableList.value,
+      currentForm.value?.masterTableId,
+      'tableId',
+    );
+    return masterTable;
   } else {
     return null;
   }
@@ -887,7 +892,7 @@ const getTableWidgetTableList = computed(() => {
   return [];
 });
 const formConfig = computed(() => {
-  return {
+  let formConfig = {
     form: currentForm.value ? currentForm.value[activeMode.value] : null,
     activeMode: activeMode.value,
     currentWidget: currentWidget.value,
@@ -899,6 +904,7 @@ const formConfig = computed(() => {
     getWidgetObject: widgetData.getWidgetObject,
     dictList: props.dictList,
   };
+  return formConfig;
 });
 
 provide('formConfig', () => formConfig.value);

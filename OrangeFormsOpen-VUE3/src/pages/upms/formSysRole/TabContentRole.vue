@@ -17,12 +17,19 @@
           />
         </el-form-item>
         <el-form-item label="User Type" prop="formFilter.sysUserType" label-position="top">
-          <el-input
+          <el-select
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysUserType"
             :clearable="true"
             placeholder="User Type"
-          />
+          >
+            <el-option
+              v-for="item in userTypeList"
+              :key="item.attr1"
+              :label="item.attr1Name"
+              :value="item.attr1"
+            />
+          </el-select>
         </el-form-item>
       </filter-box>
     </el-form>
@@ -110,7 +117,10 @@ import { useDialog } from '@/components/Dialog/useDialog';
 import { Role } from '@/types/upms/role';
 import { useLayoutStore } from '@/store';
 import FormEditSysRole from '../formEditSysRole/index.vue';
+import axios from 'axios';
+import { serverDefaultCfg } from '@/common/http/config';
 
+const userTypeList = ref();
 const Dialog = useDialog();
 const layoutStore = useLayoutStore();
 const mainContextHeight = inject('mainContextHeight', 200);
@@ -120,6 +130,20 @@ const form = ref();
 /**
  * 用户角色数据获取函数，返回Primise
  */
+const getUserTypeList = () => {
+  axios
+    .get(`${serverDefaultCfg.baseURL}sys/code/list`, {
+      params: {
+        groupCode: 'UserType',
+      },
+    })
+    .then(res => {
+      userTypeList.value = res.data;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
 const loadSysRoleData = (params: ANY_OBJECT): Promise<TableData<Role>> => {
   params.sysRoleDtoFilter = {
     userType: fragmentSysRole.formFilterCopy.sysUserType,
@@ -279,6 +303,9 @@ const onDeleteClick = (row: Role) => {
       // do nothing
     });
 };
+onMounted(() => {
+  getUserTypeList();
+});
 
 defineExpose({
   refreshFragmentSysRole,

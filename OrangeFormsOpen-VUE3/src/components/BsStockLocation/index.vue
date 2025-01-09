@@ -63,7 +63,7 @@ const getSelectList = async (isClear = false, data) => {
     }`,
   );
   selectedItems.value = res?.data
-    ?.filter(item => item.soldToNum === data.soldToNum)
+    ?.filter(item => item?.soldToNum === data?.soldToNum)
     .map(i => ({
       ...i,
       label: i.stockLocId + ' - ' + i.stockLocName,

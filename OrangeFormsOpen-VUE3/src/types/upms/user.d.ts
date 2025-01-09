@@ -36,7 +36,7 @@ export interface User {
   deptId?: string;
   dataPermIdList?: string[];
   deptPostIdList?: string[];
-  roleIdList?: string[];
+  roleIdList?: string;
   sysDataPermUserList?: T[];
   sysUserPostList?: T[];
   sysUserRoleList?: T[];

@@ -80,14 +80,22 @@
                 <vxe-column title="UPN" field="productUpn" />
                 <vxe-column title="Product Name" field="productName" />
                 <vxe-column
+                  align="center"
                   :title="formType === 'task' ? 'Order. Qty' : 'Quantity'"
-                  :field="formType === 'task' ? 'qty' : 'quantity'" />
-                  <template v-slot:empty>
-                    <div class="table-empty unified-font">
-                      <img src="@/assets/img/empty.png" />
-                      <span>No Data</span>
-                    </div>
+                  :field="formType === 'task' ? 'qty' : 'quantity'">
+                  <template #default="{ row }">
+                    <span style="color: #99B2C7">
+                      {{ formType === 'task' ? row.qty : `x${row.quantity}` }}
+                    </span>
                   </template>
+                </vxe-column>
+                <vxe-column v-if="formType === 'request'" title="Rejected Reason" field="rejectedReason" />
+                <template v-slot:empty>
+                  <div class="table-empty unified-font">
+                    <img src="@/assets/img/empty.png" />
+                    <span>No Data</span>
+                  </div>
+                </template>
               </vxe-table>
             </el-col>
           </el-row>
@@ -265,6 +273,8 @@ const props = withDefaults(
     // my request
     requestData?: string;
     productList?: Array<ANY_OBJECT> | string;
+    rejectReason?: string
+    productTotalCount?: number
   }>(),
   {
     formType: 'task',  // task -- myTask, request -- myRequest
@@ -321,9 +331,16 @@ const orderDetailsList = computed(() => {
     return Array.isArray(props.orderDetails) ?
        props.orderDetails : JSON.parse(props.orderDetails || '[]')
   } else if (props.formType === 'request') {
-    return props.requestData && typeof props.requestData === 'string'
+    const productList = typeof props.requestData === 'string'
       ? JSON.parse(props.requestData)?.productList
-      : [];
+      : []
+    if (productList.length !== 0) {
+      productList.push({
+        rejectedReason: props.rejectReason,
+        quantity: props.productTotalCount
+      })
+    }
+    return productList
   }
 });
 

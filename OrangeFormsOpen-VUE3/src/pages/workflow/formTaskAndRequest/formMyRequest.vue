@@ -333,6 +333,8 @@ const onDetail = (row: ANY_OBJECT) => {
             variableList: JSON.stringify(res.data.variableList),
             // my request
             formType: 'request',
+            productTotalCount: res.data.productTotalCount,
+            rejectReason: res.data.rejectReason ?? '',
             requestData: JSON.stringify(res.data),
             shippingOrder: JSON.stringify(res.data.shippingOrder),
             productList: JSON.stringify(res.data.productList),

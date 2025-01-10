@@ -94,7 +94,6 @@
       <vxe-column title="Username" field="loginName"> </vxe-column>
       <vxe-column title="Full Name" field="showName"> </vxe-column>
       <vxe-column title="Role" field="roleName"> </vxe-column>
-      <vxe-column title="Account Type" field="userTypeDictMap.name" />
       <vxe-column title="User Type" field="userRole" />
       <vxe-column title="Division" field="deptIdDictMap.name" />
       <vxe-column title="Status">
@@ -392,6 +391,7 @@ const onDeleteRow = (row: User) => {
     .then(() => {
       SystemUserController.deleteUser(params)
         .then(() => {
+          ElMessage.success('Delete Success!');
           refreshFormSysUser();
         })
         .catch(e => {

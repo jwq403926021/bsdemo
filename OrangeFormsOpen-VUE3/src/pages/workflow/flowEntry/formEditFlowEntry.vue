@@ -267,7 +267,6 @@
 
 <script setup lang="ts">
 import { VxeTable, VxeColumn } from 'vxe-table';
-import zhCn from 'element-plus/dist/locale/en.mjs';
 import { ElMessage, ElMessageBox, FormItemRule } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import Clipboard from 'clipboard';

@@ -118,7 +118,6 @@ import OnlineCustomWorkFlowTable from '@/online/components/OnlineCustomWorkFlowT
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
-import { OnlineFormEventType } from '@/common/staticDict';
 import {
   SysFlowTaskOperationType,
   SysFlowTaskType,

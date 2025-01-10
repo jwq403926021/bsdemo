@@ -65,8 +65,13 @@ const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   },
   {
     id: 'reject',
-    name: 'Reject', 
+    name: 'Reject',
     symbol: 'REJECT',
+  },
+  {
+    id: 'back',
+    name: 'Back',
+    symbol: 'BACK',
   },
   {
     id: 'rework',
@@ -409,6 +414,52 @@ const AutoTaskActionType = new DictionaryBase('自动化任务动作类型', [
   },
 ]);
 
+const MyTaskStatus = new DictionaryBase('MyTaskStatus', [
+  {
+      id: "1",
+      name: 'Pending',
+      symbol: 'PENDING',
+  },
+  {
+      id: "2",
+      name: 'Rejected',
+      symbol: 'REJECTED',
+  },
+  {
+      id: "3",
+      name: 'Approved',
+      symbol: 'APPROVED',
+  },
+  {
+      id: "4",
+      name: 'Rework',
+      symbol: 'REWORK',
+  },
+]);
+
+const MyRequestStatus = new DictionaryBase('MyRequestStatus', [
+  {
+      id: 1,
+      name: 'Pending',
+      symbol: 'PENDING',
+  },
+  {
+      id: 2,
+      name: 'Rejected',
+      symbol: 'REJECTED',
+  },
+  {
+      id: 3,
+      name: 'Completed',
+      symbol: 'COMPLETED',
+  },
+  {
+      id: 4,
+      name: 'Rework',
+      symbol: 'REWORK',
+  },
+]);
+
 export {
   SysFlowEntryPublishedStatus,
   SysFlowEntryBindFormType,
@@ -424,4 +475,6 @@ export {
   FlowEntryType,
   AutoTaskValueType,
   AutoTaskActionType,
+  MyTaskStatus,
+  MyRequestStatus,
 };

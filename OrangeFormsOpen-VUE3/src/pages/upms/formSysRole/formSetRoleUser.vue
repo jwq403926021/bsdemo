@@ -3,7 +3,7 @@
     <el-form
       ref="form"
       :model="formSysUser"
-      label-width="75px"
+      label-width="100px"
       :size="formItemSize"
       label-position="right"
       @submit.prevent
@@ -15,12 +15,12 @@
         @reset="onReset"
         style="float: left; padding: 0; margin: 0"
       >
-        <el-form-item label="用户状态" prop="formFilter.sysUserStatus">
+        <el-form-item label="User Status" prop="formFilter.sysUserStatus">
           <el-select
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserStatus"
             :clearable="true"
-            placeholder="用户状态"
+            placeholder="User Status"
           >
             <el-option
               v-for="item in SysUserStatus.getList()"
@@ -30,12 +30,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" prop="formFilter.sysUserLoginName">
+        <el-form-item label="Username" prop="formFilter.sysUserLoginName">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true"
-            placeholder="用户名"
+            placeholder="Username"
           />
         </el-form-item>
       </filter-box>
@@ -46,7 +46,7 @@
         :plain="false"
         @click="onSetUser"
         :disabled="selectUsers == null || selectUsers.length <= 0"
-        >授权人员</el-button
+        >Save</el-button
       >
     </el-form>
     <el-row>
@@ -72,15 +72,10 @@
             width="50px"
             :reserve-selection="true"
           />
-          <vxe-column title="序号" type="seq" width="50px" />
-          <vxe-column title="用户名" field="loginName"> </vxe-column>
-          <vxe-column title="昵称" field="showName"> </vxe-column>
-          <vxe-column title="账号类型">
-            <template v-slot="scope">
-              <span>{{ SysUserType.getValue(scope.row.userType) }}</span>
-            </template>
-          </vxe-column>
-          <vxe-column title="状态">
+          <vxe-column title="No." type="seq" width="50px" />
+          <vxe-column title="Username" field="loginName"> </vxe-column>
+          <vxe-column title="Full Name" field="showName"> </vxe-column>
+          <vxe-column title="Status">
             <template v-slot="scope">
               <el-tag :type="getUserStatusType(scope.row.userStatus)" :size="formItemSize">{{
                 SysUserStatus.getValue(scope.row.userStatus)
@@ -114,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { SizeType, VxeColumn, VxeTable } from 'vxe-table';
 import { TableOptions } from '@/common/types/pagination';
@@ -122,7 +117,7 @@ import { useTable } from '@/common/hooks/useTable';
 import { TableData } from '@/common/types/table';
 import { SystemRoleController } from '@/api/system';
 import { ANY_OBJECT } from '@/types/generic';
-import { SysUserStatus, SysUserType } from '@/common/staticDict';
+import { SysUserStatus } from '@/common/staticDict';
 import { User } from '@/types/upms/user';
 import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
@@ -236,7 +231,7 @@ const onSetUser = () => {
 
   SystemRoleController.addRoleUser(params)
     .then(() => {
-      ElMessage.success('授权成功');
+      ElMessage.success('Add Successful');
       refreshFormSysUser(true);
       userTable.value.clearCheckboxRow();
       selectUsers.value = [];

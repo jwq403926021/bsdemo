@@ -584,6 +584,12 @@ export function parseDate(date: string | number | Date, formatString: string | u
   return dayjs(date, formatString);
 }
 
+export const setEndOfDay = (dateString) => {
+  const date = new Date(dateString);
+  date.setHours(23, 59, 59);
+  return date.toLocaleString('en-CA', { hour12: false }).replace(',', '');
+};
+
 export function fileToBase64(file: File) {
   return new Promise<string | undefined>((resolve, reject) => {
     if (file == null) return reject();

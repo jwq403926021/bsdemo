@@ -14,14 +14,14 @@
         @search="refreshFormSysCode(true)"
         @reset="onReset"
       >
-        <!-- <el-form-item label="Login Name" prop="formFilter.sysUserLoginName" label-position="top">
+        <el-form-item label="Account Type" prop="formFilter.attr1" label-position="top">
           <el-input
             class="filter-item"
-            v-model="formSysCode.formFilter.sysUserLoginName"
+            v-model="formSysCode.formFilter.attr1"
             :clearable="true"
-            placeholder="Login Name"
+            placeholder="Account Type"
           />
-        </el-form-item> -->
+        </el-form-item>
       </filter-box>
     </el-form>
     <table-box
@@ -50,7 +50,7 @@
       <vxe-column title="Group Code" field="groupCode" />
       <vxe-column title="Group Name" field="groupName" />
       <vxe-column title="Code Number" field="codeNumber" />
-      <vxe-column title="English" field="codeNumber" />
+      <vxe-column title="English" field="english" />
       <vxe-column title="Korean" field="korean" />
       <vxe-column title="Chinese" field="chinese" />
       <vxe-column title="Japanese" field="japanese" />
@@ -118,12 +118,12 @@ export default {
 
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue';
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import SystemUserController from '@/api/system/UserController';
 import TableBox from '@/components/TableBox/index.vue';
 import { treeDataTranslate } from '@/common/utils';
 import { SysCodeStatus, SysUserType } from '@/common/staticDict/index';
-import { Code, UserInfo } from '@/types/upms/user';
+import { Code, User, UserInfo } from '@/types/upms/user';
 import { usePermissions } from '@/common/hooks/usePermission';
 import { ANY_OBJECT } from '@/types/generic';
 import { useDialog } from '@/components/Dialog/useDialog';
@@ -152,10 +152,9 @@ const isAdmin = (row: UserInfo) => {
 
 const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
   return new Promise((resolve, reject) => {
+    params = formSysCode.formFilter.attr1 ? { attr1: formSysCode.formFilter.attr1 } : {};
     axios
-      .get(`${serverDefaultCfg.baseURL}sys/code/list`, {
-        params: {},
-      })
+      .get(`${serverDefaultCfg.baseURL}sys/code/list`, { params })
       .then(res => {
         resolve({
           dataList: treeDataTranslate<User>(res.data, 'id'),
@@ -185,8 +184,12 @@ const tableOptions: TableOptions<User> = {
 
 // Load Code Data
 const formSysCode = reactive({
-  formFilter: {},
-  formFilterCopy: {},
+  formFilter: {
+    attr1: '',
+  },
+  formFilterCopy: {
+    attr1: '',
+  },
   SysUser: {
     impl: useTable(tableOptions),
   },
@@ -226,28 +229,18 @@ const onAddRow = () => {
 };
 
 const onEditRow = (row: Code) => {
-  var params = {
-    userId: row.id,
-  };
-
-  SystemUserController.getUser(params)
-    .then(res => {
-      Dialog.show(
-        'Edit Code',
-        EditCodeForm,
-        {
-          area: '600px',
-        },
-        {
-          rowData: res.data,
-        },
-      )
-        .then(() => {
-          refreshFormSysCode();
-        })
-        .catch(e => {
-          console.warn(e);
-        });
+  Dialog.show(
+    'Edit Code',
+    EditCodeForm,
+    {
+      area: '600px',
+    },
+    {
+      rowData: row,
+    },
+  )
+    .then(() => {
+      refreshFormSysCode();
     })
     .catch(e => {
       console.warn(e);
@@ -256,20 +249,17 @@ const onEditRow = (row: Code) => {
 
 const onDeleteRow = (row: Code) => {
   let params = {
-    userId: row.id,
+    id: row.id,
   };
-  ElMessageBox.confirm(
-    `Are you sure you want to delete code【${row.id}】?`,
-    '',
-    {
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel',
-      type: 'warning',
-    },
-  )
+  ElMessageBox.confirm(`Are you sure you want to delete code【${row.id}】?`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
+    type: 'warning',
+  })
     .then(() => {
-      SystemUserController.deleteUser(params)
+      SystemUserController.deleteCode(params)
         .then(() => {
+          ElMessage.success('Delete Success!');
           refreshFormSysCode();
         })
         .catch(e => {

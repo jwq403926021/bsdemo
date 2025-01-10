@@ -13,12 +13,12 @@
         @search="refreshFragmentSysRoleUser(true)"
         @reset="onResetRoleUser"
       >
-        <el-form-item label="用户角色" label-position="top">
+        <el-form-item label="Role Name" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysRoleUser.formFilter.sysRoleId"
             clearable
-            placeholder="用户角色"
+            placeholder="Role Name"
             :loading="fragmentSysRoleUser.sysRole.impl.loading"
             @visible-change="
               value => {
@@ -35,12 +35,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" prop="formFilter.sysUserLoginName" label-position="top">
+        <el-form-item label="User" prop="formFilter.sysUserLoginName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysRoleUser.formFilter.sysUserLoginName"
             :clearable="true"
-            placeholder="输入用户名 / 昵称查询"
+            placeholder="Enter Full Name/Username"
             @change="refreshFragmentSysRoleUser(true)"
           />
         </el-form-item>
@@ -71,23 +71,18 @@
             fragmentSysRoleUser.formFilter.sysRoleId === ''
           "
         >
-          添加用户
+          Add User
         </el-button>
       </template>
       <vxe-column
-        title="序号"
+        title="No."
         type="seq"
         width="50px"
         :index="fragmentSysRoleUser.SysUser.impl.getTableIndex"
       />
-      <vxe-column title="用户名" field="loginName"> </vxe-column>
-      <vxe-column title="昵称" field="showName"> </vxe-column>
-      <vxe-column title="账号类型">
-        <template v-slot="scope">
-          <span>{{ SysUserType.getValue(scope.row.userType) }}</span>
-        </template>
-      </vxe-column>
-      <vxe-column title="状态">
+      <vxe-column title="Username" field="loginName"> </vxe-column>
+      <vxe-column title="Full Name" field="showName"> </vxe-column>
+      <vxe-column title="Status">
         <template v-slot="scope">
           <el-tag
             :type="getUserStatusType(scope.row.userStatus)"
@@ -97,7 +92,7 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="80px">
+      <vxe-column title="Operation" fixed="right" width="80px">
         <template v-slot="scope">
           <el-button
             link
@@ -106,7 +101,7 @@
             :disabled="!checkPermCodeExist('formSysRole:fragmentSysRoleUser:deleteUserRole')"
             @click="onDeleteRow(scope.row)"
           >
-            移除
+            remove
           </el-button>
         </template>
       </vxe-column>
@@ -142,7 +137,7 @@ import { SystemRoleController } from '@/api/system';
 import { ANY_OBJECT } from '@/types/generic';
 import { useDialog } from '@/components/Dialog/useDialog';
 import { Role } from '@/types/upms/role';
-import { SysUserStatus, SysUserType } from '@/common/staticDict';
+import { SysUserStatus } from '@/common/staticDict';
 import { User } from '@/types/upms/user';
 import { useLayoutStore } from '@/store';
 import FormSetRoleUser from './formSetRoleUser.vue';
@@ -198,7 +193,7 @@ const dropdownOptions: DropdownOptions<ANY_OBJECT> = {
 const loadSysUserData = (params: ANY_OBJECT): Promise<TableData<User>> => {
   return new Promise((resolve, reject) => {
     if (!fragmentSysRoleUser.formFilter.sysRoleId) {
-      ElMessage.error('请选择角色');
+      ElMessage.error('Please Select Role');
       resolve({
         dataList: [],
         totalCount: 0,
@@ -231,7 +226,7 @@ const loadSysUserVerify = () => {
     fragmentSysRoleUser.formFilter.sysRoleId == null ||
     fragmentSysRoleUser.formFilter.sysRoleId === ''
   ) {
-    ElMessage.error('请选择角色');
+    ElMessage.error('Please Select Role');
     return false;
   }
   return true;
@@ -269,11 +264,11 @@ const onAddRow = () => {
     fragmentSysRoleUser.formFilter.sysRoleId == null ||
     fragmentSysRoleUser.formFilter.sysRoleId === ''
   ) {
-    ElMessage.error('请选择角色');
+    ElMessage.error('Please Select Role');
     return false;
   }
   Dialog.show(
-    '角色用户授权',
+    'User Permission - Add',
     FormSetRoleUser,
     {
       area: ['1200px', 'auto'],
@@ -289,9 +284,9 @@ const onAddRow = () => {
   });
 };
 const onDeleteRow = (row: User) => {
-  ElMessageBox.confirm(`是否移除用户【${row.showName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Remove user【${row.showName}】？`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -302,7 +297,7 @@ const onDeleteRow = (row: User) => {
       return SystemRoleController.deleteRoleUser(params);
     })
     .then(() => {
-      ElMessage.success('移除成功');
+      ElMessage.success('Remove Successful');
       refreshFragmentSysRoleUser(true);
     })
     .catch(e => {

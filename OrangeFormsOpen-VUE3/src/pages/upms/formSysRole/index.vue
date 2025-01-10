@@ -10,7 +10,7 @@
         <tab-content-role ref="tabRole" />
       </el-tab-pane>
       <el-tab-pane
-        label="User Authorization"
+        label="User Permission"
         name="fragmentSysRoleUser"
         style="width: 100%"
         v-if="checkPermCodeExist('formSysRole:fragmentSysRoleUser')"

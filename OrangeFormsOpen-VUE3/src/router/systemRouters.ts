@@ -188,8 +188,29 @@ export const routers: Array<RouteRecordRaw> = [
       },
       {
         path: 'formMyTask',
-        component: () => import('@/pages/workflow/taskManager/formMyTask.vue'),
+        component: () => import('@/pages/workflow/formTaskAndRequest/formMyTask.vue'),
         name: 'formMyTask',
+        props: getProps,
+      },
+      // my task
+      {
+        path: 'myTask',
+        component: () => import('@/pages/workflow/formTaskAndRequest/formMyTask.vue'),
+        name: 'myTask',
+        props: getProps,
+      },
+      // my request
+      {
+        path: 'myRequest',
+        component: () => import('@/pages/workflow/formTaskAndRequest/formMyRequest.vue'),
+        name: 'myRequest',
+        props: getProps,
+      },
+      // task and request detail
+      {
+        path: 'detailTaskAndRequest',
+        component: () => import('@/pages/workflow/detailTaskAndRequest/index.vue'),
+        name: 'detailTaskAndRequest',
         props: getProps,
       },
       {

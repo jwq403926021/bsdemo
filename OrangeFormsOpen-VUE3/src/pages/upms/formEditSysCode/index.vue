@@ -42,7 +42,7 @@
           <el-input v-model="formData.japanese" placeholder="Japanese" />
         </el-form-item>
         <el-form-item label="Sort" prop="sort">
-          <el-input v-model="formData.sort" placeholder="Sort" />
+          <el-input v-model="formData.sort" type="number" placeholder="Sort" />
         </el-form-item>
         <el-form-item label="Code 1" prop="attr1">
           <el-input v-model="formData.attr1" placeholder="Code 1" />
@@ -94,6 +94,7 @@ const { checkPermCodeExist } = usePermissions();
 
 const form = ref();
 const formData: Ref<Code> = ref({
+  id: '',
   countryCode: '',
   groupCode: '',
   groupName: '',
@@ -120,6 +121,7 @@ const onSubmit = () => {
   form.value.validate((valid: boolean) => {
     if (valid) {
       let params = {
+        id: formData.value.id,
         countryCode: formData.value.countryCode,
         groupCode: formData.value.groupCode,
         groupName: formData.value.groupName,
@@ -133,10 +135,13 @@ const onSubmit = () => {
         attr1: formData.value.attr1,
         attr1Name: formData.value.attr1Name,
       };
-
-      SystemUserController.addCode(params)
+      let content = formData.value.id
+        ? SystemUserController.editCode(params)
+        : SystemUserController.addCode(params);
+      content
         .then(res => {
-          ElMessage.success('Add Success');
+          const message = formData.value.id ? 'Edit Success' : 'Add Success';
+          ElMessage.success(message);
           props.dialog?.submit(res);
         })
         .catch(e => {

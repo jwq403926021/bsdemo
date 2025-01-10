@@ -9,5 +9,22 @@ export enum FormInfo {
   shipment = 'Shipment',
   srName = 'Sr Name',
   stockLocName = 'StockLocName',
-  deliveryDate = 'Delivery Date'
+  deliveryDate = 'Delivery Date',
+
+  // my task & my request (shipTo, recipient, phone repeated with the above)
+  sr = 'SR',
+  status = 'Approval Status',
+  stockLocation = 'Stock Location',
+  requestType = 'Request',
+  requestor = 'Requestor',
+  requestDate = 'Request Date',
+  orderNumber = 'MyOrder No.',
+  pendingBy = 'Pending Approval By',
+  soldTo = 'Sold To',
+  accountName = 'Account Name',
+	division = 'Division',
+  orderNo = 'MyOrder No.',
+	orderType = 'Order Type',
+  submittedBy = 'Submitted By',
+	submittedDate = 'Submitted Date/Time',
 }

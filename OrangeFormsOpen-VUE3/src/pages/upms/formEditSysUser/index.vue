@@ -10,10 +10,10 @@
   >
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24">
-        <el-form-item label="Login Name" prop="loginName">
+        <el-form-item label="Username" prop="loginName">
           <el-input
             v-model="formData.loginName"
-            placeholder="User Login Name"
+            placeholder="Username"
             clearable
             :disabled="isEdit"
             maxlength="30"
@@ -39,13 +39,8 @@
             maxlength="64"
           />
         </el-form-item>
-        <el-form-item label="Show Name" prop="showName">
-          <el-input
-            v-model="formData.showName"
-            placeholder="User Show Name"
-            clearable
-            maxlength="30"
-          />
+        <el-form-item label="Full Name" prop="showName">
+          <el-input v-model="formData.showName" placeholder="Full Name" clearable maxlength="30" />
         </el-form-item>
         <!-- <el-form-item label="Account Type" prop="userType">
           <el-select v-model="formData.userType">
@@ -78,7 +73,7 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="User Position" prop="deptPostIdList">
+        <el-form-item label="User Position" v-show="false" prop="deptPostIdList">
           <el-select v-model="formData.deptPostIdList" multiple placeholder="User Position">
             <el-option
               v-for="deptPost in deptPostList"
@@ -89,7 +84,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="User Type" prop="userRole">
-          <el-select v-model="formData.userRole" placeholder="User Type">
+          <el-select @change="onUserTypeChange" v-model="formData.userRole" placeholder="User Type">
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"
@@ -109,7 +104,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Data Permission" prop="dataPermIdList">
-          <el-select v-model="formData.dataPermIdList" multiple placeholder="Data Permission">
+          <el-select
+            v-model="formData.dataPermIdList"
+            disabled
+            multiple
+            placeholder="Data Permission"
+          >
             <el-option
               v-for="dataPerm in dataPermList"
               :key="dataPerm.dataPermId"
@@ -140,9 +140,9 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, inject, onMounted, reactive, ref } from 'vue';
+import { Ref, computed, onMounted, reactive, ref } from 'vue';
 import { CascaderValue, ElCascader, ElMessage } from 'element-plus';
-import { SysUserStatus, SysUserType } from '@/common/staticDict/index';
+import { SysUserStatus } from '@/common/staticDict/index';
 import { findTreeNodePath } from '@/common/utils';
 import { DialogProp } from '@/components/Dialog/types';
 import { usePermissions } from '@/common/hooks/usePermission';
@@ -198,7 +198,7 @@ const validatePasswordRepeat = (
   }
 };
 const rules = ref({
-  loginName: [{ required: true, message: 'User Name Cannot Be Empty', trigger: 'blur' }],
+  loginName: [{ required: true, message: 'Username Cannot Be Empty', trigger: 'blur' }],
   password: [{ required: true, message: 'User Password Cannot Be Empty', trigger: 'blur' }],
   passwordRepeat: [
     {
@@ -207,13 +207,14 @@ const rules = ref({
       trigger: 'blur',
     },
   ],
-  showName: [{ required: true, message: 'User Show Name Cannot Be Empty', trigger: 'blur' }],
+  showName: [{ required: true, message: 'Full Name Cannot Be Empty', trigger: 'blur' }],
   dataPermIdList: [
     { required: true, message: 'Data Permission Cannot Be Empty', trigger: 'change' },
   ],
   deptId: [{ required: true, message: 'Department Id Cannot Be Empty', trigger: 'change' }],
   deptPostIdList: [{ required: true, message: 'User Position Cannot Be Empty', trigger: 'change' }],
   roleIdList: [{ required: true, message: 'Role Cannot Be Empty', trigger: 'change' }],
+  userRole: [{ required: true, message: 'User Type Cannot Be Empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);
@@ -241,7 +242,15 @@ const loadDeptmentDropdownList = (): Promise<ListData<ANY_OBJECT>> => {
       });
   });
 };
-
+const onUserTypeChange = (value: string) => {
+  formData.value.roleIdList = '';
+  let params = {
+    sysRoleDtoFilter: {
+      userType: value,
+    },
+  };
+  loadRole(params);
+};
 const dropdownOptions: DropdownOptions<ANY_OBJECT> = {
   loadData: loadDeptmentDropdownList,
   idKey: 'deptId',
@@ -282,6 +291,9 @@ const loadDeptPost = () => {
     .then(res => {
       console.log('dictDeptPost', res);
       deptPostList.value = res;
+      if (!props.rowData) {
+        formData.value.deptPostIdList = [res[0].deptPostId];
+      }
     })
     .catch(e => {
       console.warn(e);
@@ -349,8 +361,8 @@ const onSubmit = () => {
     }
   });
 };
-const loadRole = () => {
-  SystemRoleController.getRoleList({})
+const loadRole = (params: ANY_OBJECT = {}) => {
+  SystemRoleController.getRoleList(params)
     .then(res => {
       roleList.value = res.data.dataList;
     })
@@ -362,6 +374,9 @@ const loadDataPerm = () => {
   SysDataPermController.list({})
     .then(res => {
       dataPermList.value = res.data.dataList;
+      if (!props.rowData) {
+        formData.value.dataPermIdList = [dataPermList.value[0].dataPermId];
+      }
     })
     .catch(e => {
       console.warn(e);

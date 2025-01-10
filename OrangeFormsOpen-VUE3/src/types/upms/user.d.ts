@@ -43,7 +43,7 @@ export interface User {
 }
 
 export interface Code {
-  id: number;
+  id: string;
   countryCode: string;
   groupCode: string;
   groupName: string;

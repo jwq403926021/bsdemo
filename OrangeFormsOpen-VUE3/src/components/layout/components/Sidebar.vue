@@ -11,8 +11,7 @@
         <el-menu
           mode="vertical"
           active-text-color="#ffd04b"
-          text-color="#a4a5a7"
-          background-color="#2d3039"
+          text-color="#1a457a"
           :default-active="layoutStore.currentMenuId"
           :unique-opened="true"
           @select="selectMenuById"
@@ -44,18 +43,9 @@ const { selectMenuById } = useSelectMenu();
 }
 .left-menu .el-submenu__title {
   height: 50px;
-  color: #a4a5a7;
   line-height: 50px;
-  i {
-    color: #a4a5a7 !important;
-  }
   .el-submenu__icon-arrow {
     margin-top: -4px;
-  }
-}
-.sidebar-bg {
-  .el-menu-item {
-    color: #a4a5a7;
   }
 }
 .collapse .is-active .el-submenu__title {
@@ -75,13 +65,9 @@ const { selectMenuById } = useSelectMenu();
 .collapse .el-icon-arrow-right {
   display: none;
 }
-.el-menu-item:hover,
-.el-submenu__title:hover {
-  background-color: transparent !important;
-}
 .el-menu-item.is-active {
-  color: white !important;
-  background-color: #43474e !important;
+  color: $color-white !important;
+  background-color: $color-primary !important;
   border-radius: 4px;
   &::before {
     position: absolute;

@@ -407,9 +407,10 @@ onBeforeUnmount(() => {
 }
 .sidebar {
   transition: 0.3s;
+  background-color: $color-white !important;
 }
 .el-menu {
-  background-color: #2d3039 !important;
+  background-color: $color-white !important;
 }
 .layout-main {
   display: flex !important;

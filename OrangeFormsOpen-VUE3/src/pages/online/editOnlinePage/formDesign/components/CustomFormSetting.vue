@@ -327,9 +327,6 @@ const getAllTableMaskColumnTree = computed(() => {
     .filter((item: ANY_OBJECT) => item != null);
 });
 onMounted(() => {
-  if (!formConfig().form.fullscreen) {
-    formConfig().form.fullscreen = true;
-  }
   const params = {
     orderParam: [
       {

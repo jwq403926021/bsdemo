@@ -92,5 +92,9 @@ const getValue = () => {
     valueHuman: selectedItems.value.find(i => i.value === pps.modelValue)?.label || '',
   };
 };
-defineExpose({ getValue });
+const setValue = (val: string) => {
+  emit('update:modelValue', val);
+  emit('change', val);
+};
+defineExpose({ getValue, setValue });
 </script>

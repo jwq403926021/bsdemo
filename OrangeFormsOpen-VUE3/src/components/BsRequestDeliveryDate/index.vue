@@ -69,7 +69,10 @@ const getValue = () => {
       : '',
   };
 };
-defineExpose({ getValue });
+const setValue = (val: string) => {
+  requestDeliveryDate.value = val;
+};
+defineExpose({ getValue, setValue });
 </script>
 
 <style scoped>

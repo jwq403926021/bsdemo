@@ -199,7 +199,7 @@ const emit = defineEmits<{
 const props = withDefaults(defineProps<IProps>(), {
   isEdit: false,
   readOnly: false,
-  fullscreen: false,
+  fullscreen: true,
   saveData: true,
   mode: 'pc',
 });
@@ -360,11 +360,21 @@ const onSaveFormData = async () => {
   console.log('real params::::', params);
   const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);
   console.log(res);
-  if (res.status === 200) {
+  if (res.success) {
+    clearEditForm();
     onCancel();
     eventbus.emit('refreshTable');
   }
 };
+const clearEditForm = () => {
+  for (const key in bsWidgetList) {
+    if (bsWidgetList[key]?.setValue && typeof bsWidgetList[key].setValue === 'function') {
+      bsWidgetList[key]?.setValue('');
+    }
+  }
+  active.value = 1;
+};
+
 // 提交
 const onSubmit = () => {
   if (dialogParams.value.isEdit) return;

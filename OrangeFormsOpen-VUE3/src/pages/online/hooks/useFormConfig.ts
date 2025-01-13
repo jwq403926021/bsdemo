@@ -119,7 +119,7 @@ export const useFormConfig = () => {
       OnlineFormEventType.AFTER_LOAD_FORM_DATA,
       OnlineFormEventType.BEFORE_COMMIT_FORM_DATA,
     ],
-    fullscreen: false,
+    fullscreen: true,
     supportOperation: true,
     width: 800,
   };

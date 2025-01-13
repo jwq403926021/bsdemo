@@ -47,7 +47,11 @@ const getValue = () => {
     value: requestDeliveryDate,
   };
 };
-defineExpose({ getValue });
+const setValue = (val: string) => {
+  productName.value = val;
+  emitSearch('')
+};
+defineExpose({ getValue, setValue });
 </script>
 
 <style scoped></style>

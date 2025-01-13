@@ -51,7 +51,10 @@ const getValue = () => {
     valueHuman: inputValue.value,
   };
 };
-defineExpose({ getValue });
+const setValue = (val: string) => {
+  inputValue.value = val;
+};
+defineExpose({ getValue, setValue });
 </script>
 
 <style scoped></style>

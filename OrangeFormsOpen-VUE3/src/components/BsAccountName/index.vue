@@ -93,5 +93,9 @@ const getValue = () => {
     valueHuman: selected?.label || '',
   };
 };
-defineExpose({ getValue });
+const setValue = (val: string) => {
+  emit('update:modelValue', val);
+  emit('change', val);
+};
+defineExpose({ getValue, setValue });
 </script>

@@ -54,6 +54,11 @@ const SysFlowEntryStep = new DictionaryBase('流程设计步骤', [
 
 const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   {
+    id: 'submit',
+    name: 'Submit',
+    symbol: 'SUBMIT',
+  },
+  {
     id: 'agree',
     name: 'Approve',
     symbol: 'AGREE',

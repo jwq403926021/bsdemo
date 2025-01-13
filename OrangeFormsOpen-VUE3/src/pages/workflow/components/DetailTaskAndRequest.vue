@@ -121,6 +121,7 @@
                     <el-tag
                       :size="layoutStore.defaultFormItemSize"
                       :type="getOperationTagType(scope.row.approvalType)"
+                      :style="{minWidth: '68px'}"
                       effect="dark"
                       >{{ SysFlowTaskOperationType.getValue(scope.row.approvalType) }}</el-tag
                     >
@@ -413,6 +414,8 @@ const getOperationTagType = (type: string) => {
     case SysFlowTaskOperationType.REJECT_TO_TASK:
     case SysFlowTaskOperationType.REVOKE:
       return 'danger';
+    case SysFlowTaskOperationType.SUBMIT:
+      return 'primary'
     default:
       return '';
   }

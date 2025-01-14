@@ -16,9 +16,9 @@
       </el-row>
       <filter-box
         :item-width="320"
-        hasFold="true"
-        hasRefresh="true"
-        hasDownload="true"
+        :hasFold="true"
+        :hasRefresh="true"
+        :hasDownload="true"
         @search="refreshMyTask(true)"
         @reset="onReset">
         <el-form-item label="Process Name" prop="formFilter.processDefinitionName" label-position="top">

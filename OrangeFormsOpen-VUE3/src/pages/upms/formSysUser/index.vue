@@ -10,7 +10,7 @@
     >
       <filter-box
         :item-width="350"
-        hasFold="true"
+        :hasFold="true"
         @search="refreshFormSysUser(true)"
         @reset="onReset"
       >

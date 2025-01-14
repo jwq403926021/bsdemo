@@ -3,10 +3,10 @@
     <div class="task-title">
       <div>
         <span class="text">{{ flowInfo.flowEntryName }}</span>
-        <el-tag v-if="flowInfo.taskName" effect="dark" :size="size" type="success">{{
+        <el-tag v-if="flowInfo.taskName" effect="dark" :size="layoutStore.defaultFormItemSize" type="success">{{
           'Current Node: ' + flowInfo.taskName
         }}</el-tag>
-        <el-tag v-if="flowInfo.processInstanceInitiator" effect="dark" :size="size" type="info">{{
+        <el-tag v-if="flowInfo.processInstanceInitiator" effect="dark" :size="layoutStore.defaultFormItemSize" type="info">{{
           'Initiator: ' + flowInfo.processInstanceInitiator
         }}</el-tag>
       </div>
@@ -25,7 +25,7 @@
         class="full-width-input"
         style="width: 100%"
         label-width="100px"
-        :size="size"
+        :size="layoutStore.defaultFormItemSize"
         label-position="right"
         @submit.prevent
       >
@@ -71,7 +71,6 @@
               <vxe-table
                 empty-text="No Data"
                 :data="orderDetailsList"
-                :size="layoutStore.defaultFormItemSize"
                 header-cell-class-name="table-header-gray"
                 :max-height="mainContextHeight - 150 + 'px'"
                 min-height="92px"
@@ -107,7 +106,6 @@
               <vxe-table
                 empty-text="No Data"
                 :data="flowTaskCommentList"
-                :size="layoutStore.defaultFormItemSize"
                 header-cell-class-name="table-header-gray"
                 :max-height="mainContextHeight - 150 + 'px'"
                 min-height="92px"
@@ -275,7 +273,7 @@ const props = withDefaults(
     requestData?: string;
     productList?: Array<ANY_OBJECT> | string;
     rejectReason?: string
-    productTotalCount?: number
+    productTotalCount?: string
   }>(),
   {
     formType: 'task',  // task -- myTask, request -- myRequest

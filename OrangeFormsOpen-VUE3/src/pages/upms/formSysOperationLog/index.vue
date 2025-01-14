@@ -10,8 +10,8 @@
     >
       <filter-box
         :item-width="320"
-        hasFold="true"
-        hasRefresh="true"
+        :hasFold="true"
+        :hasRefresh="true"
         @search="refreshFormOperationType(true)"
         @reset="onReset">
         <el-form-item label="操作人员" prop="formFilter.operatorName" label-position="top">

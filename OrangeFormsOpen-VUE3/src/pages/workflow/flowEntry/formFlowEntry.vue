@@ -9,9 +9,9 @@
       @submit.prevent
     >
       <filter-box
-        hasFold="true"
-        hasRefresh="true"
-        hasDownload="true"
+        :hasFold="true"
+        :hasRefresh="true"
+        :hasDownload="true"
         :item-width="350"
         @search="refreshFormFlowEntry(true)"
         @reset="onReset">

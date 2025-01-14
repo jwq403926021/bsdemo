@@ -16,9 +16,9 @@
       </el-row>
       <filter-box
         :item-width="320"
-        hasFold="true"
-        hasRefresh="true"
-        hasDownload="true"
+        :hasFold="true"
+        :hasRefresh="true"
+        :hasDownload="true"
         @search="refreshMyRequest(true)"
         @reset="onReset">
         <el-form-item label="MyOrder No." prop="formFilter.myOrderNo" label-position="top">

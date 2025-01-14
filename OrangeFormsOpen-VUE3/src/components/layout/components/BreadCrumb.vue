@@ -25,6 +25,8 @@ const hadleClick = () => {
   display: flex;
   align-items: center;
   img {
+    width: 20px;
+    height: 20px;
     position: relative;
     top: -1px;
     margin-right: 4px;
@@ -33,6 +35,7 @@ const hadleClick = () => {
   }
   span {
     vertical-align: middle;
+    color: $color-primary !important;
   }
 }
 .el-breadcrumb__item {
@@ -42,7 +45,7 @@ const hadleClick = () => {
     color: #999;
   }
   :deep(.el-breadcrumb__inner) {
-    color: #999;
+    color: $color-primary !important;
   }
   &:last-child :deep(.el-breadcrumb__inner) {
     color: #333;

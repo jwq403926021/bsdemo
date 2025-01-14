@@ -367,6 +367,7 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     box-shadow: 0 2px 10px 1px rgb(65 64 133 / 10%);
+    background-color: rgb(235, 239, 250);
     flex: 1;
     .title {
       overflow: hidden;

@@ -22,3 +22,6 @@ $color-text-secondary: #909399 !default;
 .rich-input .el-form-item__content {
   z-index: 1;
 }
+.label-color-primary .el-form-item__label{
+  color: $color-primary;
+}

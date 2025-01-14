@@ -5,21 +5,21 @@
         <el-steps style="width: 500px; margin: 20px auto" :active="active">
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(1)" style="cursor: pointer">
+              <div @click="changeActive(1)" style="cursor: pointer; font-size: 14px;">
                 {{ form().step1Name || 'Step 1' }}
               </div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(2)" style="cursor: pointer">
+              <div @click="changeActive(2)" style="cursor: pointer; font-size: 14px;">
                 {{ form().step2Name || 'Step 2' }}
               </div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(3)" style="cursor: pointer">
+              <div @click="changeActive(3)" style="cursor: pointer; font-size: 14px;">
                 {{ form().step3Name || 'Step 3' }}
               </div>
             </template>
@@ -150,7 +150,7 @@
                     'margin-bottom': (subWidget.props.paddingBottom || 0) + 'px',
                   }"
                   @widgetClick="onWidgetClick"
-                />
+                 />
                 <OnlineCustomWidget
                   v-show="subWidget.props.activeStep === active"
                   v-else-if="subWidget.widgetType === SysCustomWidgetType.BsShippingOrderInfo"
@@ -186,6 +186,7 @@
                     :prop="subWidget.propString"
                     :class="{
                       'rich-input': subWidget.widgetType === SysCustomWidgetType.RichEditor,
+                      'label-color-primary': true
                     }"
                     :label-width="
                       subWidget.showName == null || subWidget.showName === ''

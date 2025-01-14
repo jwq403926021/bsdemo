@@ -141,3 +141,9 @@ onUnmounted(() => {
   eventbus.off('bs:productLevelName');
 });
 </script>
+
+<style scoped>
+::v-deep(.el-table th .cell) {
+  color: #1a457a !important;
+}
+</style>

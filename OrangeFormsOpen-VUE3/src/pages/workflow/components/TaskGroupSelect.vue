@@ -35,7 +35,7 @@
             align="center"
             :selectable="canSelect"
           />
-          <el-table-column label="部门名称" prop="name" />
+          <el-table-column label="Department Name" prop="name" />
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />

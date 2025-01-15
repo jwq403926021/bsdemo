@@ -13,12 +13,12 @@
         @search="refreshFragmentSysDataPermUser(true)"
         @reset="onResetDataPermUser"
       >
-        <el-form-item label="数据权限" prop="formFilter.dataPermId" label-position="top">
+        <el-form-item label="Data Permission" prop="formFilter.dataPermId" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysDataPermUser.formFilter.dataPermId"
             clearable
-            placeholder="数据权限"
+            placeholder="Data Permission"
             :loading="fragmentSysDataPermUser.dataPermId.impl.loading"
             @visible-change="fragmentSysDataPermUser.dataPermId.impl.onVisibleChange"
             @change="onDataPermChange"
@@ -31,12 +31,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" prop="formFilter.searchString" label-position="top">
+        <el-form-item label="UserName" prop="formFilter.searchString" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysDataPermUser.formFilter.searchString"
             :clearable="true"
-            placeholder="输入用户名 / 昵称查询"
+            placeholder="UserName/LoginName"
             @change="refreshFragmentSysDataPermUser(true)"
           />
         </el-form-item>
@@ -66,23 +66,23 @@
             !fragmentSysDataPermUser.formFilter.dataPermId
           "
         >
-          添加用户
+          Add User
         </el-button>
       </template>
       <vxe-column
-        title="序号"
+        title="NO."
         type="seq"
         width="55px"
         :index="fragmentSysDataPermUser.SysDataPermUserList.impl.getTableIndex"
       />
-      <vxe-column title="用户名" field="loginName"> </vxe-column>
-      <vxe-column title="昵称" field="showName"> </vxe-column>
-      <vxe-column title="账号类型">
+      <vxe-column title="Login Name" field="loginName"> </vxe-column>
+      <vxe-column title="Show Name" field="showName"> </vxe-column>
+      <vxe-column title="User Type">
         <template v-slot="scope">
           <span>{{ SysUserType.getValue(scope.row.userType) }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="状态">
+      <vxe-column title="Status">
         <template v-slot="scope">
           <el-tag
             :type="getUserStatusType(scope.row.userStatus)"
@@ -91,18 +91,16 @@
           >
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="80px">
+      <vxe-column title="Operation" fixed="right" width="80px">
         <template v-slot="scope">
-          <el-button
-            link
+          <general-button
+            @btnClick="onDeleteRow(scope.row)"
+            text="Delete"
             type="danger"
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
-            :disabled="
-              !checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser')
-            "
-            @click="onDeleteRow(scope.row)"
-            >移除</el-button
-          >
+            :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser')"
+          />
         </template>
       </vxe-column>
       <template v-slot:pagination>
@@ -264,7 +262,7 @@ const onAddDataPermUserClick = () => {
   };
 
   Dialog.show(
-    '授权用户',
+    'Authorized User',
     FormSetSysDataPermUser,
     {
       area: ['1100px'],
@@ -283,9 +281,9 @@ const onAddDataPermUserClick = () => {
 };
 
 const onDeleteRow = (row: User) => {
-  ElMessageBox.confirm(`是否移除用户【${row.showName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Delete User【${row.showName}】？`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   }).then(() => {
     let params = {
@@ -296,7 +294,7 @@ const onDeleteRow = (row: User) => {
     SysDataPermController.deleteDataPermUser(params)
       .then(() => {
         refreshFragmentSysDataPermUser(true);
-        ElMessage.success('移除成功');
+        ElMessage.success('Successfully delete');
       })
       .catch(e => {
         console.log(e);

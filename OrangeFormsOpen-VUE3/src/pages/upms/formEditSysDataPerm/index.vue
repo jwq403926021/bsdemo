@@ -13,23 +13,23 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="数据权限名称" prop="SysDataPerm.dataPermName">
+          <el-form-item label="Data Permission Name" prop="SysDataPerm.dataPermName" label-width="180px">
             <el-input
               class="input-item"
               v-model="formData.SysDataPerm.dataPermName"
               :clearable="true"
-              placeholder="显示名称"
+              placeholder="Display Name"
               maxlength="30"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="过滤规则" prop="SysDataPerm.ruleType" label-width="80px">
+          <el-form-item label="Filtering Rule" prop="SysDataPerm.ruleType" label-width="120px">
             <el-select
               class="input-item"
               v-model="formData.SysDataPerm.ruleType"
               :clearable="true"
-              placeholder="过滤规则"
+              placeholder="Filtering Rule"
             >
               <el-option
                 v-for="item in SysDataPermType.getList()"
@@ -42,13 +42,13 @@
         </el-col>
         <el-col :span="24">
           <el-tabs class="dataperm-data" type="border-card">
-            <el-tab-pane label="部门列表">
+            <el-tab-pane label="Department List">
               <el-row>
                 <el-col :span="24" style="margin-bottom: 15px">
                   <el-input
                     :size="formItemSize"
                     v-model="deptNameFilter"
-                    placeholder="输入部门名称过滤"
+                    placeholder="Search by department name"
                     style="width: 250px"
                     clearable
                     :suffix-icon="Search"
@@ -88,7 +88,7 @@
                 </el-col>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="菜单列表">
+            <el-tab-pane label="Menu List">
               <el-scrollbar style="height: 330px" wrap-class="scrollbar_dropdown__wrap">
                 <div
                   class="table-empty unified-font"
@@ -179,8 +179,8 @@ const formData = reactive({
   SysDataPerm: {} as PermData,
 });
 const rules = {
-  'SysDataPerm.dataPermName': [{ required: true, message: '请输入数据权限名称', trigger: 'blur' }],
-  'SysDataPerm.ruleType': [{ required: true, message: '请选择过滤规则', trigger: 'blur' }],
+  'SysDataPerm.dataPermName': [{ required: true, message: 'data permission name', trigger: 'blur' }],
+  'SysDataPerm.ruleType': [{ required: true, message: 'filtering rule', trigger: 'blur' }],
 };
 const onCancel = () => {
   if (props.dialog) {
@@ -248,7 +248,7 @@ const onUpdateClick = () => {
     ) {
       let deptList = deptTreeNode.value.getCheckedKeys();
       if (deptList.length <= 0) {
-        ElMessage.error('请选择数据权限部门');
+        ElMessage.error('Please select the data permission department');
         return;
       }
       params.deptIdListString = Array.isArray(deptList) ? deptList.join(',') : undefined;
@@ -260,7 +260,7 @@ const onUpdateClick = () => {
     if (props.dataPermId == null) {
       SysDataPermController.add(params)
         .then(res => {
-          ElMessage.success('添加成功');
+          ElMessage.success('Successfully added');
           if (props.dialog) {
             props.dialog.submit(res);
           }
@@ -271,7 +271,7 @@ const onUpdateClick = () => {
     } else {
       SysDataPermController.update(params)
         .then(res => {
-          ElMessage.success('编辑成功');
+          ElMessage.success('Successfully edited');
           if (props.dialog) {
             props.dialog.submit(res);
           }

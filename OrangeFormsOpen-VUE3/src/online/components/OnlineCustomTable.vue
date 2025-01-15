@@ -158,7 +158,7 @@
       />
     </template>
     <vxe-column
-      title="操作"
+      title="Operation"
       :width="widget.props.operationColumnWidth || 160"
       fixed="right"
       :show-overflow="false"

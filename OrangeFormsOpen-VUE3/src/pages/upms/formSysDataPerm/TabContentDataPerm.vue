@@ -9,12 +9,12 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysDataPerm(true)" @reset="onReset">
-        <el-form-item label="过滤规则" prop="formFilter.sysDatapermType" label-width="75px" label-position="top">
+        <el-form-item label="Filtering Rule" prop="formFilter.sysDatapermType" label-width="75px" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDatapermType"
             :clearable="true"
-            placeholder="过滤规则"
+            placeholder="Select Filtering Rule"
           >
             <el-option
               v-for="item in SysDataPermType.getList()"
@@ -24,12 +24,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="数据权限名称" prop="formFilter.sysDataPermName" label-position="top">
+        <el-form-item label="Data Permission Name" prop="formFilter.sysDataPermName" label-position="top">
           <el-input
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDataPermName"
             :clearable="true"
-            placeholder="数据权限名称"
+            placeholder="Data Permission Name"
           />
         </el-form-item>
       </filter-box>
@@ -55,22 +55,22 @@
           :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:add')"
           @click="onAddDataPermClick()"
         >
-          新建
+          Create
         </el-button>
       </template>
       <vxe-column
-        title="序号"
+        title="NO."
         type="seq"
         width="55px"
         :index="fragmentSysDataPerm.SysDataPerm.impl.getTableIndex"
       />
-      <vxe-column title="权限名称" field="dataPermName"> </vxe-column>
-      <vxe-column title="过滤规则">
+      <vxe-column title="Permission Name" field="dataPermName"> </vxe-column>
+      <vxe-column title="Filtering Rule">
         <template v-slot="scope">
           <span>{{ SysDataPermType.getValue(scope.row.ruleType) }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="指定菜单">
+      <vxe-column title="Specify Menu Or Not">
         <template v-slot="scope">
           <el-tag
             size="default"
@@ -82,46 +82,44 @@
           >
             {{
               Array.isArray(scope.row.dataPermMenuList) && scope.row.dataPermMenuList.length > 0
-                ? '是'
-                : '否'
+                ? 'Yes'
+                : 'No'
             }}
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="指定轮播图">
+      <vxe-column title="Specify Slideshow Or Not">
         <template v-slot="scope">
           <el-tag size="default" :type="scope.row.bannerCount > 0 ? 'success' : 'danger'">
-            {{ scope.row.bannerCount > 0 ? '是' : '否' }}
+            {{ scope.row.bannerCount > 0 ? 'Yes' : 'No' }}
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="指定九宫格">
+      <vxe-column title="Specify Sudoku Or Not">
         <template v-slot="scope">
           <el-tag size="default" :type="scope.row.sodukuCount > 0 ? 'success' : 'danger'">
-            {{ scope.row.sodukuCount > 0 ? '是' : '否' }}
+            {{ scope.row.sodukuCount > 0 ? 'Yes' : 'No' }}
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="100px">
+      <vxe-column title="Operation" fixed="right" width="150px">
         <template v-slot="scope">
-          <el-button
-            @click="onEditDataPermClick(scope.row)"
+          <general-button
+            @btnClick="onEditDataPermClick(scope.row)"
+            text="Edit"
             type="primary"
-            link
+            :style="{padding: '4px 16px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:update')"
-          >
-            编辑
-          </el-button>
-          <el-button
-            @click="onDeleteClick(scope.row)"
+          />
+          <general-button
+             @click="onDeleteClick(scope.row)"
+            text="Delete"
             type="danger"
-            link
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:delete')"
-          >
-            删除
-          </el-button>
+          />
         </template>
       </vxe-column>
       <template v-slot:pagination>
@@ -251,7 +249,7 @@ const onAddDataPermClick = () => {
   let params = {};
 
   Dialog.show(
-    '新建数据权限',
+    'New Data Permission',
     FormEditSysDataPerm,
     {
       area: ['800px', 'auto'],
@@ -275,7 +273,7 @@ const onEditDataPermClick = (row: ANY_OBJECT) => {
   };
 
   Dialog.show(
-    '编辑数据权限',
+    'Edit Data Permission',
     FormEditSysDataPerm,
     {
       area: ['800px', '600px'],
@@ -297,15 +295,15 @@ const onDeleteClick = (row: PermData) => {
     dataPermId: row.dataPermId,
   };
 
-  ElMessageBox.confirm(`是否删除数据权限【${row.dataPermName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Delete the data permission【${row.dataPermName}】？`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
       SysDataPermController.delete(params)
         .then(() => {
-          ElMessage.success('删除成功');
+          ElMessage.success('Successfully delete');
           fragmentSysDataPerm.SysDataPerm.impl.refreshTable();
         })
         .catch(e => {

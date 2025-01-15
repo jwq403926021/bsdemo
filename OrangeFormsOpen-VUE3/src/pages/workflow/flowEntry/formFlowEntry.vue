@@ -145,11 +145,11 @@
         </template>
       </vxe-column>
       <vxe-column title="Last Publish Time"  field="latestPublishTime" sortable />
-      <vxe-column title="Operation" fixed="right" width="200px">
+      <vxe-column title="Operation" fixed="right" width="225px">
         <template v-slot="scope">
           <general-button
             text="Start"
-            :style="{padding: '4px 8px', margin: '3px 2px 3px 0px'}"
+            :style="{padding: '4px 12px', margin: '3px 2px 3px 0px'}"
             :size="layoutStore.defaultFormItemSize"
             :disabled="
               !(scope.row.mainFlowEntryPublish && scope.row.mainFlowEntryPublish.activeStatus)
@@ -158,7 +158,7 @@
           />
           <general-button
             text="Edit"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{padding: '4px 16px', margin: '3px 2px'}"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onEditFlowEntryClick(scope.row)"
           />

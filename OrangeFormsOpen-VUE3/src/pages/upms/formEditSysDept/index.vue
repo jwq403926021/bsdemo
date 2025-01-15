@@ -12,12 +12,12 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="所属部门" prop="sysDept.parentId">
+          <el-form-item label="Department" prop="sysDept.parentId" label-width="150px">
             <el-cascader
               class="input-item"
               v-model="formEditSysDept.parentId.value"
               :clearable="true"
-              placeholder="所属部门"
+              placeholder="Department"
               :size="formItemSize"
               :loading="formEditSysDept.parentId.impl.loading"
               :props="{ value: 'id', label: 'name', checkStrictly: true }"
@@ -28,32 +28,32 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="部门名称" prop="sysDept.deptName">
+          <el-form-item label="Department Name" prop="sysDept.deptName" label-width="150px">
             <el-input
               class="input-item"
               v-model="formData.sysDept.deptName"
               :size="formItemSize"
               :clearable="true"
-              placeholder="部门名称"
+              placeholder="Department Name"
               maxlength="30"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="显示顺序" prop="sysDept.showOrder">
+          <el-form-item label="Display order" prop="sysDept.showOrder" label-width="150px">
             <el-input-number
               class="input-item"
               v-model="formData.sysDept.showOrder"
               :clearable="true"
               :size="formItemSize"
               controls-position="right"
-              placeholder="显示顺序"
+              placeholder="Display order"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-row type="flex" justify="end">
-            <el-button :size="formItemSize" :plain="true" @click="onCancel()"> 取消 </el-button>
+            <el-button :size="formItemSize" :plain="true" @click="onCancel()"> Cancel </el-button>
             <el-button
               type="primary"
               @click="onUpdateClick()"
@@ -65,7 +65,7 @@
                 )
               "
             >
-              保存
+              Save
             </el-button>
           </el-row>
         </el-col>

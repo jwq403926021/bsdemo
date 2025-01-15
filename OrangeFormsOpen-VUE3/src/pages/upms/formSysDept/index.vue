@@ -9,12 +9,12 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormSysDept(true)" @reset="onReset">
-        <el-form-item label="部门名称" prop="formFilter.deptName" label-position="top">
+        <el-form-item label="Department Name" prop="formFilter.deptName" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysDept.formFilter.deptName"
             :clearable="true"
-            placeholder="部门名称"
+            placeholder="Department Name"
           />
         </el-form-item>
       </filter-box>
@@ -34,45 +34,42 @@
           :size="layoutStore.defaultFormItemSize"
           :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:add')"
           @click="onCreateSysDeptClick()"
-          >新建</el-button
+          >Create</el-button
         >
       </template>
-      <vxe-column title="序号" type="seq" width="80px" tree-node> </vxe-column>
-      <vxe-column title="部门名称" field="deptName"> </vxe-column>
-      <vxe-column title="操作" fixed="right" width="150px">
+      <vxe-column title="NO." type="seq" width="80px" tree-node> </vxe-column>
+      <vxe-column title="Department Name" field="deptName"> </vxe-column>
+      <vxe-column title="Operation" fixed="right" width="250px">
         <template v-slot="scope">
-          <el-button
-            @click="onEditSysDeptClick(scope.row)"
+          <general-button
+             @click="onEditSysDeptClick(scope.row)"
+            text="Edit"
             type="primary"
-            link
-            size="default"
+            :style="{padding: '4px 16px', margin: '3px 2px'}"
+            :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:update')"
-          >
-            编辑
-          </el-button>
-          <el-button
-            @click="onEditSysDeptPostClick(scope.row)"
+          />
+          <general-button
+             @click="onEditSysDeptPostClick(scope.row)"
+            text="Position"
             type="primary"
-            link
-            size="default"
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :size="layoutStore.defaultFormItemSize"
             :disabled="
               !(
                 checkPermCodeExist('formSysDept:fragmentSysDept:editPost') ||
                 checkPermCodeExist('formSysDept:fragmentSysDept:viewPost')
               )
             "
-          >
-            岗位
-          </el-button>
-          <el-button
-            @click="onDeleteClick(scope.row)"
-            link
+          />
+          <general-button
+             @click="onDeleteClick(scope.row)"
+            text="Delete"
             type="danger"
-            size="default"
+            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:delete')"
-          >
-            删除
-          </el-button>
+          />
         </template>
       </vxe-column>
     </table-box>
@@ -185,7 +182,7 @@ const onCreateSysDeptClick = () => {
   let params = {};
 
   Dialog.show(
-    '新建部门',
+    'Create Department',
     FormEditSysDept,
     {
       area: ['500px'],
@@ -209,7 +206,7 @@ const onEditSysDeptClick = (row: SysDept) => {
   };
 
   Dialog.show(
-    '编辑部门',
+    'Edit Department',
     FormEditSysDept,
     {
       area: ['500px'],
@@ -243,14 +240,14 @@ const onDeleteClick = (row: SysDept) => {
     deptId: row.deptId,
   };
 
-  ElMessageBox.confirm(`是否删除部门【${row.deptName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Delete department【${row.deptName}】？`, '', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   }).then(() => {
     SysDeptController.delete(params)
       .then(() => {
-        ElMessage.success('删除成功');
+        ElMessage.success('Successfully delete');
         refreshFormSysDept();
       })
       .catch(e => {

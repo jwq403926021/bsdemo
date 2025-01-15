@@ -9,12 +9,12 @@
       @submit.prevent
     >
       <el-row type="flex" justify="space-between">
-        <el-form-item label="部门名称">
+        <el-form-item label="Department Name">
           <el-input
             v-model="formFilter.deptName"
             style="width: 200px"
             :clearable="true"
-            placeholder="部门名称"
+            placeholder="Department Name"
             @change="refreshFormSysDept(true)"
           />
         </el-form-item>
@@ -47,7 +47,7 @@
           @checkbox-change="onSelectChange"
         >
           <vxe-column :type="dialogParams.multiple ? 'checkbox' : 'radio'" :width="50" />
-          <vxe-column title="部门名称" field="deptName" tree-node />
+          <vxe-column title="Department Name" field="deptName" tree-node />
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />

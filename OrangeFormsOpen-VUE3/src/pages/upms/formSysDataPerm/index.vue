@@ -2,7 +2,7 @@
   <div class="tab-dialog-box" style="position: relative">
     <el-tabs v-model="activeFragmentId" :before-leave="onFragmentChange">
       <el-tab-pane
-        label="数据权限管理"
+        label="Data Permission Management"
         name="fragmentSysDataPerm"
         style="width: 100%"
         v-if="checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm')"
@@ -10,7 +10,7 @@
         <tab-content-data-perm ref="tabDataPerm" />
       </el-tab-pane>
       <el-tab-pane
-        label="用户授权"
+        label="User Authorization"
         name="fragmentSysDataPermUser"
         style="width: 100%"
         v-if="checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser')"
@@ -84,7 +84,7 @@ const formInit = () => {
   buildFragmentPermCodeMap();
   let defaultFragment = getDefaultFragment();
   if (defaultFragment == null) {
-    ElMessage.error('您没有访问这个页面的权限，请与系统管理员联系！');
+    ElMessage.error("You don't have permission to access this page. Please contact your system administrator for assistance.");
   } else {
     if (defaultFragment.refresh) defaultFragment.refresh();
   }

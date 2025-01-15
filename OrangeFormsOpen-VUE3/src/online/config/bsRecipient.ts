@@ -10,7 +10,7 @@ const bsRecipient = {
     name: 'Span',
     widgetType: SysCustomWidgetType.Slider,
     value: 13,
-    visible: false,
+    visible: true,
     min: 1,
     max: 24,
   },

@@ -172,6 +172,10 @@
 .icon-card2:before {
   content: "\e64d";
 }
+/* 手机 */
+.icon-mb:before {
+  content: "\e65c";
+}
 /* PC */
 .icon-pc:before {
   content: "\e64e";

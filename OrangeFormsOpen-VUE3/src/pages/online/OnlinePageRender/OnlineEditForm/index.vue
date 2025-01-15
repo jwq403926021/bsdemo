@@ -24,7 +24,7 @@
                   :rules="rules"
                   style="width: 100%"
                   :label-width="(form.labelWidth || 200) + 'px'"
-                  :label-position="form.labelPosition || 'right'"
+                  :label-position="selectedMode === 'pc' ? (form.labelPosition || 'right') : 'top'"
                   :size="layoutStore.defaultFormItemSize"
                   @submit.prevent
                 >
@@ -88,7 +88,7 @@
             :rules="rules"
             style="width: 100%"
             :label-width="(form.labelWidth || 200) + 'px'"
-            :label-position="form.labelPosition || 'right'"
+            :label-position="selectedMode === 'pc' ? form.labelPosition || 'right' : 'top'"
             :size="layoutStore.defaultFormItemSize"
             @submit.prevent
           >
@@ -286,6 +286,8 @@ provide('form', () => {
 const onInput = (widgetList: ANY_OBJECT[]) => {
   form.value.widgetList = widgetList;
 };
+
+const selectedMode = ref('pc');
 
 const onWidgetClick = (widget: ANY_OBJECT | null) => {
   emit('widgetClick', widget);
@@ -552,6 +554,9 @@ onMounted(() => {
       });
   }
   isReady.value = true;
+  eventbus.on('transferSelectedMode', d => {
+    selectedMode.value = d as string;
+  });
 });
 </script>
 

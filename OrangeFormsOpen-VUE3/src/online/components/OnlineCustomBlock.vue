@@ -5,21 +5,21 @@
         <el-steps style="width: 500px; margin: 20px auto" :active="active">
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(1)" style="cursor: pointer; font-size: 14px;">
+              <div @click="changeActive(1)" style="cursor: pointer; font-size: 14px">
                 {{ form().step1Name || 'Step 1' }}
               </div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(2)" style="cursor: pointer; font-size: 14px;">
+              <div @click="changeActive(2)" style="cursor: pointer; font-size: 14px">
                 {{ form().step2Name || 'Step 2' }}
               </div>
             </template>
           </el-step>
           <el-step>
             <template v-slot:title>
-              <div @click="changeActive(3)" style="cursor: pointer; font-size: 14px;">
+              <div @click="changeActive(3)" style="cursor: pointer; font-size: 14px">
                 {{ form().step3Name || 'Step 3' }}
               </div>
             </template>
@@ -49,7 +49,11 @@
               :class="{ active: isEdit && form().isActive(subWidget) }"
               v-for="subWidget in value"
               :key="subWidget.variableName"
-              :span="subWidget.props.span || (subWidget.props.basicInfo || {}).span"
+              :span="
+                selectedMode === 'pc'
+                  ? subWidget.props.span || (subWidget.props.basicInfo || {}).span
+                  : 24
+              "
             >
               <div
                 class="widget-item"
@@ -150,7 +154,7 @@
                     'margin-bottom': (subWidget.props.paddingBottom || 0) + 'px',
                   }"
                   @widgetClick="onWidgetClick"
-                 />
+                />
                 <OnlineCustomWidget
                   v-show="subWidget.props.activeStep === active"
                   v-else-if="subWidget.widgetType === SysCustomWidgetType.BsShippingOrderInfo"
@@ -186,7 +190,7 @@
                     :prop="subWidget.propString"
                     :class="{
                       'rich-input': subWidget.widgetType === SysCustomWidgetType.RichEditor,
-                      'label-color-primary': true
+                      'label-color-primary': true,
                     }"
                     :label-width="
                       subWidget.showName == null || subWidget.showName === ''
@@ -239,6 +243,7 @@ import OnlineCustomWidget from './OnlineCustomWidget.vue';
 import OnlineCustomTabs from './OnlineCustomTabs.vue';
 import OnlineBaseCard from './OnlineBaseCard.vue';
 import OnlineCardTable from './OnlineCardTable.vue';
+import { eventbus } from '@/common/utils/mitt';
 
 interface IEmit {
   (event: 'widgetClick', value: ANY_OBJECT | null): void;
@@ -269,6 +274,7 @@ const active = inject('step');
 const changeActive = num => {
   active.value = num;
 };
+const selectedMode = ref<string>('pc');
 const getDrableBoxStyle = computed(() => {
   let tempHeight = props.height;
   if (props.height == null || props.height === '') {
@@ -394,7 +400,9 @@ const onWidgetValueChange = (
 };
 
 onMounted(() => {
-  console.log('Block Block Block => form', form());
+  eventbus.on('transferSelectedMode', d => {
+    selectedMode.value = d as string;
+  });
 });
 </script>
 

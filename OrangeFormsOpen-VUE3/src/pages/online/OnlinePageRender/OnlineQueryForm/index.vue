@@ -640,4 +640,7 @@ onUnmounted(() => {
   height: 200px;
   flex-grow: 1;
 }
+#query-form-content {
+  width: 100%;
+}
 </style>

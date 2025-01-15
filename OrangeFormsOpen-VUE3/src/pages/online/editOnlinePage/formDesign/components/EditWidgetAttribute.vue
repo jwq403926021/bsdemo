@@ -1,5 +1,6 @@
 <template>
   <el-form-item
+    v-if="showLabel"
     style="width: 100%"
     class="widget-attribute-item"
     :label="attributeItem.showLabel !== false ? attributeItem.name : undefined"
@@ -40,7 +41,7 @@
       </el-radio-group>
     </el-row>
     <el-slider
-      v-if="inputWidgetType === SysCustomWidgetType.Slider"
+      v-if="inputWidgetType === SysCustomWidgetType.Slider && formConfig().selectedMode === 'pc'"
       style="display: inline-block; width: 95%; margin-left: 5px"
       :min="attributeItem.min"
       :max="attributeItem.max"
@@ -116,6 +117,16 @@ const props = withDefaults(
 const formConfig = inject('formConfig', () => {
   console.error('CustomWidgetAttributeSetting: formConfig not injected');
   return {} as ANY_OBJECT;
+});
+
+const showLabel = computed({
+  get() {
+    if (formConfig().selectedMode !== 'pc' && props.attributeItem.name === 'Span') {
+      return false;
+    }
+    return true;
+  },
+  set() {},
 });
 
 const attributeProps = ref<ANY_OBJECT>({});

@@ -58,7 +58,7 @@
     <el-form-item label="Form Code">
       <el-input v-model="formConfig().form.formCode" placeholder="" clearable filterable />
     </el-form-item>
-    <el-form-item label="Label Position">
+    <el-form-item v-if="formConfig().selectedMode === 'pc'" label="Label Position">
       <el-row type="flex" align="middle" style="width: 100%; height: 40px">
         <el-radio-group v-model="formConfig().form.labelPosition" size="default">
           <el-radio-button value="left">Left</el-radio-button>

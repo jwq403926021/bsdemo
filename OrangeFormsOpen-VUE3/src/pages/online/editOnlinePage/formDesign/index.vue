@@ -266,8 +266,14 @@
       <el-row type="flex" justify="space-between" align="middle" style="height: 48px">
         <div style="font-size: 18px">
           <i
+            class="device-item online-icon icon-mb"
+            :class="{ active: selectedMode === 'mb' }"
+            title="Mobile"
+            @click="onActiveModeChange('mb')"
+          />
+          <i
             class="device-item online-icon icon-pc"
-            :class="{ active: activeMode === 'pc' }"
+            :class="{ active: selectedMode === 'pc' }"
             title="PC"
             @click="onActiveModeChange('pc')"
           />
@@ -441,6 +447,7 @@ import CustomFormSetting from './components/CustomFormSetting.vue';
 import CustomFormOperateSetting from './components/CustomFormOperateSetting.vue';
 import CustomWidgetBindData from './components/CustomWidgetBindData.vue';
 import CustomWidgetAttributeSetting from './components/CustomWidgetAttributeSetting.vue';
+import { eventbus } from '@/common/utils/mitt';
 
 const { getFormConfig } = useFormConfig();
 
@@ -489,6 +496,7 @@ const validFormList = computed(() => {
 });
 
 const activeMode = ref('pc');
+const selectedMode = ref('pc');
 const widgetGroup = computed(() => {
   return widgetData.formWidgetGroupList;
 });
@@ -694,11 +702,9 @@ const getDictName = (dictId: string) => {
 
 // DESIGN
 const onActiveModeChange = (mode: string) => {
-  if (mode !== 'pc' && currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY) {
-    // 移动端不支持左树右表类型页面
-    return;
-  }
-  activeMode.value = mode;
+  selectedMode.value = mode;
+  eventbus.emit("transferSelectedMode", mode)
+  activeMode.value = 'pc';
   refreshFormInfo();
 };
 const refreshFormInfo = () => {
@@ -790,7 +796,7 @@ const onClearWidget = () => {
 const getDesignBoxStyle = computed(() => {
   let width, padding, background;
   let formInfo = (currentForm.value || {})[activeMode.value] || {};
-  if (activeMode.value === 'pc') {
+  if (selectedMode.value === 'pc') {
     width =
       currentForm.value == null || formInfo.fullscreen ? '100%' : (formInfo.width || 600) + 'px';
     padding =
@@ -813,8 +819,8 @@ const getDesignBoxStyle = computed(() => {
         : 'white';
   } else {
     width = '375px';
-    padding = '0px';
-    background = undefined;
+    padding = '12px';
+    background = 'white';
   }
   return {
     width,
@@ -894,6 +900,7 @@ const getTableWidgetTableList = computed(() => {
 const formConfig = computed(() => {
   let formConfig = {
     form: currentForm.value ? currentForm.value[activeMode.value] : null,
+    selectedMode: selectedMode.value,
     activeMode: activeMode.value,
     currentWidget: currentWidget.value,
     getMasterTable: getMasterTable.value,

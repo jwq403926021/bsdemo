@@ -24,7 +24,7 @@
                   :rules="rules"
                   style="width: 100%"
                   :label-width="(form.labelWidth || 200) + 'px'"
-                  :label-position="selectedMode === 'pc' ? (form.labelPosition || 'right') : 'top'"
+                  :label-position="selectedMode === 'pc' ? form.labelPosition || 'right' : 'top'"
                   :size="layoutStore.defaultFormItemSize"
                   @submit.prevent
                 >
@@ -326,6 +326,12 @@ const onSaveFormData = async () => {
   console.log('route==================', route);
   let params: ANY_OBJECT = {};
   for (const key in bsWidgetList) {
+    if (bsWidgetList[key]?.validateForm && typeof bsWidgetList[key].validateForm === 'function') {
+      const valid = await bsWidgetList[key]?.validateForm();
+      if (!valid) {
+        return;
+      }
+    }
     if (bsWidgetList[key]?.getValue && typeof bsWidgetList[key].getValue === 'function') {
       const value = bsWidgetList[key]?.getValue() || {};
       console.log(`${key}::!@#!@#!@#!@#::`, value);
@@ -352,8 +358,10 @@ const onSaveFormData = async () => {
     }),
     recipient: params?.recipientModify ?? params.recipient,
     phone: params?.phoneModify ?? params.phone,
-    deliveryDate: params.requestDeliveryDate,
     processDefinitionKey: dialogParams.value.formConfig.processId || '',
+    deliveryDate: params?.requestDeliveryDate,
+    paying: params?.paying,
+    remarksToWarehouse: params.remarksToWarehouse,
     formId: getQueryParam('formId'),
     formType: getQueryParam('formType'),
     orderType: getQueryParam('orderType')?.replace(/\+/g, ' '),
@@ -363,6 +371,7 @@ const onSaveFormData = async () => {
   const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);
   console.log(res);
   if (res.success) {
+    ElMessage.success('Save success');
     clearEditForm();
     onCancel();
     eventbus.emit('refreshTable');
@@ -391,9 +400,7 @@ const onSubmit = () => {
     if (!valid) return;
     if (dialogParams.value.saveData) {
       // 非级联保存数据
-      onSaveFormData().then(res => {
-        ElMessage.success('Save success');
-      });
+      onSaveFormData();
     } else {
       if (props.dialog) {
         props.dialog.submit(formData);
@@ -557,6 +564,9 @@ onMounted(() => {
   eventbus.on('transferSelectedMode', d => {
     selectedMode.value = d as string;
   });
+});
+onUnmounted(() => {
+  eventbus.off('transferSelectedMode');
 });
 </script>
 

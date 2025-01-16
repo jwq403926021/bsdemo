@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 style="margin: 10px 0">Selected Product</h2>
     <el-table
       v-if="selectedMode === 'pc'"
       ref="multipleTableRef"

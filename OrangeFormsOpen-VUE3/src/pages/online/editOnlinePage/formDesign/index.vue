@@ -457,6 +457,7 @@ const emit = defineEmits<{
   cloneForm: [ANY_OBJECT];
   deleteForm: [ANY_OBJECT];
 }>();
+const selectedStep = ref<number>(1);
 const layoutStore = useLayoutStore();
 
 const props = withDefaults(
@@ -524,21 +525,24 @@ const formValidWidgetGroup = computed(() => {
     }
   });
 
-  return tempList.map((item: ANY_OBJECT) => {
-    return {
-      ...item,
-      widgetList: item.widgetList.filter((widget: ANY_OBJECT) => {
-        if (currentForm.value == null) return true;
-        // 查询过滤
-        let isMatch = true;
-        if (filter.value.widgetName) {
-          isMatch =
-            SysCustomWidgetType.getValue(widget.widgetType).indexOf(filter.value.widgetName) !== -1;
-        }
-        return isMatch;
-      }),
-    };
-  });
+  return tempList
+    .filter(item => item.showStep === selectedStep.value)
+    .map((item: ANY_OBJECT) => {
+      return {
+        ...item,
+        widgetList: item.widgetList.filter((widget: ANY_OBJECT) => {
+          if (currentForm.value == null) return true;
+          // 查询过滤
+          let isMatch = true;
+          if (filter.value.widgetName) {
+            isMatch =
+              SysCustomWidgetType.getValue(widget.widgetType).indexOf(filter.value.widgetName) !==
+              -1;
+          }
+          return isMatch;
+        }),
+      };
+    });
 });
 
 const cloneWidget = (widget: ANY_OBJECT) => {
@@ -703,7 +707,7 @@ const getDictName = (dictId: string) => {
 // DESIGN
 const onActiveModeChange = (mode: string) => {
   selectedMode.value = mode;
-  eventbus.emit("transferSelectedMode", mode)
+  eventbus.emit('transferSelectedMode', mode);
   activeMode.value = 'pc';
   refreshFormInfo();
 };
@@ -1021,7 +1025,14 @@ watch(
     }
   },
 );
-
+onMounted(() => {
+  eventbus.on('transferSelectedStep', d => {
+    selectedStep.value = d as number;
+  });
+});
+onUnmounted(() => {
+  eventbus.off('transferSelectedStep');
+});
 // EVENT
 const onCreateNewForm = () => {
   emit('createForm');

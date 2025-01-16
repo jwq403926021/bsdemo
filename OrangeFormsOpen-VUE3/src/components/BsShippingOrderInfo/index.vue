@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="margin-bottom: 10px">Shipping Order Info</h2>
+    <h2 style="margin: 10px 0">Shipping Order Info</h2>
     <ul>
       <li style="line-height: 24px" :key="item.valueHuman" v-for="item in data">
         {{ item.label }}: {{ item.valueHuman }}
@@ -25,33 +25,39 @@ const pps = withDefaults(
   }>(),
   {},
 );
-const formInject = inject('form');
-const widgetList = inject('widgetList');
+const formInject = inject<ANY_OBJECT>('form');
+const widgetList = inject<ANY_OBJECT>('widgetList');
 const data: ANY_OBJECT = ref([]);
-const step = inject('step');
+const step = inject<ANY_OBJECT>('step');
 watch(
   () => step.value,
   () => {
-    const result = [];
-    const form = formInject();
-    console.log('form:', form);
-    form.widgetList.forEach(i => {
-      const includes = [404, 405, 406, 412, 408];
-      if (includes.includes(i.widgetType)) {
-        console.log(i.variableName, ':', widgetList[i.variableName]);
-        let widgetValueObj = {};
-        if (widgetList[i.variableName].getValue) {
-          widgetValueObj = widgetList[i.variableName].getValue();
-        }
-        result.push({
-          label: i.showName,
-          value: widgetValueObj?.value || '',
-          valueHuman: widgetValueObj?.valueHuman || '',
-        });
-      }
-    });
-    console.log(result);
-    data.value = result;
+    getInfo();
   },
 );
+const getInfo = () => {
+  const result: ANY_OBJECT[] = [];
+  const form = formInject();
+  console.log('form:', form);
+  form.widgetList.forEach(i => {
+    const includes = [404, 405, 406, 412, 408];
+    if (includes.includes(i.widgetType)) {
+      console.log(i.variableName, ':', widgetList[i.variableName]);
+      let widgetValueObj: ANY_OBJECT = {};
+      if (widgetList[i.variableName].getValue) {
+        widgetValueObj = widgetList[i.variableName].getValue();
+      }
+      result.push({
+        label: i.showName,
+        value: widgetValueObj?.value || '',
+        valueHuman: widgetValueObj?.valueHuman || '',
+      });
+    }
+  });
+  console.log(result);
+  data.value = result;
+};
+onMounted(() => {
+  getInfo();
+});
 </script>

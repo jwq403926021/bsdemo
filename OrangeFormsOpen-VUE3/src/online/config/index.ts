@@ -38,6 +38,7 @@ import bsStockLocationConfig from './bsStockLocation';
 import bsProductConfig from './bsProduct';
 import bsProductConfirmConfig from './bsProductConfirm';
 import bsShippingOrderInfoConfig from './bsShippingOrderInfo';
+import bsRemarksToWarehouseConfig from './bsRemarksToWarehouse';
 import bsContactInfoConfig from './bsContactInfo';
 import bsContactInfoForPackingListConfig from './bsContactInfoForPackingList';
 
@@ -95,6 +96,7 @@ const formWidgetGroupList: ANY_OBJECT = {
     // },
     {
       id: 'layout',
+      showStep: 1,
       groupName: 'Order Field',
       widgetList: [
         bsDivisionConfig,
@@ -107,8 +109,10 @@ const formWidgetGroupList: ANY_OBJECT = {
     },
     {
       id: 'base',
+      showStep: 2,
       groupName: 'Product',
       widgetList: [
+        bsDivisionConfig,
         bsProductLevelConfig,
         bsProductLevelNameConfig,
         bsUpnProductNameConfig,
@@ -117,6 +121,7 @@ const formWidgetGroupList: ANY_OBJECT = {
     },
     {
       id: 'advance',
+      showStep: 3,
       groupName: 'Confirm Info',
       widgetList: [
         bsShippingOrderInfoConfig,
@@ -124,7 +129,7 @@ const formWidgetGroupList: ANY_OBJECT = {
         bsProductConfirmConfig,
         bsRecipientConfig,
         bsPhoneConfig,
-        bsRequestDeliveryDateConfig,
+        bsRemarksToWarehouseConfig,
       ],
     },
   ],
@@ -270,6 +275,8 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return bsDivisionConfig;
     case SysCustomWidgetType.BsShippingOrderInfo:
       return bsShippingOrderInfoConfig;
+    case SysCustomWidgetType.BsRemarksToWarehouse:
+      return bsRemarksToWarehouseConfig;
     case SysCustomWidgetType.BsContactInfoForPackingList:
       return bsContactInfoForPackingListConfig;
     case SysCustomWidgetType.BsProductConfirm:

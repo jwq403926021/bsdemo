@@ -83,6 +83,7 @@ import BsProductLevelName from '@/components/BsProductLevelName/index.vue';
 import BsRequestDeliveryDate from '@/components/BsRequestDeliveryDate/index.vue';
 import BsUpnProductName from '@/components/BsUpnProductName/index.vue';
 import BsShippingOrderInfo from '@/components/BsShippingOrderInfo/index.vue';
+import BsRemarksToWarehouse from '@/components/BsRemarksToWarehouse/index.vue';
 import BsAccountName from '@/components/BsAccountName/index.vue';
 import BsShipTo from '@/components/BsShipTo/index.vue';
 import BsContactInfoForPackingList from '@/components/BsContactInfoForPackingList/index.vue';
@@ -250,6 +251,8 @@ const getComponent = computed(() => {
       return BsShipTo;
     case SysCustomWidgetType.BsShippingOrderInfo:
       return BsShippingOrderInfo;
+    case SysCustomWidgetType.BsRemarksToWarehouse:
+      return BsRemarksToWarehouse;
     case SysCustomWidgetType.BsContactInfoForPackingList:
       return BsContactInfoForPackingList;
     case SysCustomWidgetType.BsContactInfo:

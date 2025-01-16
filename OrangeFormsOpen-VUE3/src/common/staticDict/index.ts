@@ -677,6 +677,11 @@ const SysCustomWidgetType = new DictionaryBase('Component Type', [
     symbol: 'BsPhone',
   },
   {
+    id: 422,
+    name: 'Remarks to Warehouse',
+    symbol: 'BsRemarksToWarehouse',
+  },
+  {
     id: 401,
     name: 'Dept Select',
     symbol: 'DeptSelect',

@@ -169,6 +169,18 @@
                 />
                 <OnlineCustomWidget
                   v-show="subWidget.props.activeStep === active"
+                  v-else-if="subWidget.widgetType === SysCustomWidgetType.BsRemarksToWarehouse"
+                  :ref="subWidget.variableName"
+                  :widget="subWidget"
+                  :isEdit="isEdit"
+                  :value="getWidgetValue(subWidget)"
+                  :style="{
+                    'margin-bottom': (subWidget.props.paddingBottom || 0) + 'px',
+                  }"
+                  @widgetClick="onWidgetClick"
+                />
+                <OnlineCustomWidget
+                  v-show="subWidget.props.activeStep === active"
                   v-else-if="
                     subWidget.widgetType === SysCustomWidgetType.BsContactInfoForPackingList
                   "
@@ -273,6 +285,7 @@ const form = inject('form', () => {
 const active = inject('step');
 const changeActive = num => {
   active.value = num;
+  eventbus.emit('transferSelectedStep', num);
 };
 const selectedMode = ref<string>('pc');
 const getDrableBoxStyle = computed(() => {
@@ -403,6 +416,9 @@ onMounted(() => {
   eventbus.on('transferSelectedMode', d => {
     selectedMode.value = d as string;
   });
+});
+onUnmounted(() => {
+  eventbus.off('transferSelectedMode');
 });
 </script>
 

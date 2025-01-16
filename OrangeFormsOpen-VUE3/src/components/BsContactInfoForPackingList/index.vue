@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h2 style="margin-bottom: 10px">Contact Info for Packing List</h2>
-    <ul>
+    <h2 style="margin: 10px 0">Contact Info for Packing List</h2>
+    <!-- <ul>
       <li v-if="has412" style="line-height: 24px">Shipment: {{ Shipment }}</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 

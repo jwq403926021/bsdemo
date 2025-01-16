@@ -19,6 +19,7 @@ declare module 'vue' {
     BsProductLevel: typeof import('./src/components/BsProductLevel/index.vue')['default']
     BsProductLevelName: typeof import('./src/components/BsProductLevelName/index.vue')['default']
     BsRecipient: typeof import('./src/components/BsRecipient/index.vue')['default']
+    BsRemarksToWarehouse: typeof import('./src/components/BsRemarksToWarehouse/index.vue')['default']
     BsRequestDeliveryDate: typeof import('./src/components/BsRequestDeliveryDate/index.vue')['default']
     BsShippingOrderInfo: typeof import('./src/components/BsShippingOrderInfo/index.vue')['default']
     BsShipTo: typeof import('./src/components/BsShipTo/index.vue')['default']

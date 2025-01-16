@@ -3,7 +3,7 @@ import {
   OnlineFormEventType,
 } from '@/common/staticDict/index';
 
-const bsShippingOrderInfo = {
+const bsRemarksToWarehouse = {
   span: {
     name: 'Span',
     widgetType: SysCustomWidgetType.Slider,
@@ -20,10 +20,10 @@ const bsShippingOrderInfo = {
   },
 };
 
-const bsShippingOrderInfoConfig = {
-  widgetType: SysCustomWidgetType.BsShippingOrderInfo,
+const bsRemarksToWarehouseConfig = {
+  widgetType: SysCustomWidgetType.BsRemarksToWarehouse ,
   icon: 'online-icon icon-dept',
-  attribute: bsShippingOrderInfo,
+  attribute: bsRemarksToWarehouse,
   allowEventList: [
     OnlineFormEventType.CHANGE,
     OnlineFormEventType.DISABLE,
@@ -33,4 +33,4 @@ const bsShippingOrderInfoConfig = {
   supportBindColumn: true,
 };
 
-export default bsShippingOrderInfoConfig;
+export default bsRemarksToWarehouseConfig;

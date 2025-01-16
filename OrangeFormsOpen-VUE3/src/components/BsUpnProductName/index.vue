@@ -3,7 +3,7 @@
     <el-form-item>
       <el-input
         v-model="productName"
-        style="width: 240px"
+        style="width: form().mode === 'pc' ? '240px' : '200px'"
         placeholder="Enter UPN/Name"
         :suffix-icon="Search"
       />

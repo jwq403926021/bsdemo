@@ -14,6 +14,7 @@ declare module 'vue' {
     BsDivision: typeof import('./src/components/BsDivision/index.vue')['default']
     BsPhone: typeof import('./src/components/BsPhone/index.vue')['default']
     BsProduct: typeof import('./src/components/BsProduct/index.vue')['default']
+    BsProductCard: typeof import('./src/components/BsProductCard/index.vue')['default']
     BsProductConfirm: typeof import('./src/components/BsProductConfirm/index.vue')['default']
     BsProductLevel: typeof import('./src/components/BsProductLevel/index.vue')['default']
     BsProductLevelName: typeof import('./src/components/BsProductLevelName/index.vue')['default']

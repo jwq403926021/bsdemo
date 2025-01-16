@@ -263,7 +263,7 @@ const formInit = () => {
 
 const onCreateOnlinePage = () => {
   Dialog.show(
-    '新建页面',
+    'Create Page',
     EditOnlinePage,
     {
       area: ['100vw', '100vh'],

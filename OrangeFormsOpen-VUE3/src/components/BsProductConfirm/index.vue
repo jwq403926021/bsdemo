@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-table
+      v-if="selectedMode === 'pc'"
       ref="multipleTableRef"
       :data="tableData"
       style="width: 100%"
@@ -29,16 +30,24 @@
       </el-table-column>
       <el-table-column label="Quantity" property="selectedQty" min-width="25%" />
     </el-table>
+    <bs-product-card
+      v-else
+      :widget="widget"
+      :data="tableData"
+      :multipleSelection="multipleSelection"
+      :isConfirm=true
+      @onCardClick=""
+      @onQuantityUpdate=""
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
-import axios from 'axios';
 import { ref, onMounted, inject } from 'vue';
-import { serverDefaultCfg } from '@/common/http/config';
+import { eventbus } from '@/common/utils/mitt';
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
+import BsProductCard from '@/components/BsProductCard/index.vue';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -54,6 +63,7 @@ const pps = withDefaults(
 );
 const formInject = inject('form');
 const widgetList = inject('widgetList');
+const selectedMode = ref<string>('pc');
 const tableData = ref([]); // 初始化为空数组
 const multipleSelection = ref([]);
 
@@ -81,6 +91,14 @@ watch(
     data.value = result;
   },
 );
+onMounted(() => {
+  eventbus.on('transferSelectedMode', d => {
+    selectedMode.value = d as string;
+  })
+});
+onUnmounted(() => {
+  eventbus.off('transferSelectedMode');
+});
 </script>
 
 <style scoped>

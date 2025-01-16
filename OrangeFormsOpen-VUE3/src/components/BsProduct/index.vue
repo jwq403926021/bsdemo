@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-table
+      v-if="selectedMode === 'pc'"
       ref="multipleTableRef"
       :data="tableData"
       style="width: 100%"
@@ -40,6 +41,14 @@
         </template>
       </el-table-column>
     </el-table>
+    <bs-product-card
+      v-else
+      :widget="widget"
+      :data="tableData"
+      :multipleSelection="multipleSelection"
+      @onCardClick="handleCardClick"
+      @onQuantityUpdate="updateSelectedQuantity"
+    />
   </div>
 </template>
 
@@ -50,6 +59,8 @@ import { eventbus } from '@/common/utils/mitt';
 import { serverDefaultCfg } from '@/common/http/config';
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
+import BsProductCard from '@/components/BsProductCard/index.vue';
+import { Product } from './type';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];
@@ -67,8 +78,9 @@ const formInject = inject('form');
 const productName = ref('');
 const productLevel = ref('');
 const productLevelName = ref('');
-const tableData = ref([]); // 初始化为空数组
-const multipleSelection = ref([]);
+const selectedMode = ref<string>('pc');
+const tableData = ref<Product[]>([]); // 初始化为空数组
+const multipleSelection = ref<Product[]>([]);
 const selectable = (row, index) => {
   // 返回 true 表示所有行都可以选择
   return true;
@@ -79,13 +91,34 @@ const handleSelectionChange = val => {
   multipleSelection.value = val;
 };
 
+  const isCardSelected = (prod: Product) => {
+    return multipleSelection.value.some((selectedItem: Product) => selectedItem.id === prod.id)
+  }
+
+  const handleCardClick = (prod: Product) => {
+    if (isCardSelected(prod)) {
+      multipleSelection.value = multipleSelection.value.filter((selectedItem) => {
+        if (selectedItem.id !== prod.id) {
+          return true
+        } else {
+          prod.isCardSelected = false
+          return false
+        }
+      })
+    } else {
+      prod.isCardSelected = true
+      multipleSelection.value.push(prod)
+    }
+  }
+
 // 从API获取数据
 const fetchData = async () => {
   try {
-    const formInstance = formInject();
-    if (formInstance.isEdit) {
-      return;
-    }
+    // const formInstance = formInject();
+    // console.log(formInstance.mode);
+    // if (formInstance.isEdit) {
+    //   return;
+    // }
     const response = await axios.get(`${serverDefaultCfg.baseURL}order/product`, {
       params: {
         productName: productName.value,
@@ -93,9 +126,8 @@ const fetchData = async () => {
         productLevelName: productLevelName.value,
       },
     });
-
     // 添加 selectedQty 字段以保存用户选择的数量
-    tableData.value = response.data.map(item => ({ ...item, selectedQty: 1 }));
+    tableData.value = response.data.map((item: Product) => ({ ...item, selectedQty: 1, isCardSelected: false }));
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -134,15 +166,19 @@ onMounted(() => {
       fetchData();
     }
   });
+  eventbus.on('transferSelectedMode', d => {
+    selectedMode.value = d as string;
+  })
 });
 onUnmounted(() => {
   eventbus.off('bs:upnProductName');
   eventbus.off('bs:productLevel');
   eventbus.off('bs:productLevelName');
+  eventbus.off('transferSelectedMode');
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ::v-deep(.el-table th .cell) {
   color: #1a457a !important;
 }

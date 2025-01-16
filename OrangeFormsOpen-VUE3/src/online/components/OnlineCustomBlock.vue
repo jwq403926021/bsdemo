@@ -2,7 +2,7 @@
   <el-row class="online-custom-block" :gutter="0">
     <el-col>
       <el-row>
-        <el-steps style="width: 500px; margin: 20px auto" :active="active">
+        <el-steps style="width: 500px; margin: 20px auto" :active="active" align-center>
           <el-step>
             <template v-slot:title>
               <div @click="changeActive(1)" style="cursor: pointer; font-size: 14px">

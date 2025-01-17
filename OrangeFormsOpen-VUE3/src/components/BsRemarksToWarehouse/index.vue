@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="margin: 10px 0">Remarks to Warehouse</h2>
+    <div class="title">Remarks to Warehouse</div>
     <el-radio-group v-model="remarksToWarehouse" @change="handleDeliveryChange" class="radio-group">
       <el-radio label="Standard Delivery">Standard delivery</el-radio>
       <el-radio label="Urgent NSD">Urgent non-standard delivery</el-radio>
@@ -115,7 +115,12 @@ onUnmounted(() => {
 defineExpose({ getValue, setValue, validateForm });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.title {
+  font-size: 18px;
+  color: $color-primary;
+  margin: 10px 0px;
+}
 .radio-group {
   display: flex;
   flex-direction: column;

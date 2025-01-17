@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2 style="margin: 10px 0">Contact Info for Packing List</h2>
+  <div class="contact-info">
+    <div class="contact-info-title">Contact Info for Packing List</div>
     <!-- <ul>
       <li v-if="has412" style="line-height: 24px">Shipment: {{ Shipment }}</li>
     </ul> -->
@@ -43,3 +43,20 @@ watch(
   },
 );
 </script>
+
+<style scoped lang="scss">
+.contact-info{
+  margin-top: 10px;
+}
+.contact-info-title {
+  font-size: 18px;
+  color: $color-primary;
+  margin-bottom: 10px
+}
+.contact-info-item {
+  font-size: 14px;
+  line-height: 36px;
+  color: $color-primary;
+  margin-bottom: 8px;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="margin: 10px 0">Selected Product</h2>
+    <div class="product-confirm-title">Selected Product</div>
     <el-table
       v-if="selectedMode === 'pc'"
       ref="multipleTableRef"
@@ -102,8 +102,13 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ::v-deep(.el-table th .cell) {
   color: #1a457a !important;
+}
+.product-confirm-title {
+  font-size: 18px;
+  color: $color-primary;
+  margin: 10px 0px;
 }
 </style>

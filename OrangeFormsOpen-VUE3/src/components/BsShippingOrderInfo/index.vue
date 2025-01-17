@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h2 style="margin: 10px 0">Shipping Order Info</h2>
+  <div class="shipping-order-info">
+    <div class="shipping-order-info-title">Shipping Order Info</div>
     <ul>
-      <li style="line-height: 24px" :key="item.valueHuman" v-for="item in data">
+      <li class="shipping-order-info-item" :key="item.valueHuman" v-for="item in data">
         {{ item.label }}: {{ item.valueHuman }}
       </li>
     </ul>
@@ -61,3 +61,21 @@ onMounted(() => {
   getInfo();
 });
 </script>
+
+<style scoped lang="scss">
+.shipping-order-info{
+  margin-bottom: 50px;
+}
+.shipping-order-info-title {
+  font-size: 18px;
+  color: $color-primary;
+  margin-bottom: 10px
+}
+.shipping-order-info-item {
+  font-size: 14px;
+  line-height: 36px;
+  color: $color-text-secondary;
+  border-bottom: 1px solid #e8eaec;
+  margin-bottom: 10px;
+}
+</style>

@@ -115,10 +115,9 @@ const handleCardClick = (prod: Product) => {
 const fetchData = async () => {
   try {
     const formInstance = formInject();
-    // console.log(formInstance.mode);
-    // if (formInstance.isEdit) {
-    //   return;
-    // }
+    if (formInstance.isEdit) {
+      return;
+    }
     const response = await axios.get(`${serverDefaultCfg.baseURL}order/product`, {
       params: {
         productName: productName.value,

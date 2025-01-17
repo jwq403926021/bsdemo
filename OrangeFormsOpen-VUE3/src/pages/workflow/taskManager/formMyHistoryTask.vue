@@ -15,7 +15,8 @@
         :hasDownload="true"
         :item-width="350"
         @search="refreshFormMyHistoryTask(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="Process Name" prop="processDefinitionName" label-position="top">
           <el-input
             class="filter-item"
@@ -87,12 +88,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { FlowOperationController } from '@/api/flow';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const form = ref();
@@ -209,7 +209,7 @@ watch(
       formInit();
     }
   },
-  {immediate: true}
+  { immediate: true },
 );
 
 defineExpose({ onResume });

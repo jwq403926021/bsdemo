@@ -14,8 +14,9 @@
         :hasDownload="true"
         :item-width="350"
         @search="refreshFormFlowCategory(true)"
-        @reset="onReset">
-        <el-form-item label="Category Name" prop="formFilter.name"  label-position="top">
+        @reset="onReset"
+      >
+        <el-form-item label="Category Name" prop="formFilter.name" label-position="top">
           <el-input
             class="filter-item"
             v-model="formFlowCategory.formFilter.name"
@@ -23,7 +24,7 @@
             placeholder="Process Category Name"
           />
         </el-form-item>
-        <el-form-item label="Category Code" prop="formFilter.code"  label-position="top">
+        <el-form-item label="Category Code" prop="formFilter.code" label-position="top">
           <el-input
             class="filter-item"
             v-model="formFlowCategory.formFilter.code"

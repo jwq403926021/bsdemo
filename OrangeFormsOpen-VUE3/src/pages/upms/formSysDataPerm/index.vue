@@ -84,7 +84,9 @@ const formInit = () => {
   buildFragmentPermCodeMap();
   let defaultFragment = getDefaultFragment();
   if (defaultFragment == null) {
-    ElMessage.error("You don't have permission to access this page. Please contact your system administrator for assistance.");
+    ElMessage.error(
+      "You don't have permission to access this page. Please contact your system administrator for assistance.",
+    );
   } else {
     if (defaultFragment.refresh) defaultFragment.refresh();
   }

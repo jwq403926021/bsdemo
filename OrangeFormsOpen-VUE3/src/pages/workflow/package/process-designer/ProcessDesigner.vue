@@ -543,11 +543,15 @@ const onSave = () => {
   console.log('findErrorNode onSave2', dingflowDesigner.value?.getNodeConfig());
   const errorNode = findErrorNode(dingflowDesigner.value?.getNodeConfig());
   if (errorNode) {
-    ElMessageBox.confirm(errorNode.nodeName + ' task has not set a handler yet, do you want to save?', 'Prompt', {
-      confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel',
-      type: 'warning',
-    })
+    ElMessageBox.confirm(
+      errorNode.nodeName + ' task has not set a handler yet, do you want to save?',
+      'Prompt',
+      {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      },
+    )
       .then(() => {
         bpmnModeler?.saveXML({ format: true }).then(({ xml }: { xml: string }) => {
           emit('save', xml);
@@ -789,11 +793,15 @@ const elementsAlign = (align: string) => {
     ElMessage.warning('Please hold down the Ctrl key to select multiple elements for alignment');
     return;
   }
-  ElMessageBox.confirm('Automatic alignment may deform the graphics, would you like to continue?', 'Warning', {
-    confirmButtonText: 'OK',
-    cancelButtonText: 'Cancel',
-    type: 'warning',
-  }).then(() => Align.trigger(SelectedElements, align));
+  ElMessageBox.confirm(
+    'Automatic alignment may deform the graphics, would you like to continue?',
+    'Warning',
+    {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      type: 'warning',
+    },
+  ).then(() => Align.trigger(SelectedElements, align));
 };
 
 const previewProcessXML = () => {

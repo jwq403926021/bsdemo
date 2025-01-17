@@ -250,12 +250,12 @@ import { VueDraggable } from 'vue-draggable-plus';
 import { ElMessageBox, ElFormItem } from 'element-plus';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysCustomWidgetType } from '@/common/staticDict';
+import { eventbus } from '@/common/utils/mitt';
 import ActiveWidgetMenu from './ActiveWidgetMenu.vue';
 import OnlineCustomWidget from './OnlineCustomWidget.vue';
 import OnlineCustomTabs from './OnlineCustomTabs.vue';
 import OnlineBaseCard from './OnlineBaseCard.vue';
 import OnlineCardTable from './OnlineCardTable.vue';
-import { eventbus } from '@/common/utils/mitt';
 
 interface IEmit {
   (event: 'widgetClick', value: ANY_OBJECT | null): void;
@@ -354,6 +354,9 @@ const onDragAdd = (e: DragEvent) => {
   emit('dragAdd', { list: props.value, dragEvent: e });
   if (addItem.widgetType === 409) {
     addItem.variableName = 'product';
+  }
+  if (addItem.widgetType === 422) {
+    addItem.variableName = 'remarksToWarehouse';
   }
   nextTick(() => {
     onWidgetClick(addItem);

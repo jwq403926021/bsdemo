@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="mb-display-box">
-      <el-card v-if="isConfirm" style="margin: 10px 0px; box-shadow: 0 0 0;">
-        <div class="confirm-card" v-for="(prod, _) in data" :key="prod.productUpn">
+      <el-card v-if="isConfirm" style="margin: 10px 0px; box-shadow: 0 0 0">
+        <div class="confirm-card" v-for="prod in data" :key="prod.productUpn">
           <el-row>
             <el-col :span="18">
               <div>
                 <div class="product-info">{{ prod.productDescription }}</div>
                 <div class="product-info">{{ prod.productUpn }}</div>
                 <div class="product-info">
-                  <img class="product-info-icon" src="@/assets/img/ic_batch.png" alt="icon">
+                  <img class="product-info-icon" src="@/assets/img/ic_batch.png" alt="icon" />
                   <span>{{ prod.id }}</span>
                 </div>
               </div>
@@ -23,15 +23,21 @@
           {{ totalCount + ' Itme(s)' }}
         </el-row>
       </el-card>
-      <el-card class="box-card" v-else v-for="(prod, _) in data" :key="prod.id" @click="emit('onCardClick', prod)"
-        :class="{ selected: prod.isCardSelected }">
+      <el-card
+        class="box-card"
+        v-else
+        v-for="prod in data"
+        :key="prod.id"
+        @click="emit('onCardClick', prod)"
+        :class="{ selected: prod.isCardSelected }"
+      >
         <el-row>
           <el-col :span="18">
             <div>
               <div class="product-info">{{ prod.productDescription }}</div>
               <div class="product-info">{{ prod.productUpn }}</div>
               <div class="product-info">
-                <img class="product-info-icon" src="@/assets/img/ic_batch.png" alt="icon">
+                <img class="product-info-icon" src="@/assets/img/ic_batch.png" alt="icon" />
                 <span>{{ prod.id }}</span>
               </div>
             </div>
@@ -41,8 +47,14 @@
           </el-col>
         </el-row>
         <div class="input-num-comp" @click.stop>
-          <el-input-number v-model="prod.selectedQty" class="input-box" :min="1" :max="prod.qty" size="small"
-            @change="emit('onQuantityUpdate', prod)" />
+          <el-input-number
+            v-model="prod.selectedQty"
+            class="input-box"
+            :min="1"
+            :max="prod.qty"
+            size="small"
+            @change="emit('onQuantityUpdate', prod)"
+          />
         </div>
       </el-card>
     </div>
@@ -57,10 +69,10 @@ const emit = defineEmits(['onCardClick', 'onQuantityUpdate']);
 
 const props = withDefaults(
   defineProps<{
-    data: Product[]
-    multipleSelection: Product[]
-    widget: WidgetProps
-    isConfirm?: boolean
+    data: Product[];
+    multipleSelection: Product[];
+    widget: WidgetProps;
+    isConfirm?: boolean;
   }>(),
   { isConfirm: false },
 );
@@ -79,7 +91,7 @@ const totalCount = computed(() => {
   font-size: 12px;
   font-weight: 400;
   color: #000000;
-  border-bottom: 1px solid #DCE6EF;
+  border-bottom: 1px solid #dce6ef;
   padding-bottom: 3px;
   margin-bottom: 12px;
 }

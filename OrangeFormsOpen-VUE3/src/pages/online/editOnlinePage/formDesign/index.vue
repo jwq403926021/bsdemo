@@ -436,6 +436,7 @@ import { OnlineColumnController } from '@/api/online';
 import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
 import widgetData from '@/online/config/index';
 import { useLayoutStore } from '@/store';
+import { eventbus } from '@/common/utils/mitt';
 import OnlineQueryForm from '../../OnlinePageRender/OnlineQueryForm/index.vue';
 import OnlineOneToOneQueryForm from '../../OnlinePageRender/OnlineOneToOneForm/index.vue';
 import OnlineAdvanceQueryForm from '../../OnlinePageRender/OnlineAdvanceQueryForm/index.vue';
@@ -447,7 +448,6 @@ import CustomFormSetting from './components/CustomFormSetting.vue';
 import CustomFormOperateSetting from './components/CustomFormOperateSetting.vue';
 import CustomWidgetBindData from './components/CustomWidgetBindData.vue';
 import CustomWidgetAttributeSetting from './components/CustomWidgetAttributeSetting.vue';
-import { eventbus } from '@/common/utils/mitt';
 
 const { getFormConfig } = useFormConfig();
 

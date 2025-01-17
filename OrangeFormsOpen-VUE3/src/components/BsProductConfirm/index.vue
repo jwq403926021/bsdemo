@@ -36,9 +36,9 @@
       :widget="widget"
       :data="tableData"
       :multipleSelection="multipleSelection"
-      :isConfirm=true
-      @onCardClick=""
-      @onQuantityUpdate=""
+      :isConfirm="true"
+      @onCardClick="null"
+      @onQuantityUpdate="null"
     />
   </div>
 </template>
@@ -95,7 +95,7 @@ watch(
 onMounted(() => {
   eventbus.on('transferSelectedMode', d => {
     selectedMode.value = d as string;
-  })
+  });
 });
 onUnmounted(() => {
   eventbus.off('transferSelectedMode');

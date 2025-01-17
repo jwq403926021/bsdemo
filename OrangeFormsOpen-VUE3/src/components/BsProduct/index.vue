@@ -91,30 +91,30 @@ const handleSelectionChange = val => {
   multipleSelection.value = val;
 };
 
-  const isCardSelected = (prod: Product) => {
-    return multipleSelection.value.some((selectedItem: Product) => selectedItem.id === prod.id)
-  }
+const isCardSelected = (prod: Product) => {
+  return multipleSelection.value.some((selectedItem: Product) => selectedItem.id === prod.id);
+};
 
-  const handleCardClick = (prod: Product) => {
-    if (isCardSelected(prod)) {
-      multipleSelection.value = multipleSelection.value.filter((selectedItem) => {
-        if (selectedItem.id !== prod.id) {
-          return true
-        } else {
-          prod.isCardSelected = false
-          return false
-        }
-      })
-    } else {
-      prod.isCardSelected = true
-      multipleSelection.value.push(prod)
-    }
+const handleCardClick = (prod: Product) => {
+  if (isCardSelected(prod)) {
+    multipleSelection.value = multipleSelection.value.filter(selectedItem => {
+      if (selectedItem.id !== prod.id) {
+        return true;
+      } else {
+        prod.isCardSelected = false;
+        return false;
+      }
+    });
+  } else {
+    prod.isCardSelected = true;
+    multipleSelection.value.push(prod);
   }
+};
 
 // 从API获取数据
 const fetchData = async () => {
   try {
-    // const formInstance = formInject();
+    const formInstance = formInject();
     // console.log(formInstance.mode);
     // if (formInstance.isEdit) {
     //   return;
@@ -126,8 +126,15 @@ const fetchData = async () => {
         productLevelName: productLevelName.value,
       },
     });
+    if (formInstance.isEdit) {
+      response.data = response.data.splice(0, 3);
+    }
     // 添加 selectedQty 字段以保存用户选择的数量
-    tableData.value = response.data.map((item: Product) => ({ ...item, selectedQty: 1, isCardSelected: false }));
+    tableData.value = response.data.map((item: Product) => ({
+      ...item,
+      selectedQty: 1,
+      isCardSelected: false,
+    }));
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -168,7 +175,7 @@ onMounted(() => {
   });
   eventbus.on('transferSelectedMode', d => {
     selectedMode.value = d as string;
-  })
+  });
 });
 onUnmounted(() => {
   eventbus.off('bs:upnProductName');

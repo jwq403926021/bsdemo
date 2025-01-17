@@ -42,18 +42,18 @@
       <vxe-column title="Operation" fixed="right" width="250px">
         <template v-slot="scope">
           <general-button
-             @click="onEditSysDeptClick(scope.row)"
+            @click="onEditSysDeptClick(scope.row)"
             text="Edit"
             type="primary"
-            :style="{padding: '4px 16px', margin: '3px 2px'}"
+            :style="{ padding: '4px 16px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:update')"
           />
           <general-button
-             @click="onEditSysDeptPostClick(scope.row)"
+            @click="onEditSysDeptPostClick(scope.row)"
             text="Position"
             type="primary"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="
               !(
@@ -63,10 +63,10 @@
             "
           />
           <general-button
-             @click="onDeleteClick(scope.row)"
+            @click="onDeleteClick(scope.row)"
             text="Delete"
             type="danger"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDept:fragmentSysDept:delete')"
           />

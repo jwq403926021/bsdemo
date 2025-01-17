@@ -3,26 +3,30 @@
     <el-col :span="17" class="filter-cond">
       <slot />
     </el-col>
-    <el-col :span="7" :class="isFold ? 'handling-box-flod' : 'handling-box'" :style="{ 'min-width': minMenuWidth + 'px' }">
-        <el-button v-if="hasSearch" class="broder-radius-16" type="primary" @click="search" >
-          Search
-        </el-button>
-        <el-button v-if="hasFold" class="broder-radius-16" type="primary" @click="onFold">
-            <img :src="FoldDown" alt="icon" :class="isFold ? 'fold-up-icon' : 'fold-down-icon'" />
-        </el-button>
-        <el-button  v-if="hasSearch || hasFold" type="text" plain>
-          <img :src="Separator" alt="icon" class="separator-icon" />
-        </el-button>
-        <el-button v-if="hasReset" type="text" plain @click="reset">
-          <img :src="Reload" alt="icon" class="icon-button" />
-        </el-button>
-        <el-button v-if="hasRefresh" type="text" plain @click="search">
-          <img :src="Refresh" alt="icon" class="icon-button" />
-        </el-button>
-        <el-button v-if="hasDownload" type="text" plain @click="">
-          <img :src="DownLoad" alt="icon" class="icon-button" />
-        </el-button>
-        <!-- <div style="float: right">
+    <el-col
+      :span="7"
+      :class="isFold ? 'handling-box-flod' : 'handling-box'"
+      :style="{ 'min-width': minMenuWidth + 'px' }"
+    >
+      <el-button v-if="hasSearch" class="broder-radius-16" type="primary" @click="search">
+        Search
+      </el-button>
+      <el-button v-if="hasFold" class="broder-radius-16" type="primary" @click="onFold">
+        <img :src="FoldDown" alt="icon" :class="isFold ? 'fold-up-icon' : 'fold-down-icon'" />
+      </el-button>
+      <el-button v-if="hasSearch || hasFold" type="text" plain>
+        <img :src="Separator" alt="icon" class="separator-icon" />
+      </el-button>
+      <el-button v-if="hasReset" type="text" plain @click="reset">
+        <img :src="Reload" alt="icon" class="icon-button" />
+      </el-button>
+      <el-button v-if="hasRefresh" type="text" plain @click="search">
+        <img :src="Refresh" alt="icon" class="icon-button" />
+      </el-button>
+      <el-button v-if="hasDownload" type="text" plain @click="null">
+        <img :src="DownLoad" alt="icon" class="icon-button" />
+      </el-button>
+      <!-- <div style="float: right">
           <slot name="operation" />
         </div> -->
     </el-col>
@@ -61,7 +65,7 @@ withDefaults(
   },
 );
 
-let isFold = ref(false)
+let isFold = ref(false);
 
 const search = () => {
   emit('search');
@@ -70,7 +74,7 @@ const reset = () => {
   emit('reset');
 };
 const onFold = () => {
-  isFold.value = !isFold.value
+  isFold.value = !isFold.value;
 };
 </script>
 
@@ -90,8 +94,9 @@ const onFold = () => {
   flex-wrap: wrap;
   gap: 10px;
 }
-.handling-box, .handling-box-flod{
-  display:flex;
+.handling-box,
+.handling-box-flod {
+  display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   flex-shrink: 0;
@@ -99,23 +104,23 @@ const onFold = () => {
   gap: 5px;
   flex-wrap: nowrap;
 }
-.handling-box-flod{
+.handling-box-flod {
   height: 64px;
   margin-bottom: 0px;
 }
-.fold-down-icon{
+.fold-down-icon {
   width: 20px;
   height: 20px;
   transform: rotate(0deg);
   transition: transform 0.3s ease-in-out;
 }
-.fold-up-icon{
+.fold-up-icon {
   width: 20px;
   height: 20px;
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out;
 }
-.separator-icon{
+.separator-icon {
   height: 29px;
 }
 .icon-button {
@@ -132,6 +137,4 @@ const onFold = () => {
     margin-left: 8px;
   }
 }
-
-
 </style>

@@ -2,13 +2,16 @@
   <div>
     <h2 style="margin: 10px 0">Remarks to Warehouse</h2>
     <el-radio-group v-model="remarksToWarehouse" @change="handleDeliveryChange" class="radio-group">
-      <el-radio label="standard">Standard delivery</el-radio>
-      <el-radio label="urgent">Urgent non-standard delivery</el-radio>
+      <el-radio label="Standard Delivery">Standard delivery</el-radio>
+      <el-radio label="Urgent NSD">Urgent non-standard delivery</el-radio>
     </el-radio-group>
-    <div v-if="remarksToWarehouse === 'urgent'" class="urgent-form">
+    <div
+      v-if="remarksToWarehouse && remarksToWarehouse !== 'Standard Delivery'"
+      class="urgent-form"
+    >
       <el-form ref="form" :model="formData" label-width="180px" :rules="rules" label-position="top">
         <el-row :gutter="24">
-          <el-col :span="8">
+          <el-col :span="selectedMode === 'pc' ? 8 : 18">
             <el-form-item
               span="12"
               label="Request Delivery Date"
@@ -22,7 +25,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="selectedMode === 'pc' ? 8 : 18">
             <el-form-item label="Paying" prop="paying">
               <el-select v-model="formData.paying" placeholder="Paying">
                 <el-option label="BSC paying" value="BSC paying"></el-option>
@@ -37,9 +40,10 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment';
 import { ANY_OBJECT } from '@/types/generic';
 import { WidgetProps } from '@/online/components/types/widget';
-import moment from 'moment';
+import { eventbus } from '@/common/utils/mitt';
 
 const form = ref();
 const emit = defineEmits<{
@@ -58,7 +62,7 @@ const pps = withDefaults(
   }>(),
   {},
 );
-
+const selectedMode = ref<string>('pc');
 const formData = ref<ANY_OBJECT>({
   requestDeliveryDate: '',
   paying: '',
@@ -67,7 +71,7 @@ const formData = ref<ANY_OBJECT>({
 const remarksToWarehouse = ref<string>();
 
 const handleDeliveryChange = val => {
-  if (val === 'standard') {
+  if (val === 'Standard Delivery') {
     formData.value = {
       requestDeliveryDate: '',
       paying: '',
@@ -100,6 +104,14 @@ const setValue = (val: string) => {
   formData.value.requestDeliveryDate = val;
   formData.value.paying = val;
 };
+onMounted(() => {
+  eventbus.on('transferSelectedMode', d => {
+    selectedMode.value = d as string;
+  });
+});
+onUnmounted(() => {
+  eventbus.off('transferSelectedMode');
+});
 defineExpose({ getValue, setValue, validateForm });
 </script>
 
@@ -112,5 +124,8 @@ defineExpose({ getValue, setValue, validateForm });
 .urgent-form {
   position: relative;
   left: 60px;
+}
+:deep(.el-radio__input) {
+  margin: 0 10px;
 }
 </style>

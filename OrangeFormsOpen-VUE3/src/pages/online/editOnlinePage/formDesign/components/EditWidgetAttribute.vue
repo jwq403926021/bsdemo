@@ -126,7 +126,9 @@ const showLabel = computed({
     }
     return true;
   },
-  set() {},
+  set() {
+    console.log();
+  },
 });
 
 const attributeProps = ref<ANY_OBJECT>({});

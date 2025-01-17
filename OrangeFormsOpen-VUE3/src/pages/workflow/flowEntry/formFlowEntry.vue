@@ -14,7 +14,8 @@
         :hasDownload="true"
         :item-width="350"
         @search="refreshFormFlowEntry(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="Process Category" prop="formFilter.categoryId" label-position="top">
           <el-select
             class="filter-item"
@@ -33,7 +34,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Process Name" prop="formFilter.processDefinitionName" label-position="top">
+        <el-form-item
+          label="Process Name"
+          prop="formFilter.processDefinitionName"
+          label-position="top"
+        >
           <el-input
             class="filter-item"
             v-model="formFlowEntry.formFilter.processDefinitionName"
@@ -144,12 +149,12 @@
           </el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="Last Publish Time"  field="latestPublishTime" sortable />
+      <vxe-column title="Last Publish Time" field="latestPublishTime" sortable />
       <vxe-column title="Operation" fixed="right" width="225px">
         <template v-slot="scope">
           <general-button
             text="Start"
-            :style="{padding: '4px 12px', margin: '3px 2px 3px 0px'}"
+            :style="{ padding: '4px 12px', margin: '3px 2px 3px 0px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="
               !(scope.row.mainFlowEntryPublish && scope.row.mainFlowEntryPublish.activeStatus)
@@ -158,26 +163,26 @@
           />
           <general-button
             text="Edit"
-            :style="{padding: '4px 16px', margin: '3px 2px'}"
+            :style="{ padding: '4px 16px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onEditFlowEntryClick(scope.row)"
           />
           <general-button
             text="Publish"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onPublishedClick(scope.row)"
           />
           <general-button
             text="Version"
-            :style="{padding: '4px 8px', margin: '3px 2px 3px 0px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px 3px 0px' }"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onPublishedEntryListClick(scope.row)"
           />
           <general-button
             text="Delete"
             type="danger"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onDeleteFlowEntryClick(scope.row)"
           />

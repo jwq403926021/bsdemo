@@ -10,9 +10,7 @@
       @submit.prevent
     >
       <el-row class="form-title">
-        <el-col :span="24">
-          My Request
-        </el-col>
+        <el-col :span="24"> My Request </el-col>
       </el-row>
       <filter-box
         :item-width="320"
@@ -20,7 +18,8 @@
         :hasRefresh="true"
         :hasDownload="true"
         @search="refreshMyRequest(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="MyOrder No." prop="formFilter.myOrderNo" label-position="top">
           <el-input
             class="filter-item"
@@ -154,12 +153,17 @@
           <el-tag
             effect="plain"
             :size="layoutStore.defaultFormItemSize"
-            :type="MyRequestStatus.getValue(scope.row.status) === 'Approved' ?
-              'success' : MyRequestStatus.getValue(scope.row.status) === 'Rejected' ?
-              'danger' : MyRequestStatus.getValue(scope.row.status) === 'Pending' ?
-              'warning': 'primary'"
+            :type="
+              MyRequestStatus.getValue(scope.row.status) === 'Approved'
+                ? 'success'
+                : MyRequestStatus.getValue(scope.row.status) === 'Rejected'
+                ? 'danger'
+                : MyRequestStatus.getValue(scope.row.status) === 'Pending'
+                ? 'warning'
+                : 'primary'
+            "
           >
-          {{ MyRequestStatus.getValue(scope.row.status) || ''}}
+            {{ MyRequestStatus.getValue(scope.row.status) || '' }}
           </el-tag>
         </template>
       </vxe-column>
@@ -179,22 +183,25 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { TaskAndRequestController } from '@/api/flow';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
-import { SysFlowTaskOperationType, MyRequestStatus, MyRequestDivisions } from '@/common/staticDict/flow';
+import {
+  SysFlowTaskOperationType,
+  MyRequestStatus,
+  MyRequestDivisions,
+} from '@/common/staticDict/flow';
 import { setEndOfDay } from '@/common/utils';
 import { serverDefaultCfg } from '@/common/http/config';
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const router = useRouter();
 import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 const form = ref();
-const divisionsList = ref()
+const divisionsList = ref();
 
 const loadRequestData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -208,7 +215,9 @@ const loadRequestData = (params: ANY_OBJECT) => {
     status: formMyRequest.value.formFilterCopy.status,
     upn: formMyRequest.value.formFilterCopy.upn,
     submittedStartDate: formMyRequest.value.formFilterCopy.submittedDate[0],
-    submittedEndDate: formMyRequest.value.formFilterCopy.submittedDate.length ? setEndOfDay(formMyRequest.value.formFilterCopy.submittedDate[1]): undefined,
+    submittedEndDate: formMyRequest.value.formFilterCopy.submittedDate.length
+      ? setEndOfDay(formMyRequest.value.formFilterCopy.submittedDate[1])
+      : undefined,
     submittedBy: formMyRequest.value.formFilterCopy.submittedBy,
     ...params,
   };
@@ -226,16 +235,16 @@ const loadRequestData = (params: ANY_OBJECT) => {
   });
 };
 const loadRequestDataVerify = () => {
-  formMyRequest.value.formFilterCopy.myOrderNo = formMyRequest.value.formFilter.myOrderNo
-  formMyRequest.value.formFilterCopy.orderType = formMyRequest.value.formFilter.orderType
-  formMyRequest.value.formFilterCopy.accountName = formMyRequest.value.formFilter.accountName
-  formMyRequest.value.formFilterCopy.shipTo = formMyRequest.value.formFilter.shipTo
-  formMyRequest.value.formFilterCopy.stockLocation = formMyRequest.value.formFilter.stockLocation
-  formMyRequest.value.formFilterCopy.submittedDate = formMyRequest.value.formFilter.submittedDate
-  formMyRequest.value.formFilterCopy.status = formMyRequest.value.formFilter.status
-  formMyRequest.value.formFilterCopy.division = formMyRequest.value.formFilter.division
-  formMyRequest.value.formFilterCopy.upn = formMyRequest.value.formFilter.upn
-  formMyRequest.value.formFilterCopy.submittedBy = formMyRequest.value.formFilter.submittedBy
+  formMyRequest.value.formFilterCopy.myOrderNo = formMyRequest.value.formFilter.myOrderNo;
+  formMyRequest.value.formFilterCopy.orderType = formMyRequest.value.formFilter.orderType;
+  formMyRequest.value.formFilterCopy.accountName = formMyRequest.value.formFilter.accountName;
+  formMyRequest.value.formFilterCopy.shipTo = formMyRequest.value.formFilter.shipTo;
+  formMyRequest.value.formFilterCopy.stockLocation = formMyRequest.value.formFilter.stockLocation;
+  formMyRequest.value.formFilterCopy.submittedDate = formMyRequest.value.formFilter.submittedDate;
+  formMyRequest.value.formFilterCopy.status = formMyRequest.value.formFilter.status;
+  formMyRequest.value.formFilterCopy.division = formMyRequest.value.formFilter.division;
+  formMyRequest.value.formFilterCopy.upn = formMyRequest.value.formFilter.upn;
+  formMyRequest.value.formFilterCopy.submittedBy = formMyRequest.value.formFilter.submittedBy;
   return true;
 };
 const tableOptions: TableOptions<ANY_OBJECT> = {
@@ -284,7 +293,7 @@ const refreshMyRequest = (reloadData = false) => {
 const getDivisions = async () => {
   const res = await axios.get(`${serverDefaultCfg.baseURL}order/divisions`);
   divisionsList.value = res.data;
-}
+};
 const onReset = () => {
   form.value.resetFields();
   refreshMyRequest(true);

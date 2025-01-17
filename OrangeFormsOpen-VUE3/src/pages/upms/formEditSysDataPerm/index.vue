@@ -13,7 +13,11 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="Data Permission Name" prop="SysDataPerm.dataPermName" label-width="180px">
+          <el-form-item
+            label="Data Permission Name"
+            prop="SysDataPerm.dataPermName"
+            label-width="180px"
+          >
             <el-input
               class="input-item"
               v-model="formData.SysDataPerm.dataPermName"
@@ -179,7 +183,9 @@ const formData = reactive({
   SysDataPerm: {} as PermData,
 });
 const rules = {
-  'SysDataPerm.dataPermName': [{ required: true, message: 'data permission name', trigger: 'blur' }],
+  'SysDataPerm.dataPermName': [
+    { required: true, message: 'data permission name', trigger: 'blur' },
+  ],
   'SysDataPerm.ruleType': [{ required: true, message: 'filtering rule', trigger: 'blur' }],
 };
 const onCancel = () => {

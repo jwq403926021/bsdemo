@@ -142,6 +142,8 @@ import { Close } from '@element-plus/icons-vue';
 import { ElForm, ElMessage } from 'element-plus';
 import { Form as VanForm } from 'vant';
 import axios from 'axios';
+import _ from 'lodash';
+import { useRoute } from 'vue-router';
 import { ANY_OBJECT } from '@/types/generic';
 import { OnlineFormEventType, SysCustomWidgetOperationType } from '@/common/staticDict';
 import {
@@ -158,13 +160,11 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import widgetData from '@/online/config/index';
 import { useLayoutStore, useLoginStore } from '@/store';
-import _ from 'lodash';
 import { eventbus } from '@/common/utils/mitt';
 import { FlowEntryController } from '@/api/flow';
 import { useDict } from '../../hooks/useDict';
 import { useForm } from '../hooks/useForm';
 import { useFormExpose } from '../hooks/useFormExpose';
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const loginStore = useLoginStore();

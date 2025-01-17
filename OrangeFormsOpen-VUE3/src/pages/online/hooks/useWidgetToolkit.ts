@@ -83,16 +83,27 @@ export const useWidgetToolkit = () => {
           disabled = column.fieldKind !== SysOnlineFieldKind.UPLOAD_IMAGE;
           break;
         case SysCustomWidgetType.BsDivision:
+          break;
         case SysCustomWidgetType.BsProductLevel:
+          break;
         case SysCustomWidgetType.BsRequestDeliveryDate:
+          break;
         case SysCustomWidgetType.BsUpnProductName:
+          break;
         case SysCustomWidgetType.BsSr:
+          break;
         case SysCustomWidgetType.BsAccountName:
+          break;
         case SysCustomWidgetType.BsRecipient:
+          break;
         case SysCustomWidgetType.BsPhone:
+          break;
         case SysCustomWidgetType.BsShipTo:
+          break;
         case SysCustomWidgetType.BsContactInfo:
+          break;
         case SysCustomWidgetType.BsStockLocation:
+          break;
         // case SysCustomWidgetType.BsContactInfoForPackingList:
         // case SysCustomWidgetType.BsProduct:
         // case SysCustomWidgetType.BsProductConfirm:

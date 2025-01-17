@@ -11,9 +11,7 @@
         <el-radio label="ROLE" value="ROLE">Role</el-radio>
         <el-radio label="DEPT" value="DEPT">Department</el-radio>
         <el-radio label="POST" value="POST">Position</el-radio>
-        <el-radio label="DEPT_POST_LEADER" value="DEPT_POST_LEADER"
-          >Initiator Dept Leader</el-radio
-        >
+        <el-radio label="DEPT_POST_LEADER" value="DEPT_POST_LEADER">Initiator Dept Leader</el-radio>
         <el-radio label="UP_DEPT_POST_LEADER" value="UP_DEPT_POST_LEADER"
           >Initiator Super Dept Leader</el-radio
         >

@@ -1,7 +1,4 @@
-import {
-  SysCustomWidgetType,
-  OnlineFormEventType,
-} from '@/common/staticDict/index';
+import { SysCustomWidgetType, OnlineFormEventType } from '@/common/staticDict/index';
 
 const bsRemarksToWarehouse = {
   span: {
@@ -21,7 +18,7 @@ const bsRemarksToWarehouse = {
 };
 
 const bsRemarksToWarehouseConfig = {
-  widgetType: SysCustomWidgetType.BsRemarksToWarehouse ,
+  widgetType: SysCustomWidgetType.BsRemarksToWarehouse,
   icon: 'online-icon icon-dept',
   attribute: bsRemarksToWarehouse,
   allowEventList: [

@@ -142,6 +142,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, reactive, ref } from 'vue';
 import { CascaderValue, ElCascader, ElMessage } from 'element-plus';
+import axios from 'axios';
 import { SysUserStatus } from '@/common/staticDict/index';
 import { findTreeNodePath } from '@/common/utils';
 import { DialogProp } from '@/components/Dialog/types';
@@ -158,7 +159,6 @@ import { User } from '@/types/upms/user';
 import { useDropdown } from '@/common/hooks/useDropdown';
 import { DropdownOptions, ListData } from '@/common/types/list';
 import { useLayoutStore } from '@/store';
-import axios from 'axios';
 import { serverDefaultCfg } from '@/common/http/config';
 const layoutStore = useLayoutStore();
 

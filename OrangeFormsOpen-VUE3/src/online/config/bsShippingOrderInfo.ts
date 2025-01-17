@@ -1,7 +1,4 @@
-import {
-  SysCustomWidgetType,
-  OnlineFormEventType,
-} from '@/common/staticDict/index';
+import { SysCustomWidgetType, OnlineFormEventType } from '@/common/staticDict/index';
 
 const bsShippingOrderInfo = {
   span: {

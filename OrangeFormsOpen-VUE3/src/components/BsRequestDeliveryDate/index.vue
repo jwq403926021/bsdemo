@@ -12,10 +12,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, inject } from 'vue';
+import moment from 'moment';
 import { ANY_OBJECT } from '@/types/generic';
 import { eventbus } from '@/common/utils/mitt';
 import { WidgetProps } from '@/online/components/types/widget';
-import moment from 'moment';
 
 const emit = defineEmits<{
   'update:modelValue': [string | number | ANY_OBJECT[]];

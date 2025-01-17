@@ -8,26 +8,22 @@
       @refresh="refreshFormSysMenu"
     >
       <template v-slot:operator>
-          <el-row type="flex" align="middle">
-            <el-col :span="12" style="margin-bottom: 16px">
-              <el-button
-                type="primary"
-                :icon="Plus"
-                :size="layoutStore.defaultFormItemSize"
-                :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
-                @click="onCreateSysMenuClick()"
-              >
-                New
-              </el-button>
-            </el-col>
-            <el-col :span="12">
-              <filter-box
-                :minMenuWidth=30
-                :hasSearch="false"
-                @reset="refreshFormSysMenu"
-              />
-            </el-col>
-          </el-row>
+        <el-row type="flex" align="middle">
+          <el-col :span="12" style="margin-bottom: 16px">
+            <el-button
+              type="primary"
+              :icon="Plus"
+              :size="layoutStore.defaultFormItemSize"
+              :disabled="!checkPermCodeExist('formSysMenu:fragmentSysMenu:add')"
+              @click="onCreateSysMenuClick()"
+            >
+              New
+            </el-button>
+          </el-col>
+          <el-col :span="12">
+            <filter-box :minMenuWidth="30" :hasSearch="false" @reset="refreshFormSysMenu" />
+          </el-col>
+        </el-row>
       </template>
       <vxe-column title="Menu Name" field="menuName" width="300px" tree-node> </vxe-column>
       <vxe-column title="Menu Icon" field="icon" width="100px">

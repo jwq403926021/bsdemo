@@ -97,9 +97,11 @@
             @btnClick="onDeleteRow(scope.row)"
             text="Delete"
             type="danger"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
-            :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser')"
+            :disabled="
+              !checkPermCodeExist('formSysDataPerm:fragmentSysDataPermUser:deleteDataPermUser')
+            "
           />
         </template>
       </vxe-column>

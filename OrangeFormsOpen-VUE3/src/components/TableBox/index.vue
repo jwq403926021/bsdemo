@@ -266,7 +266,7 @@ defineExpose({
     margin-bottom: 16px;
     flex-grow: 0;
   }
-  .operator-slot{
+  .operator-slot {
     flex-grow: 1;
   }
   .extend-box {

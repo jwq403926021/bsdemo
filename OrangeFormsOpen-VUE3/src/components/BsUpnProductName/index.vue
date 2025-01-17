@@ -49,7 +49,7 @@ const getValue = () => {
 };
 const setValue = (val: string) => {
   productName.value = val;
-  emitSearch('')
+  emitSearch('');
 };
 defineExpose({ getValue, setValue });
 </script>

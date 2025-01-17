@@ -3,17 +3,27 @@
     <div class="task-title">
       <div>
         <span class="text">{{ flowInfo.flowEntryName }}</span>
-        <el-tag v-if="flowInfo.taskName" effect="dark" :size="layoutStore.defaultFormItemSize" type="success">{{
-          'Current Node: ' + flowInfo.taskName
-        }}</el-tag>
-        <el-tag v-if="flowInfo.processInstanceInitiator" effect="dark" :size="layoutStore.defaultFormItemSize" type="info">{{
-          'Initiator: ' + flowInfo.processInstanceInitiator
-        }}</el-tag>
+        <el-tag
+          v-if="flowInfo.taskName"
+          effect="dark"
+          :size="layoutStore.defaultFormItemSize"
+          type="success"
+          >{{ 'Current Node: ' + flowInfo.taskName }}</el-tag
+        >
+        <el-tag
+          v-if="flowInfo.processInstanceInitiator"
+          effect="dark"
+          :size="layoutStore.defaultFormItemSize"
+          type="info"
+          >{{ 'Initiator: ' + flowInfo.processInstanceInitiator }}</el-tag
+        >
       </div>
     </div>
     <el-row justify="space-between" style="margin-bottom: 24px; flex-wrap: nowrap">
       <el-radio-group size="large" v-model="currentPage" style="min-width: 400px">
-        <el-radio-button value="formInfo">{{formType === 'task' ? requestType : 'Order Detail'}}</el-radio-button>
+        <el-radio-button value="formInfo">{{
+          formType === 'task' ? requestType : 'Order Detail'
+        }}</el-radio-button>
         <el-radio-button v-if="processInstanceId != null && !isDraft" value="flowProcess"
           >Flow Chart</el-radio-button
         >
@@ -32,7 +42,7 @@
         <!-- Form Information -->
         <div v-show="currentPage === 'formInfo'" :key="formKey">
           <el-row class="infomation-form-title">
-            <el-col>{{formType === 'task' ? 'Basic Information' : 'Order Detail'}}</el-col>
+            <el-col>{{ formType === 'task' ? 'Basic Information' : 'Order Detail' }}</el-col>
           </el-row>
           <div v-for="(value, key) in basicInfo" :key="key" class="basic-info">
             <div class="label">{{ FormInfo[key] }}</div>
@@ -41,32 +51,42 @@
                 v-if="formType === 'task'"
                 effect="plain"
                 :size="layoutStore.defaultFormItemSize"
-                :type="MyTaskStatus.getValue(value) === 'Approved' ?
-                  'success' : MyTaskStatus.getValue(value) === 'Rejected' ?
-                  'danger' : MyTaskStatus.getValue(value) === 'Pending' ?
-                  'warning': 'primary'"
+                :type="
+                  MyTaskStatus.getValue(value) === 'Approved'
+                    ? 'success'
+                    : MyTaskStatus.getValue(value) === 'Rejected'
+                    ? 'danger'
+                    : MyTaskStatus.getValue(value) === 'Pending'
+                    ? 'warning'
+                    : 'primary'
+                "
               >
-                {{  MyTaskStatus.getValue(value) }}
+                {{ MyTaskStatus.getValue(value) }}
               </el-tag>
               <el-tag
                 v-else
                 effect="plain"
                 :size="layoutStore.defaultFormItemSize"
-                :type="MyRequestStatus.getValue(value) === 'Approved' ?
-                  'success' : MyRequestStatus.getValue(value) === 'Rejected' ?
-                  'danger' : MyRequestStatus.getValue(value) === 'Pending' ?
-                  'warning': 'primary'"
+                :type="
+                  MyRequestStatus.getValue(value) === 'Approved'
+                    ? 'success'
+                    : MyRequestStatus.getValue(value) === 'Rejected'
+                    ? 'danger'
+                    : MyRequestStatus.getValue(value) === 'Pending'
+                    ? 'warning'
+                    : 'primary'
+                "
               >
-                {{  MyRequestStatus.getValue(value) }}
+                {{ MyRequestStatus.getValue(value) }}
               </el-tag>
             </div>
             <div v-else class="value">{{ value }}</div>
           </div>
           <!-- <slot name="formInfo" /> -->
           <el-row class="infomation-form-title">
-            <el-col>{{formType === 'task' ? 'Order Detail' : 'Selected Products'}}</el-col>
+            <el-col>{{ formType === 'task' ? 'Order Detail' : 'Selected Products' }}</el-col>
           </el-row>
-          <el-row  :gutter="20" class="infomation-form-table">
+          <el-row :gutter="20" class="infomation-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -81,14 +101,19 @@
                 <vxe-column
                   align="center"
                   :title="formType === 'task' ? 'Order. Qty' : 'Quantity'"
-                  :field="formType === 'task' ? 'qty' : 'quantity'">
+                  :field="formType === 'task' ? 'qty' : 'quantity'"
+                >
                   <template #default="{ row }">
-                    <span style="color: #99B2C7">
+                    <span style="color: #99b2c7">
                       {{ formType === 'task' ? row.qty : `x${row.quantity}` }}
                     </span>
                   </template>
                 </vxe-column>
-                <vxe-column v-if="formType === 'request'" title="Rejected Reason" field="rejectedReason" />
+                <vxe-column
+                  v-if="formType === 'request'"
+                  title="Rejected Reason"
+                  field="rejectedReason"
+                />
                 <template v-slot:empty>
                   <div class="table-empty unified-font">
                     <img src="@/assets/img/empty.png" />
@@ -119,7 +144,7 @@
                     <el-tag
                       :size="layoutStore.defaultFormItemSize"
                       :type="getOperationTagType(scope.row.approvalType)"
-                      :style="{minWidth: '68px'}"
+                      :style="{ minWidth: '68px' }"
                       effect="dark"
                       >{{ SysFlowTaskOperationType.getValue(scope.row.approvalType) }}</el-tag
                     >
@@ -153,10 +178,7 @@
           </el-row>
           <div v-if="formType === 'request'" class="contact-info">
             <div div class="contact-info-title">Contact info for packing list</div>
-            <div
-              v-for="(value, key) in contactInfo"
-              :key="key"
-              class="basic-info">
+            <div v-for="(value, key) in contactInfo" :key="key" class="basic-info">
               <div class="label">{{ FormInfo[key] }}</div>
               <div class="value">{{ value }}</div>
             </div>
@@ -165,11 +187,7 @@
                 <span>Request Delivery Date</span>
                 <span class="delivery-date-box-required">*</span>
               </div>
-              <el-date-picker
-                v-model="shippingInfo.deliveryDate"
-                type="date"
-                disabled
-              />
+              <el-date-picker v-model="shippingInfo.deliveryDate" type="date" disabled />
             </div>
           </div>
         </div>
@@ -191,31 +209,26 @@
       </el-form>
     </el-scrollbar>
     <el-row class="task-operation" justify="end" style="flex-wrap: nowrap">
-        <template v-if="$slots.operations">
-          <slot name="operations" />
-        </template>
-        <template v-else>
-          <el-button
-            size="default"
-            class="broder-radius-16"
-            type="info"
-            @click="emit('close')"
-          >
-            Back
-          </el-button>
-          <el-button
-            v-for="(operation, index) in flowOperationList"
-            :key="index"
-            size="default"
-            class="broder-radius-16"
-            :type="getButtonType(operation.type) || 'primary'"
-            :plain="operation.plain || false"
-            @click="handlerOperation(operation)"
-          >
-            {{ operation.label }}
-          </el-button>
-        </template>
-      </el-row>
+      <template v-if="$slots.operations">
+        <slot name="operations" />
+      </template>
+      <template v-else>
+        <el-button size="default" class="broder-radius-16" type="info" @click="emit('close')">
+          Back
+        </el-button>
+        <el-button
+          v-for="(operation, index) in flowOperationList"
+          :key="index"
+          size="default"
+          class="broder-radius-16"
+          :type="getButtonType(operation.type) || 'primary'"
+          :plain="operation.plain || false"
+          @click="handlerOperation(operation)"
+        >
+          {{ operation.label }}
+        </el-button>
+      </template>
+    </el-row>
   </div>
 </template>
 
@@ -264,19 +277,19 @@ const props = withDefaults(
     requestDate?: string;
     orderNumber?: string;
     status?: string | number;
-    pendingBy ?: string;
+    pendingBy?: string;
     soldTo?: string;
     shipTo?: string;
-    stockLocation ?: string;
+    stockLocation?: string;
     orderDetails?: Array<ANY_OBJECT> | string;
     // my request
     requestData?: string;
     productList?: Array<ANY_OBJECT> | string;
-    rejectReason?: string
-    productTotalCount?: string
+    rejectReason?: string;
+    productTotalCount?: string;
   }>(),
   {
-    formType: 'task',  // task -- myTask, request -- myRequest
+    formType: 'task', // task -- myTask, request -- myRequest
     isDraft: false,
   },
 );
@@ -327,20 +340,21 @@ const flowOperationList = computed<ANY_OBJECT[]>(() => {
 
 const orderDetailsList = computed(() => {
   if (props.formType === 'task') {
-    return Array.isArray(props.orderDetails) ?
-       props.orderDetails : JSON.parse(props.orderDetails || '[]')
+    return Array.isArray(props.orderDetails)
+      ? props.orderDetails
+      : JSON.parse(props.orderDetails || '[]');
   } else if (props.formType === 'request') {
-    const productList = typeof props.requestData === 'string'
-      ? JSON.parse(props.requestData)?.productList
-      : []
+    const productList =
+      typeof props.requestData === 'string' ? JSON.parse(props.requestData)?.productList : [];
     if (productList.length !== 0) {
       productList.push({
         rejectedReason: props.rejectReason,
-        quantity: props.productTotalCount
-      })
+        quantity: props.productTotalCount,
+      });
     }
-    return productList
+    return productList;
   }
+  return [];
 });
 
 const shippingInfo = computed(() => {
@@ -349,17 +363,20 @@ const shippingInfo = computed(() => {
       ? JSON.parse(props.requestData)?.shippingCondition
       : {};
   }
-})
+  return {};
+});
 
 const contactInfo = computed(() => {
   if (props.formType === 'request') {
-    const shippingCondition =  props.requestData && typeof props.requestData === 'string'
-      ? JSON.parse(props.requestData)?.shippingCondition
-      : {};
-    const {deliveryDate, ...rest} = shippingCondition
-    return rest
+    const shippingCondition =
+      props.requestData && typeof props.requestData === 'string'
+        ? JSON.parse(props.requestData)?.shippingCondition
+        : {};
+    const { deliveryDate, ...rest } = shippingCondition;
+    return rest;
   }
-})
+  return {};
+});
 
 const canDraft = computed(() => {
   // 启动或者草稿状态
@@ -389,9 +406,9 @@ const getButtonType = (type: string) => {
     case SysFlowTaskOperationType.REVOKE:
       return 'danger';
     case SysFlowTaskOperationType.BACK:
-      return 'info'
+      return 'info';
     case SysFlowTaskOperationType.REJECT_TO_START:
-        return 'warning'
+      return 'warning';
     default:
       return 'default';
   }
@@ -413,7 +430,7 @@ const getOperationTagType = (type: string) => {
     case SysFlowTaskOperationType.REVOKE:
       return 'danger';
     case SysFlowTaskOperationType.SUBMIT:
-      return 'primary'
+      return 'primary';
     default:
       return '';
   }
@@ -506,9 +523,10 @@ const loadAssigneeList = () => {
 
 const formInit = () => {
   if (props.formType === 'request') {
-    const shippingOrder = props.requestData && typeof props.requestData === 'string'
-      ? JSON.parse(props.requestData)?.shippingOrder
-      : {};
+    const shippingOrder =
+      props.requestData && typeof props.requestData === 'string'
+        ? JSON.parse(props.requestData)?.shippingOrder
+        : {};
     basicInfo.value = { ...shippingOrder };
   } else {
     const taskFields = [
@@ -521,15 +539,14 @@ const formInit = () => {
       'pendingBy',
       'soldTo',
       'shipTo',
-      'stockLocation'
-    ]
+      'stockLocation',
+    ];
     basicInfo.value = taskFields.reduce((acc, field) => {
-      acc[field] = props[field] || ''
-      return acc
-    }, {})
+      acc[field] = props[field] || '';
+      return acc;
+    }, {});
   }
 };
-
 
 onMounted(() => {
   formInit();
@@ -766,7 +783,7 @@ pre {
 .infomation-form-table {
   padding: 0px 50px 10px 20px;
 }
-.task-operation{
+.task-operation {
   padding: 20px 50px 20px 0px;
 }
 .basic-info {
@@ -780,23 +797,23 @@ pre {
   margin: 0px 50px 10px 20px;
   border-bottom: 1px solid #e8eaec;
 }
-.contact-info{
+.contact-info {
   margin: 15px 50px 10px 10px;
   border-top: 1px solid #e8eaec;
   padding-top: 10px;
   color: $color-text-secondary;
 }
-.contact-info-title{
+.contact-info-title {
   margin-bottom: 15px;
 }
-.delivery-date-box{
+.delivery-date-box {
   width: 220px;
   margin: 20px 0px 10px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-.delivery-date-box-required{
+.delivery-date-box-required {
   color: rgb(255, 0, 0);
 }
 </style>

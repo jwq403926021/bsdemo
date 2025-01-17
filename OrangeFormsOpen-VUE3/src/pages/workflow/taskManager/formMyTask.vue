@@ -10,9 +10,7 @@
       @submit.prevent
     >
       <el-row class="form-title">
-        <el-col :span="24">
-          My Task
-        </el-col>
+        <el-col :span="24"> My Task </el-col>
       </el-row>
       <filter-box
         :item-width="320"
@@ -20,8 +18,13 @@
         :hasRefresh="true"
         :hasDownload="true"
         @search="refreshMyTask(true)"
-        @reset="onReset">
-        <el-form-item label="Process Name" prop="formFilter.processDefinitionName" label-position="top">
+        @reset="onReset"
+      >
+        <el-form-item
+          label="Process Name"
+          prop="formFilter.processDefinitionName"
+          label-position="top"
+        >
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionName"
@@ -29,7 +32,11 @@
             placeholder="Process Name"
           />
         </el-form-item>
-        <el-form-item label="Process Key" prop="formFilter.processDefinitionKey" label-position="top">
+        <el-form-item
+          label="Process Key"
+          prop="formFilter.processDefinitionKey"
+          label-position="top"
+        >
           <el-input
             class="filter-item"
             v-model="formMyTask.formFilter.processDefinitionKey"
@@ -93,13 +100,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { FlowOperationController } from '@/api/flow';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType } from '@/common/staticDict/flow';
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const router = useRouter();
@@ -236,7 +242,7 @@ defineExpose({ onResume });
 </script>
 
 <style scope>
-.my-task{
+.my-task {
   border-radius: 20px;
 }
 </style>

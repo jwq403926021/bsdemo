@@ -9,7 +9,12 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFragmentSysDataPerm(true)" @reset="onReset">
-        <el-form-item label="Filtering Rule" prop="formFilter.sysDatapermType" label-width="75px" label-position="top">
+        <el-form-item
+          label="Filtering Rule"
+          prop="formFilter.sysDatapermType"
+          label-width="75px"
+          label-position="top"
+        >
           <el-select
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDatapermType"
@@ -24,7 +29,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Data Permission Name" prop="formFilter.sysDataPermName" label-position="top">
+        <el-form-item
+          label="Data Permission Name"
+          prop="formFilter.sysDataPermName"
+          label-position="top"
+        >
           <el-input
             class="filter-item"
             v-model="fragmentSysDataPerm.formFilter.sysDataPermName"
@@ -108,15 +117,15 @@
             @btnClick="onEditDataPermClick(scope.row)"
             text="Edit"
             type="primary"
-            :style="{padding: '4px 16px', margin: '3px 2px'}"
+            :style="{ padding: '4px 16px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:update')"
           />
           <general-button
-             @click="onDeleteClick(scope.row)"
+            @click="onDeleteClick(scope.row)"
             text="Delete"
             type="danger"
-            :style="{padding: '4px 8px', margin: '3px 2px'}"
+            :style="{ padding: '4px 8px', margin: '3px 2px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="!checkPermCodeExist('formSysDataPerm:fragmentSysDataPerm:delete')"
           />

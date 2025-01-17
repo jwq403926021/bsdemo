@@ -10,9 +10,7 @@
       @submit.prevent
     >
       <el-row class="form-title">
-        <el-col :span="24">
-          My Task
-        </el-col>
+        <el-col :span="24"> My Task </el-col>
       </el-row>
       <filter-box
         :item-width="320"
@@ -20,7 +18,8 @@
         :hasRefresh="true"
         :hasDownload="true"
         @search="refreshMyTask(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="MyOrder No." prop="formFilter.orderNumber" label-position="top">
           <el-input
             class="filter-item"
@@ -121,12 +120,17 @@
           <el-tag
             effect="plain"
             :size="layoutStore.defaultFormItemSize"
-            :type="MyTaskStatus.getValue(scope.row.status) === 'Approved' ?
-              'success' : MyTaskStatus.getValue(scope.row.status) === 'Rejected' ?
-              'danger' : MyTaskStatus.getValue(scope.row.status) === 'Pending' ?
-              'warning': 'primary'"
+            :type="
+              MyTaskStatus.getValue(scope.row.status) === 'Approved'
+                ? 'success'
+                : MyTaskStatus.getValue(scope.row.status) === 'Rejected'
+                ? 'danger'
+                : MyTaskStatus.getValue(scope.row.status) === 'Pending'
+                ? 'warning'
+                : 'primary'
+            "
           >
-          {{ MyTaskStatus.getValue(scope.row.status) || ''}}
+            {{ MyTaskStatus.getValue(scope.row.status) || '' }}
           </el-tag>
         </template>
       </vxe-column>
@@ -145,21 +149,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { FlowOperationController, TaskAndRequestController } from '@/api/flow';
 import { useTable } from '@/common/hooks/useTable';
 import { TableOptions } from '@/common/types/pagination';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType, MyTaskStatus } from '@/common/staticDict/flow';
 import { setEndOfDay } from '@/common/utils';
-import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const router = useRouter();
 import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
 const form = ref();
-const requestTypeList = ref({})
+const requestTypeList = ref({});
 
 const loadTaskData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -170,7 +173,9 @@ const loadTaskData = (params: ANY_OBJECT) => {
     pendingBy: formMyTask.value.formFilterCopy.pendingBy,
     requestor: formMyTask.value.formFilterCopy.requestor,
     beginDate: formMyTask.value.formFilterCopy.submittedDate[0],
-    endDate: formMyTask.value.formFilterCopy.submittedDate.length ? setEndOfDay(formMyTask.value.formFilterCopy.submittedDate[1]): undefined,
+    endDate: formMyTask.value.formFilterCopy.submittedDate.length
+      ? setEndOfDay(formMyTask.value.formFilterCopy.submittedDate[1])
+      : undefined,
     status: formMyTask.value.formFilterCopy.status,
     ...params,
   };
@@ -188,13 +193,13 @@ const loadTaskData = (params: ANY_OBJECT) => {
   });
 };
 const loadTaskDataVerify = () => {
-  formMyTask.value.formFilterCopy.orderNumber = formMyTask.value.formFilter.orderNumber
-  formMyTask.value.formFilterCopy.soldTo = formMyTask.value.formFilter.soldTo
-  formMyTask.value.formFilterCopy.requestType = formMyTask.value.formFilter.requestType
-  formMyTask.value.formFilterCopy.pendingBy = formMyTask.value.formFilter.pendingBy
-  formMyTask.value.formFilterCopy.requestor = formMyTask.value.formFilter.requestor
-  formMyTask.value.formFilterCopy.submittedDate = formMyTask.value.formFilter.submittedDate
-  formMyTask.value.formFilterCopy.status = formMyTask.value.formFilter.status
+  formMyTask.value.formFilterCopy.orderNumber = formMyTask.value.formFilter.orderNumber;
+  formMyTask.value.formFilterCopy.soldTo = formMyTask.value.formFilter.soldTo;
+  formMyTask.value.formFilterCopy.requestType = formMyTask.value.formFilter.requestType;
+  formMyTask.value.formFilterCopy.pendingBy = formMyTask.value.formFilter.pendingBy;
+  formMyTask.value.formFilterCopy.requestor = formMyTask.value.formFilter.requestor;
+  formMyTask.value.formFilterCopy.submittedDate = formMyTask.value.formFilter.submittedDate;
+  formMyTask.value.formFilterCopy.status = formMyTask.value.formFilter.status;
   return true;
 };
 const tableOptions: TableOptions<ANY_OBJECT> = {
@@ -236,7 +241,7 @@ const getRequestTypeList = () => {
         reject(e);
       });
   });
-}
+};
 const refreshMyTask = (reloadData = false) => {
   if (reloadData) {
     formMyTask.value.taskWidget.refreshTable(true, 1);
@@ -257,7 +262,8 @@ const formInit = () => {
 };
 
 const onDetail = (row: ANY_OBJECT) => {
-  if (row.status === '1') { // pending
+  if (row.status === '1') {
+    // pending
     let params = {
       processInstanceId: row.processInstanceId,
       processDefinitionId: row.processDefinitionId,
@@ -267,59 +273,58 @@ const onDetail = (row: ANY_OBJECT) => {
     FlowOperationController.viewRuntimeTaskInfo(params)
       .then(res => {
         if (res.data) {
-          goToDetail(row, res)
+          goToDetail(row, res);
         }
       })
       .catch(e => {
         console.warn(e);
       });
-
   } else {
-    goToDetail(row)
+    goToDetail(row);
   }
 };
 
 const goToDetail = (row: ANY_OBJECT, res?: ANY_OBJECT) => {
   router.push({
-          name: 'detailTaskAndRequest',
-          query: {
-            isRuntime: 'true',
-            isDraft: row.isDraft,
-            taskId: row.taskId,
-            processDefinitionKey: row.processDefinitionKey,
-            processInstanceId: row.processInstanceId,
-            processDefinitionId: row.processDefinitionId,
-            formId: res?.data.formId,
-            routerName: res?.data.routerName,
-            readOnly: res?.data.readOnly,
-            taskName: row.taskName,
-            flowEntryName: row.processDefinitionName,
-            processInstanceInitiator: row.showName,
-            // Filter out co-signing and revoke operations, as these can only be performed in completed tasks
-            operationList: JSON.stringify(
-              (res?.data.operationList || []).filter((item: ANY_OBJECT) => {
-                return (
-                  item.type !== SysFlowTaskOperationType.CO_SIGN &&
-                  item.type !== SysFlowTaskOperationType.REVOKE &&
-                  item.type !== SysFlowTaskOperationType.SIGN_REDUCTION
-                );
-              }),
-            ),
-            variableList: JSON.stringify(res?.data.variableList),
-            requestType: row.requestType,
-            requestor: row.requestor,
-            sr: row.sr,
-            requestDate: row.requestDate,
-            orderNumber: row.orderNumber,
-            status: row.status,
-            pendingBy: row.pendingBy,
-            soldTo: row.soldTo,
-            shipTo: row.shipTo,
-            stockLocation : row.stockLocation,
-            orderDetails: JSON.stringify(row.orderDetails)
-          },
-        });
-}
+    name: 'detailTaskAndRequest',
+    query: {
+      isRuntime: 'true',
+      isDraft: row.isDraft,
+      taskId: row.taskId,
+      processDefinitionKey: row.processDefinitionKey,
+      processInstanceId: row.processInstanceId,
+      processDefinitionId: row.processDefinitionId,
+      formId: res?.data.formId,
+      routerName: res?.data.routerName,
+      readOnly: res?.data.readOnly,
+      taskName: row.taskName,
+      flowEntryName: row.processDefinitionName,
+      processInstanceInitiator: row.showName,
+      // Filter out co-signing and revoke operations, as these can only be performed in completed tasks
+      operationList: JSON.stringify(
+        (res?.data.operationList || []).filter((item: ANY_OBJECT) => {
+          return (
+            item.type !== SysFlowTaskOperationType.CO_SIGN &&
+            item.type !== SysFlowTaskOperationType.REVOKE &&
+            item.type !== SysFlowTaskOperationType.SIGN_REDUCTION
+          );
+        }),
+      ),
+      variableList: JSON.stringify(res?.data.variableList),
+      requestType: row.requestType,
+      requestor: row.requestor,
+      sr: row.sr,
+      requestDate: row.requestDate,
+      orderNumber: row.orderNumber,
+      status: row.status,
+      pendingBy: row.pendingBy,
+      soldTo: row.soldTo,
+      shipTo: row.shipTo,
+      stockLocation: row.stockLocation,
+      orderDetails: JSON.stringify(row.orderDetails),
+    },
+  });
+};
 
 watch(
   () => route.name,

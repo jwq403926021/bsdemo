@@ -22,9 +22,9 @@ export enum FormInfo {
   pendingBy = 'Pending Approval By',
   soldTo = 'Sold To',
   accountName = 'Account Name',
-	division = 'Division',
+  division = 'Division',
   orderNo = 'MyOrder No.',
-	orderType = 'Order Type',
+  orderType = 'Order Type',
   submittedBy = 'Submitted By',
-	submittedDate = 'Submitted Date/Time',
+  submittedDate = 'Submitted Date/Time',
 }

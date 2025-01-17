@@ -421,47 +421,47 @@ const AutoTaskActionType = new DictionaryBase('自动化任务动作类型', [
 
 const MyTaskStatus = new DictionaryBase('MyTaskStatus', [
   {
-      id: "1",
-      name: 'Pending',
-      symbol: 'PENDING',
+    id: '1',
+    name: 'Pending',
+    symbol: 'PENDING',
   },
   {
-      id: "2",
-      name: 'Rejected',
-      symbol: 'REJECTED',
+    id: '2',
+    name: 'Rejected',
+    symbol: 'REJECTED',
   },
   {
-      id: "3",
-      name: 'Approved',
-      symbol: 'APPROVED',
+    id: '3',
+    name: 'Approved',
+    symbol: 'APPROVED',
   },
   {
-      id: "4",
-      name: 'Rework',
-      symbol: 'REWORK',
+    id: '4',
+    name: 'Rework',
+    symbol: 'REWORK',
   },
 ]);
 
 const MyRequestStatus = new DictionaryBase('MyRequestStatus', [
   {
-      id: 1,
-      name: 'Pending',
-      symbol: 'PENDING',
+    id: 1,
+    name: 'Pending',
+    symbol: 'PENDING',
   },
   {
-      id: 2,
-      name: 'Rejected',
-      symbol: 'REJECTED',
+    id: 2,
+    name: 'Rejected',
+    symbol: 'REJECTED',
   },
   {
-      id: 3,
-      name: 'Completed',
-      symbol: 'COMPLETED',
+    id: 3,
+    name: 'Completed',
+    symbol: 'COMPLETED',
   },
   {
-      id: 4,
-      name: 'Rework',
-      symbol: 'REWORK',
+    id: 4,
+    name: 'Rework',
+    symbol: 'REWORK',
   },
 ]);
 

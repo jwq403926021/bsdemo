@@ -13,7 +13,8 @@
         :hasFold="true"
         :hasRefresh="true"
         @search="refreshFormOperationType(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="操作人员" prop="formFilter.operatorName" label-position="top">
           <el-input
             class="filter-item"

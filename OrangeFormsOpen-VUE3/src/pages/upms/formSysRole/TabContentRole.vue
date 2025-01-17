@@ -107,6 +107,7 @@
 import { inject, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
+import axios from 'axios';
 import { usePermissions } from '@/common/hooks/usePermission';
 import { TableOptions } from '@/common/types/pagination';
 import { useTable } from '@/common/hooks/useTable';
@@ -116,9 +117,8 @@ import { ANY_OBJECT } from '@/types/generic';
 import { useDialog } from '@/components/Dialog/useDialog';
 import { Role } from '@/types/upms/role';
 import { useLayoutStore } from '@/store';
-import FormEditSysRole from '../formEditSysRole/index.vue';
-import axios from 'axios';
 import { serverDefaultCfg } from '@/common/http/config';
+import FormEditSysRole from '../formEditSysRole/index.vue';
 
 const userTypeList = ref();
 const Dialog = useDialog();

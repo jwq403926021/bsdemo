@@ -86,7 +86,10 @@ onUnmounted(() => {
 });
 const getValue = () => {
   return {
-    contactInfo: selectedContactInfo.value?.recipient && selectedContactInfo.value?.telNo ? selectedContactInfo.value?.recipient + ' | ' + selectedContactInfo.value?.telNo : '',
+    contactInfo:
+      selectedContactInfo.value?.recipient && selectedContactInfo.value?.telNo
+        ? selectedContactInfo.value?.recipient + ' | ' + selectedContactInfo.value?.telNo
+        : '',
     recipient: selectedContactInfo.value?.recipient,
     phone: selectedContactInfo.value?.telNo,
     ...selectedContactInfo.value,

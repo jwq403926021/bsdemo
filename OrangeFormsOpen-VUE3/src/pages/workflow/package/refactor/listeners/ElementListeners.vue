@@ -58,7 +58,11 @@
         <el-form-item
           label="Event Type"
           prop="event"
-          :rules="{ required: true, message: 'Please select an event type', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please select an event type',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-select v-model="listenerForm.event">
             <el-option label="start" value="start" />
@@ -68,7 +72,11 @@
         <el-form-item
           label="Listener Type"
           prop="listenerType"
-          :rules="{ required: true, message: 'Please select a listener type', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please select a listener type',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-select v-model="listenerForm.listenerType">
             <el-option
@@ -84,7 +92,11 @@
           label="Java Class"
           prop="class"
           key="listener-class"
-          :rules="{ required: true, message: 'Please enter Java class', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter Java class',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerForm.class" clearable />
         </el-form-item>
@@ -93,7 +105,11 @@
           label="Expression"
           prop="expression"
           key="listener-expression"
-          :rules="{ required: true, message: 'Please enter expression', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter expression',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerForm.expression" clearable />
         </el-form-item>
@@ -102,7 +118,11 @@
           label="Delegate Expression"
           prop="delegateExpression"
           key="listener-delegate"
-          :rules="{ required: true, message: 'Please enter delegate expression', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter delegate expression',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerForm.delegateExpression" clearable />
         </el-form-item>
@@ -111,7 +131,11 @@
             label="Script Format"
             prop="scriptFormat"
             key="listener-script-format"
-            :rules="{ required: true, trigger: ['blur', 'change'], message: 'Please enter script format' }"
+            :rules="{
+              required: true,
+              trigger: ['blur', 'change'],
+              message: 'Please enter script format',
+            }"
           >
             <el-input v-model="listenerForm.scriptFormat" clearable />
           </el-form-item>
@@ -119,7 +143,11 @@
             label="Script Type"
             prop="scriptType"
             key="listener-script-type"
-            :rules="{ required: true, trigger: ['blur', 'change'], message: 'Please select script type' }"
+            :rules="{
+              required: true,
+              trigger: ['blur', 'change'],
+              message: 'Please select script type',
+            }"
           >
             <el-select v-model="listenerForm.scriptType">
               <el-option label="Inline Script" value="inlineScript" />
@@ -131,7 +159,11 @@
             label="Script Content"
             prop="value"
             key="listener-script"
-            :rules="{ required: true, trigger: ['blur', 'change'], message: 'Please enter script content' }"
+            :rules="{
+              required: true,
+              trigger: ['blur', 'change'],
+              message: 'Please enter script content',
+            }"
           >
             <el-input v-model="listenerForm.value" clearable />
           </el-form-item>
@@ -140,7 +172,11 @@
             label="Resource URL"
             prop="resource"
             key="listener-resource"
-            :rules="{ required: true, trigger: ['blur', 'change'], message: 'Please enter resource URL' }"
+            :rules="{
+              required: true,
+              trigger: ['blur', 'change'],
+              message: 'Please enter resource URL',
+            }"
           >
             <el-input v-model="listenerForm.resource" clearable />
           </el-form-item>
@@ -176,7 +212,10 @@
             {{ fieldTypeObject[scope.row.fieldType] }}
           </template>
         </vxe-column>
-        <vxe-column title="Field Value/Expression" min-width="100px" show-overflow-tooltip
+        <vxe-column
+          title="Field Value/Expression"
+          min-width="100px"
+          show-overflow-tooltip
           :formatter="(row:ANY_OBJECT) => row.string || row.expression"
         >
           <template v-slot="scope">
@@ -240,14 +279,22 @@
         <el-form-item
           label="Field Name:"
           prop="name"
-          :rules="{ required: true, message: 'Please enter field name', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter field name',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerFieldForm.name" clearable />
         </el-form-item>
         <el-form-item
           label="Field Type:"
           prop="fieldType"
-          :rules="{ required: true, message: 'Please select field type', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please select field type',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-select v-model="listenerFieldForm.fieldType">
             <el-option
@@ -263,7 +310,11 @@
           label="Field Value:"
           prop="string"
           key="field-string"
-          :rules="{ required: true, message: 'Please enter field value', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter field value',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerFieldForm.string" clearable />
         </el-form-item>
@@ -272,7 +323,11 @@
           label="Expression:"
           prop="expression"
           key="field-expression"
-          :rules="{ required: true, message: 'Please enter expression', trigger: ['blur', 'change'] }"
+          :rules="{
+            required: true,
+            message: 'Please enter expression',
+            trigger: ['blur', 'change'],
+          }"
         >
           <el-input v-model="listenerFieldForm.expression" clearable type="textarea" />
         </el-form-item>

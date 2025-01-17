@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue';
 import { ElTree, ElMessage } from 'element-plus';
+import axios from 'axios';
 import { DialogProp } from '@/components/Dialog/types';
 import { usePermissions } from '@/common/hooks/usePermission';
 import { ANY_OBJECT } from '@/types/generic';
@@ -92,7 +93,6 @@ import { findTreeNode, treeDataTranslate } from '@/common/utils';
 import { MenuItem } from '@/types/upms/menu';
 import { Role } from '@/types/upms/role';
 import { useLayoutStore } from '@/store';
-import axios from 'axios';
 import { serverDefaultCfg } from '@/common/http/config';
 const layoutStore = useLayoutStore();
 

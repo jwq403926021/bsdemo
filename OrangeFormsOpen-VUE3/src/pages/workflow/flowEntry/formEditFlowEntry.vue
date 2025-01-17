@@ -5,9 +5,7 @@
         <el-header class="step-header" style="height: 72px">
           <el-row type="flex" justify="space-between">
             <el-col class="title header" :span="6" style="height: auto; line-height: auto">
-              <i
-                style="font-size: 40px; color: #1a457b"
-              />
+              <i style="font-size: 40px; color: #1a457b" />
             </el-col>
             <div>
               <StepBar class="step" :value="activeStep" style="margin-top: 14px">
@@ -52,11 +50,7 @@
                   @click="onPrevClick"
                   >Return</el-button
                 >
-                <el-button
-                  size="default"
-                  @click="onClose"
-                  >Exit</el-button
-                >
+                <el-button size="default" @click="onClose">Exit</el-button>
               </el-row>
             </el-col>
           </el-row>

@@ -4,7 +4,8 @@
     :style="computedStyle"
     :disabled="disabled"
     class="custom-button"
-    @click="onClick">
+    @click="onClick"
+  >
     {{ text }}
   </el-button>
 </template>
@@ -19,22 +20,26 @@ const props = withDefaults(
     style?: Record<string, string | number>;
   }>(),
   {
-    type: "primary",  // 'primary' | 'success' | 'warning' | 'danger'
-    size: "default",  // 'large' | 'default' | 'small'
+    type: 'primary', // 'primary' | 'success' | 'warning' | 'danger'
+    size: 'default', // 'large' | 'default' | 'small'
     disabled: false,
     style: () => ({}),
   },
 );
 
-let btnColor = props.type === 'success'
-  ? '#67C23A': props.type === 'warning'
-  ? '#FF9900' : props.type === 'danger'
-  ? '#F56C6C' : '#1a457a'
+let btnColor =
+  props.type === 'success'
+    ? '#67C23A'
+    : props.type === 'warning'
+    ? '#FF9900'
+    : props.type === 'danger'
+    ? '#F56C6C'
+    : '#1a457a';
 
 const buttonStyle = {
   borderColor: btnColor,
   color: btnColor,
-}
+};
 
 const computedStyle = computed(() => ({
   ...buttonStyle,
@@ -47,15 +52,12 @@ const emit = defineEmits(['btnClick']);
 const onClick = (page: number) => {
   emit('btnClick', page); // Emit the event to parent
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
-  .custom-button{
-    border: 1px solid;
-    border-radius: 10px;
-    padding: 4px 16px;
-  }
+.custom-button {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 4px 16px;
+}
 </style>

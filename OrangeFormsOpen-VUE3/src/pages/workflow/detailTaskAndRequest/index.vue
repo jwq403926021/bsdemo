@@ -209,12 +209,12 @@ const handlerOperation = (
     preHandlerOperationThen(operation, copyItemList, {});
   } else if (operation.type === 'refuse') {
     preHandlerOperation(operation, isStart.value || isDraft.value, xml, copyItemList)
-    .then(res => {
-      preHandlerOperationThen(operation, copyItemList, res);
-    })
-    .catch(e => {
-      console.warn(e);
-    });
+      .then(res => {
+        preHandlerOperationThen(operation, copyItemList, res);
+      })
+      .catch(e => {
+        console.warn(e);
+      });
   }
 };
 /**

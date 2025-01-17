@@ -55,7 +55,7 @@
           <el-row class="infomation-form-title">
             <el-col>Approval Record</el-col>
           </el-row>
-          <el-row  :gutter="20" class="infomation-form-table">
+          <el-row :gutter="20" class="infomation-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -219,33 +219,33 @@
       </el-form>
     </el-scrollbar>
     <el-row class="task-operation" justify="end" style="flex-wrap: nowrap">
+      <el-button
+        v-if="canDraft"
+        size="default"
+        class="broder-radius-16"
+        type="success"
+        :plain="true"
+        @click="handlerDraft"
+      >
+        Save Draft
+      </el-button>
+      <template v-if="$slots.operations">
+        <slot name="operations" />
+      </template>
+      <template v-else>
         <el-button
-          v-if="canDraft"
+          v-for="(operation, index) in flowOperationList"
+          :key="index"
           size="default"
           class="broder-radius-16"
-          type="success"
-          :plain="true"
-          @click="handlerDraft"
+          :type="getButtonType(operation.type) || 'primary'"
+          :plain="operation.plain || false"
+          @click="handlerOperation(operation)"
         >
-          Save Draft
+          {{ operation.label }}
         </el-button>
-        <template v-if="$slots.operations">
-          <slot name="operations" />
-        </template>
-        <template v-else>
-          <el-button
-            v-for="(operation, index) in flowOperationList"
-            :key="index"
-            size="default"
-            class="broder-radius-16"
-            :type="getButtonType(operation.type) || 'primary'"
-            :plain="operation.plain || false"
-            @click="handlerOperation(operation)"
-          >
-            {{ operation.label }}
-          </el-button>
-        </template>
-      </el-row>
+      </template>
+    </el-row>
     <page-close-button @close="onClose" />
   </div>
 </template>
@@ -729,7 +729,7 @@ pre {
 .infomation-form-table {
   padding: 0px 50px 10px 20px;
 }
-.task-operation{
+.task-operation {
   // border: 1px solid red;
   padding: 20px 50px 0px 0px;
 }

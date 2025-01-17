@@ -183,11 +183,7 @@
           >
             添加数据
           </el-button>
-          <filter-box
-            :minMenuWidth=30
-            :hasSearch="false"
-            @reset="loadGlobalDictList"
-          />
+          <filter-box :minMenuWidth="30" :hasSearch="false" @reset="loadGlobalDictList" />
         </template>
         <vxe-column title="ID">
           <template v-slot="scope">

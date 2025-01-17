@@ -24,13 +24,13 @@ const props = withDefaults(
     layout?: string;
     size?: string;
     justify?: string;
-    onCurrentChange: (page: number) => void;
-    onSizeChange: (size: number) => void;
+    // onCurrentChange: (page: number) => void;
+    // onSizeChange: (size: number) => void;
   }>(),
   {
-    layout: "total, prev, pager, next, sizes",
-    size: "default",
-    justify: "start"
+    layout: 'total, prev, pager, next, sizes',
+    size: 'default',
+    justify: 'start',
   },
 );
 
@@ -44,8 +44,6 @@ const onCurrentChange = (page: number) => {
 const onSizeChange = (size: number) => {
   emit('sizeChange', size); // Emit the event to parent
 };
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

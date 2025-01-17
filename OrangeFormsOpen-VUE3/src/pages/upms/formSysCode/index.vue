@@ -119,6 +119,7 @@ export default {
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import axios from 'axios';
 import SystemUserController from '@/api/system/UserController';
 import TableBox from '@/components/TableBox/index.vue';
 import { treeDataTranslate } from '@/common/utils';
@@ -131,9 +132,8 @@ import { TableOptions } from '@/common/types/pagination';
 import { useTable } from '@/common/hooks/useTable';
 import { TableData } from '@/common/types/table';
 import { useLayoutStore } from '@/store';
-import EditCodeForm from '../formEditSysCode/index.vue';
-import axios from 'axios';
 import { serverDefaultCfg } from '@/common/http/config';
+import EditCodeForm from '../formEditSysCode/index.vue';
 const layoutStore = useLayoutStore();
 
 const Dialog = useDialog();

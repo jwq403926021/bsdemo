@@ -14,7 +14,8 @@
         :hasDownload="true"
         :item-width="350"
         @search="refreshFormAllInstance(true)"
-        @reset="onReset">
+        @reset="onReset"
+      >
         <el-form-item label="Process Name" prop="processDefinitionName" label-position="top">
           <el-input
             class="filter-item"
@@ -73,14 +74,14 @@
         <template v-slot="scope">
           <general-button
             text="Diagram"
-            :style="{padding: '4px 10px'}"
+            :style="{ padding: '4px 10px' }"
             :size="layoutStore.defaultFormItemSize"
             @btnClick="onShowProcessViewer(scope.row)"
           />
           <general-button
             text="Stop"
             type="danger"
-            :style="{padding: '4px 10px'}"
+            :style="{ padding: '4px 10px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="scope.row.endTime != null"
             @btnClick="onStopTask(scope.row)"
@@ -88,7 +89,7 @@
           <general-button
             text="Delete"
             type="danger"
-            :style="{padding: '4px 10px'}"
+            :style="{ padding: '4px 10px' }"
             :size="layoutStore.defaultFormItemSize"
             :disabled="scope.row.endTime == null"
             @click="onDeleteTask(scope.row)"

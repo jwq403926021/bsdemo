@@ -1,13 +1,13 @@
 <template>
   <div class="autotask-insert-settting">
-    <el-form-item label="源表">
+    <el-form-item label="Source Table">
       <el-row :gutter="8" style="width: 100%">
         <el-col :span="12">
           <!-- 源表数据库链接选择 -->
           <el-select
             v-model="formData.srcDblinkId"
             clearable
-            placeholder="请选择数据库链接"
+            placeholder="Please select a database connection"
             @change="onSrcDblinkChange"
           >
             <el-option
@@ -24,7 +24,7 @@
             v-model="formData.srcTableName"
             clearable
             filterable
-            placeholder="请选择数据源表"
+            placeholder="Please select a source table"
             @change="onSrcTableChange"
           >
             <el-option v-for="item in srcTableList" :key="item" :label="item" :value="item" />
@@ -32,17 +32,17 @@
         </el-col>
       </el-row>
     </el-form-item>
-    <el-form-item label="源表过滤类型">
+    <el-form-item label="Source Table Filter Type">
       <el-radio-group v-model="formData.srcFilterType" @change="onChange">
-        <el-radio label="field">字段过滤</el-radio>
-        <el-radio label="sql">自定义SQL</el-radio>
+        <el-radio label="field">Field Filter</el-radio>
+        <el-radio label="sql">Custom SQL</el-radio>
       </el-radio-group>
     </el-form-item>
     <MultiItemList
       v-if="formData.srcFilterType === 'field'"
-      label="源表过滤条件"
+      label="Source Table Filter Condition"
       :data="formData.srcFilterList"
-      addText="添加"
+      addText="Add"
       :disabled="formData.srcTableName == null || formData.srcTableName === ''"
       @add="onEditSrcFilter()"
       @edit="onEditSrcFilter"
@@ -70,17 +70,17 @@
       v-model="formData.srcFilterSql"
       type="textarea"
       rows="5"
-      placeholder="重要！过滤值使用流程变量时需要手动输入，变量名的两边一定不要添加任何引号，如：name = ${variableName}"
+      placeholder="Important! When using process variables for filter values, you need to enter them manually. Do not add any quotation marks around the variable name. For example: name = ${variableName}"
       @change="onChange"
     />
-    <el-form-item label="目标表">
+    <el-form-item label="Target Table">
       <el-row :gutter="8" style="width: 100%">
         <el-col :span="12">
           <!-- 目标表数据库链接选择 -->
           <el-select
             v-model="formData.destDblinkId"
             clearable
-            placeholder="请选择数据库链接"
+            placeholder="Please select a database connection"
             @change="onDestDblinkChange"
           >
             <el-option
@@ -97,7 +97,7 @@
             v-model="formData.destTableName"
             clearable
             filterable
-            placeholder="请选择数据目标表"
+            placeholder="Please select a target table"
             @change="onDestTableChange"
           >
             <el-option v-for="item in destTableList" :key="item" :label="item" :value="item" />
@@ -106,9 +106,9 @@
       </el-row>
     </el-form-item>
     <MultiItemList
-      label="数据插入对象"
+      label="Data Insert Object"
       :data="formData.insertDataList"
-      addText="添加"
+      addText="Add"
       :disabled="formData.destTableName == null || formData.destTableName === ''"
       @add="onEditInsertData()"
       @edit="onEditInsertData"

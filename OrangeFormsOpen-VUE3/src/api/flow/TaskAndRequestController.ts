@@ -21,6 +21,9 @@ export default class TaskAndRequestController extends BaseController {
   static getMyRequestOrderDetail(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return super.get<ANY_OBJECT>(API_CONTEXT + '/myRequest/order/detail', params, httpOptions);
   }
+  static getApprovalUserList(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.get<ANY_OBJECT>(API_CONTEXT + '/flow/flowEntry/approvalUserList', params, httpOptions);
+  }
   // 获取task search bar中的request type list
   static getRequestTypeList(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return super.get<TableData<ANY_OBJECT>>('/order/orderType', params, httpOptions);

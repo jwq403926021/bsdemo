@@ -11,24 +11,24 @@
       <template
         v-if="flowEntry().value.flowType === FlowEntryType.NORMAL || props.type !== 'ReceiveTask'"
       >
-        <el-form-item label="Java委托类">
+        <el-form-item label="Java Delegate Class">
           <el-input
             v-model="formData.class"
             clearable
-            placeholder="输入包含包名的完整委托类名"
+            placeholder="Enter the fully qualified delegate class name, including the package name."
             @change="updateServiceTaskClass"
           />
         </el-form-item>
       </template>
       <template v-else>
-        <el-form-item label="任务类型">
+        <el-form-item label="Task Type">
           <el-select
             v-model="formData.actionType"
             clearable
-            placeholder="请选择任务类型"
+            placeholder="Please select a task type"
             @change="onActionTypeChange"
           >
-            <el-option-group label="数据操作">
+            <el-option-group label="Data Operation">
               <el-option
                 :label="AutoTaskActionType.getValue(AutoTaskActionType.INSERT)"
                 :value="AutoTaskActionType.INSERT"
@@ -42,13 +42,13 @@
                 :value="AutoTaskActionType.DELETE"
               />
             </el-option-group>
-            <el-option-group label="查询计算">
+            <el-option-group label="Query Calculation">
               <el-option
                 :label="AutoTaskActionType.getValue(AutoTaskActionType.QUERY_SINGLE_DATA)"
                 :value="AutoTaskActionType.QUERY_SINGLE_DATA"
               />
             </el-option-group>
-            <el-option-group label="开发者">
+            <el-option-group label="Developer">
               <el-option
                 :label="AutoTaskActionType.getValue(AutoTaskActionType.HTTP)"
                 :value="AutoTaskActionType.HTTP"

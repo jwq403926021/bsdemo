@@ -6,7 +6,7 @@
       class="full-width-input form-box"
       :rules="rules"
       style="width: 100%"
-      label-width="130px"
+      label-width="140px"
       :size="itemSize"
       label-position="right"
       @submit.prevent

@@ -51,12 +51,12 @@
           >
           </el-cascader>
         </el-form-item>
-        <!-- <el-form-item label="User Type" prop="formFilter.userRole" label-position="top">
+        <!-- <el-form-item label="Business Model Type" prop="formFilter.userRole" label-position="top">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.userRole"
             :clearable="true"
-            placeholder="User Type"
+            placeholder="Business Model Type"
           />
         </el-form-item> -->
         <!-- <el-form-item label="Show Name" prop="formFilter.showName" label-position="top">
@@ -94,7 +94,7 @@
       <vxe-column title="Username" field="loginName"> </vxe-column>
       <vxe-column title="Full Name" field="showName"> </vxe-column>
       <vxe-column title="Role" field="roleName"> </vxe-column>
-      <vxe-column title="User Type" field="userRole" />
+      <vxe-column title="Business Model Type" field="userRole" />
       <vxe-column title="Division" field="deptIdDictMap.name" />
       <vxe-column title="Status">
         <template v-slot="scope">

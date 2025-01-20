@@ -6,21 +6,21 @@
       @submit.prevent
       label-position="top"
     >
-      <el-form-item label="流转类型">
+      <el-form-item label="Transfer Type">
         <el-select v-model="flowConditionForm.type" @change="updateFlowType">
-          <el-option label="普通流转路径" value="normal" />
-          <el-option label="默认流转路径" value="default" />
-          <el-option label="内置按钮" value="operation" />
-          <el-option label="条件流转路径" value="condition" />
+          <el-option label="Normal Transfer Path" value="normal" />
+          <el-option label="Default Transfer Path" value="default" />
+          <el-option label="Built-in Button" value="operation" />
+          <el-option label="Conditional Transfer Path" value="condition" />
         </el-select>
       </el-form-item>
-      <el-form-item label="条件格式" v-if="flowConditionForm.type === 'condition'" key="condition">
+      <el-form-item label="Conditional Format" v-if="flowConditionForm.type === 'condition'" key="condition">
         <el-select v-model="flowConditionForm.conditionType">
-          <el-option label="表达式" value="expression" />
-          <el-option label="脚本" value="script" />
+          <el-option label="Expression" value="expression" />
+          <el-option label="Script" value="script" />
         </el-select>
       </el-form-item>
-      <el-form-item label="按钮类型" v-if="flowConditionForm.type === 'operation'" key="operation">
+      <el-form-item label="Button Type" v-if="flowConditionForm.type === 'operation'" key="operation">
         <el-select v-model="flowConditionForm.operationType" @change="onOperationTypeChange">
           <el-option
             v-for="item in getValidOperationList"
@@ -31,7 +31,7 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        label="表达式"
+        label="Expression"
         v-if="flowConditionForm.conditionType && flowConditionForm.conditionType === 'expression'"
         key="express"
       >
@@ -46,17 +46,17 @@
       <template
         v-if="flowConditionForm.conditionType && flowConditionForm.conditionType === 'script'"
       >
-        <el-form-item label="脚本语言" key="language">
+        <el-form-item label="Script Language" key="language">
           <el-input v-model="flowConditionForm.language" clearable @change="updateFlowCondition" />
         </el-form-item>
-        <el-form-item label="脚本类型" key="scriptType">
+        <el-form-item label="Script Type" key="scriptType">
           <el-select v-model="flowConditionForm.scriptType">
-            <el-option label="内联脚本" value="inlineScript" />
-            <el-option label="外部脚本" value="externalScript" />
+            <el-option label="Inline Script" value="inlineScript" />
+            <el-option label="External Script" value="externalScript" />
           </el-select>
         </el-form-item>
         <el-form-item
-          label="脚本"
+          label="Script"
           v-if="flowConditionForm.scriptType === 'inlineScript'"
           key="body"
         >
@@ -69,7 +69,7 @@
           />
         </el-form-item>
         <el-form-item
-          label="资源地址"
+          label="Resource URL"
           v-if="flowConditionForm.scriptType === 'externalScript'"
           key="resource"
         >

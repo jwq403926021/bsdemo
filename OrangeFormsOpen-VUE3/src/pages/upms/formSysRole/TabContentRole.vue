@@ -16,12 +16,12 @@
             placeholder="Role Name"
           />
         </el-form-item>
-        <el-form-item label="User Type" prop="formFilter.sysUserType" label-position="top">
+        <el-form-item label="Business Model Type" prop="formFilter.sysUserType" label-position="top">
           <el-select
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysUserType"
             :clearable="true"
-            placeholder="User Type"
+            placeholder="Business Model Type"
           >
             <el-option
               v-for="item in userTypeList"
@@ -62,7 +62,20 @@
         :index="fragmentSysRole.SysRole.impl.getTableIndex"
       />
       <vxe-column title="Role Name" field="roleName"> </vxe-column>
-      <vxe-column title="User Type" field="userType"> </vxe-column>
+      <vxe-column title="Business Model Type" field="userType"> </vxe-column>
+      <vxe-column title="Work Flow" field="workFlow">
+        <template #default="{ row }">
+          <div v-if="row.workFlow">
+            <el-tag
+              v-for="item in row.workFlow?.split(',')"
+              style="margin-right: 10px"
+              :type="'success'"
+            >
+              {{ item }}
+            </el-tag>
+          </div>
+        </template>
+      </vxe-column>
       <vxe-column title="Operation" fixed="right" width="180px">
         <template v-slot="scope">
           <el-button

@@ -148,13 +148,15 @@
       <vxe-column title="Pending Approval By" field="pendingApprovalBy" />
       <vxe-column title="Submitted By" field="submittedBy" />
       <vxe-column title="Submitted Date" field="submittedDate" />
+      <vxe-column title="CC Action" field="remarksToWarehouse" />
+      <vxe-column title="CC Owner" field="ccOwner" />
       <vxe-column title="Status">
         <template v-slot="scope">
           <el-tag
             effect="plain"
             :size="layoutStore.defaultFormItemSize"
             :type="
-              MyRequestStatus.getValue(scope.row.status) === 'Approved'
+              MyRequestStatus.getValue(scope.row.status) === 'Completed'
                 ? 'success'
                 : MyRequestStatus.getValue(scope.row.status) === 'Rejected'
                 ? 'danger'
@@ -215,6 +217,7 @@ const loadRequestData = (params: ANY_OBJECT) => {
       ? setEndOfDay(formMyRequest.value.formFilterCopy.submittedDate[1])
       : undefined,
     submittedBy: formMyRequest.value.formFilterCopy.submittedBy,
+    isCcCheck: 1,
     ...params,
   };
   return new Promise((resolve, reject) => {
@@ -337,7 +340,8 @@ const onDetail = (row: ANY_OBJECT) => {
             ),
             variableList: JSON.stringify(res.data.variableList),
             // my request
-            formType: 'request',
+            formType: 'ccCheck',
+            ccOwner: res.data.ccOwner,
             productTotalCount: res.data.productTotalCount,
             rejectReason: res.data.rejectReason ?? '',
             requestData: JSON.stringify(res.data),
@@ -355,7 +359,7 @@ const onDetail = (row: ANY_OBJECT) => {
 watch(
   () => route.name,
   () => {
-    if (route.name === 'myRequest') {
+    if (route.name === 'ccCheck') {
       formInit();
     }
   },

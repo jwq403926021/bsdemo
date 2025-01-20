@@ -5,7 +5,7 @@
       v-model="latestApprovalStatus"
       @change="onLatestApprovalStatusChange"
     >
-      <el-option label="不更新" :value="undefined" />
+      <el-option label="Not Updating" :value="undefined" />
       <el-option
         v-for="item in validStatusList"
         :key="item.id"

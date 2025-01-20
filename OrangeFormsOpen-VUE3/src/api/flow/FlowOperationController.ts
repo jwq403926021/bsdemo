@@ -146,6 +146,13 @@ export default class FlowOperationController extends BaseController {
       httpOptions,
     );
   }
+  static submitCcOwner(params: ANY_OBJECT, httpOptions?: RequestOption) {
+    return super.post<ANY_OBJECT>(
+      API_CONTEXT + '/flow/flowEntry/submitCcCheckOrder',
+      params,
+      httpOptions,
+    );
+  }
   // 获得流程实例的配置XML
   static viewProcessBpmn(params: ANY_OBJECT, httpOptions?: RequestOption) {
     return super.get<string>(

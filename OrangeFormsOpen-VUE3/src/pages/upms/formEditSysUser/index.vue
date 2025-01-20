@@ -83,8 +83,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="User Type" prop="userRole">
-          <el-select @change="onUserTypeChange" v-model="formData.userRole" placeholder="User Type">
+        <el-form-item label="Business Model Type" prop="userRole">
+          <el-select @change="onUserTypeChange" v-model="formData.userRole" placeholder="Business Model Type">
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"
@@ -214,7 +214,7 @@ const rules = ref({
   deptId: [{ required: true, message: 'Department Id Cannot Be Empty', trigger: 'change' }],
   deptPostIdList: [{ required: true, message: 'User Position Cannot Be Empty', trigger: 'change' }],
   roleIdList: [{ required: true, message: 'Role Cannot Be Empty', trigger: 'change' }],
-  userRole: [{ required: true, message: 'User Type Cannot Be Empty', trigger: 'change' }],
+  userRole: [{ required: true, message: 'Business Model Type Cannot Be Empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);

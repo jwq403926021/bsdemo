@@ -15,18 +15,18 @@
                 :size="layoutStore.defaultFormItemSize"
                 @change="formData.deptId = undefined"
               >
-                <el-radio-button value="allDeptPost">全部</el-radio-button>
-                <el-radio-button value="selfDeptPost">本部门</el-radio-button>
-                <el-radio-button value="siblingDeptPost">同级部门</el-radio-button>
-                <el-radio-button value="upDeptPost">上级部门</el-radio-button>
-                <el-radio-button value="deptPost">指定部门</el-radio-button>
+                <el-radio-button value="allDeptPost">All</el-radio-button>
+                <el-radio-button value="selfDeptPost">Current Department</el-radio-button>
+                <el-radio-button value="siblingDeptPost">Statistics Department</el-radio-button>
+                <el-radio-button value="upDeptPost">Superior Department</el-radio-button>
+                <el-radio-button value="deptPost">Specified Department</el-radio-button>
               </el-radio-group>
               <div v-show="formData.deptType === 'deptPost'">
                 <el-cascader
                   v-model="formData.deptId"
                   :clearable="true"
                   :size="layoutStore.defaultFormItemSize"
-                  placeholder="选择部门"
+                  placeholder="Select Department"
                   :props="{ value: 'id', label: 'name', checkStrictly: true }"
                   :options="dialogParams.deptList"
                 >
@@ -40,7 +40,7 @@
                 :disabled="selectPost.length <= 0"
                 @click="onAddPostClick()"
               >
-                添加岗位
+                Add Position
               </el-button>
             </div>
           </div>
@@ -54,22 +54,22 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50px" :selectable="canSelect" />
-          <el-table-column label="岗位名称">
+          <el-table-column label="Position Name">
             <template v-slot="scope">
               <span>{{ scope.row.postShowName || scope.row.postName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="领导岗位">
+          <el-table-column label="Leadership Position">
             <template v-slot="scope">
               <el-tag
                 :size="layoutStore.defaultFormItemSize"
                 :type="scope.row.leaderPost ? 'success' : 'danger'"
               >
-                {{ scope.row.leaderPost ? '是' : '否' }}
+                {{ scope.row.leaderPost ? 'Yes' : 'No' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="岗位级别" prop="postLevel" />
+          <el-table-column label="Position Level" prop="postLevel" />
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />

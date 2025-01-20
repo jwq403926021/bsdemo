@@ -13,7 +13,7 @@
           @click="onSubmit"
           :disabled="!canCommit"
         >
-          添加分组
+          Add Group
         </el-button>
       </el-row>
     </el-form>

@@ -394,27 +394,27 @@ const AutoTaskValueType = new DictionaryBase('自动化任务值类型', [
 const AutoTaskActionType = new DictionaryBase('自动化任务动作类型', [
   {
     id: 0,
-    name: '数据插入',
+    name: 'Data Insert',
     symbol: 'INSERT',
   },
   {
     id: 1,
-    name: '数据更新',
+    name: 'Data Update',
     symbol: 'UPDATE',
   },
   {
     id: 2,
-    name: '数据删除',
+    name: 'Data Delete',
     symbol: 'DELETE',
   },
   {
     id: 3,
-    name: '单条查询',
+    name: 'Single Query',
     symbol: 'QUERY_SINGLE_DATA',
   },
   {
     id: 10,
-    name: 'HTTP请求',
+    name: 'HTTP Request',
     symbol: 'HTTP',
   },
 ]);
@@ -463,23 +463,43 @@ const MyRequestStatus = new DictionaryBase('MyRequestStatus', [
     name: 'Rework',
     symbol: 'REWORK',
   },
+  {
+    id: 5,
+    name: 'Cancelled',
+    symbol: 'CANCELLED',
+  },
+  {
+    id: 9,
+    name: 'Waiting CC Check',
+    symbol: 'CC_WAITING',
+  },
+  {
+    id: 10,
+    name: 'Rejected',
+    symbol: 'CC_REJECTED',
+  },
+  {
+    id: 11,
+    name: 'Completed',
+    symbol: 'CC_COMPLETED',
+  },
 ]);
 
 export {
-  SysFlowEntryPublishedStatus,
+  AutoTaskActionType,
+  AutoTaskValueType,
+  DiagramType,
+  FlowEntryType,
+  FlowNodeType,
+  MyRequestStatus,
+  MyTaskStatus,
+  SysAutoCodeType,
+  SysFlowCopyForType,
   SysFlowEntryBindFormType,
+  SysFlowEntryPublishedStatus,
   SysFlowEntryStep,
   SysFlowTaskOperationType,
   SysFlowTaskType,
   SysFlowVariableType,
   SysFlowWorkOrderStatus,
-  SysFlowCopyForType,
-  DiagramType,
-  FlowNodeType,
-  SysAutoCodeType,
-  FlowEntryType,
-  AutoTaskValueType,
-  AutoTaskActionType,
-  MyTaskStatus,
-  MyRequestStatus,
 };

@@ -14,6 +14,7 @@ export enum FormInfo {
   // my task & my request (shipTo, recipient, phone repeated with the above)
   sr = 'SR',
   status = 'Approval Status',
+  ccOwner = 'CC Owner',
   stockLocation = 'Stock Location',
   requestType = 'Request',
   requestor = 'Requestor',

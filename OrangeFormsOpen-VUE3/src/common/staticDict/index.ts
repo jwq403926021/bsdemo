@@ -26,7 +26,7 @@ const SysCodeStatus = new DictionaryBase('Code Status', [
   },
 ]);
 
-const SysUserType = new DictionaryBase('User Type', [
+const SysUserType = new DictionaryBase('Business Model Type', [
   {
     id: 0,
     name: 'Admin',

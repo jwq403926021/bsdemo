@@ -50,7 +50,7 @@
           <el-form-item
             :label="
               (formData.type === SysFlowTaskOperationType.MULTI_SIGN ? 'Countersign' : 'Approval') +
-              ' User Type'
+              ' Business Model Type'
             "
           >
             <el-select v-model="multiSignAssignee.assigneeType" placeholder="" @change="typeChange">

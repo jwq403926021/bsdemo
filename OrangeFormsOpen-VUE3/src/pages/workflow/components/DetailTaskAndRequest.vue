@@ -22,7 +22,11 @@
     <el-row justify="space-between" style="margin-bottom: 24px; flex-wrap: nowrap">
       <el-radio-group size="large" v-model="currentPage" style="min-width: 400px">
         <el-radio-button value="formInfo">{{
-          formType === 'task' ? requestType : 'Order Detail'
+          formType === 'task'
+            ? requestType
+            : formType === 'request'
+            ? 'Order Detail'
+            : 'CC Check Detail'
         }}</el-radio-button>
         <el-radio-button v-if="processInstanceId != null && !isDraft" value="flowProcess"
           >Flow Chart</el-radio-button
@@ -42,7 +46,13 @@
         <!-- Form Information -->
         <div v-show="currentPage === 'formInfo'" :key="formKey">
           <el-row class="infomation-form-title">
-            <el-col>{{ formType === 'task' ? 'Basic Information' : 'Order Detail' }}</el-col>
+            <el-col>{{
+              formType === 'task'
+                ? 'Basic Information'
+                : formType === 'request'
+                ? 'Order Detail'
+                : 'Shipping Order'
+            }}</el-col>
           </el-row>
           <div v-for="(value, key) in basicInfo" :key="key" class="basic-info">
             <div class="label">{{ FormInfo[key] }}</div>
@@ -81,6 +91,16 @@
               </el-tag>
             </div>
             <div v-else class="value">{{ value }}</div>
+            <div v-if="key === 'ccOwner'" class="value">
+              <el-select v-model="ccOwner" placeholder="Select CC Owner" style="width: 200px">
+                <el-option
+                  v-for="item in ccOwnerList"
+                  :key="item.userId"
+                  :label="item.loginName"
+                  :value="item.loginName"
+                />
+              </el-select>
+            </div>
           </div>
           <!-- <slot name="formInfo" /> -->
           <el-row class="infomation-form-title">
@@ -110,7 +130,7 @@
                   </template>
                 </vxe-column>
                 <vxe-column
-                  v-if="formType === 'request'"
+                  v-if="['request', 'ccCheck'].includes(formType)"
                   title="Rejected Reason"
                   field="rejectedReason"
                 />
@@ -173,22 +193,55 @@
               </vxe-table>
             </el-col>
           </el-row>
-          <el-row v-if="formType === 'request'" class="infomation-form-title">
+          <el-row v-if="['request', 'ccCheck'].includes(formType)" class="infomation-form-title">
             <el-col>Shipping Condition</el-col>
           </el-row>
-          <div v-if="formType === 'request'" class="contact-info">
+          <div v-if="['request', 'ccCheck'].includes(formType)" class="contact-info">
             <div div class="contact-info-title">Contact info for packing list</div>
             <div v-for="(value, key) in contactInfo" :key="key" class="basic-info">
               <div class="label">{{ FormInfo[key] }}</div>
               <div class="value">{{ value }}</div>
             </div>
-            <div class="delivery-date-box">
+            <div div class="contact-info-title">Remarks to Warehouse</div>
+            <el-radio-group disabled v-model="remarksToWarehouse" class="radio-group">
+              <el-radio label="Standard Delivery">Standard delivery</el-radio>
+              <el-radio label="Urgent NSD">Urgent non-standard delivery</el-radio>
+            </el-radio-group>
+            <el-form
+              v-if="remarksToWarehouse !== 'Standard Delivery'"
+              class="urgent-form"
+              ref="form"
+              label-width="180px"
+              label-position="top"
+            >
+              <el-row :gutter="48">
+                <el-col :span="6">
+                  <el-form-item span="12" label="Request Delivery Date" prop="requestDeliveryDate">
+                    <el-date-picker
+                      disabled
+                      v-model="shippingInfo.deliveryDate"
+                      type="date"
+                      placeholder="Request Delivery Date"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item label="Paying" prop="paying">
+                    <el-select disabled v-model="paying" placeholder="Paying">
+                      <el-option label="BSC paying" value="BSC paying"></el-option>
+                      <el-option label="Customer paying" value="Customer paying"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+            <!-- <div class="delivery-date-box">
               <div>
                 <span>Request Delivery Date</span>
                 <span class="delivery-date-box-required">*</span>
               </div>
               <el-date-picker v-model="shippingInfo.deliveryDate" type="date" disabled />
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- Flow Chart -->
@@ -217,6 +270,33 @@
           Back
         </el-button>
         <el-button
+          v-if="formType === 'ccCheck'"
+          size="default"
+          class="broder-radius-16"
+          type="danger"
+          @click="emit('close')"
+        >
+          Cancel
+        </el-button>
+        <el-button
+          v-if="formType === 'ccCheck'"
+          size="default"
+          class="broder-radius-16"
+          type="danger"
+          @click="handlerOperation({ label: 'Reject', showOrder: '1', type: 'refuse' })"
+        >
+          Reject
+        </el-button>
+        <el-button
+          v-if="formType === 'ccCheck'"
+          size="default"
+          class="broder-radius-16"
+          type="primary"
+          @click="submitCcOwner()"
+        >
+          Submit
+        </el-button>
+        <el-button
           v-for="(operation, index) in flowOperationList"
           :key="index"
           size="default"
@@ -234,6 +314,7 @@
 
 <script setup lang="ts">
 import { VxeTable, VxeColumn } from 'vxe-table';
+import { ElMessage } from 'element-plus';
 import CopyForSelect from '@/pages/workflow/components/CopyForSelect/index.vue';
 import ProcessViewer from '@/pages/workflow/components/ProcessViewer.vue';
 import { FlowOperationController, TaskAndRequestController } from '@/api/flow';
@@ -283,6 +364,7 @@ const props = withDefaults(
     stockLocation?: string;
     orderDetails?: Array<ANY_OBJECT> | string;
     // my request
+    ccOwner?: string | undefined;
     requestData?: string;
     productList?: Array<ANY_OBJECT> | string;
     rejectReason?: string;
@@ -305,6 +387,8 @@ const flowInfo = reactive({
   flowEntryName: props.flowEntryName,
   processInstanceInitiator: props.processInstanceInitiator,
 });
+const ccOwner = ref<string | undefined>('');
+const ccOwnerList = ref<ANY_OBJECT>([]);
 const flowTaskCommentList = ref<ANY_OBJECT[]>([]);
 const copyItemList = ref<ANY_OBJECT[]>([]);
 const assigneeList = ref<ANY_OBJECT[]>([]);
@@ -343,7 +427,7 @@ const orderDetailsList = computed(() => {
     return Array.isArray(props.orderDetails)
       ? props.orderDetails
       : JSON.parse(props.orderDetails || '[]');
-  } else if (props.formType === 'request') {
+  } else if (['request', 'ccCheck'].includes(props.formType)) {
     const productList =
       typeof props.requestData === 'string' ? JSON.parse(props.requestData)?.productList : [];
     if (productList.length !== 0) {
@@ -358,7 +442,7 @@ const orderDetailsList = computed(() => {
 });
 
 const shippingInfo = computed(() => {
-  if (props.formType === 'request') {
+  if (['request', 'ccCheck'].includes(props.formType)) {
     return props.requestData && typeof props.requestData === 'string'
       ? JSON.parse(props.requestData)?.shippingCondition
       : {};
@@ -366,8 +450,26 @@ const shippingInfo = computed(() => {
   return {};
 });
 
+const remarksToWarehouse = computed(() => {
+  if (['request', 'ccCheck'].includes(props.formType)) {
+    return props.requestData && typeof props.requestData === 'string'
+      ? JSON.parse(props.requestData)?.remarksToWarehouse
+      : '';
+  }
+  return '';
+});
+
+const paying = computed(() => {
+  if (['request', 'ccCheck'].includes(props.formType)) {
+    return props.requestData && typeof props.requestData === 'string'
+      ? JSON.parse(props.requestData)?.paying
+      : {};
+  }
+  return {};
+});
+
 const contactInfo = computed(() => {
-  if (props.formType === 'request') {
+  if (['request', 'ccCheck'].includes(props.formType)) {
     const shippingCondition =
       props.requestData && typeof props.requestData === 'string'
         ? JSON.parse(props.requestData)?.shippingCondition
@@ -449,6 +551,22 @@ const handlerOperation = (operation: ANY_OBJECT) => {
     emit('submit', operation, copyItemList.value, processXml.value);
   }
 };
+
+const submitCcOwner = () => {
+  if (!ccOwner.value) {
+    handlerOperation({ label: 'Approve', showOrder: '0', type: 'agree' });
+    return;
+  }
+  const params = {
+    userName: ccOwner.value,
+    processInstanceId: props.processInstanceId,
+    orderId: basicInfo.value.orderNo,
+  };
+  FlowOperationController.submitCcOwner(params).then(res => {
+    ElMessage.success('Submit Successful');
+    onClose();
+  });
+};
 const getTaskHighlightData = () => {
   if (props.processInstanceId == null || props.processInstanceId === '') {
     return;
@@ -522,12 +640,16 @@ const loadAssigneeList = () => {
 };
 
 const formInit = () => {
-  if (props.formType === 'request') {
+  if (['request', 'ccCheck'].includes(props.formType)) {
     const shippingOrder =
       props.requestData && typeof props.requestData === 'string'
         ? JSON.parse(props.requestData)?.shippingOrder
         : {};
     basicInfo.value = { ...shippingOrder };
+    if (props.formType === 'ccCheck') {
+      basicInfo.value.ccOwner = '';
+      ccOwner.value = props.ccOwner;
+    }
   } else {
     const taskFields = [
       'requestType',
@@ -547,8 +669,14 @@ const formInit = () => {
     }, {});
   }
 };
+const getApprovalUserList = () => {
+  TaskAndRequestController.getApprovalUserList({}).then(res => {
+    ccOwnerList.value = res.data;
+  });
+};
 
 onMounted(() => {
+  getApprovalUserList();
   formInit();
   getTaskHighlightData();
   getTaskProcessXml();
@@ -797,6 +925,13 @@ pre {
   margin: 0px 50px 10px 20px;
   border-bottom: 1px solid #e8eaec;
 }
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  border-bottom: 1px solid #e8eaec;
+  margin: 0px 50px 5px 20px;
+}
 .contact-info {
   margin: 15px 50px 10px 10px;
   border-top: 1px solid #e8eaec;
@@ -815,5 +950,9 @@ pre {
 }
 .delivery-date-box-required {
   color: rgb(255, 0, 0);
+}
+.urgent-form {
+  position: relative;
+  left: 40px;
 }
 </style>

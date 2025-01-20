@@ -186,12 +186,6 @@ export const routers: Array<RouteRecordRaw> = [
           // 静态表单路由设置
         ],
       },
-      {
-        path: 'formMyTask',
-        component: () => import('@/pages/workflow/formTaskAndRequest/formMyTask.vue'),
-        name: 'formMyTask',
-        props: getProps,
-      },
       // my task
       {
         path: 'myTask',
@@ -204,6 +198,13 @@ export const routers: Array<RouteRecordRaw> = [
         path: 'myRequest',
         component: () => import('@/pages/workflow/formTaskAndRequest/formMyRequest.vue'),
         name: 'myRequest',
+        props: getProps,
+      },
+      // cc check
+      {
+        path: 'ccCheck',
+        component: () => import('@/pages/workflow/formTaskAndRequest/formCcCheck.vue'),
+        name: 'ccCheck',
         props: getProps,
       },
       // task and request detail

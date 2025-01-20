@@ -358,7 +358,8 @@ const onSaveFormData = async () => {
     }),
     recipient: params?.recipientModify ?? params.recipient,
     phone: params?.phoneModify ?? params.phone,
-    processDefinitionKey: dialogParams.value.formConfig.processId || '',
+    // processDefinitionKey: dialogParams.value.formConfig.processId || '',
+    processDefinitionKey: getQueryParam('orderType')?.replace(/\+/g, ' '),
     deliveryDate: params?.requestDeliveryDate,
     paying: params?.paying,
     remarksToWarehouse: params.remarksToWarehouse,
@@ -368,14 +369,16 @@ const onSaveFormData = async () => {
   };
   params = _.omitBy(params, value => !value || value.length === 0);
   console.log('real params::::', params);
-  const res: ANY_OBJECT = await FlowEntryController.orderPlacement(params);
-  console.log(res);
-  if (res.success) {
-    ElMessage.success('Save success');
-    clearEditForm();
-    onCancel();
-    eventbus.emit('refreshTable');
-  }
+  FlowEntryController.orderPlacement(params)
+    .then(res => {
+      ElMessage.success('Save success');
+      clearEditForm();
+      onCancel();
+      eventbus.emit('refreshTable');
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };
 const clearEditForm = () => {
   for (const key in bsWidgetList) {

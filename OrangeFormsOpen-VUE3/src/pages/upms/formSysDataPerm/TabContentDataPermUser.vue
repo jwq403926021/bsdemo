@@ -77,7 +77,7 @@
       />
       <vxe-column title="Login Name" field="loginName"> </vxe-column>
       <vxe-column title="Show Name" field="showName"> </vxe-column>
-      <vxe-column title="User Type">
+      <vxe-column title="Business Model Type">
         <template v-slot="scope">
           <span>{{ SysUserType.getValue(scope.row.userType) }}</span>
         </template>

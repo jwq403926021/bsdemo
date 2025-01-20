@@ -4,8 +4,8 @@
     :model="formData"
     :rules="rules"
     :size="formItemSize"
-    label-position="right"
-    label-width="120px"
+    label-position="left"
+    label-width="160px"
     @submit.prevent
   >
     <el-row :gutter="20">
@@ -13,8 +13,8 @@
         <el-form-item label="Role Name" prop="roleName">
           <el-input v-model="formData.roleName" placeholder="Role Name" clearable maxlength="30" />
         </el-form-item>
-        <el-form-item label="User Type" prop="userType">
-          <el-select v-model="formData.userType" placeholder="User Type">
+        <el-form-item label="Business Model Type" prop="userType">
+          <el-select v-model="formData.userType" placeholder="Business Model Type">
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"
@@ -28,6 +28,16 @@
             <el-radio :value="1">Admin</el-radio>
             <el-radio :value="0">Other</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="Work Flow">
+          <el-select v-model="formData.workFlow" multiple placeholder="Select Process" clearable>
+            <el-option
+              v-for="item in processList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-card shadow="never">
           <template v-slot:header>
@@ -94,8 +104,10 @@ import { MenuItem } from '@/types/upms/menu';
 import { Role } from '@/types/upms/role';
 import { useLayoutStore } from '@/store';
 import { serverDefaultCfg } from '@/common/http/config';
-const layoutStore = useLayoutStore();
+import { FlowEntryController } from '@/api/flow';
 
+const layoutStore = useLayoutStore();
+const processList = ref<ANY_OBJECT[]>([]);
 const props = defineProps<{
   rowData?: Role;
   // 当使用Dialog.show弹出组件时，须定义该prop属性，以便对dialog进行回调
@@ -113,6 +125,7 @@ const authTree = ref<InstanceType<typeof ElTree>>();
 const formData = ref({
   roleId: '',
   roleName: '',
+  workFlow: [] as string[],
   userType: '',
   adminRole: false,
   menuIdListString: '',
@@ -161,7 +174,7 @@ const onSubmit = () => {
         return;
       }
       let params = {
-        sysRoleDto: { ...formData.value },
+        sysRoleDto: { ...formData.value, workFlow: String(formData.value.workFlow) },
         menuIdListString: '',
       };
       params.menuIdListString = selectMenu.join(',');
@@ -233,8 +246,31 @@ watch(menuNameFilter, val => {
   authTree.value?.filter(val);
 });
 
+const getProcessList = () => {
+  const params = {
+    orderParam: [
+      {
+        fieldName: 'entryId',
+        asc: true,
+      },
+    ],
+    flowEntryDtoFilter: {
+      flowType: 1,
+      status: 1,
+    },
+  };
+  FlowEntryController.listNoPage(params).then((res: ANY_OBJECT) => {
+    processList.value = res.data.map(item => {
+      return { label: item.processDefinitionName, value: item.processDefinitionKey };
+    });
+  });
+};
+
 onMounted(() => {
   if (props.rowData) {
+    if (props.rowData.workFlow) {
+      props.rowData.workFlow = (props.rowData.workFlow as unknown as string).split(',');
+    }
     formData.value = { ...formData.value, ...props.rowData };
     if (formData.value.sysRoleMenuList) {
       formData.value.menuIdList = formData.value.sysRoleMenuList.map(item => item.menuId);
@@ -242,5 +278,6 @@ onMounted(() => {
   }
   getUserTypeList();
   loadAuthData();
+  getProcessList();
 });
 </script>

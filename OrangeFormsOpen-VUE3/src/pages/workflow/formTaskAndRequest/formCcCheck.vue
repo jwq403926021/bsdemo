@@ -1,5 +1,5 @@
 <template>
-  <!-- My Request -->
+  <!-- CC Check -->
   <div style="position: relative" class="broder-radius-20">
     <el-form
       ref="form"
@@ -10,7 +10,7 @@
       @submit.prevent
     >
       <el-row class="form-title">
-        <el-col :span="24"> My Request </el-col>
+        <el-col :span="24"> CC Check </el-col>
       </el-row>
       <filter-box
         :item-width="320"

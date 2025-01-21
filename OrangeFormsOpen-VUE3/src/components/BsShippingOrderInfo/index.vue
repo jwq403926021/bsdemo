@@ -44,7 +44,7 @@ const getInfo = () => {
     if (includes.includes(i.widgetType)) {
       console.log(i.variableName, ':', widgetList[i.variableName]);
       let widgetValueObj: ANY_OBJECT = {};
-      if (widgetList[i.variableName].getValue) {
+      if (widgetList[i.variableName]?.getValue) {
         widgetValueObj = widgetList[i.variableName].getValue();
       }
       result.push({

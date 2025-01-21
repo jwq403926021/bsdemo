@@ -48,14 +48,14 @@
       >
         <!-- Form Information -->
         <div v-show="currentPage === 'formInfo'" :key="formKey">
-          <el-row class="infomation-form-title">
+          <el-row class="information-form-title">
             <el-col>Basic Information</el-col>
           </el-row>
           <slot name="formInfo" />
-          <el-row class="infomation-form-title">
+          <el-row class="information-form-title">
             <el-col>Approval Record</el-col>
           </el-row>
-          <el-row :gutter="20" class="infomation-form-table">
+          <el-row :gutter="20" class="information-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -102,10 +102,10 @@
               </vxe-table>
             </el-col>
           </el-row>
-          <el-row class="infomation-form-title">
+          <el-row class="information-form-title">
             <el-col>Approval List</el-col>
           </el-row>
-          <el-row :gutter="20" class="infomation-form-table">
+          <el-row :gutter="20" class="information-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -721,12 +721,12 @@ pre {
     stroke: #333333 !important;
   }
 }
-.infomation-form-title {
+.information-form-title {
   font-size: 20px;
   color: $color-primary;
   padding: 18px 0px 12px 10px;
 }
-.infomation-form-table {
+.information-form-table {
   padding: 0px 50px 10px 20px;
 }
 .task-operation {

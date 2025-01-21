@@ -29,3 +29,18 @@ export enum FormInfo {
   submittedBy = 'Submitted By',
   submittedDate = 'Submitted Date/Time',
 }
+
+export enum FormInfoSort {
+  orderNo = 1,
+  orderNumber = 1,
+  orderType = 2,
+  submittedBy = 3,
+  submittedDate = 4,
+  flowStatus = 5,
+  status = 5,
+  sr = 6,
+  division = 7,
+  accountName = 8,
+  shipTo = 9,
+  stockLocation = 10,
+}

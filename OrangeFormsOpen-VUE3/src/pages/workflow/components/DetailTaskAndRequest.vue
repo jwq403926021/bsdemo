@@ -45,7 +45,7 @@
       >
         <!-- Form Information -->
         <div v-show="currentPage === 'formInfo'" :key="formKey">
-          <el-row class="infomation-form-title">
+          <el-row class="information-form-title">
             <el-col>{{
               formType === 'task'
                 ? 'Basic Information'
@@ -78,7 +78,7 @@
                 effect="plain"
                 :size="layoutStore.defaultFormItemSize"
                 :type="
-                  MyRequestStatus.getValue(value) === 'Approved'
+                  MyRequestStatus.getValue(value) === 'Approved' || MyRequestStatus.getValue(value) === 'Completed'
                     ? 'success'
                     : MyRequestStatus.getValue(value) === 'Rejected'
                     ? 'danger'
@@ -103,10 +103,10 @@
             </div>
           </div>
           <!-- <slot name="formInfo" /> -->
-          <el-row class="infomation-form-title">
+          <el-row class="information-form-title">
             <el-col>{{ formType === 'task' ? 'Order Detail' : 'Selected Products' }}</el-col>
           </el-row>
-          <el-row :gutter="20" class="infomation-form-table">
+          <el-row :gutter="20" class="information-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -143,10 +143,10 @@
               </vxe-table>
             </el-col>
           </el-row>
-          <el-row v-if="formType === 'task'" class="infomation-form-title">
+          <el-row v-if="formType === 'task'" class="information-form-title">
             <el-col>Approval Record</el-col>
           </el-row>
-          <el-row v-if="formType === 'task'" :gutter="20" class="infomation-form-table">
+          <el-row v-if="formType === 'task'" :gutter="20" class="information-form-table">
             <el-col :span="24">
               <vxe-table
                 empty-text="No Data"
@@ -193,7 +193,7 @@
               </vxe-table>
             </el-col>
           </el-row>
-          <el-row v-if="['request', 'ccCheck'].includes(formType)" class="infomation-form-title">
+          <el-row v-if="['request', 'ccCheck'].includes(formType)" class="information-form-title">
             <el-col>Shipping Condition</el-col>
           </el-row>
           <div v-if="['request', 'ccCheck'].includes(formType)" class="contact-info">
@@ -320,7 +320,7 @@ import ProcessViewer from '@/pages/workflow/components/ProcessViewer.vue';
 import { FlowOperationController, TaskAndRequestController } from '@/api/flow';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysFlowTaskOperationType, MyTaskStatus, MyRequestStatus } from '@/common/staticDict/flow';
-import { FormInfo } from '@/common/enum/useForm';
+import { FormInfo, FormInfoSort } from '@/common/enum/useForm';
 import { useLayoutStore } from '@/store';
 
 const layoutStore = useLayoutStore();
@@ -524,7 +524,6 @@ const getOperationTagType = (type: string) => {
     case SysFlowTaskOperationType.REFUSE:
     case SysFlowTaskOperationType.PARALLEL_REFUSE:
     case SysFlowTaskOperationType.MULTI_REFUSE:
-      return 'warning';
     case SysFlowTaskOperationType.STOP:
     case SysFlowTaskOperationType.REJECT:
     case SysFlowTaskOperationType.REJECT_TO_START:
@@ -639,13 +638,25 @@ const loadAssigneeList = () => {
     });
 };
 
+const sortObject = (obj: ANY_OBJECT, sortOrder: ANY_OBJECT) => {
+  const sortedKeys = Object.keys(obj).sort((a, b) => {
+    return (sortOrder[a] || Infinity) - (sortOrder[b] || Infinity);
+  });
+  const sortedObj = {};
+  sortedKeys.forEach(key => {
+    sortedObj[key] = obj[key];
+  });
+
+  return sortedObj;
+};
+
 const formInit = () => {
   if (['request', 'ccCheck'].includes(props.formType)) {
     const shippingOrder =
       props.requestData && typeof props.requestData === 'string'
         ? JSON.parse(props.requestData)?.shippingOrder
         : {};
-    basicInfo.value = { ...shippingOrder };
+    basicInfo.value = sortObject({ ...shippingOrder }, FormInfoSort);
     if (props.formType === 'ccCheck') {
       basicInfo.value.ccOwner = '';
       ccOwner.value = props.ccOwner;
@@ -903,12 +914,12 @@ pre {
     stroke: #333333 !important;
   }
 }
-.infomation-form-title {
+.information-form-title {
   font-size: 20px;
   color: $color-primary;
   padding: 18px 0px 12px 10px;
 }
-.infomation-form-table {
+.information-form-table {
   padding: 0px 50px 10px 20px;
 }
 .task-operation {

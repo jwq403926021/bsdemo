@@ -65,7 +65,7 @@ withDefaults(
   },
 );
 
-let isFold = ref(false);
+let isFold = ref(true);
 
 const search = () => {
   emit('search');

@@ -55,22 +55,22 @@ const SysFlowEntryStep = new DictionaryBase('流程设计步骤', [
 const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   {
     id: 'submit',
-    name: 'Submit',
+    name: 'Submitted',
     symbol: 'SUBMIT',
   },
   {
     id: 'agree',
-    name: 'Approve',
+    name: 'Approved',
     symbol: 'AGREE',
   },
   {
     id: 'refuse',
-    name: 'Reject',
+    name: 'Rejected',
     symbol: 'REFUSE',
   },
   {
     id: 'reject',
-    name: 'Reject',
+    name: 'Rejected',
     symbol: 'REJECT',
   },
   {
@@ -474,12 +474,12 @@ const MyRequestStatus = new DictionaryBase('MyRequestStatus', [
     symbol: 'CC_WAITING',
   },
   {
-    id: 10,
+    id: 11,
     name: 'Rejected',
     symbol: 'CC_REJECTED',
   },
   {
-    id: 11,
+    id: 10,
     name: 'Completed',
     symbol: 'CC_COMPLETED',
   },

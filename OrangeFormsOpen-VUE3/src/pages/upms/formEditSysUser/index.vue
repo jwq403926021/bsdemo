@@ -3,9 +3,9 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="150px"
+    label-width="160px"
     :size="formItemSize"
-    label-position="right"
+    label-position="left"
     @submit.prevent
   >
     <el-row :gutter="20" class="full-width-input">
@@ -59,12 +59,12 @@
             }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Department" prop="deptId">
+        <el-form-item label="Division" prop="deptId">
           <el-cascader
             class="input-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="Belong Department"
+            placeholder="Belong Division"
             :loading="deptId.impl.loading"
             :props="{ value: 'deptId', label: 'deptName', checkStrictly: true }"
             @visible-change="onDeptIdVisibleChange"

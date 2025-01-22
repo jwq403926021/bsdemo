@@ -84,7 +84,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Business Model Type" prop="userRole">
-          <el-select @change="onUserTypeChange" v-model="formData.userRole" placeholder="Business Model Type">
+          <el-select
+            @change="onUserTypeChange"
+            v-model="formData.userRole"
+            placeholder="Business Model Type"
+          >
             <el-option
               v-for="item in userTypeList"
               :key="item.attr1"

@@ -119,7 +119,8 @@ const translationsCN: ANY_OBJECT = {
   // Errors
   'no parent for {element} in {parent}': '在{parent}里，{element}没有父类',
   'no shape type specified': '没有指定的形状类型',
-  'flow elements must be children of pools/participants': 'flow elements must be children of pools/participants',
+  'flow elements must be children of pools/participants':
+    'flow elements must be children of pools/participants',
   'out of bounds release': 'out of bounds release',
   'more than {count} child lanes': '子道大于{count} ',
   'element required': '元素不能为空',

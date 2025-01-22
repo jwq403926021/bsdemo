@@ -158,9 +158,11 @@
             :type="
               MyRequestStatus.getValue(scope.row.status) === 'Completed'
                 ? 'success'
-                : MyRequestStatus.getValue(scope.row.status) === 'Rejected'
+                : ['Rejected'].includes(MyRequestStatus.getValue(scope.row.status))
                 ? 'danger'
-                : MyRequestStatus.getValue(scope.row.status) === 'Pending'
+                : ['Waiting CC Check', 'Pending'].includes(
+                    MyRequestStatus.getValue(scope.row.status),
+                  )
                 ? 'warning'
                 : 'primary'
             "

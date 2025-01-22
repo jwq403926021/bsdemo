@@ -51,8 +51,7 @@ const SysFlowEntryStep = new DictionaryBase('流程设计步骤', [
     symbol: 'PROCESS_STATUS',
   },
 ]);
-
-const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
+const SysFlowTaskOperationResultType = new DictionaryBase('任务操作结果类型', [
   {
     id: 'submit',
     name: 'Submitted',
@@ -71,6 +70,38 @@ const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
   {
     id: 'reject',
     name: 'Rejected',
+    symbol: 'REJECT',
+  },
+  {
+    id: 'rework',
+    name: 'Reworked',
+    symbol: 'REJECT_TO_START',
+  },
+  {
+    id: 'revoke',
+    name: 'Revoked',
+    symbol: 'REVOKE',
+  },
+]);
+const SysFlowTaskOperationType = new DictionaryBase('任务操作类型', [
+  {
+    id: 'submit',
+    name: 'Submit',
+    symbol: 'SUBMIT',
+  },
+  {
+    id: 'agree',
+    name: 'Approve',
+    symbol: 'AGREE',
+  },
+  {
+    id: 'refuse',
+    name: 'Reject',
+    symbol: 'REFUSE',
+  },
+  {
+    id: 'reject',
+    name: 'Reject',
     symbol: 'REJECT',
   },
   {
@@ -499,6 +530,7 @@ export {
   SysFlowEntryPublishedStatus,
   SysFlowEntryStep,
   SysFlowTaskOperationType,
+  SysFlowTaskOperationResultType,
   SysFlowTaskType,
   SysFlowVariableType,
   SysFlowWorkOrderStatus,

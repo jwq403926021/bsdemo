@@ -24,3 +24,8 @@ useWindowResize();
     <router-view></router-view>
   </el-config-provider>
 </template>
+<style>
+.bjs-powered-by {
+  display: none;
+}
+</style>

@@ -9,13 +9,16 @@
       @submit.prevent
       label-position="top"
     >
-      <!-- <el-form-item
-        label="Form Route"
-        prop="routerName"
-        v-if="flowEntryComputed.bindFormType === SysFlowEntryBindFormType.ROUTER_FORM"
-      >
-        <el-input v-model="formData.routerName" clearable @change="updateElementFormKey" />
-      </el-form-item> -->
+      <el-form-item label="Form Route" prop="routerName">
+        <el-select v-model="onlinePage" clearable placeholder="Form Route">
+          <el-option
+            v-for="item in onlinePageList"
+            :key="item.pageName"
+            :label="item.pageName"
+            :value="item.pageCode"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item
         label="Online Form"
         prop="formId"
@@ -134,6 +137,7 @@ import { SysFlowEntryBindFormType, SysFlowTaskOperationType } from '@/common/sta
 import EditOperation from './formEditOperation.vue';
 import FormSetOnlineFormAuth from './formSetOnlineFormAuth.vue';
 import { useLayoutStore } from '@/store';
+import { OnlinePageController } from '@/api/online';
 
 const layoutStore = useLayoutStore();
 
@@ -156,6 +160,8 @@ const formData = ref<ANY_OBJECT>({
   editable: false,
 });
 const operationList = ref<ANY_OBJECT>({});
+const onlinePage = ref<string>('');
+const onlinePageList = ref<ANY_OBJECT[]>([]);
 const formOperationList = ref<ANY_OBJECT[]>([]);
 const rules = {
   formId: [{ required: true, message: 'Please select an online form!', trigger: 'blur' }],
@@ -262,7 +268,16 @@ const onSetOnlineFormAuth = () => {
       console.warn(e);
     });
 };
+const getOnlinePageList = () => {
+  OnlinePageController.list({
+    onlinePageDtoFilter: {},
+  }).then(res => {
+    onlinePageList.value = res.data.dataList.filter(item => item.published);
+  });
+};
+
 const resetFormList = () => {
+  onlinePage.value = '';
   bpmnElement = win.bpmnInstances.bpmnElement;
   let formKey = bpmnElement.businessObject.formKey;
   let formObj = formKey ? JSON.parse(formKey) : undefined;
@@ -289,6 +304,7 @@ const resetFormList = () => {
   // Update element extension properties to avoid subsequent errors
   updateElementFormKey();
   updateElementExtensions();
+  getOnlinePageList();
 };
 const updateElementFormKey = () => {
   console.log('updateElementFormKey');

@@ -14,13 +14,21 @@
           <el-option label="Conditional Transfer Path" value="condition" />
         </el-select>
       </el-form-item>
-      <el-form-item label="Conditional Format" v-if="flowConditionForm.type === 'condition'" key="condition">
+      <el-form-item
+        label="Conditional Format"
+        v-if="flowConditionForm.type === 'condition'"
+        key="condition"
+      >
         <el-select v-model="flowConditionForm.conditionType">
           <el-option label="Expression" value="expression" />
           <el-option label="Script" value="script" />
         </el-select>
       </el-form-item>
-      <el-form-item label="Button Type" v-if="flowConditionForm.type === 'operation'" key="operation">
+      <el-form-item
+        label="Button Type"
+        v-if="flowConditionForm.type === 'operation'"
+        key="operation"
+      >
         <el-select v-model="flowConditionForm.operationType" @change="onOperationTypeChange">
           <el-option
             v-for="item in getValidOperationList"

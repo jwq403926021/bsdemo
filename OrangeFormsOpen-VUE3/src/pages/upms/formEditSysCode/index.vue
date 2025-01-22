@@ -109,7 +109,9 @@ const formData: Ref<Code> = ref({
   attr1Name: '',
 });
 const countryCodeList: ANY_OBJECT = ref([{ label: 'CN', value: 'CN' }]);
-const groupCodeList: ANY_OBJECT = ref([{ label: 'Business Model Type', value: 'Business Model Type' }]);
+const groupCodeList: ANY_OBJECT = ref([
+  { label: 'Business Model Type', value: 'Business Model Type' },
+]);
 const rules = ref({});
 
 const onCancel = () => {

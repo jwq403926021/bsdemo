@@ -45,13 +45,13 @@ watch(
 </script>
 
 <style scoped lang="scss">
-.contact-info{
+.contact-info {
   margin-top: 10px;
 }
 .contact-info-title {
   font-size: 18px;
   color: $color-primary;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 .contact-info-item {
   font-size: 14px;

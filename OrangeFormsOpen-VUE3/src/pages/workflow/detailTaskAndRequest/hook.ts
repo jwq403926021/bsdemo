@@ -111,6 +111,7 @@ export const useFlowAction = (props: IProp) => {
             case SysFlowTaskOperationType.SIGN_REDUCTION:
             case SysFlowTaskOperationType.BFORE_CONSIGN:
             case SysFlowTaskOperationType.AFTER_CONSIGN:
+            case SysFlowTaskOperationType.REFUSE:
               title = SysFlowTaskOperationType.getValue(operation.type);
               break;
             default:

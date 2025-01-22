@@ -30,6 +30,7 @@ export default defineStore('layout', {
       defaultFormItemSize: 'default' as ComponentSize,
       documentClientHeight: 200,
       mainContextHeight: 200,
+      loginName: '',
     };
   },
   getters: {
@@ -49,10 +50,16 @@ export default defineStore('layout', {
     currentFormSize(): string {
       return this.defaultFormItemSize;
     },
+    currentLoginName(): string {
+      return this.loginName;
+    },
   },
   actions: {
     setCollapsed(val: boolean) {
       this.collapsed = val;
+    },
+    setLoginName(val: string) {
+      this.loginName = val;
     },
     toggleCollapsed() {
       this.collapsed = !this.collapsed;
@@ -152,6 +159,7 @@ export default defineStore('layout', {
     // paths需要持久存储的key
     strategies: [
       { key: 'tags', paths: ['tagList'] },
+      { key: 'loginName', paths: ['loginName'] },
       { key: 'menu', paths: ['currentColumn', 'currentMenu', 'menuList'] },
       { key: 'cachePages', paths: ['cachePages'] },
     ],

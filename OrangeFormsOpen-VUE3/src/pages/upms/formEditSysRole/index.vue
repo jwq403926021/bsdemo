@@ -268,10 +268,13 @@ const getProcessList = () => {
 
 onMounted(() => {
   if (props.rowData) {
-    if (props.rowData.workFlow) {
-      props.rowData.workFlow = (props.rowData.workFlow as unknown as string).split(',');
-    }
+    // if (props.rowData.workFlow) {
+    //   props.rowData.workFlow = (props.rowData.workFlow as unknown as string).split(',');
+    // }
     formData.value = { ...formData.value, ...props.rowData };
+    if (formData.value.workFlow) {
+      formData.value.workFlow = (formData.value.workFlow as unknown as string).split(',');
+    }
     if (formData.value.sysRoleMenuList) {
       formData.value.menuIdList = formData.value.sysRoleMenuList.map(item => item.menuId);
     }

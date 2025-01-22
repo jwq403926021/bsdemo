@@ -41,10 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import axios from 'axios';
 import _ from 'lodash';
-import WorkflowForm from '@/pages/online/OnlinePageRender/index.vue';
+import { useRoute } from 'vue-router';
 import { serverDefaultCfg } from '@/common/http/config';
 import { FlowOperationController } from '@/api/flow';
 import { ANY_OBJECT } from '@/types/generic';
@@ -54,6 +54,7 @@ import { FormInfo } from '@/common/enum/useForm';
 import DetailTaskAndRequest from '../components/DetailTaskAndRequest.vue';
 import { useFlowAction } from './hook';
 import { IProp } from './types';
+const route = useRoute();
 
 const props: IProp = defineProps<IProp>();
 
@@ -178,6 +179,7 @@ const preHandlerOperationThen = (
   res: ANY_OBJECT | null,
 ) => {
   let params = {
+    isCcCheck: route.query.formType === 'ccCheck' ? 1 : '',
     taskId: dialogParams.value.taskId || draftTaskId.value,
     processInstanceId: dialogParams.value.processInstanceId || draftProcessInstanceId.value,
     flowTaskCommentDto: {

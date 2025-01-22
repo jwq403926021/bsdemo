@@ -154,11 +154,13 @@
             effect="plain"
             :size="layoutStore.defaultFormItemSize"
             :type="
-              MyRequestStatus.getValue(scope.row.status) === 'Approved'
+              ['Approved', 'Completed'].includes(MyRequestStatus.getValue(scope.row.status))
                 ? 'success'
-                : MyRequestStatus.getValue(scope.row.status) === 'Rejected'
+                : ['Rejected'].includes(MyRequestStatus.getValue(scope.row.status))
                 ? 'danger'
-                : MyRequestStatus.getValue(scope.row.status) === 'Pending'
+                : ['Waiting CC Check', 'Pending'].includes(
+                    MyRequestStatus.getValue(scope.row.status),
+                  )
                 ? 'warning'
                 : 'primary'
             "

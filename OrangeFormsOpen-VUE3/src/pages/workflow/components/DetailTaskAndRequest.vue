@@ -78,11 +78,11 @@
                 effect="plain"
                 :size="layoutStore.defaultFormItemSize"
                 :type="
-                  MyRequestStatus.getValue(value) === 'Approved' || MyRequestStatus.getValue(value) === 'Completed'
+                  ['Approved', 'Completed'].includes(MyRequestStatus.getValue(value))
                     ? 'success'
-                    : MyRequestStatus.getValue(value) === 'Rejected'
+                    : ['Rejected'].includes(MyRequestStatus.getValue(value))
                     ? 'danger'
-                    : MyRequestStatus.getValue(value) === 'Pending'
+                    : ['Waiting CC Check', 'Pending'].includes(MyRequestStatus.getValue(value))
                     ? 'warning'
                     : 'primary'
                 "
@@ -166,7 +166,7 @@
                       :type="getOperationTagType(scope.row.approvalType)"
                       :style="{ minWidth: '68px' }"
                       effect="dark"
-                      >{{ SysFlowTaskOperationType.getValue(scope.row.approvalType) }}</el-tag
+                      >{{ SysFlowTaskOperationResultType.getValue(scope.row.approvalType) }}</el-tag
                     >
                     <el-tag
                       v-if="scope.row.delegateAssignee != null"
@@ -271,15 +271,7 @@
         </el-button>
         <el-button
           v-if="formType === 'ccCheck'"
-          size="default"
-          class="broder-radius-16"
-          type="danger"
-          @click="emit('close')"
-        >
-          Cancel
-        </el-button>
-        <el-button
-          v-if="formType === 'ccCheck'"
+          :disabled="basicInfo['status'] === 3"
           size="default"
           class="broder-radius-16"
           type="danger"
@@ -289,6 +281,7 @@
         </el-button>
         <el-button
           v-if="formType === 'ccCheck'"
+          :disabled="basicInfo['status'] === 3"
           size="default"
           class="broder-radius-16"
           type="primary"
@@ -319,7 +312,12 @@ import CopyForSelect from '@/pages/workflow/components/CopyForSelect/index.vue';
 import ProcessViewer from '@/pages/workflow/components/ProcessViewer.vue';
 import { FlowOperationController, TaskAndRequestController } from '@/api/flow';
 import { ANY_OBJECT } from '@/types/generic';
-import { SysFlowTaskOperationType, MyTaskStatus, MyRequestStatus } from '@/common/staticDict/flow';
+import {
+  SysFlowTaskOperationType,
+  SysFlowTaskOperationResultType,
+  MyTaskStatus,
+  MyRequestStatus,
+} from '@/common/staticDict/flow';
 import { FormInfo, FormInfoSort } from '@/common/enum/useForm';
 import { useLayoutStore } from '@/store';
 
@@ -682,7 +680,7 @@ const formInit = () => {
 };
 const getApprovalUserList = () => {
   TaskAndRequestController.getApprovalUserList({}).then(res => {
-    ccOwnerList.value = res.data;
+    ccOwnerList.value = res.data.filter(item => item.loginName !== layoutStore.currentLoginName);
   });
 };
 

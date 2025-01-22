@@ -162,6 +162,7 @@ const login = function (verifyParams: { captchaVerification: string } | null = n
       setToken(data.data.tokenData);
       layoutStore.setCurrentMenu(null);
       layoutStore.clearAllTags();
+      layoutStore.setLoginName(dataForm.mobilePhone);
       if (data.data.tokenData) {
         delete data.data.tokenData;
       }

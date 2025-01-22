@@ -16,7 +16,11 @@
             placeholder="Role Name"
           />
         </el-form-item>
-        <el-form-item label="Business Model Type" prop="formFilter.sysUserType" label-position="top">
+        <el-form-item
+          label="Business Model Type"
+          prop="formFilter.sysUserType"
+          label-position="top"
+        >
           <el-select
             class="filter-item"
             v-model="fragmentSysRole.formFilter.sysUserType"
@@ -68,6 +72,7 @@
           <div v-if="row.workFlow">
             <el-tag
               v-for="item in row.workFlow?.split(',')"
+              :key="item"
               style="margin-right: 10px"
               :type="'success'"
             >

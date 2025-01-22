@@ -42,7 +42,7 @@
     <!-- 已完成节点悬浮弹窗 -->
     <el-dialog
       class="comment-dialog"
-      :title="dlgTitle || '审批记录'"
+      :title="dlgTitle || 'Approval Records'"
       v-model="dialogVisible"
       :append-to-body="true"
     >
@@ -55,20 +55,20 @@
           height="500px"
         >
           <el-table-column
-            label="序号"
+            label="No."
             header-align="center"
             align="center"
             type="index"
             width="70px"
           />
-          <el-table-column label="执行人" prop="createUsername" width="150px" />
-          <el-table-column label="操作" width="150px">
+          <el-table-column label="Create User" prop="createUsername" width="150px" />
+          <el-table-column label="Operation" width="150px">
             <template v-slot="scope">
               <el-tag
                 :size="layoutStore.defaultFormItemSize"
                 :type="getOperationTagType(scope.row.approvalType)"
                 effect="dark"
-                >{{ SysFlowTaskOperationType.getValue(scope.row.approvalType) }}</el-tag
+                >{{ SysFlowTaskOperationResultType.getValue(scope.row.approvalType) }}</el-tag
               >
               <el-tag
                 v-if="scope.row.delegateAssignee != null"
@@ -80,12 +80,12 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="审批意见">
+          <el-table-column label="Approval opinion">
             <template v-slot="scope">
               <span>{{ scope.row.taskComment ? scope.row.taskComment : '' }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="处理时间" prop="createTime" width="180px" />
+          <el-table-column label="Create Time" prop="createTime" width="180px" />
           <template v-slot:empty>
             <div class="table-empty unified-font">
               <img src="@/assets/img/empty.png" />
@@ -138,7 +138,11 @@ import { ZoomOut, ZoomIn, ScaleToOriginal } from '@element-plus/icons-vue';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { EpPropMergeType } from 'element-plus/es/utils/vue/props/types';
 import { ANY_OBJECT } from '@/types/generic';
-import { DiagramType, SysFlowTaskOperationType } from '@/common/staticDict/flow';
+import {
+  DiagramType,
+  SysFlowTaskOperationType,
+  SysFlowTaskOperationResultType,
+} from '@/common/staticDict/flow';
 
 const props = defineProps<{
   xml?: string;
@@ -196,10 +200,10 @@ const getOperationTagType = (
     case SysFlowTaskOperationType.AGREE:
     case SysFlowTaskOperationType.MULTI_AGREE:
       return 'success';
-    case SysFlowTaskOperationType.REFUSE:
     case SysFlowTaskOperationType.PARALLEL_REFUSE:
     case SysFlowTaskOperationType.MULTI_REFUSE:
       return 'warning';
+    case SysFlowTaskOperationType.REFUSE:
     case SysFlowTaskOperationType.STOP:
       return 'danger';
     default:

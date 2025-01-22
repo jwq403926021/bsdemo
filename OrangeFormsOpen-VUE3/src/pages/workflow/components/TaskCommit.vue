@@ -6,9 +6,9 @@
       class="full-width-input form-box"
       :rules="rules"
       style="width: 100%"
-      label-width="140px"
+      label-width="100px"
       :size="itemSize"
-      label-position="right"
+      label-position="left"
       @submit.prevent
     >
       <el-row :gutter="20">
@@ -117,12 +117,8 @@
             ].indexOf(dialogParams.operation.type) === -1
           "
         >
-          <el-form-item label="Approval Opinion" prop="message">
-            <el-input
-              v-model="formData.message"
-              clearable
-              placeholder="Please Enter Approval Opinion"
-            />
+          <el-form-item label="Comment" prop="message">
+            <el-input v-model="formData.message" clearable placeholder="Enter Comment" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -226,7 +222,7 @@ const taskWidgetOptions: DropdownOptions<ANY_OBJECT> = {
 };
 const taskWidget = reactive(useDropdown(taskWidgetOptions));
 const rules = {
-  message: [{ required: true, message: 'Approval Opinion Cannot Be Empty', trigger: 'blur' }],
+  message: [{ required: true, message: 'Opinion Cannot Be Empty', trigger: 'blur' }],
   assignee: [{ required: true, message: 'Assignee Cannot Be Empty', trigger: 'blur' }],
   targetTaskKey: [{ required: true, message: 'Task Node Cannot Be Empty', trigger: 'blur' }],
 };

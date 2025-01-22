@@ -63,13 +63,13 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.shipping-order-info{
+.shipping-order-info {
   margin-bottom: 50px;
 }
 .shipping-order-info-title {
   font-size: 18px;
   color: $color-primary;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 .shipping-order-info-item {
   font-size: 14px;

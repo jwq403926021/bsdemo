@@ -12,6 +12,7 @@
         <el-radio label="DEPT" value="DEPT">Department</el-radio>
         <el-radio label="POST" value="POST">Position</el-radio>
         <el-radio label="DEPT_POST_LEADER" value="DEPT_POST_LEADER">Initiator Dept Leader</el-radio>
+        <el-radio label="HTTP Service" value="HTTP_SERVICE">HTTP Service</el-radio>
         <el-radio label="UP_DEPT_POST_LEADER" value="UP_DEPT_POST_LEADER"
           >Initiator Super Dept Leader</el-radio
         >
@@ -65,6 +66,7 @@
         >
       </TaskMultipleSelect>
     </el-form-item>
+    <AutoHttpTaskSetting v-model="taskData" v-if="formData.groupType === 'HTTP_SERVICE'"></AutoHttpTaskSetting>
   </div>
 </template>
 
@@ -80,6 +82,7 @@ import { SysPostController, DictionaryController, SysCommonBizController } from 
 import { useOtherStore } from '@/store';
 import { Dialog } from '@/components/Dialog';
 import { SysFlowEntryBindFormType } from '@/common/staticDict/flow';
+import AutoHttpTaskSetting from '@/pages/workflow/package/refactor/form/AutoHttpTaskSetting.vue';
 
 const props = defineProps<{ id: string; type: string; isCountersign: boolean }>();
 const flowEntry = inject('flowEntry', () => {
@@ -89,7 +92,7 @@ const flowEntry = inject('flowEntry', () => {
 const prefix = inject('prefix');
 import { useLayoutStore } from '@/store';
 const layoutStore = useLayoutStore();
-
+const taskData = ref();
 const candidateGroupIds = ref<ANY_OBJECT[]>([]);
 const sendMessageType = ref<string[]>([]);
 const defaultTaskForm: ANY_OBJECT = {
@@ -922,6 +925,13 @@ watch(candidateGroupIds, () => {
   .icon-minus-wrap {
     bottom: 0;
     border-top: 1px solid #d4d6d9;
+  }
+}
+.api-service {
+  .api-service-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

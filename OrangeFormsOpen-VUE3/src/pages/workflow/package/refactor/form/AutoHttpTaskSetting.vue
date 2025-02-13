@@ -1,8 +1,8 @@
 <template>
-  <div class="autotask-http-settting">
+  <div class="autotask-http-setting">
     <el-form-item label="API Url">
       <el-input
-        placeholder="请输入请求URL"
+        placeholder="Please enter the request URL"
         v-model="formData.httpRequestInfo.url"
         @change="onChange"
       >
@@ -11,7 +11,7 @@
             class="url-select"
             style="width: 100px"
             v-model="formData.httpRequestInfo.httpMethod"
-            placeholder="请选择"
+            placeholder="Please select"
             @change="onChange"
           >
             <el-option label="GET" value="GET" />
@@ -23,10 +23,9 @@
       </el-input>
     </el-form-item>
     <MultiItemList
-      label="请求头设置"
+      label="Request Header Settings"
       :data="formData.httpRequestInfo.headerList"
-      addText="添加"
-      @add="onEditHttpHeader()"
+      addText="Add"
       @edit="onEditHttpHeader"
       @delete="onDeleteHttpHeader"
       :prop="{
@@ -36,7 +35,7 @@
     >
       <template v-slot="scope">
         <span>{{ (scope.data || {}).key }}</span>
-        <span style="margin: 0px 10px">等于</span>
+        <span style="margin: 0px 10px">equals</span>
         <span style="margin: 0px 10px 0px 0px">{{
           AutoTaskValueType.getValue(scope.data.type)
         }}</span>
@@ -46,10 +45,9 @@
       </template>
     </MultiItemList>
     <MultiItemList
-      label="URL参数设置"
+      label="URL Parameter Settings"
       :data="formData.httpRequestInfo.urlParamList"
-      addText="添加"
-      @add="onEditUrlParam()"
+      addText="Add"
       @edit="onEditUrlParam"
       @delete="onDeleteUrlParam"
       :prop="{
@@ -59,7 +57,7 @@
     >
       <template v-slot="scope">
         <span>{{ (scope.data || {}).key }}</span>
-        <span style="margin: 0px 10px">等于</span>
+        <span style="margin: 0px 10px">equals</span>
         <span style="margin: 0px 10px 0px 0px">{{
           AutoTaskValueType.getValue(scope.data.type)
         }}</span>
@@ -68,7 +66,7 @@
         </span>
       </template>
     </MultiItemList>
-    <el-form-item labe="请求Body类型">
+    <el-form-item label="Request Body Type">
       <el-radio-group v-model="formData.httpRequestInfo.bodyType" @change="onChange">
         <el-radio v-for="item in BodyType.getList()" :key="item.id" :label="item.id">
           <el-row type="flex" align="middle">
@@ -97,10 +95,9 @@
     </el-form-item>
     <MultiItemList
       v-if="formData.httpRequestInfo.bodyType === BodyType.FORM_DATA"
-      label="Body参数设置"
+      label="Body Parameter Settings"
       :data="formData.httpRequestInfo.formDataList"
-      addText="添加"
-      @add="onEditBodyParam()"
+      addText="Add"
       @edit="onEditBodyParam"
       @delete="onDeleteBodyParam"
       :prop="{
@@ -110,7 +107,7 @@
     >
       <template v-slot="scope">
         <span>{{ (scope.data || {}).key }}</span>
-        <span style="margin: 0px 10px">等于</span>
+        <span style="margin: 0px 10px">equals</span>
         <span style="margin: 0px 10px 0px 0px">{{
           AutoTaskValueType.getValue(scope.data.type)
         }}</span>
@@ -119,48 +116,51 @@
         </span>
       </template>
     </MultiItemList>
-    <el-form-item label="Body参数设置" v-if="formData.httpRequestInfo.bodyType === BodyType.RAW">
+    <el-form-item
+      label="Body Parameter Settings"
+      v-if="formData.httpRequestInfo.bodyType === BodyType.RAW"
+    >
       <el-input
         v-model="formData.httpRequestInfo.bodyData"
         type="textarea"
         rows="5"
         clearable
-        placeholder="请输入请求Body"
+        placeholder="Please enter the request body"
         @change="onChange"
       />
     </el-form-item>
-    <el-form-item label="请求成功的HTTP状态码">
+    <el-form-item label="Successful HTTP Status Codes">
       <el-input
         v-model="formData.httpResponnseData.successStatusCode"
         clearable
-        placeholder="示例：200,201 (多个状态码使用英文逗号分隔)"
+        placeholder="Example: 200,201 (Multiple status codes separated by commas)"
         @change="onChange"
       />
     </el-form-item>
-    <el-form-item label="请求成功字段">
+    <el-form-item label="Success Field">
       <el-input
         v-model="formData.httpResponnseData.successBodyField"
         clearable
-        placeholder="示例：data.isSuccess 请求成功情况下，进一步判断是否成功字段"
+        placeholder="Example: data.isSuccess, a field to further judge success in case of success"
         @change="onChange"
       />
     </el-form-item>
-    <el-form-item label="失败信息字段">
+    <el-form-item label="Failure Information Field">
       <el-input
         v-model="formData.httpResponnseData.errorMessageBodyField"
         clearable
-        placeholder="示例：data.message 请求成功情况下，返回的失败信息字段"
+        placeholder="Example: data.message, the returned failure message field in case of success"
         @change="onChange"
       />
     </el-form-item>
-    <el-form-item label="请求失败处理方式">
+    <el-form-item label="Failure Handling Method">
       <el-radio-group v-model="formData.httpResponnseData.failHandleType" @change="onChange">
         <el-radio v-for="item in FailHandleType.getList()" :key="item.id" :label="item.id">
           {{ item.name }}
         </el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="响应数据">
+    <el-form-item v-if="false" label="Response Data">
       <el-table
         :show-header="false"
         :data="responseDataTree"
@@ -168,15 +168,15 @@
         row-key="id"
         :tree-props="{ children: 'children' }"
       >
-        <el-table-column prop="fieldName" label="字段名" />
-        <el-table-column prop="fieldType" label="字段类型" width="100px" />
-        <el-table-column label="操作" width="120px">
+        <el-table-column prop="fieldName" label="Field Name" />
+        <el-table-column prop="fieldType" label="Field Type" width="100px" />
+        <el-table-column label="Action" width="120px">
           <template v-slot="scope">
             <el-button type="primary" link size="small" @click="onEditResponseData(scope.row)">
-              编辑
+              Edit
             </el-button>
             <el-button type="primary" link size="small" @click="onDeleteResponseData(scope.row)">
-              删除
+              Delete
             </el-button>
           </template>
         </el-table-column>
@@ -189,7 +189,7 @@
         style="width: 100%"
         @click="onEditResponseData()"
       >
-        添加响应字段
+        Add Response Field
       </el-button>
     </el-form-item>
   </div>
@@ -263,7 +263,7 @@ const formData = ref<FormDataType>({
   },
 });
 
-const BodyType = new DictionaryBase('Body类型', [
+const BodyType = new DictionaryBase('Body Type', [
   {
     id: 'formData',
     name: 'form-data',
@@ -276,7 +276,7 @@ const BodyType = new DictionaryBase('Body类型', [
   },
 ]);
 
-const RawType = new DictionaryBase('Raw类型', [
+const RawType = new DictionaryBase('Raw Type', [
   {
     id: 'text',
     name: 'text',
@@ -289,15 +289,15 @@ const RawType = new DictionaryBase('Raw类型', [
   },
 ]);
 
-const FailHandleType = new DictionaryBase('失败处理方式', [
+const FailHandleType = new DictionaryBase('Failure Handling Method', [
   {
     id: 'stop',
-    name: '流程中止执行',
+    name: 'Stop Process Execution',
     symbol: 'EXIT',
   },
   {
     id: 'continue',
-    name: '继续执行',
+    name: 'Continue Execution',
     symbol: 'CONTINUE',
   },
 ]);
@@ -322,13 +322,13 @@ const onChange = () => {
 
 const updateHttpHeader = (row, data) => {
   if (row == null) {
-    // 新建
+    // Create New
     if (formData.value.httpRequestInfo.headerList == null) {
       formData.value.httpRequestInfo.headerList = [];
     }
     formData.value.httpRequestInfo.headerList.push(data);
   } else {
-    // 编辑
+    // Edit
     formData.value.httpRequestInfo.headerList = formData.value.httpRequestInfo.headerList.map(
       item => {
         return item.key === data.key ? data : item;
@@ -340,7 +340,7 @@ const updateHttpHeader = (row, data) => {
 
 const onEditHttpHeader = (row?: ANY_OBJECT) => {
   Dialog.show(
-    '编辑请求头',
+    'Edit Request Header',
     EditHttpHeader,
     {
       area: ['500px', '300px'],
@@ -367,9 +367,9 @@ const onEditHttpHeader = (row?: ANY_OBJECT) => {
 };
 
 const onDeleteHttpHeader = row => {
-  ElMessageBox.confirm('是否删除此请求头？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this request header?', 'Prompt', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(() => {
@@ -385,13 +385,13 @@ const onDeleteHttpHeader = row => {
 
 const updateUrlParam = (row, data) => {
   if (row == null) {
-    // 新建
+    // Create New
     if (formData.value.httpRequestInfo.urlParamList == null) {
       formData.value.httpRequestInfo.urlParamList = [];
     }
     formData.value.httpRequestInfo.urlParamList.push(data);
   } else {
-    // 编辑
+    // Edit
     formData.value.httpRequestInfo.urlParamList = formData.value.httpRequestInfo.urlParamList.map(
       item => {
         return item.key === data.key ? data : item;
@@ -403,7 +403,7 @@ const updateUrlParam = (row, data) => {
 
 const onEditUrlParam = (row?: ANY_OBJECT) => {
   Dialog.show(
-    '编辑URL参数',
+    'Edit URL Parameter',
     EditHttpParameter,
     {
       area: ['500px', '400px'],
@@ -430,9 +430,9 @@ const onEditUrlParam = (row?: ANY_OBJECT) => {
 };
 
 const onDeleteUrlParam = row => {
-  ElMessageBox.confirm('是否删除此URL参数？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this URL parameter?', 'Prompt', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(res => {
@@ -450,10 +450,10 @@ const updateBodyParam = (row, res) => {
     formData.value.httpRequestInfo.formDataList = [];
   }
   if (row == null) {
-    // 新建
+    // Create New
     formData.value.httpRequestInfo.formDataList.push(res);
   } else {
-    // 编辑
+    // Edit
     formData.value.httpRequestInfo.formDataList = formData.value.httpRequestInfo.formDataList.map(
       item => {
         return item.key === res.key ? res : item;
@@ -465,7 +465,7 @@ const updateBodyParam = (row, res) => {
 
 const onEditBodyParam = (row?: ANY_OBJECT) => {
   Dialog.show(
-    '编辑Body参数',
+    'Edit Body Parameter',
     EditHttpParameter,
     {
       area: ['500px', '400px'],
@@ -492,9 +492,9 @@ const onEditBodyParam = (row?: ANY_OBJECT) => {
 };
 
 const onDeleteBodyParam = row => {
-  ElMessageBox.confirm('是否删除此Body参数？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this Body parameter?', 'Prompt', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(res => {
@@ -524,13 +524,13 @@ const updateResponseData = (row, res) => {
     formData.value.httpResponnseData.httpResponseBody = [];
   }
   if (row == null) {
-    // 新建
+    // Create New
     formData.value.httpResponnseData.httpResponseBody.push(res);
   } else {
-    // 编辑
+    // Edit
     formData.value.httpResponnseData.httpResponseBody =
       formData.value.httpResponnseData.httpResponseBody.map(item => {
-        if (item.id === res.oldIId) {
+        if (item.id === res.oldId) {
           buildChildId(res, res.parentId);
           return res;
         } else {
@@ -543,7 +543,7 @@ const updateResponseData = (row, res) => {
 
 const onEditResponseData = (row?: ANY_OBJECT) => {
   Dialog.show(
-    '编辑响应字段',
+    'Edit Response Field',
     EditResponseData,
     {
       area: ['500px', '400px'],
@@ -569,9 +569,9 @@ const onEditResponseData = (row?: ANY_OBJECT) => {
 };
 
 const onDeleteResponseData = row => {
-  ElMessageBox.confirm('是否删除此响应字段？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Do you want to delete this response field?', 'Prompt', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning',
   })
     .then(res => {
